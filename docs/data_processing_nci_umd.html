@@ -1,0 +1,1293 @@
+<!DOCTYPE html>
+
+<html>
+
+<head>
+
+<meta charset="utf-8" />
+<meta name="generator" content="pandoc" />
+<meta http-equiv="X-UA-Compatible" content="IE=EDGE" />
+
+
+
+
+<title>NCI-UMD: Data Processing, Checking, and Exploration</title>
+
+<script src="site_libs/jquery-1.11.3/jquery.min.js"></script>
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<link href="site_libs/bootstrap-3.3.5/css/cosmo.min.css" rel="stylesheet" />
+<script src="site_libs/bootstrap-3.3.5/js/bootstrap.min.js"></script>
+<script src="site_libs/bootstrap-3.3.5/shim/html5shiv.min.js"></script>
+<script src="site_libs/bootstrap-3.3.5/shim/respond.min.js"></script>
+<script src="site_libs/jqueryui-1.11.4/jquery-ui.min.js"></script>
+<link href="site_libs/tocify-1.9.1/jquery.tocify.css" rel="stylesheet" />
+<script src="site_libs/tocify-1.9.1/jquery.tocify.js"></script>
+<script src="site_libs/navigation-1.1/tabsets.js"></script>
+<link href="site_libs/highlightjs-9.12.0/textmate.css" rel="stylesheet" />
+<script src="site_libs/highlightjs-9.12.0/highlight.js"></script>
+
+<link rel="icon" href="https://github.com/workflowr/workflowr-assets/raw/master/img/reproducible.png">
+<!-- Add a small amount of space between sections. -->
+<style type="text/css">
+div.section {
+  padding-top: 12px;
+}
+</style>
+
+<style type="text/css">code{white-space: pre;}</style>
+<style type="text/css">
+  pre:not([class]) {
+    background-color: white;
+  }
+</style>
+<script type="text/javascript">
+if (window.hljs) {
+  hljs.configure({languages: []});
+  hljs.initHighlightingOnLoad();
+  if (document.readyState && document.readyState === "complete") {
+    window.setTimeout(function() { hljs.initHighlighting(); }, 0);
+  }
+}
+</script>
+
+
+
+<style type="text/css">
+h1 {
+  font-size: 34px;
+}
+h1.title {
+  font-size: 38px;
+}
+h2 {
+  font-size: 30px;
+}
+h3 {
+  font-size: 24px;
+}
+h4 {
+  font-size: 18px;
+}
+h5 {
+  font-size: 16px;
+}
+h6 {
+  font-size: 12px;
+}
+.table th:not([align]) {
+  text-align: left;
+}
+</style>
+
+
+
+
+<style type = "text/css">
+.main-container {
+  max-width: 940px;
+  margin-left: auto;
+  margin-right: auto;
+}
+code {
+  color: inherit;
+  background-color: rgba(0, 0, 0, 0.04);
+}
+img {
+  max-width:100%;
+}
+.tabbed-pane {
+  padding-top: 12px;
+}
+.html-widget {
+  margin-bottom: 20px;
+}
+button.code-folding-btn:focus {
+  outline: none;
+}
+summary {
+  display: list-item;
+}
+</style>
+
+
+<style type="text/css">
+/* padding for bootstrap navbar */
+body {
+  padding-top: 51px;
+  padding-bottom: 40px;
+}
+/* offset scroll position for anchor links (for fixed navbar)  */
+.section h1 {
+  padding-top: 56px;
+  margin-top: -56px;
+}
+.section h2 {
+  padding-top: 56px;
+  margin-top: -56px;
+}
+.section h3 {
+  padding-top: 56px;
+  margin-top: -56px;
+}
+.section h4 {
+  padding-top: 56px;
+  margin-top: -56px;
+}
+.section h5 {
+  padding-top: 56px;
+  margin-top: -56px;
+}
+.section h6 {
+  padding-top: 56px;
+  margin-top: -56px;
+}
+.dropdown-submenu {
+  position: relative;
+}
+.dropdown-submenu>.dropdown-menu {
+  top: 0;
+  left: 100%;
+  margin-top: -6px;
+  margin-left: -1px;
+  border-radius: 0 6px 6px 6px;
+}
+.dropdown-submenu:hover>.dropdown-menu {
+  display: block;
+}
+.dropdown-submenu>a:after {
+  display: block;
+  content: " ";
+  float: right;
+  width: 0;
+  height: 0;
+  border-color: transparent;
+  border-style: solid;
+  border-width: 5px 0 5px 5px;
+  border-left-color: #cccccc;
+  margin-top: 5px;
+  margin-right: -10px;
+}
+.dropdown-submenu:hover>a:after {
+  border-left-color: #ffffff;
+}
+.dropdown-submenu.pull-left {
+  float: none;
+}
+.dropdown-submenu.pull-left>.dropdown-menu {
+  left: -100%;
+  margin-left: 10px;
+  border-radius: 6px 0 6px 6px;
+}
+</style>
+
+<script>
+// manage active state of menu based on current page
+$(document).ready(function () {
+  // active menu anchor
+  href = window.location.pathname
+  href = href.substr(href.lastIndexOf('/') + 1)
+  if (href === "")
+    href = "index.html";
+  var menuAnchor = $('a[href="' + href + '"]');
+
+  // mark it active
+  menuAnchor.parent().addClass('active');
+
+  // if it's got a parent navbar menu mark it active as well
+  menuAnchor.closest('li.dropdown').addClass('active');
+});
+</script>
+
+<!-- tabsets -->
+
+<style type="text/css">
+.tabset-dropdown > .nav-tabs {
+  display: inline-table;
+  max-height: 500px;
+  min-height: 44px;
+  overflow-y: auto;
+  background: white;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+}
+
+.tabset-dropdown > .nav-tabs > li.active:before {
+  content: "";
+  font-family: 'Glyphicons Halflings';
+  display: inline-block;
+  padding: 10px;
+  border-right: 1px solid #ddd;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open > li.active:before {
+  content: "&#xe258;";
+  border: none;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open:before {
+  content: "";
+  font-family: 'Glyphicons Halflings';
+  display: inline-block;
+  padding: 10px;
+  border-right: 1px solid #ddd;
+}
+
+.tabset-dropdown > .nav-tabs > li.active {
+  display: block;
+}
+
+.tabset-dropdown > .nav-tabs > li > a,
+.tabset-dropdown > .nav-tabs > li > a:focus,
+.tabset-dropdown > .nav-tabs > li > a:hover {
+  border: none;
+  display: inline-block;
+  border-radius: 4px;
+  background-color: transparent;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open > li {
+  display: block;
+  float: none;
+}
+
+.tabset-dropdown > .nav-tabs > li {
+  display: none;
+}
+</style>
+
+<!-- code folding -->
+
+
+
+<style type="text/css">
+
+#TOC {
+  margin: 25px 0px 20px 0px;
+}
+@media (max-width: 768px) {
+#TOC {
+  position: relative;
+  width: 100%;
+}
+}
+
+@media print {
+.toc-content {
+  /* see https://github.com/w3c/csswg-drafts/issues/4434 */
+  float: right;
+}
+}
+
+.toc-content {
+  padding-left: 30px;
+  padding-right: 40px;
+}
+
+div.main-container {
+  max-width: 1200px;
+}
+
+div.tocify {
+  width: 20%;
+  max-width: 260px;
+  max-height: 85%;
+}
+
+@media (min-width: 768px) and (max-width: 991px) {
+  div.tocify {
+    width: 25%;
+  }
+}
+
+@media (max-width: 767px) {
+  div.tocify {
+    width: 100%;
+    max-width: none;
+  }
+}
+
+.tocify ul, .tocify li {
+  line-height: 20px;
+}
+
+.tocify-subheader .tocify-item {
+  font-size: 0.90em;
+}
+
+.tocify .list-group-item {
+  border-radius: 0px;
+}
+
+
+</style>
+
+
+
+</head>
+
+<body>
+
+
+<div class="container-fluid main-container">
+
+
+<!-- setup 3col/9col grid for toc_float and main content  -->
+<div class="row-fluid">
+<div class="col-xs-12 col-sm-4 col-md-3">
+<div id="TOC" class="tocify">
+</div>
+</div>
+
+<div class="toc-content col-xs-12 col-sm-8 col-md-9">
+
+
+
+
+<div class="navbar navbar-default  navbar-fixed-top" role="navigation">
+  <div class="container">
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar">
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+      <a class="navbar-brand" href="index.html">esoph-micro-cancer</a>
+    </div>
+    <div id="navbar" class="navbar-collapse collapse">
+      <ul class="nav navbar-nav">
+        <li>
+  <a href="index.html">Home</a>
+</li>
+<li>
+  <a href="about.html">About</a>
+</li>
+<li>
+  <a href="license.html">License</a>
+</li>
+      </ul>
+      <ul class="nav navbar-nav navbar-right">
+        
+      </ul>
+    </div><!--/.nav-collapse -->
+  </div><!--/.container -->
+</div><!--/.navbar -->
+
+<div class="fluid-row" id="header">
+
+
+
+<h1 class="title toc-ignore">NCI-UMD: Data Processing, Checking, and Exploration</h1>
+
+</div>
+
+
+<p>
+<button type="button" class="btn btn-default btn-workflowr btn-workflowr-report" data-toggle="collapse" data-target="#workflowr-report">
+<span class="glyphicon glyphicon-list" aria-hidden="true"></span> workflowr <span class="glyphicon glyphicon-exclamation-sign text-danger" aria-hidden="true"></span>
+</button>
+</p>
+<div id="workflowr-report" class="collapse">
+<ul class="nav nav-tabs">
+<li class="active">
+<a data-toggle="tab" href="#summary">Summary</a>
+</li>
+<li>
+<a data-toggle="tab" href="#checks"> Checks <span class="glyphicon glyphicon-exclamation-sign text-danger" aria-hidden="true"></span> </a>
+</li>
+<li>
+<a data-toggle="tab" href="#versions">Past versions</a>
+</li>
+</ul>
+<div class="tab-content">
+<div id="summary" class="tab-pane fade in active">
+<p>
+<strong>Last updated:</strong> 2020-09-23
+</p>
+<p>
+<strong>Checks:</strong> <span class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span> 6 <span class="glyphicon glyphicon-exclamation-sign text-danger" aria-hidden="true"></span> 1
+</p>
+<p>
+<strong>Knit directory:</strong> <code>esoph-micro-cancer-workflow/</code> <span class="glyphicon glyphicon-question-sign" aria-hidden="true" title="This is the local directory in which the code in this file was executed."> </span>
+</p>
+<p>
+This reproducible <a href="http://rmarkdown.rstudio.com">R Markdown</a> analysis was created with <a
+  href="https://github.com/jdblischak/workflowr">workflowr</a> (version 1.6.2). The <em>Checks</em> tab describes the reproducibility checks that were applied when the results were created. The <em>Past versions</em> tab lists the development history.
+</p>
+<hr>
+</div>
+<div id="checks" class="tab-pane fade">
+<div id="workflowr-checks" class="panel-group">
+<div class="panel panel-default">
+<div class="panel-heading">
+<p class="panel-title">
+<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongRMarkdownfilestronguncommittedchanges"> <span class="glyphicon glyphicon-exclamation-sign text-danger" aria-hidden="true"></span> <strong>R Markdown file:</strong> uncommitted changes </a>
+</p>
+</div>
+<div id="strongRMarkdownfilestronguncommittedchanges" class="panel-collapse collapse">
+<div class="panel-body">
+<p>The R Markdown is untracked by Git. To know which version of the R Markdown file created these results, you’ll want to first commit it to the Git repo. If you’re still working on the analysis, you can ignore this warning. When you’re finished, you can run <code>wflow_publish</code> to commit the R Markdown file and build the HTML.</p>
+</div>
+</div>
+</div>
+<div class="panel panel-default">
+<div class="panel-heading">
+<p class="panel-title">
+<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongEnvironmentstrongempty"> <span class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span> <strong>Environment:</strong> empty </a>
+</p>
+</div>
+<div id="strongEnvironmentstrongempty" class="panel-collapse collapse">
+<div class="panel-body">
+<p>Great job! The global environment was empty. Objects defined in the global environment can affect the analysis in your R Markdown file in unknown ways. For reproduciblity it’s best to always run the code in an empty environment.</p>
+</div>
+</div>
+</div>
+<div class="panel panel-default">
+<div class="panel-heading">
+<p class="panel-title">
+<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongSeedstrongcodesetseed20200916code"> <span class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span> <strong>Seed:</strong> <code>set.seed(20200916)</code> </a>
+</p>
+</div>
+<div id="strongSeedstrongcodesetseed20200916code" class="panel-collapse collapse">
+<div class="panel-body">
+<p>The command <code>set.seed(20200916)</code> was run prior to running the code in the R Markdown file. Setting a seed ensures that any results that rely on randomness, e.g. subsampling or permutations, are reproducible.</p>
+</div>
+</div>
+</div>
+<div class="panel panel-default">
+<div class="panel-heading">
+<p class="panel-title">
+<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongSessioninformationstrongrecorded"> <span class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span> <strong>Session information:</strong> recorded </a>
+</p>
+</div>
+<div id="strongSessioninformationstrongrecorded" class="panel-collapse collapse">
+<div class="panel-body">
+<p>Great job! Recording the operating system, R version, and package versions is critical for reproducibility.</p>
+</div>
+</div>
+</div>
+<div class="panel panel-default">
+<div class="panel-heading">
+<p class="panel-title">
+<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongCachestrongnone"> <span class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span> <strong>Cache:</strong> none </a>
+</p>
+</div>
+<div id="strongCachestrongnone" class="panel-collapse collapse">
+<div class="panel-body">
+<p>Nice! There were no cached chunks for this analysis, so you can be confident that you successfully produced the results during this run.</p>
+</div>
+</div>
+</div>
+<div class="panel panel-default">
+<div class="panel-heading">
+<p class="panel-title">
+<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongFilepathsstrongrelative"> <span class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span> <strong>File paths:</strong> relative </a>
+</p>
+</div>
+<div id="strongFilepathsstrongrelative" class="panel-collapse collapse">
+<div class="panel-body">
+<p>Great job! Using relative paths to the files within your workflowr project makes it easier to run your code on other machines.</p>
+</div>
+</div>
+</div>
+<div class="panel panel-default">
+<div class="panel-heading">
+<p class="panel-title">
+<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongRepositoryversionstrong535b7b2"> <span class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span> <strong>Repository version:</strong> 535b7b2 </a>
+</p>
+</div>
+<div id="strongRepositoryversionstrong535b7b2" class="panel-collapse collapse">
+<div class="panel-body">
+<p>
+Great! You are using Git for version control. Tracking code development and connecting the code version to the results is critical for reproducibility.
+</p>
+<p>
+The results in this page were generated with repository version 535b7b2. See the <em>Past versions</em> tab to see a history of the changes made to the R Markdown and HTML files.
+</p>
+<p>
+Note that you need to be careful to ensure that all relevant files for the analysis have been committed to Git prior to generating the results (you can use <code>wflow_publish</code> or <code>wflow_git_commit</code>). workflowr only checks the R Markdown file, but you know if there are other scripts or data files that it depends on. Below is the status of the Git repository when the results were generated:
+</p>
+<pre><code>
+Ignored files:
+    Ignored:    .Rhistory
+    Ignored:    .Rproj.user/
+    Ignored:    data/.Rhistory
+
+Untracked files:
+    Untracked:  analysis/data_processing_nci_umd.Rmd
+    Untracked:  code/get_cleaned_data.R
+    Untracked:  code/get_data.R
+    Untracked:  code/load_packages.R
+    Untracked:  code/microbiome_statistics_and_functions.R
+    Untracked:  data/NCI-UMD/
+    Untracked:  data/TCGA/
+
+Unstaged changes:
+    Modified:   analysis/index.Rmd
+    Modified:   esoph-micro-cancer-workflow.Rproj
+
+</code></pre>
+<p>
+Note that any generated files, e.g. HTML, png, CSS, etc., are not included in this status report because it is ok for generated content to have uncommitted changes.
+</p>
+</div>
+</div>
+</div>
+</div>
+<hr>
+</div>
+<div id="versions" class="tab-pane fade">
+<p>
+There are no past versions. Publish this analysis with <code>wflow_publish()</code> to start tracking its development.
+</p>
+<hr>
+</div>
+</div>
+</div>
+<p><em>Make table of sequencial cut-offs where we removed OTUs</em></p>
+<p>This page contains the investigation of the raw data (OTUs) to identify if outliers are present or whether other issues emerge that may influence our results in unexpected ways. This file goes through the following checks:</p>
+<ol style="list-style-type: decimal">
+<li>Removal of Phylum NA features</li>
+<li>Computation of total and average prevalence in each Phylum</li>
+<li>Removal Phyla with 1% or less of all samples</li>
+<li>Computation of total read count for each Phyla</li>
+<li>Plotting taxa prevalence vs total counts - identify a natural threshold if clear, if not use 5%</li>
+<li>Merging taxa to genus rank/level</li>
+<li>Abundance Value Transformations</li>
+<li>Plotting of abundance values by “Intervention A or B” before transformation and after</li>
+<li>Checking of any bimodal distributions using “subset_taxa” function and plot by “intervention”</li>
+</ol>
+<div id="taxonomic-filtering" class="section level1">
+<h1>Taxonomic Filtering</h1>
+<div id="sample-reads-totals-and-rarifying" class="section level2">
+<h2>0. Sample Reads, Totals, and Rarifying</h2>
+<pre class="r"><code>sampleReads &lt;- sample_sums(phylo.data.nci.umd)
+
+# Total quality Reads
+sum(sampleReads)</code></pre>
+<pre><code>[1] 79000</code></pre>
+<pre class="r"><code># Average reads
+mean(sampleReads)</code></pre>
+<pre><code>[1] 500</code></pre>
+<pre class="r"><code># max sequencing depth
+max(sampleReads)</code></pre>
+<pre><code>[1] 500</code></pre>
+<pre class="r"><code># rarified to an even depth of
+phylo.data.nci.umd &lt;- rarefy_even_depth(phylo.data.nci.umd, replace = T, rngseed = 20200923)</code></pre>
+<pre><code>`set.seed(20200923)` was used to initialize repeatable random subsampling.</code></pre>
+<pre><code>Please record this for your records so others can reproduce.</code></pre>
+<pre><code>Try `set.seed(20200923); .Random.seed` for the full vector</code></pre>
+<pre><code>...</code></pre>
+<pre><code>25OTUs were removed because they are no longer 
+present in any sample after random subsampling</code></pre>
+<pre><code>...</code></pre>
+<pre class="r"><code># even depth of:
+sample_sums(phylo.data.nci.umd)</code></pre>
+<pre><code>      1.S37.Jun172016 100.D06.S42.Jul202017     102.S57.Jun172016 
+                  500                   500                   500 
+    103.S58.Jun172016     104.S23.Jun172016 106.E02.S50.Jun232016 
+                  500                   500                   500 
+108.E06.S54.Jul202017     109.S70.Jun172016  11.B08.S20.Jun232016 
+                  500                   500                   500 
+    110.S69.Jun172016 112.F02.S62.Jun232016 113.F01.S61.Jun232016 
+                  500                   500                   500 
+    114.S41.Jun172016     118.S82.Jun172016 119.G01.S73.Jun232016 
+                  500                   500                   500 
+121.G05.S77.Jul202017     124.S93.Jun172016 125.H06.S90.Jul202017 
+                  500                   500                   500 
+     127.S6.Jun172016      128.S5.Jun172016  129.A01.S1.Jul202017 
+                  500                   500                   500 
+     13.S20.Jun172016  130.A02.S2.Jul202017     131.S62.Jun172016 
+                  500                   500                   500 
+134.F11.S71.Jun172016 135.B06.S18.Jun232016 137.F09.S69.Jul202017 
+                  500                   500                   500 
+139.F07.S67.Jun232016 140.B02.S14.Jul202017 142.E08.S56.Jul202017 
+                  500                   500                   500 
+143.G08.S80.Jul202017 145.D09.S45.Jul202017     146.S29.Jun172016 
+                  500                   500                   500 
+    148.S30.Jun172016 149.C05.S29.Jun232016 150.C06.S30.Jun232016 
+                  500                   500                   500 
+151.E03.S51.Jun232016 152.H07.S91.Jun232016 154.C02.S26.Jul202017 
+                  500                   500                   500 
+155.C09.S33.Jul202017     156.S42.Jun172016 157.D05.S41.Jun232016 
+                  500                   500                   500 
+158.D06.S42.Jun232016 159.B10.S22.Jul202017      16.S38.Jun172016 
+                  500                   500                   500 
+160.E04.S52.Jun232016 162.G04.S76.Jun232016     165.S54.Jun172016 
+                  500                   500                   500 
+166.E06.S54.Jun232016 167.E05.S53.Jun232016     168.S59.Jun172016 
+                  500                   500                   500 
+     17.S14.Jun172016 170.E02.S50.Jul202017     172.S65.Jun172016 
+                  500                   500                   500 
+    173.S66.Jun172016     174.S76.Jun172016     175.S88.Jun172016 
+                  500                   500                   500 
+176.H07.S91.Jul202017 178.F02.S62.Jul202017 179.F01.S61.Jul202017 
+                  500                   500                   500 
+     18.S35.Jun172016 181.D02.S38.Jul202017     184.S61.Jun172016 
+                  500                   500                   500 
+185.G08.S80.Jun232016     186.S77.Jun172016     187.S78.Jun172016 
+                  500                   500                   500 
+188.G06.S78.Jun232016 189.G05.S77.Jun232016      19.S25.Jun172016 
+                  500                   500                   500 
+190.G01.S73.Jul202017 191.G02.S74.Jul202017 194.H05.S89.Jun232016 
+                  500                   500                   500 
+195.H06.S90.Jun232016 196.D08.S44.Jun232016 197.G07.S79.Jul202017 
+                  500                   500                   500 
+198.F03.S63.Jun232016 199.A11.S11.Jun232016       2.S16.Jun172016 
+                  500                   500                   500 
+  20.A09.S9.Jun232016     200.S96.Jun172016 201.H02.S86.Jun242016 
+                  500                   500                   500 
+202.D07.S43.Jul202017      204.S1.Jun172016      205.S2.Jun172016 
+                  500                   500                   500 
+    206.S51.Jun172016 208.D03.S39.Jun232016  211.A07.S7.Jun232016 
+                  500                   500                   500 
+ 212.A08.S8.Jun232016  22.C07.S31.Jun232016     226.S50.Jun172016 
+                  500                   500                   500 
+    227.S74.Jun172016     229.S79.Jun172016      23.S75.Jun172016 
+                  500                   500                   500 
+233.G07.S79.Jun232016 234.C07.S31.Jul202017 239.D09.S45.Jun232016 
+                  500                   500                   500 
+     24.S92.Jun172016  25.C03.S27.Jul202017  26.H04.S88.Jun232016 
+                  500                   500                   500 
+ 27.F09.S69.Jun232016      28.S87.Jun172016      29.S31.Jun172016 
+                  500                   500                   500 
+ 31.C08.S32.Jun232016      32.S52.Jun172016  33.F03.S63.Jul202017 
+                  500                   500                   500 
+ 34.C10.S34.Jun232016   35.A03.S3.Jul202017  36.F04.S64.Jul202017 
+                  500                   500                   500 
+     37.S32.Jun172016  38.C09.S33.Jun232016       4.S13.Jun172016 
+                  500                   500                   500 
+  42.A04.S4.Jul202017      43.S49.Jun172016  46.C04.S28.Jul202017 
+                  500                   500                   500 
+     47.S44.Jun172016      48.S43.Jun172016      49.S47.Jun172016 
+                  500                   500                   500 
+       5.S4.Jun172016      50.S56.Jun172016      51.S55.Jun172016 
+                  500                   500                   500 
+ 52.E10.S58.Jun232016  53.E09.S57.Jun232016  54.G11.S83.Jul202017 
+                  500                   500                   500 
+ 55.E03.S51.Jul202017      57.S68.Jun172016      58.S67.Jun172016 
+                  500                   500                   500 
+     59.S72.Jun172016   6.A10.S10.Jun232016  60.C10.S34.Jul202017 
+                  500                   500                   500 
+ 61.G09.S81.Jun232016  62.G10.S82.Jun232016  63.D03.S39.Jul202017 
+                  500                   500                   500 
+ 66.G04.S76.Jul202017  67.D10.S46.Jul202017      68.S91.Jun172016 
+                  500                   500                   500 
+   7.A08.S8.Jul202017  70.H09.S93.Jun232016  71.H10.S94.Jun232016 
+                  500                   500                   500 
+ 73.H04.S88.Jul202017  74.H03.S87.Jul202017      77.S10.Jun172016 
+                  500                   500                   500 
+      79.S3.Jun172016        8.S8.Jun172016   80.A01.S1.Jun232016 
+                  500                   500                   500 
+  81.A02.S2.Jun232016   82.A05.S5.Jul202017   83.A06.S6.Jul202017 
+                  500                   500                   500 
+     84.S22.Jun172016  86.B02.S14.Jun232016  87.B01.S13.Jun232016 
+                  500                   500                   500 
+ 88.B05.S17.Jul202017  89.B06.S18.Jul202017      90.S33.Jun172016 
+                  500                   500                   500 
+ 95.C06.S30.Jul202017      96.S46.Jun172016      97.S45.Jun172016 
+                  500                   500                   500 
+ 98.D02.S38.Jun232016  99.D01.S37.Jun232016 
+                  500                   500 </code></pre>
+<div class="alert alert-warning">
+<p>
+<strong>Warning:</strong> The above code chunk cached its results, but it won’t be re-run if previous chunks it depends on are updated. If you need to use caching, it is highly recommended to also set <code>knitr::opts_chunk$set(autodep = TRUE)</code> at the top of the file (in a chunk that is not cached). Alternatively, you can customize the option <code>dependson</code> for each individual chunk that is cached. Using either <code>autodep</code> or <code>dependson</code> will remove this warning. See the <a href="https://yihui.name/knitr/options/#cache"
+>knitr cache options</a> for more details.
+</p>
+</div>
+</div>
+<div id="removal-of-phylum-na-features" class="section level2">
+<h2>1. Removal of Phylum NA features</h2>
+<pre class="r"><code># show ranks
+rank_names(phylo.data.nci.umd)</code></pre>
+<pre><code>[1] &quot;Kingdom&quot; &quot;Phylum&quot;  &quot;Class&quot;   &quot;Order&quot;   &quot;Family&quot;  &quot;Genus&quot;  </code></pre>
+<pre class="r"><code># table of features for each phylum
+table(tax_table(phylo.data.nci.umd)[,&quot;Phylum&quot;], exclude=NULL)</code></pre>
+<pre><code>
+     p__Acidobacteria     p__Actinobacteria      p__Bacteroidetes 
+                    2                   110                    89 
+       p__Chloroflexi p__DeinococcusThermus         p__Firmicutes 
+                    2                     7                   242 
+      p__Fusobacteria     p__Planctomycetes     p__Proteobacteria 
+                   23                     2                   287 
+      p__Spirochaetes      p__Synergistetes        p__Tenericutes 
+                    4                     2                     2 
+               p__TM7         p__unassigned    p__Verrucomicrobia 
+                    3                     3                     3 </code></pre>
+<div class="alert alert-warning">
+<p>
+<strong>Warning:</strong> The above code chunk cached its results, but it won’t be re-run if previous chunks it depends on are updated. If you need to use caching, it is highly recommended to also set <code>knitr::opts_chunk$set(autodep = TRUE)</code> at the top of the file (in a chunk that is not cached). Alternatively, you can customize the option <code>dependson</code> for each individual chunk that is cached. Using either <code>autodep</code> or <code>dependson</code> will remove this warning. See the <a href="https://yihui.name/knitr/options/#cache"
+>knitr cache options</a> for more details.
+</p>
+</div>
+<p>Note that no taxa were labels as <em>NA</em> so none were removed.</p>
+</div>
+<div id="computation-of-total-and-average-prevalence-in-each-phylum" class="section level2">
+<h2>2. Computation of total and average prevalence in each Phylum</h2>
+<pre class="r"><code># compute prevalence of each feature
+prevdf &lt;- apply(X=otu_table(phylo.data.nci.umd), 
+                MARGIN= ifelse(taxa_are_rows(phylo.data.nci.umd), yes=1, no=2),
+                FUN=function(x){sum(x&gt;0)})
+# store as data.frame with labels
+prevdf &lt;- data.frame(Prevalence=prevdf,
+                     TotalAbundance=taxa_sums(phylo.data.nci.umd),
+                     tax_table(phylo.data.nci.umd))</code></pre>
+<div class="alert alert-warning">
+<p>
+<strong>Warning:</strong> The above code chunk cached its results, but it won’t be re-run if previous chunks it depends on are updated. If you need to use caching, it is highly recommended to also set <code>knitr::opts_chunk$set(autodep = TRUE)</code> at the top of the file (in a chunk that is not cached). Alternatively, you can customize the option <code>dependson</code> for each individual chunk that is cached. Using either <code>autodep</code> or <code>dependson</code> will remove this warning. See the <a href="https://yihui.name/knitr/options/#cache"
+>knitr cache options</a> for more details.
+</p>
+</div>
+<p>Compute the totals and averages abundances.</p>
+<pre class="r"><code>totals &lt;- plyr::ddply(prevdf, &quot;Phylum&quot;,
+            function(df1){
+              A &lt;- cbind(mean(df1$Prevalence), sum(df1$Prevalence))
+              colnames(A) &lt;- c(&quot;Average&quot;, &quot;Total&quot;)
+              A
+              }
+            ) # end
+
+totals</code></pre>
+<pre><code>                  Phylum   Average Total
+1       p__Acidobacteria  1.000000     2
+2      p__Actinobacteria  4.190909   461
+3       p__Bacteroidetes  6.292135   560
+4         p__Chloroflexi  1.500000     3
+5  p__DeinococcusThermus  1.000000     7
+6          p__Firmicutes  8.834711  2138
+7        p__Fusobacteria  8.260870   190
+8      p__Planctomycetes  1.000000     2
+9      p__Proteobacteria  3.811847  1094
+10       p__Spirochaetes  2.750000    11
+11      p__Synergistetes  2.500000     5
+12        p__Tenericutes  2.000000     4
+13                p__TM7 10.333333    31
+14         p__unassigned  1.000000     3
+15    p__Verrucomicrobia  1.000000     3</code></pre>
+<div class="alert alert-warning">
+<p>
+<strong>Warning:</strong> The above code chunk cached its results, but it won’t be re-run if previous chunks it depends on are updated. If you need to use caching, it is highly recommended to also set <code>knitr::opts_chunk$set(autodep = TRUE)</code> at the top of the file (in a chunk that is not cached). Alternatively, you can customize the option <code>dependson</code> for each individual chunk that is cached. Using either <code>autodep</code> or <code>dependson</code> will remove this warning. See the <a href="https://yihui.name/knitr/options/#cache"
+>knitr cache options</a> for more details.
+</p>
+</div>
+<p>The Phylum that appear to be quite low in abundance are Cyanobacteria, Epsilonbacteraeota, Euryarchaeota, Fusobacteria and Synergistetes. However, any of the taxa under a total of 100 may be suspect. First, we will remove the taxa that are clearly too low in abudance (&lt;=5).</p>
+<pre class="r"><code>filterPhyla &lt;- totals$Phylum[totals$Total &lt;= 5, drop=T] # drop allows some of the attributes to be removed
+
+phylo.data1 &lt;- subset_taxa(phylo.data.nci.umd, !Phylum %in% filterPhyla)
+phylo.data1</code></pre>
+<pre><code>phyloseq-class experiment-level object
+otu_table()   OTU Table:         [ 765 taxa and 158 samples ]
+sample_data() Sample Data:       [ 158 samples by 78 sample variables ]
+tax_table()   Taxonomy Table:    [ 765 taxa by 6 taxonomic ranks ]
+phy_tree()    Phylogenetic Tree: [ 765 tips and 763 internal nodes ]</code></pre>
+<div class="alert alert-warning">
+<p>
+<strong>Warning:</strong> The above code chunk cached its results, but it won’t be re-run if previous chunks it depends on are updated. If you need to use caching, it is highly recommended to also set <code>knitr::opts_chunk$set(autodep = TRUE)</code> at the top of the file (in a chunk that is not cached). Alternatively, you can customize the option <code>dependson</code> for each individual chunk that is cached. Using either <code>autodep</code> or <code>dependson</code> will remove this warning. See the <a href="https://yihui.name/knitr/options/#cache"
+>knitr cache options</a> for more details.
+</p>
+</div>
+<p>Next, we explore the taxa in more detail next as we move to remove some of these low abundance taxa.</p>
+</div>
+<div id="removal-phyla-with-1-or-less-of-all-samples-prevalence-filtering" class="section level2">
+<h2>3. Removal Phyla with 1% or less of all samples (prevalence filtering)</h2>
+<pre class="r"><code>prevdf1 &lt;- subset(prevdf, Phylum %in% get_taxa_unique(phylo.data1, &quot;Phylum&quot;))</code></pre>
+<div class="alert alert-warning">
+<p>
+<strong>Warning:</strong> The above code chunk cached its results, but it won’t be re-run if previous chunks it depends on are updated. If you need to use caching, it is highly recommended to also set <code>knitr::opts_chunk$set(autodep = TRUE)</code> at the top of the file (in a chunk that is not cached). Alternatively, you can customize the option <code>dependson</code> for each individual chunk that is cached. Using either <code>autodep</code> or <code>dependson</code> will remove this warning. See the <a href="https://yihui.name/knitr/options/#cache"
+>knitr cache options</a> for more details.
+</p>
+</div>
+</div>
+<div id="total-count-computation" class="section level2">
+<h2>4. Total count computation</h2>
+<pre class="r"><code># already done above ()</code></pre>
+<div class="alert alert-warning">
+<p>
+<strong>Warning:</strong> The above code chunk cached its results, but it won’t be re-run if previous chunks it depends on are updated. If you need to use caching, it is highly recommended to also set <code>knitr::opts_chunk$set(autodep = TRUE)</code> at the top of the file (in a chunk that is not cached). Alternatively, you can customize the option <code>dependson</code> for each individual chunk that is cached. Using either <code>autodep</code> or <code>dependson</code> will remove this warning. See the <a href="https://yihui.name/knitr/options/#cache"
+>knitr cache options</a> for more details.
+</p>
+</div>
+</div>
+<div id="threshold-identification" class="section level2">
+<h2>5. Threshold identification</h2>
+<pre class="r"><code>ggplot(prevdf1, aes(TotalAbundance+1,
+                    Prevalence/nsamples(phylo.data.nci.umd))) +
+  geom_hline(yintercept=0.01, alpha=0.5, linetype=2)+
+  geom_point(size=2, alpha=0.75) +
+  scale_x_log10()+
+  labs(x=&quot;Total Abundance&quot;, y=&quot;Prevalance [Frac. Samples]&quot;)+
+  facet_wrap(.~Phylum) + theme(legend.position = &quot;none&quot;)</code></pre>
+<img src="figure/data_processing_nci_umd.Rmd/5-thresh-1-1.png" width="225%" height="10" style="display: block; margin: auto;" />
+<div class="alert alert-warning">
+<p>
+<strong>Warning:</strong> The above code chunk cached its results, but it won’t be re-run if previous chunks it depends on are updated. If you need to use caching, it is highly recommended to also set <code>knitr::opts_chunk$set(autodep = TRUE)</code> at the top of the file (in a chunk that is not cached). Alternatively, you can customize the option <code>dependson</code> for each individual chunk that is cached. Using either <code>autodep</code> or <code>dependson</code> will remove this warning. See the <a href="https://yihui.name/knitr/options/#cache"
+>knitr cache options</a> for more details.
+</p>
+</div>
+<p>Note: for plotting purposes, a <span class="math inline">\(+1\)</span> was added to all TotalAbundances to avoid a taking the log of 0.</p>
+<p>Next, we define a prevalence threshold, that way the taxa can be pruned to a prespecified level. In this study, we used 0.01 (1%) of total samples.</p>
+<pre class="r"><code>prevalenceThreshold &lt;- 0.01*nsamples(phylo.data.nci.umd)
+prevalenceThreshold</code></pre>
+<pre><code>[1] 1.58</code></pre>
+<pre class="r"><code># execute the filtering to this level
+keepTaxa &lt;- rownames(prevdf1)[(prevdf1$Prevalence &gt;= prevalenceThreshold)]
+phylo.data2 &lt;- prune_taxa(keepTaxa, phylo.data1)</code></pre>
+<div class="alert alert-warning">
+<p>
+<strong>Warning:</strong> The above code chunk cached its results, but it won’t be re-run if previous chunks it depends on are updated. If you need to use caching, it is highly recommended to also set <code>knitr::opts_chunk$set(autodep = TRUE)</code> at the top of the file (in a chunk that is not cached). Alternatively, you can customize the option <code>dependson</code> for each individual chunk that is cached. Using either <code>autodep</code> or <code>dependson</code> will remove this warning. See the <a href="https://yihui.name/knitr/options/#cache"
+>knitr cache options</a> for more details.
+</p>
+</div>
+</div>
+<div id="merge-taxa-to-genus-level" class="section level2">
+<h2>6. Merge taxa (to genus level)</h2>
+<pre class="r"><code>genusNames &lt;- get_taxa_unique(phylo.data2, &quot;Genus&quot;)
+#phylo.data3 &lt;- merge_taxa(phylo.data2, genusNames, genusNames[which.max(taxa_sums(phylo.data2)[genusNames])])
+
+
+# How many genera would be present after filtering?
+length(get_taxa_unique(phylo.data2, taxonomic.rank = &quot;Genus&quot;))</code></pre>
+<pre><code>[1] 144</code></pre>
+<pre class="r"><code>## [1] 144
+
+phylo.data3 = tax_glom(phylo.data2, &quot;Genus&quot;, NArm = TRUE)</code></pre>
+<div class="alert alert-warning">
+<p>
+<strong>Warning:</strong> The above code chunk cached its results, but it won’t be re-run if previous chunks it depends on are updated. If you need to use caching, it is highly recommended to also set <code>knitr::opts_chunk$set(autodep = TRUE)</code> at the top of the file (in a chunk that is not cached). Alternatively, you can customize the option <code>dependson</code> for each individual chunk that is cached. Using either <code>autodep</code> or <code>dependson</code> will remove this warning. See the <a href="https://yihui.name/knitr/options/#cache"
+>knitr cache options</a> for more details.
+</p>
+</div>
+</div>
+<div id="relative-adbundance-plot" class="section level2">
+<h2>7. Relative Adbundance Plot</h2>
+<pre class="r"><code>plot_abundance = function(physeq, title = &quot;&quot;, ylab=&quot;Abundance&quot;){
+  # Arbitrary subset, based on Phylum, for plotting
+  #p1f = subset_taxa(physeq, Phylum %in% &quot;__Firmicutes&quot;)
+  mphyseq = psmelt(physeq)
+  mphyseq &lt;- subset(mphyseq, Abundance &gt; 0)
+  ggplot(data = mphyseq, aes(x=tissue, y=Abundance)) +
+    geom_violin(fill = NA) +
+    geom_point(size = 1, alpha = 0.9,
+    position = position_jitter(width = 0.3)) +
+    scale_y_log10()+
+    labs(y=ylab)+
+    theme(legend.position=&quot;none&quot;)
+}
+
+
+# Transform to relative abundance. Save as new object.
+phylo.data3ra = transform_sample_counts(phylo.data3, function(x){x / sum(x)})
+
+
+plotBefore = plot_abundance(phylo.data3, ylab=&quot;Abundance prior to transformation&quot;)
+plotAfter = plot_abundance(phylo.data3ra, ylab=&quot;Relative Abundance&quot;)
+# Combine each plot into one graphic.
+grid.arrange(nrow = 2, plotBefore, plotAfter)</code></pre>
+<img src="figure/data_processing_nci_umd.Rmd/4-rel-abund-1.png" width="225%" height="10" style="display: block; margin: auto;" />
+<div class="alert alert-warning">
+<p>
+<strong>Warning:</strong> The above code chunk cached its results, but it won’t be re-run if previous chunks it depends on are updated. If you need to use caching, it is highly recommended to also set <code>knitr::opts_chunk$set(autodep = TRUE)</code> at the top of the file (in a chunk that is not cached). Alternatively, you can customize the option <code>dependson</code> for each individual chunk that is cached. Using either <code>autodep</code> or <code>dependson</code> will remove this warning. See the <a href="https://yihui.name/knitr/options/#cache"
+>knitr cache options</a> for more details.
+</p>
+</div>
+</div>
+<div id="abundance-by-phylum" class="section level2">
+<h2>Abundance by Phylum</h2>
+<pre class="r"><code>plot_abundance = function(physeq, title = &quot;&quot;, Facet = &quot;Phylum&quot;, ylab=&quot;Abundance&quot;){
+  # Arbitrary subset, based on Phylum, for plotting
+  #p1f = subset_taxa(physeq, Phylum %in% &quot;__Firmicutes&quot;)
+  mphyseq = psmelt(physeq)
+  mphyseq &lt;- subset(mphyseq, Abundance &gt; 0)
+  ggplot(data = mphyseq, aes(x=tissue, y=Abundance)) +
+    geom_violin(fill = NA) +
+    geom_point(size = 1, alpha = 0.9,
+    position = position_jitter(width = 0.3)) +
+    facet_wrap(facets = Facet) + scale_y_log10()+
+    labs(y=ylab)+
+    theme(legend.position=&quot;none&quot;)
+}
+
+
+
+plotBefore = plot_abundance(phylo.data3, ylab=&quot;Abundance prior to transformation&quot;)
+plotAfter = plot_abundance(phylo.data3ra, ylab=&quot;Relative Abundance&quot;)
+# Combine each plot into one graphic.
+grid.arrange(nrow = 2, plotBefore, plotAfter)</code></pre>
+<img src="figure/data_processing_nci_umd.Rmd/4-phylum-1.png" width="225%" height="10" style="display: block; margin: auto;" />
+<div class="alert alert-warning">
+<p>
+<strong>Warning:</strong> The above code chunk cached its results, but it won’t be re-run if previous chunks it depends on are updated. If you need to use caching, it is highly recommended to also set <code>knitr::opts_chunk$set(autodep = TRUE)</code> at the top of the file (in a chunk that is not cached). Alternatively, you can customize the option <code>dependson</code> for each individual chunk that is cached. Using either <code>autodep</code> or <code>dependson</code> will remove this warning. See the <a href="https://yihui.name/knitr/options/#cache"
+>knitr cache options</a> for more details.
+</p>
+</div>
+<div id="phylum-bacteroidetes" class="section level3">
+<h3>Phylum: Bacteroidetes</h3>
+<pre class="r"><code>plot_abundance = function(physeq, title = &quot;&quot;, Facet = &quot;Order&quot;, ylab=&quot;Abundance&quot;){
+  # Arbitrary subset, based on Phylum, for plotting
+  p1f = subset_taxa(physeq, Phylum %in%  &quot;p__Bacteroidetes&quot;)
+  mphyseq = psmelt(p1f)
+  mphyseq &lt;- subset(mphyseq, Abundance &gt; 0)
+  ggplot(data = mphyseq, aes(x=tissue, y=Abundance)) +
+    geom_violin(fill = NA) +
+    geom_point(size = 1, alpha = 0.9,
+    position = position_jitter(width = 0.3)) +
+    facet_wrap(facets = Facet) + scale_y_log10()+
+    labs(y=ylab)+
+    theme(legend.position=&quot;none&quot;)
+}
+
+
+plotBefore = plot_abundance(phylo.data3,
+                            ylab=&quot;Abundance prior to transformation&quot;)
+plotAfter = plot_abundance(phylo.data3ra,
+                           ylab=&quot;Relative Abundance&quot;)
+# Combine each plot into one graphic.
+grid.arrange(nrow = 2, plotBefore, plotAfter)</code></pre>
+<pre><code>Warning in max(data$density): no non-missing arguments to max; returning -Inf</code></pre>
+<pre><code>Warning: Computation failed in `stat_ydensity()`:
+replacement has 1 row, data has 0</code></pre>
+<pre><code>Warning in max(data$density): no non-missing arguments to max; returning -Inf</code></pre>
+<pre><code>Warning: Computation failed in `stat_ydensity()`:
+replacement has 1 row, data has 0</code></pre>
+<img src="figure/data_processing_nci_umd.Rmd/4-rel-abund-2-1.png" width="225%" height="10" style="display: block; margin: auto;" />
+<div class="alert alert-warning">
+<p>
+<strong>Warning:</strong> The above code chunk cached its results, but it won’t be re-run if previous chunks it depends on are updated. If you need to use caching, it is highly recommended to also set <code>knitr::opts_chunk$set(autodep = TRUE)</code> at the top of the file (in a chunk that is not cached). Alternatively, you can customize the option <code>dependson</code> for each individual chunk that is cached. Using either <code>autodep</code> or <code>dependson</code> will remove this warning. See the <a href="https://yihui.name/knitr/options/#cache"
+>knitr cache options</a> for more details.
+</p>
+</div>
+</div>
+<div id="phylum-firmicutes" class="section level3">
+<h3>Phylum: Firmicutes</h3>
+<pre class="r"><code>plot_abundance = function(physeq, title = &quot;&quot;, Facet = &quot;Order&quot;, ylab=&quot;Abundance&quot;){
+  # Arbitrary subset, based on Phylum, for plotting
+  p1f = subset_taxa(physeq, Phylum %in%  &quot;p__Firmicutes&quot;)
+  mphyseq = psmelt(p1f)
+  mphyseq &lt;- subset(mphyseq, Abundance &gt; 0)
+  ggplot(data = mphyseq, aes(x=tissue, y=Abundance)) +
+    geom_violin(fill = NA) +
+    geom_point(size = 1, alpha = 0.9,
+    position = position_jitter(width = 0.3)) +
+    facet_wrap(facets = Facet) + scale_y_log10()+
+    labs(y=ylab)+
+    theme(legend.position=&quot;none&quot;)
+}
+
+
+plotBefore = plot_abundance(phylo.data3,
+                            ylab=&quot;Abundance prior to transformation&quot;)
+plotAfter = plot_abundance(phylo.data3ra,
+                           ylab=&quot;Relative Abundance&quot;)
+# Combine each plot into one graphic.
+grid.arrange(nrow = 2, plotBefore, plotAfter)</code></pre>
+<img src="figure/data_processing_nci_umd.Rmd/4-rel-abund-3-1.png" width="225%" height="10" style="display: block; margin: auto;" />
+<div class="alert alert-warning">
+<p>
+<strong>Warning:</strong> The above code chunk cached its results, but it won’t be re-run if previous chunks it depends on are updated. If you need to use caching, it is highly recommended to also set <code>knitr::opts_chunk$set(autodep = TRUE)</code> at the top of the file (in a chunk that is not cached). Alternatively, you can customize the option <code>dependson</code> for each individual chunk that is cached. Using either <code>autodep</code> or <code>dependson</code> will remove this warning. See the <a href="https://yihui.name/knitr/options/#cache"
+>knitr cache options</a> for more details.
+</p>
+</div>
+</div>
+<div id="phylum-fusobacteria" class="section level3">
+<h3>Phylum: Fusobacteria</h3>
+<pre class="r"><code>plot_abundance = function(physeq, title = &quot;&quot;, Facet = &quot;Order&quot;, ylab=&quot;Abundance&quot;){
+  # Arbitrary subset, based on Phylum, for plotting
+  p1f = subset_taxa(physeq, Phylum %in%  &quot;p__Fusobacteria&quot;)
+  mphyseq = psmelt(p1f)
+  mphyseq &lt;- subset(mphyseq, Abundance &gt; 0)
+  ggplot(data = mphyseq, aes(x=tissue, y=Abundance)) +
+    geom_violin(fill = NA) +
+    geom_point(size = 1, alpha = 0.9,
+    position = position_jitter(width = 0.3)) +
+    facet_wrap(facets = Facet) + scale_y_log10()+
+    labs(y=ylab)+
+    theme(legend.position=&quot;none&quot;)
+}
+
+
+plotBefore = plot_abundance(phylo.data3,
+                            ylab=&quot;Abundance prior to transformation&quot;)
+plotAfter = plot_abundance(phylo.data3ra,
+                           ylab=&quot;Relative Abundance&quot;)
+# Combine each plot into one graphic.
+grid.arrange(nrow = 2, plotBefore, plotAfter)</code></pre>
+<img src="figure/data_processing_nci_umd.Rmd/4-rel-abund-4-1.png" width="225%" height="10" style="display: block; margin: auto;" />
+<div class="alert alert-warning">
+<p>
+<strong>Warning:</strong> The above code chunk cached its results, but it won’t be re-run if previous chunks it depends on are updated. If you need to use caching, it is highly recommended to also set <code>knitr::opts_chunk$set(autodep = TRUE)</code> at the top of the file (in a chunk that is not cached). Alternatively, you can customize the option <code>dependson</code> for each individual chunk that is cached. Using either <code>autodep</code> or <code>dependson</code> will remove this warning. See the <a href="https://yihui.name/knitr/options/#cache"
+>knitr cache options</a> for more details.
+</p>
+</div>
+</div>
+<div id="phylum-proteobacteria" class="section level3">
+<h3>Phylum: Proteobacteria</h3>
+<pre class="r"><code>plot_abundance = function(physeq, title = &quot;&quot;, Facet = &quot;Family&quot;, ylab=&quot;Abundance&quot;){
+  # Arbitrary subset, based on Phylum, for plotting
+  p1f = subset_taxa(physeq, Phylum %in%  &quot;p__Proteobacteria&quot;)
+  mphyseq = psmelt(p1f)
+  mphyseq &lt;- subset(mphyseq, Abundance &gt; 0)
+  ggplot(data = mphyseq, aes(x=tissue, y=Abundance)) +
+    geom_violin(fill = NA) +
+    geom_point(size = 1, alpha = 0.9,
+    position = position_jitter(width = 0.3)) +
+    facet_wrap(facets = Facet) + scale_y_log10()+
+    labs(y=ylab)+
+    theme(legend.position=&quot;none&quot;)
+}
+
+
+plotBefore = plot_abundance(phylo.data3,
+                            ylab=&quot;Abundance prior to transformation&quot;)
+plotAfter = plot_abundance(phylo.data3ra,
+                           ylab=&quot;Relative Abundance&quot;)
+# Combine each plot into one graphic.
+grid.arrange(nrow = 2, plotBefore, plotAfter)</code></pre>
+<pre><code>Warning in max(data$density): no non-missing arguments to max; returning -Inf</code></pre>
+<pre><code>Warning: Computation failed in `stat_ydensity()`:
+replacement has 1 row, data has 0</code></pre>
+<pre><code>Warning in max(data$density): no non-missing arguments to max; returning -Inf</code></pre>
+<pre><code>Warning: Computation failed in `stat_ydensity()`:
+replacement has 1 row, data has 0</code></pre>
+<pre><code>Warning in max(data$density): no non-missing arguments to max; returning -Inf</code></pre>
+<pre><code>Warning: Computation failed in `stat_ydensity()`:
+replacement has 1 row, data has 0</code></pre>
+<pre><code>Warning in max(data$density): no non-missing arguments to max; returning -Inf</code></pre>
+<pre><code>Warning: Computation failed in `stat_ydensity()`:
+replacement has 1 row, data has 0</code></pre>
+<pre><code>Warning in max(data$density): no non-missing arguments to max; returning -Inf</code></pre>
+<pre><code>Warning: Computation failed in `stat_ydensity()`:
+replacement has 1 row, data has 0</code></pre>
+<pre><code>Warning in max(data$density): no non-missing arguments to max; returning -Inf</code></pre>
+<pre><code>Warning: Computation failed in `stat_ydensity()`:
+replacement has 1 row, data has 0</code></pre>
+<pre><code>Warning in max(data$density): no non-missing arguments to max; returning -Inf</code></pre>
+<pre><code>Warning: Computation failed in `stat_ydensity()`:
+replacement has 1 row, data has 0</code></pre>
+<pre><code>Warning in max(data$density): no non-missing arguments to max; returning -Inf</code></pre>
+<pre><code>Warning: Computation failed in `stat_ydensity()`:
+replacement has 1 row, data has 0</code></pre>
+<pre><code>Warning in max(data$density): no non-missing arguments to max; returning -Inf</code></pre>
+<pre><code>Warning: Computation failed in `stat_ydensity()`:
+replacement has 1 row, data has 0</code></pre>
+<pre><code>Warning in max(data$density): no non-missing arguments to max; returning -Inf</code></pre>
+<pre><code>Warning: Computation failed in `stat_ydensity()`:
+replacement has 1 row, data has 0</code></pre>
+<pre><code>Warning in max(data$density): no non-missing arguments to max; returning -Inf</code></pre>
+<pre><code>Warning: Computation failed in `stat_ydensity()`:
+replacement has 1 row, data has 0</code></pre>
+<pre><code>Warning in max(data$density): no non-missing arguments to max; returning -Inf</code></pre>
+<pre><code>Warning: Computation failed in `stat_ydensity()`:
+replacement has 1 row, data has 0</code></pre>
+<pre><code>Warning in max(data$density): no non-missing arguments to max; returning -Inf</code></pre>
+<pre><code>Warning: Computation failed in `stat_ydensity()`:
+replacement has 1 row, data has 0</code></pre>
+<pre><code>Warning in max(data$density): no non-missing arguments to max; returning -Inf</code></pre>
+<pre><code>Warning: Computation failed in `stat_ydensity()`:
+replacement has 1 row, data has 0</code></pre>
+<pre><code>Warning in max(data$density): no non-missing arguments to max; returning -Inf</code></pre>
+<pre><code>Warning: Computation failed in `stat_ydensity()`:
+replacement has 1 row, data has 0</code></pre>
+<pre><code>Warning in max(data$density): no non-missing arguments to max; returning -Inf</code></pre>
+<pre><code>Warning: Computation failed in `stat_ydensity()`:
+replacement has 1 row, data has 0</code></pre>
+<pre><code>Warning in max(data$density): no non-missing arguments to max; returning -Inf</code></pre>
+<pre><code>Warning: Computation failed in `stat_ydensity()`:
+replacement has 1 row, data has 0</code></pre>
+<pre><code>Warning in max(data$density): no non-missing arguments to max; returning -Inf</code></pre>
+<pre><code>Warning: Computation failed in `stat_ydensity()`:
+replacement has 1 row, data has 0</code></pre>
+<pre><code>Warning in max(data$density): no non-missing arguments to max; returning -Inf</code></pre>
+<pre><code>Warning: Computation failed in `stat_ydensity()`:
+replacement has 1 row, data has 0</code></pre>
+<pre><code>Warning in max(data$density): no non-missing arguments to max; returning -Inf</code></pre>
+<pre><code>Warning: Computation failed in `stat_ydensity()`:
+replacement has 1 row, data has 0</code></pre>
+<pre><code>Warning in max(data$density): no non-missing arguments to max; returning -Inf</code></pre>
+<pre><code>Warning: Computation failed in `stat_ydensity()`:
+replacement has 1 row, data has 0</code></pre>
+<pre><code>Warning in max(data$density): no non-missing arguments to max; returning -Inf</code></pre>
+<pre><code>Warning: Computation failed in `stat_ydensity()`:
+replacement has 1 row, data has 0</code></pre>
+<pre><code>Warning in max(data$density): no non-missing arguments to max; returning -Inf</code></pre>
+<pre><code>Warning: Computation failed in `stat_ydensity()`:
+replacement has 1 row, data has 0</code></pre>
+<pre><code>Warning in max(data$density): no non-missing arguments to max; returning -Inf</code></pre>
+<pre><code>Warning: Computation failed in `stat_ydensity()`:
+replacement has 1 row, data has 0</code></pre>
+<pre><code>Warning in max(data$density): no non-missing arguments to max; returning -Inf</code></pre>
+<pre><code>Warning: Computation failed in `stat_ydensity()`:
+replacement has 1 row, data has 0</code></pre>
+<pre><code>Warning in max(data$density): no non-missing arguments to max; returning -Inf</code></pre>
+<pre><code>Warning: Computation failed in `stat_ydensity()`:
+replacement has 1 row, data has 0</code></pre>
+<pre><code>Warning in max(data$density): no non-missing arguments to max; returning -Inf</code></pre>
+<pre><code>Warning: Computation failed in `stat_ydensity()`:
+replacement has 1 row, data has 0</code></pre>
+<pre><code>Warning in max(data$density): no non-missing arguments to max; returning -Inf</code></pre>
+<pre><code>Warning: Computation failed in `stat_ydensity()`:
+replacement has 1 row, data has 0</code></pre>
+<img src="figure/data_processing_nci_umd.Rmd/4-rel-abund-5-1.png" width="225%" height="10" style="display: block; margin: auto;" />
+<div class="alert alert-warning">
+<p>
+<strong>Warning:</strong> The above code chunk cached its results, but it won’t be re-run if previous chunks it depends on are updated. If you need to use caching, it is highly recommended to also set <code>knitr::opts_chunk$set(autodep = TRUE)</code> at the top of the file (in a chunk that is not cached). Alternatively, you can customize the option <code>dependson</code> for each individual chunk that is cached. Using either <code>autodep</code> or <code>dependson</code> will remove this warning. See the <a href="https://yihui.name/knitr/options/#cache"
+>knitr cache options</a> for more details.
+</p>
+</div>
+<br>
+<p>
+<button type="button" class="btn btn-default btn-workflowr btn-workflowr-sessioninfo" data-toggle="collapse" data-target="#workflowr-sessioninfo" style="display: block;">
+<span class="glyphicon glyphicon-wrench" aria-hidden="true"></span> Session information
+</button>
+</p>
+<div id="workflowr-sessioninfo" class="collapse">
+<pre class="r"><code>sessionInfo()</code></pre>
+<pre><code>R version 4.0.2 (2020-06-22)
+Platform: x86_64-w64-mingw32/x64 (64-bit)
+Running under: Windows 10 x64 (build 18362)
+
+Matrix products: default
+
+locale:
+[1] LC_COLLATE=English_United States.1252 
+[2] LC_CTYPE=English_United States.1252   
+[3] LC_MONETARY=English_United States.1252
+[4] LC_NUMERIC=C                          
+[5] LC_TIME=English_United States.1252    
+
+attached base packages:
+[1] stats     graphics  grDevices utils     datasets  methods   base     
+
+other attached packages:
+ [1] car_3.0-8         carData_3.0-4     gvlma_1.0.0.3     patchwork_1.0.1  
+ [5] viridis_0.5.1     viridisLite_0.3.0 gridExtra_2.3     xtable_1.8-4     
+ [9] kableExtra_1.1.0  plyr_1.8.6        data.table_1.13.0 readxl_1.3.1     
+[13] forcats_0.5.0     stringr_1.4.0     dplyr_1.0.1       purrr_0.3.4      
+[17] readr_1.3.1       tidyr_1.1.1       tibble_3.0.3      ggplot2_3.3.2    
+[21] tidyverse_1.3.0   lmerTest_3.1-2    lme4_1.1-23       Matrix_1.2-18    
+[25] vegan_2.5-6       lattice_0.20-41   permute_0.9-5     phyloseq_1.32.0  
+[29] workflowr_1.6.2  
+
+loaded via a namespace (and not attached):
+ [1] minqa_1.2.4         colorspace_1.4-1    rio_0.5.16         
+ [4] ellipsis_0.3.1      rprojroot_1.3-2     XVector_0.28.0     
+ [7] fs_1.5.0            rstudioapi_0.11     farver_2.0.3       
+[10] fansi_0.4.1         lubridate_1.7.9     xml2_1.3.2         
+[13] codetools_0.2-16    splines_4.0.2       knitr_1.29         
+[16] ade4_1.7-15         jsonlite_1.7.0      nloptr_1.2.2.2     
+[19] broom_0.7.0         cluster_2.1.0       dbplyr_1.4.4       
+[22] BiocManager_1.30.10 compiler_4.0.2      httr_1.4.2         
+[25] backports_1.1.7     assertthat_0.2.1    cli_2.0.2          
+[28] later_1.1.0.1       htmltools_0.5.0     tools_4.0.2        
+[31] igraph_1.2.5        gtable_0.3.0        glue_1.4.1         
+[34] reshape2_1.4.4      Rcpp_1.0.5          Biobase_2.48.0     
+[37] cellranger_1.1.0    vctrs_0.3.2         Biostrings_2.56.0  
+[40] multtest_2.44.0     ape_5.4             nlme_3.1-148       
+[43] iterators_1.0.12    xfun_0.16           openxlsx_4.1.5     
+[46] rvest_0.3.6         lifecycle_0.2.0     statmod_1.4.34     
+[49] zlibbioc_1.34.0     MASS_7.3-51.6       scales_1.1.1       
+[52] hms_0.5.3           promises_1.1.1      parallel_4.0.2     
+[55] biomformat_1.16.0   rhdf5_2.32.2        curl_4.3           
+[58] yaml_2.2.1          stringi_1.4.6       S4Vectors_0.26.1   
+[61] foreach_1.5.0       BiocGenerics_0.34.0 zip_2.0.4          
+[64] boot_1.3-25         rlang_0.4.7         pkgconfig_2.0.3    
+[67] evaluate_0.14       Rhdf5lib_1.10.1     labeling_0.3       
+[70] tidyselect_1.1.0    magrittr_1.5        R6_2.4.1           
+[73] IRanges_2.22.2      generics_0.0.2      DBI_1.1.0          
+[76] foreign_0.8-80      pillar_1.4.6        haven_2.3.1        
+[79] withr_2.2.0         mgcv_1.8-31         abind_1.4-5        
+[82] survival_3.2-3      modelr_0.1.8        crayon_1.3.4       
+[85] rmarkdown_2.3       grid_4.0.2          blob_1.2.1         
+[88] git2r_0.27.1        reprex_0.3.0        digest_0.6.25      
+[91] webshot_0.5.2       httpuv_1.5.4        numDeriv_2016.8-1.1
+[94] stats4_4.0.2        munsell_0.5.0      </code></pre>
+</div>
+</div>
+</div>
+</div>
+
+
+<!-- Adjust MathJax settings so that all math formulae are shown using
+TeX fonts only; see
+http://docs.mathjax.org/en/latest/configuration.html.  This will make
+the presentation more consistent at the cost of the webpage sometimes
+taking slightly longer to load. Note that this only works because the
+footer is added to webpages before the MathJax javascript. -->
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Config({
+    "HTML-CSS": { availableFonts: ["TeX"] }
+  });
+</script>
+
+
+</div>
+</div>
+
+</div>
+
+<script>
+
+// add bootstrap table styles to pandoc tables
+function bootstrapStylePandocTables() {
+  $('tr.header').parent('thead').parent('table').addClass('table table-condensed');
+}
+$(document).ready(function () {
+  bootstrapStylePandocTables();
+});
+
+
+</script>
+
+<!-- tabsets -->
+
+<script>
+$(document).ready(function () {
+  window.buildTabsets("TOC");
+});
+
+$(document).ready(function () {
+  $('.tabset-dropdown > .nav-tabs > li').click(function () {
+    $(this).parent().toggleClass('nav-tabs-open')
+  });
+});
+</script>
+
+<!-- code folding -->
+
+<script>
+$(document).ready(function ()  {
+
+    // move toc-ignore selectors from section div to header
+    $('div.section.toc-ignore')
+        .removeClass('toc-ignore')
+        .children('h1,h2,h3,h4,h5').addClass('toc-ignore');
+
+    // establish options
+    var options = {
+      selectors: "h1,h2,h3",
+      theme: "bootstrap3",
+      context: '.toc-content',
+      hashGenerator: function (text) {
+        return text.replace(/[.\\/?&!#<>]/g, '').replace(/\s/g, '_');
+      },
+      ignoreSelector: ".toc-ignore",
+      scrollTo: 0
+    };
+    options.showAndHide = true;
+    options.smoothScroll = true;
+
+    // tocify
+    var toc = $("#TOC").tocify(options).data("toc-tocify");
+});
+</script>
+
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    script.src  = "https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML";
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
+
+</body>
+</html>

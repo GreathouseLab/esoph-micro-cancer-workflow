@@ -1,1 +1,5 @@
-# esoph-micro-cancer-workflow
+# esoph-micro-cancer
+
+A [workflowr][] project.
+
+[workflowr]: https://github.com/jdblischak/workflowr
