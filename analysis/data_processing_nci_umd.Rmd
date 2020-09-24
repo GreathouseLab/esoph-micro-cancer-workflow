@@ -23,7 +23,8 @@ This file goes through the following checks:
 9. Checking of any bimodal distributions using "subset_taxa" function and plot by "intervention"
 
 
-```{r data, include=FALSE, echo=FALSE, cache=T}
+
+```{r data, include=FALSE, echo=FALSE, cache=T, autodep=T}
 # load packages
 source("code/load_packages.R")
 
@@ -39,15 +40,15 @@ scale_fill_discrete <-  function(palname=pal, ...){
   scale_fill_brewer(palette=palname, ...)
 }
 
-knitr::opts_chunk$set(out.width = "225%", out.height = 10)
-
+knitr::opts_chunk$set(out.width = "225%", out.height = 10,
+                      autodep = TRUE, cache=T)
 ```
 
 # Taxonomic Filtering
 
 ## 0. Sample Reads, Totals, and Rarifying
 
-```{r 0-rarify, cache=T}
+```{r 0-rarify }
 
 sampleReads <- sample_sums(phylo.data.nci.umd)
 
@@ -70,7 +71,7 @@ sample_sums(phylo.data.nci.umd)
 
 ## 1. Removal of Phylum NA features
 
-```{r 1-removal, cache=T}
+```{r 1-removal }
 
 # show ranks
 rank_names(phylo.data.nci.umd)
@@ -84,7 +85,7 @@ Note that no taxa were labels as *NA* so none were removed.
 
 ## 2. Computation of total and average prevalence in each Phylum
 
-```{r 2-comp-1, cache=T}
+```{r 2-comp-1 }
 # compute prevalence of each feature
 prevdf <- apply(X=otu_table(phylo.data.nci.umd), 
                 MARGIN= ifelse(taxa_are_rows(phylo.data.nci.umd), yes=1, no=2),
@@ -98,7 +99,7 @@ prevdf <- data.frame(Prevalence=prevdf,
 
 Compute the totals and averages abundances.
 
-```{r 2-comp-2, cache=T}
+```{r 2-comp-2 }
 
 totals <- plyr::ddply(prevdf, "Phylum",
             function(df1){
@@ -116,7 +117,7 @@ The Phylum that appear to be quite low in abundance are Cyanobacteria, Epsilonba
 However, any of the taxa under a total of 100 may be suspect.
 First, we will remove the taxa that are clearly too low in abudance (<=5).
 
-```{r 2-comp-3, cache=T}
+```{r 2-comp-3 }
 
 filterPhyla <- totals$Phylum[totals$Total <= 5, drop=T] # drop allows some of the attributes to be removed
 
@@ -131,7 +132,7 @@ Next, we explore the taxa in more detail next as we move to remove some of these
 ## 3. Removal Phyla with 1% or less of all samples (prevalence filtering)
 
 
-```{r 3-remove-phylum-1, cache=T}
+```{r 3-remove-phylum-1 }
 
 prevdf1 <- subset(prevdf, Phylum %in% get_taxa_unique(phylo.data1, "Phylum"))
 
@@ -141,7 +142,7 @@ prevdf1 <- subset(prevdf, Phylum %in% get_taxa_unique(phylo.data1, "Phylum"))
 
 ## 4. Total count computation
 
-```{r 4-count-tot, cache=T}
+```{r 4-count-tot }
 
 # already done above ()
 
@@ -150,7 +151,7 @@ prevdf1 <- subset(prevdf, Phylum %in% get_taxa_unique(phylo.data1, "Phylum"))
 
 ## 5. Threshold identification
 
-```{r 5-thresh-1, cache=T}
+```{r 5-thresh-1 }
 ggplot(prevdf1, aes(TotalAbundance+1,
                     Prevalence/nsamples(phylo.data.nci.umd))) +
   geom_hline(yintercept=0.01, alpha=0.5, linetype=2)+
@@ -167,7 +168,7 @@ Note: for plotting purposes, a $+1$ was added to all TotalAbundances to avoid a 
 Next, we define a prevalence threshold, that way the taxa can be pruned to a prespecified level. 
 In this study, we used 0.01 (1\%) of total samples.
 
-```{r 3-prev-threshold, cache=T}
+```{r 3-prev-threshold }
 
 prevalenceThreshold <- 0.01*nsamples(phylo.data.nci.umd)
 prevalenceThreshold
@@ -181,7 +182,7 @@ phylo.data2 <- prune_taxa(keepTaxa, phylo.data1)
 
 ## 6. Merge taxa (to genus level)
 
-```{r 4-merge-taxa, cache=T}
+```{r 4-merge-taxa }
 genusNames <- get_taxa_unique(phylo.data2, "Genus")
 #phylo.data3 <- merge_taxa(phylo.data2, genusNames, genusNames[which.max(taxa_sums(phylo.data2)[genusNames])])
 
@@ -197,7 +198,7 @@ phylo.data3 = tax_glom(phylo.data2, "Genus", NArm = TRUE)
 
 ## 7. Relative Adbundance Plot
 
-```{r 4-rel-abund, cache=T}
+```{r 4-rel-abund }
 
 plot_abundance = function(physeq, title = "", ylab="Abundance"){
   # Arbitrary subset, based on Phylum, for plotting
@@ -226,9 +227,11 @@ grid.arrange(nrow = 2, plotBefore, plotAfter)
 
 ```
 
-## Abundance by Phylum
+## 8. Plotting Abundance
 
-```{r 4-phylum, cache=T}
+### Abundance by Phylum
+
+```{r 4-phylum }
 
 plot_abundance = function(physeq, title = "", Facet = "Phylum", ylab="Abundance"){
   # Arbitrary subset, based on Phylum, for plotting
@@ -254,9 +257,9 @@ grid.arrange(nrow = 2, plotBefore, plotAfter)
 ```
 
 
-### Phylum: Bacteroidetes
+#### Phylum: Bacteroidetes
 
-```{r 4-rel-abund-2, cache=T}
+```{r 4-rel-abund-2 }
 
 plot_abundance = function(physeq, title = "", Facet = "Order", ylab="Abundance"){
   # Arbitrary subset, based on Phylum, for plotting
@@ -284,9 +287,9 @@ grid.arrange(nrow = 2, plotBefore, plotAfter)
 ```
 
 
-### Phylum: Firmicutes
+#### Phylum: Firmicutes
 
-```{r 4-rel-abund-3, cache=T}
+```{r 4-rel-abund-3 }
 
 plot_abundance = function(physeq, title = "", Facet = "Order", ylab="Abundance"){
   # Arbitrary subset, based on Phylum, for plotting
@@ -314,9 +317,9 @@ grid.arrange(nrow = 2, plotBefore, plotAfter)
 ```
 
 
-### Phylum: Fusobacteria
+#### Phylum: Fusobacteria
 
-```{r 4-rel-abund-4, cache=T}
+```{r 4-rel-abund-4 }
 
 plot_abundance = function(physeq, title = "", Facet = "Order", ylab="Abundance"){
   # Arbitrary subset, based on Phylum, for plotting
@@ -344,9 +347,9 @@ grid.arrange(nrow = 2, plotBefore, plotAfter)
 ```
 
 
-### Phylum: Proteobacteria
+#### Phylum: Proteobacteria
 
-```{r 4-rel-abund-5, cache=T}
+```{r 4-rel-abund-5 }
 
 plot_abundance = function(physeq, title = "", Facet = "Family", ylab="Abundance"){
   # Arbitrary subset, based on Phylum, for plotting

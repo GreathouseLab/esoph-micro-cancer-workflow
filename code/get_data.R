@@ -94,21 +94,51 @@ meta.data <- left_join(meta.data1, meta.data2, by="Patient_ID")
 meta.data <- left_join(meta.data, meta.data3, by="Patient_ID")
 
 meta.data$ID <- meta.data$UniqueID
+meta.data$ID <- stringr::str_replace_all(meta.data$ID, "-", ".")
 
-# otu table
+meta.data.RNAseq <- filter(meta.data, ID %like% "RNAseq")
+meta.data.WGS <- filter(meta.data, ID %like% "WGS")
+
+# otu tables for RNAseq and WGS
 otus <-as.data.frame(read_xlsx("data/TCGA/tcga_otu_counts_species.xlsx"))
 rownames(otus) <- otus[,1]
 otus <- otus[,-1]
 
-# next create phyloseq object
+otus.RNAseq <- otus[, colnames(otus) %like% "RNAseq"]
+otus.WGS <- otus[, colnames(otus) %like% "WGS"]
+
+# next "filter out" 0 columns
+# ncol(otus.RNAseq) = 173
+otus.RNAseq[nrow(otus.RNAseq) + 1,] <- colSums(otus.RNAseq)
+otus.RNAseq[nrow(otus.RNAseq),][otus.RNAseq[nrow(otus.RNAseq),] == 0] <- NA
+otus.RNAseq <- otus.RNAseq %>%  select_if(~ !any(is.na(.)))
+otus.RNAseq <- otus.RNAseq[-780, ]
+
+# ncol(otus.RNAseq) = 66
+
+# ncol(otus.WGS) = 139
+otus.WGS[nrow(otus.WGS) + 1,] <- colSums(otus.WGS)
+otus.WGS[nrow(otus.WGS),][otus.WGS[nrow(otus.WGS),] == 0] <- NA
+otus.WGS <- otus.WGS %>%  select_if(~ !any(is.na(.)))
+otus.WGS <- otus.WGS[-780, ]
+# ncol(otus.WGS) = 123
+
+# rename columns
+colnames(otus.RNAseq) <- stringr::str_replace_all(colnames(otus.RNAseq), "-", ".")
+colnames(otus.WGS) <- stringr::str_replace_all(colnames(otus.WGS), "-", ".")
+
+# ============================== #
+# Create data objects for RNAseq
+# subset sample to only those above
+meta.data <- filter(meta.data.RNAseq, ID %in% colnames(otus.RNAseq))
 meta <- sample_data(meta.data)
 sample_names(meta) <- meta.data$ID
-otu.tab <- otu_table(otus, taxa_are_rows = T) # OTU table
+otu.tab <- otu_table(otus.RNAseq, taxa_are_rows = T) # OTU table
 phylo.data0 <- merge_phyloseq(otu.tab, meta)
 
 otus <- psmelt(phylo.data0)
 otus <- otus[, c("Sample", "OTU", "Abundance")]
-otus <- otus[ otus$Sample %in% meta.data$ID, ]
+otus <- otus[ otus$Sample %in% meta.data.RNAseq$ID, ]
 # get individual taxonomy levels (kingdom, phylum, etc.)c("Kingdom", "Phylum", "Class", "Order", "Family", "Genus")
 otus$Rank1 <- NA
 otus$Rank2 <- NA
@@ -119,7 +149,6 @@ otus$Rank6 <- NA
 otus$Rank7 <- NA
 
 otus[,4:10] <- stringr::str_split(otus$OTU, ";", simplify = T)
-
 otus <- reshape(otus, idvar = "OTU", timevar = "Sample", direction = "wide")
 
 OTU <- otus$OTU
@@ -154,14 +183,84 @@ for(i in 1:7){
 
 
 microbiome.data <- list(otu.tab = abund.list$OTU,
-                        otu.name,abund.list,
-                        meta.dat = meta.data,
-                        tree = tree.file)
-names(microbiome.data) <- c("otu.tab", "otu.name","abund.list",
-                            "meta.dat","tree")
+                        otu.name, abund.list,
+                        meta.dat = meta.data)
+names(microbiome.data) <- c("otu.tab", "otu.name","abund.list","meta.dat")
 
-microbiome.data.tcga <- microbiome.data
-phylo.data.tcga <- phylo.data0
+# add taxa_table (otu.name object)
+otu.name <- tax_table(otu.name)
+phylo.data0 <- merge_phyloseq(otu.tab, otu.name, meta)
+
+microbiome.data.tcga.RNAseq <- microbiome.data
+phylo.data.tcga.RNAseq <- phylo.data0
+
+# ============================== #
+# Create data objects for WGS
+# subset sample to only those above
+meta.data <- filter(meta.data.WGS, ID %in% colnames(otus.WGS))
+meta <- sample_data(meta.data)
+sample_names(meta) <- meta.data$ID
+otu.tab <- otu_table(otus.WGS, taxa_are_rows = T) # OTU table
+phylo.data0 <- merge_phyloseq(otu.tab, meta)
+
+otus <- psmelt(phylo.data0)
+otus <- otus[, c("Sample", "OTU", "Abundance")]
+otus <- otus[ otus$Sample %in% meta.data.WGS$ID, ]
+# get individual taxonomy levels (kingdom, phylum, etc.)c("Kingdom", "Phylum", "Class", "Order", "Family", "Genus")
+otus$Rank1 <- NA
+otus$Rank2 <- NA
+otus$Rank3 <- NA
+otus$Rank4 <- NA
+otus$Rank5 <- NA
+otus$Rank6 <- NA
+otus$Rank7 <- NA
+
+otus[,4:10] <- stringr::str_split(otus$OTU, ";", simplify = T)
+otus <- reshape(otus, idvar = "OTU", timevar = "Sample", direction = "wide")
+
+OTU <- otus$OTU
+Kingdom <- otus[, paste0('Rank1.', meta.data$ID[1])]
+Phylum <- otus[, paste0('Rank2.', meta.data$ID[1])]
+Class <- otus[, paste0('Rank3.', meta.data$ID[1])]
+Order <- otus[, paste0('Rank4.', meta.data$ID[1])]
+Family <- otus[, paste0('Rank5.', meta.data$ID[1])]
+Genus <- otus[, paste0('Rank6.', meta.data$ID[1])]
+# Next get just the observed counts of the OTUs
+observed.counts <- otus[, grep("Abundance",colnames(otus)) ]
+i <- 1
+for(i in 1:length(colnames(observed.counts))){
+  colnames(observed.counts)[i] <- substring(colnames(observed.counts)[i], 11)
+}
+# OTU Names object
+otu.name <- cbind(Kingdom,Phylum,Class,Order,Family,Genus)
+rownames(otu.name) <- OTU
+# Abundance List Objects
+abund.list <- list( cbind(Kingdom,observed.counts),
+                    cbind(Phylum,observed.counts),
+                    cbind(Class,observed.counts),
+                    cbind(Order,observed.counts),
+                    cbind(Family,observed.counts),
+                    cbind(Genus,observed.counts),
+                    cbind(OTU,observed.counts))
+names(abund.list) <- c("Kingdom","Phylum","Class","Order","Family","Genus","OTU")
+i <- 1
+for(i in 1:7){
+  abund.list[[i]] <- abundance_list_create(abund.list[[i]],abund.list[[i]][,1])
+}
+
+
+microbiome.data <- list(otu.tab = abund.list$OTU,
+                        otu.name, abund.list,
+                        meta.dat = meta.data)
+names(microbiome.data) <- c("otu.tab", "otu.name","abund.list","meta.dat")
+
+# add taxa_table (otu.name object)
+otu.name <- tax_table(otu.name)
+phylo.data0 <- merge_phyloseq(otu.tab, otu.name, meta)
+
+microbiome.data.tcga.WGS <- microbiome.data
+phylo.data.tcga.WGS <- phylo.data0
+
 
 # remove unnecessary items
 remove(abund.list, biom.file, meta, meta.data, observed.counts, otu.name, otus, tree.file, Class, Family, Genus, i, Kingdom, new.packages, Order, OTU,packages, Phylum, meta.data1, meta.data2, meta.data3, otu.tab, phylo.data0, microbiome.data)
