@@ -27,7 +27,7 @@ meta.data <- read_xlsx("data/NCI-UMD/NCI_UMD_metadata_2020_09_17.xlsx")
 
 # get microbiome data
 biom.file  <- import_biom("data/NCI-UMD/otu_table_even500.biom")
-tree.file <- read_tree("data/NCI-UMD/reps_even500.tre")
+tree.file  <- read_tree("data/NCI-UMD/reps_even500.tre")
 
 # create phyloseq object
 meta <- sample_data(meta.data)
@@ -263,4 +263,4 @@ phylo.data.tcga.WGS <- phylo.data0
 
 
 # remove unnecessary items
-remove(abund.list, biom.file, meta, meta.data, observed.counts, otu.name, otus, tree.file, Class, Family, Genus, i, Kingdom, new.packages, Order, OTU,packages, Phylum, meta.data1, meta.data2, meta.data3, otu.tab, phylo.data0, microbiome.data)
+remove(abund.list, biom.file, meta, meta.data, observed.counts, otu.name, otus, tree.file, Class, Family, Genus, i, Kingdom, new.packages, Order, OTU,packages, Phylum, meta.data1, meta.data2, meta.data3, otu.tab, phylo.data0, microbiome.data, otus.RNAseq, otus.WGS, meta.data.RNAseq, meta.data.WGS)

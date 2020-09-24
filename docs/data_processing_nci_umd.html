@@ -401,10 +401,10 @@ div.tocify {
 <div class="tab-content">
 <div id="summary" class="tab-pane fade in active">
 <p>
-<strong>Last updated:</strong> 2020-09-23
+<strong>Last updated:</strong> 2020-09-24
 </p>
 <p>
-<strong>Checks:</strong> <span class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span> 6 <span class="glyphicon glyphicon-exclamation-sign text-danger" aria-hidden="true"></span> 1
+<strong>Checks:</strong> <span class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span> 5 <span class="glyphicon glyphicon-exclamation-sign text-danger" aria-hidden="true"></span> 2
 </p>
 <p>
 <strong>Knit directory:</strong> <code>esoph-micro-cancer-workflow/</code> <span class="glyphicon glyphicon-question-sign" aria-hidden="true" title="This is the local directory in which the code in this file was executed."> </span>
@@ -425,7 +425,7 @@ This reproducible <a href="http://rmarkdown.rstudio.com">R Markdown</a> analysis
 </div>
 <div id="strongRMarkdownfilestronguncommittedchanges" class="panel-collapse collapse">
 <div class="panel-body">
-<p>The R Markdown is untracked by Git. To know which version of the R Markdown file created these results, you’ll want to first commit it to the Git repo. If you’re still working on the analysis, you can ignore this warning. When you’re finished, you can run <code>wflow_publish</code> to commit the R Markdown file and build the HTML.</p>
+<p>The R Markdown file has unstaged changes. To know which version of the R Markdown file created these results, you’ll want to first commit it to the Git repo. If you’re still working on the analysis, you can ignore this warning. When you’re finished, you can run <code>wflow_publish</code> to commit the R Markdown file and build the HTML.</p>
 </div>
 </div>
 </div>
@@ -468,12 +468,48 @@ This reproducible <a href="http://rmarkdown.rstudio.com">R Markdown</a> analysis
 <div class="panel panel-default">
 <div class="panel-heading">
 <p class="panel-title">
-<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongCachestrongnone"> <span class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span> <strong>Cache:</strong> none </a>
+<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongCachestrongdetected"> <span class="glyphicon glyphicon-exclamation-sign text-danger" aria-hidden="true"></span> <strong>Cache:</strong> detected </a>
 </p>
 </div>
-<div id="strongCachestrongnone" class="panel-collapse collapse">
+<div id="strongCachestrongdetected" class="panel-collapse collapse">
 <div class="panel-body">
-<p>Nice! There were no cached chunks for this analysis, so you can be confident that you successfully produced the results during this run.</p>
+The following chunks had caches available:
+<ul>
+<li>
+0-rarify
+</li>
+<li>
+1-removal
+</li>
+<li>
+2-comp-1
+</li>
+<li>
+2-comp-2
+</li>
+<li>
+2-comp-3
+</li>
+<li>
+3-prev-threshold
+</li>
+<li>
+3-remove-phylum-1
+</li>
+<li>
+4-count-tot
+</li>
+<li>
+4-merge-taxa
+</li>
+<li>
+5-thresh-1
+</li>
+<li>
+data
+</li>
+</ul>
+<p>To ensure reproducibility of the results, delete the cache directory <code>data_processing_nci_umd_cache</code> and re-run the analysis. To have workflowr automatically delete the cache directory prior to building the file, set <code>delete_cache = TRUE</code> when running <code>wflow_build()</code> or <code>wflow_publish()</code>.</p>
 </div>
 </div>
 </div>
@@ -492,38 +528,39 @@ This reproducible <a href="http://rmarkdown.rstudio.com">R Markdown</a> analysis
 <div class="panel panel-default">
 <div class="panel-heading">
 <p class="panel-title">
-<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongRepositoryversionstrong535b7b2"> <span class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span> <strong>Repository version:</strong> 535b7b2 </a>
+<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongRepositoryversionstrongahrefhttpsgithubcomGreathouseLabesophmicrocancerworkflowtreeec3d1512bbc43f8c64436fdee33aab471a394c20targetblankec3d151a"> <span class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span> <strong>Repository version:</strong> <a href="https://github.com/GreathouseLab/esoph-micro-cancer-workflow/tree/ec3d1512bbc43f8c64436fdee33aab471a394c20" target="_blank">ec3d151</a> </a>
 </p>
 </div>
-<div id="strongRepositoryversionstrong535b7b2" class="panel-collapse collapse">
+<div id="strongRepositoryversionstrongahrefhttpsgithubcomGreathouseLabesophmicrocancerworkflowtreeec3d1512bbc43f8c64436fdee33aab471a394c20targetblankec3d151a" class="panel-collapse collapse">
 <div class="panel-body">
 <p>
 Great! You are using Git for version control. Tracking code development and connecting the code version to the results is critical for reproducibility.
 </p>
 <p>
-The results in this page were generated with repository version 535b7b2. See the <em>Past versions</em> tab to see a history of the changes made to the R Markdown and HTML files.
+The results in this page were generated with repository version <a href="https://github.com/GreathouseLab/esoph-micro-cancer-workflow/tree/ec3d1512bbc43f8c64436fdee33aab471a394c20" target="_blank">ec3d151</a>. See the <em>Past versions</em> tab to see a history of the changes made to the R Markdown and HTML files.
 </p>
 <p>
 Note that you need to be careful to ensure that all relevant files for the analysis have been committed to Git prior to generating the results (you can use <code>wflow_publish</code> or <code>wflow_git_commit</code>). workflowr only checks the R Markdown file, but you know if there are other scripts or data files that it depends on. Below is the status of the Git repository when the results were generated:
 </p>
 <pre><code>
 Ignored files:
-    Ignored:    .Rhistory
     Ignored:    .Rproj.user/
-    Ignored:    data/.Rhistory
+    Ignored:    analysis/data_processing_nci_umd_cache/
+    Ignored:    analysis/data_processing_tcga_cache/
+    Ignored:    analysis/figure/
+    Ignored:    data/
 
 Untracked files:
-    Untracked:  analysis/data_processing_nci_umd.Rmd
-    Untracked:  code/get_cleaned_data.R
-    Untracked:  code/get_data.R
-    Untracked:  code/load_packages.R
-    Untracked:  code/microbiome_statistics_and_functions.R
-    Untracked:  data/NCI-UMD/
-    Untracked:  data/TCGA/
+    Untracked:  code/markdown_test.Rmd
+    Untracked:  code/markdown_test.docx
+    Untracked:  code/markdown_test.html
+    Untracked:  code/meta_data_summary.Rmd
 
 Unstaged changes:
-    Modified:   analysis/index.Rmd
-    Modified:   esoph-micro-cancer-workflow.Rproj
+    Modified:   analysis/data_processing_nci_umd.Rmd
+    Modified:   analysis/data_processing_tcga.Rmd
+    Modified:   code/get_data.R
+    Modified:   code/load_packages.R
 
 </code></pre>
 <p>
@@ -536,9 +573,86 @@ Note that any generated files, e.g. HTML, png, CSS, etc., are not included in t
 <hr>
 </div>
 <div id="versions" class="tab-pane fade">
+
 <p>
-There are no past versions. Publish this analysis with <code>wflow_publish()</code> to start tracking its development.
+These are the previous versions of the repository in which changes were made to the R Markdown (<code>analysis/data_processing_nci_umd.Rmd</code>) and HTML (<code>docs/data_processing_nci_umd.html</code>) files. If you’ve configured a remote Git repository (see <code>?wflow_git_remote</code>), click on the hyperlinks in the table below to view the files as they were in that past version.
 </p>
+<div class="table-responsive">
+<table class="table table-condensed table-hover">
+<thead>
+<tr>
+<th>
+File
+</th>
+<th>
+Version
+</th>
+<th>
+Author
+</th>
+<th>
+Date
+</th>
+<th>
+Message
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>
+Rmd
+</td>
+<td>
+<a href="https://github.com/GreathouseLab/esoph-micro-cancer-workflow/blob/ec3d1512bbc43f8c64436fdee33aab471a394c20/analysis/data_processing_nci_umd.Rmd" target="_blank">ec3d151</a>
+</td>
+<td>
+noah-padgett
+</td>
+<td>
+2020-09-24
+</td>
+<td>
+updated processing files
+</td>
+</tr>
+<tr>
+<td>
+Rmd
+</td>
+<td>
+<a href="https://github.com/GreathouseLab/esoph-micro-cancer-workflow/blob/0159b72f0adfc615bcb8c85428a16150d059a29d/analysis/data_processing_nci_umd.Rmd" target="_blank">0159b72</a>
+</td>
+<td>
+noah-padgett
+</td>
+<td>
+2020-09-23
+</td>
+<td>
+initial commit
+</td>
+</tr>
+<tr>
+<td>
+html
+</td>
+<td>
+<a href="https://rawcdn.githack.com/GreathouseLab/esoph-micro-cancer-workflow/0159b72f0adfc615bcb8c85428a16150d059a29d/docs/data_processing_nci_umd.html" target="_blank">0159b72</a>
+</td>
+<td>
+noah-padgett
+</td>
+<td>
+2020-09-23
+</td>
+<td>
+initial commit
+</td>
+</tr>
+</tbody>
+</table>
+</div>
 <hr>
 </div>
 </div>
@@ -560,7 +674,7 @@ There are no past versions. Publish this analysis with <code>wflow_publish()</co
 <h1>Taxonomic Filtering</h1>
 <div id="sample-reads-totals-and-rarifying" class="section level2">
 <h2>0. Sample Reads, Totals, and Rarifying</h2>
-<pre class="r"><code>sampleReads &lt;- sample_sums(phylo.data.nci.umd)
+<pre class="r"><code>sampleReads &lt;- phyloseq::sample_sums(phylo.data.nci.umd)
 
 # Total quality Reads
 sum(sampleReads)</code></pre>
@@ -572,7 +686,7 @@ mean(sampleReads)</code></pre>
 max(sampleReads)</code></pre>
 <pre><code>[1] 500</code></pre>
 <pre class="r"><code># rarified to an even depth of
-phylo.data.nci.umd &lt;- rarefy_even_depth(phylo.data.nci.umd, replace = T, rngseed = 20200923)</code></pre>
+phylo.data.nci.umd &lt;- phyloseq::rarefy_even_depth(phylo.data.nci.umd, replace = T, rngseed = 20200923)</code></pre>
 <pre><code>`set.seed(20200923)` was used to initialize repeatable random subsampling.</code></pre>
 <pre><code>Please record this for your records so others can reproduce.</code></pre>
 <pre><code>Try `set.seed(20200923); .Random.seed` for the full vector</code></pre>
@@ -581,7 +695,7 @@ phylo.data.nci.umd &lt;- rarefy_even_depth(phylo.data.nci.umd, replace = T, rngs
 present in any sample after random subsampling</code></pre>
 <pre><code>...</code></pre>
 <pre class="r"><code># even depth of:
-sample_sums(phylo.data.nci.umd)</code></pre>
+phyloseq::sample_sums(phylo.data.nci.umd)</code></pre>
 <pre><code>      1.S37.Jun172016 100.D06.S42.Jul202017     102.S57.Jun172016 
                   500                   500                   500 
     103.S58.Jun172016     104.S23.Jun172016 106.E02.S50.Jun232016 
@@ -688,20 +802,14 @@ sample_sums(phylo.data.nci.umd)</code></pre>
                   500                   500                   500 
  98.D02.S38.Jun232016  99.D01.S37.Jun232016 
                   500                   500 </code></pre>
-<div class="alert alert-warning">
-<p>
-<strong>Warning:</strong> The above code chunk cached its results, but it won’t be re-run if previous chunks it depends on are updated. If you need to use caching, it is highly recommended to also set <code>knitr::opts_chunk$set(autodep = TRUE)</code> at the top of the file (in a chunk that is not cached). Alternatively, you can customize the option <code>dependson</code> for each individual chunk that is cached. Using either <code>autodep</code> or <code>dependson</code> will remove this warning. See the <a href="https://yihui.name/knitr/options/#cache"
->knitr cache options</a> for more details.
-</p>
-</div>
 </div>
 <div id="removal-of-phylum-na-features" class="section level2">
 <h2>1. Removal of Phylum NA features</h2>
 <pre class="r"><code># show ranks
-rank_names(phylo.data.nci.umd)</code></pre>
+phyloseq::rank_names(phylo.data.nci.umd)</code></pre>
 <pre><code>[1] &quot;Kingdom&quot; &quot;Phylum&quot;  &quot;Class&quot;   &quot;Order&quot;   &quot;Family&quot;  &quot;Genus&quot;  </code></pre>
 <pre class="r"><code># table of features for each phylum
-table(tax_table(phylo.data.nci.umd)[,&quot;Phylum&quot;], exclude=NULL)</code></pre>
+table(phyloseq::tax_table(phylo.data.nci.umd)[,&quot;Phylum&quot;], exclude=NULL)</code></pre>
 <pre><code>
      p__Acidobacteria     p__Actinobacteria      p__Bacteroidetes 
                     2                   110                    89 
@@ -713,30 +821,18 @@ table(tax_table(phylo.data.nci.umd)[,&quot;Phylum&quot;], exclude=NULL)</code></
                     4                     2                     2 
                p__TM7         p__unassigned    p__Verrucomicrobia 
                     3                     3                     3 </code></pre>
-<div class="alert alert-warning">
-<p>
-<strong>Warning:</strong> The above code chunk cached its results, but it won’t be re-run if previous chunks it depends on are updated. If you need to use caching, it is highly recommended to also set <code>knitr::opts_chunk$set(autodep = TRUE)</code> at the top of the file (in a chunk that is not cached). Alternatively, you can customize the option <code>dependson</code> for each individual chunk that is cached. Using either <code>autodep</code> or <code>dependson</code> will remove this warning. See the <a href="https://yihui.name/knitr/options/#cache"
->knitr cache options</a> for more details.
-</p>
-</div>
 <p>Note that no taxa were labels as <em>NA</em> so none were removed.</p>
 </div>
 <div id="computation-of-total-and-average-prevalence-in-each-phylum" class="section level2">
 <h2>2. Computation of total and average prevalence in each Phylum</h2>
 <pre class="r"><code># compute prevalence of each feature
-prevdf &lt;- apply(X=otu_table(phylo.data.nci.umd), 
-                MARGIN= ifelse(taxa_are_rows(phylo.data.nci.umd), yes=1, no=2),
+prevdf &lt;- apply(X=phyloseq::otu_table(phylo.data.nci.umd), 
+                MARGIN= ifelse(phyloseq::taxa_are_rows(phylo.data.nci.umd), yes=1, no=2),
                 FUN=function(x){sum(x&gt;0)})
 # store as data.frame with labels
 prevdf &lt;- data.frame(Prevalence=prevdf,
-                     TotalAbundance=taxa_sums(phylo.data.nci.umd),
-                     tax_table(phylo.data.nci.umd))</code></pre>
-<div class="alert alert-warning">
-<p>
-<strong>Warning:</strong> The above code chunk cached its results, but it won’t be re-run if previous chunks it depends on are updated. If you need to use caching, it is highly recommended to also set <code>knitr::opts_chunk$set(autodep = TRUE)</code> at the top of the file (in a chunk that is not cached). Alternatively, you can customize the option <code>dependson</code> for each individual chunk that is cached. Using either <code>autodep</code> or <code>dependson</code> will remove this warning. See the <a href="https://yihui.name/knitr/options/#cache"
->knitr cache options</a> for more details.
-</p>
-</div>
+                     TotalAbundance=phyloseq::taxa_sums(phylo.data.nci.umd),
+                     phyloseq::tax_table(phylo.data.nci.umd))</code></pre>
 <p>Compute the totals and averages abundances.</p>
 <pre class="r"><code>totals &lt;- plyr::ddply(prevdf, &quot;Phylum&quot;,
             function(df1){
@@ -763,49 +859,25 @@ totals</code></pre>
 13                p__TM7 10.333333    31
 14         p__unassigned  1.000000     3
 15    p__Verrucomicrobia  1.000000     3</code></pre>
-<div class="alert alert-warning">
-<p>
-<strong>Warning:</strong> The above code chunk cached its results, but it won’t be re-run if previous chunks it depends on are updated. If you need to use caching, it is highly recommended to also set <code>knitr::opts_chunk$set(autodep = TRUE)</code> at the top of the file (in a chunk that is not cached). Alternatively, you can customize the option <code>dependson</code> for each individual chunk that is cached. Using either <code>autodep</code> or <code>dependson</code> will remove this warning. See the <a href="https://yihui.name/knitr/options/#cache"
->knitr cache options</a> for more details.
-</p>
-</div>
-<p>The Phylum that appear to be quite low in abundance are Cyanobacteria, Epsilonbacteraeota, Euryarchaeota, Fusobacteria and Synergistetes. However, any of the taxa under a total of 100 may be suspect. First, we will remove the taxa that are clearly too low in abudance (&lt;=5).</p>
+<p>Any of the taxa under a total of 100 may be suspect. First, we will remove the taxa that are clearly too low in abundance (&lt;=5).</p>
 <pre class="r"><code>filterPhyla &lt;- totals$Phylum[totals$Total &lt;= 5, drop=T] # drop allows some of the attributes to be removed
 
-phylo.data1 &lt;- subset_taxa(phylo.data.nci.umd, !Phylum %in% filterPhyla)
+phylo.data1 &lt;- phyloseq::subset_taxa(phylo.data.nci.umd, !Phylum %in% filterPhyla)
 phylo.data1</code></pre>
 <pre><code>phyloseq-class experiment-level object
 otu_table()   OTU Table:         [ 765 taxa and 158 samples ]
 sample_data() Sample Data:       [ 158 samples by 78 sample variables ]
 tax_table()   Taxonomy Table:    [ 765 taxa by 6 taxonomic ranks ]
 phy_tree()    Phylogenetic Tree: [ 765 tips and 763 internal nodes ]</code></pre>
-<div class="alert alert-warning">
-<p>
-<strong>Warning:</strong> The above code chunk cached its results, but it won’t be re-run if previous chunks it depends on are updated. If you need to use caching, it is highly recommended to also set <code>knitr::opts_chunk$set(autodep = TRUE)</code> at the top of the file (in a chunk that is not cached). Alternatively, you can customize the option <code>dependson</code> for each individual chunk that is cached. Using either <code>autodep</code> or <code>dependson</code> will remove this warning. See the <a href="https://yihui.name/knitr/options/#cache"
->knitr cache options</a> for more details.
-</p>
-</div>
 <p>Next, we explore the taxa in more detail next as we move to remove some of these low abundance taxa.</p>
 </div>
 <div id="removal-phyla-with-1-or-less-of-all-samples-prevalence-filtering" class="section level2">
 <h2>3. Removal Phyla with 1% or less of all samples (prevalence filtering)</h2>
-<pre class="r"><code>prevdf1 &lt;- subset(prevdf, Phylum %in% get_taxa_unique(phylo.data1, &quot;Phylum&quot;))</code></pre>
-<div class="alert alert-warning">
-<p>
-<strong>Warning:</strong> The above code chunk cached its results, but it won’t be re-run if previous chunks it depends on are updated. If you need to use caching, it is highly recommended to also set <code>knitr::opts_chunk$set(autodep = TRUE)</code> at the top of the file (in a chunk that is not cached). Alternatively, you can customize the option <code>dependson</code> for each individual chunk that is cached. Using either <code>autodep</code> or <code>dependson</code> will remove this warning. See the <a href="https://yihui.name/knitr/options/#cache"
->knitr cache options</a> for more details.
-</p>
-</div>
+<pre class="r"><code>prevdf1 &lt;- subset(prevdf, Phylum %in% phyloseq::get_taxa_unique(phylo.data1, &quot;Phylum&quot;))</code></pre>
 </div>
 <div id="total-count-computation" class="section level2">
 <h2>4. Total count computation</h2>
 <pre class="r"><code># already done above ()</code></pre>
-<div class="alert alert-warning">
-<p>
-<strong>Warning:</strong> The above code chunk cached its results, but it won’t be re-run if previous chunks it depends on are updated. If you need to use caching, it is highly recommended to also set <code>knitr::opts_chunk$set(autodep = TRUE)</code> at the top of the file (in a chunk that is not cached). Alternatively, you can customize the option <code>dependson</code> for each individual chunk that is cached. Using either <code>autodep</code> or <code>dependson</code> will remove this warning. See the <a href="https://yihui.name/knitr/options/#cache"
->knitr cache options</a> for more details.
-</p>
-</div>
 </div>
 <div id="threshold-identification" class="section level2">
 <h2>5. Threshold identification</h2>
@@ -816,53 +888,33 @@ phy_tree()    Phylogenetic Tree: [ 765 tips and 763 internal nodes ]</code></pre
   scale_x_log10()+
   labs(x=&quot;Total Abundance&quot;, y=&quot;Prevalance [Frac. Samples]&quot;)+
   facet_wrap(.~Phylum) + theme(legend.position = &quot;none&quot;)</code></pre>
-<img src="figure/data_processing_nci_umd.Rmd/5-thresh-1-1.png" width="225%" height="10" style="display: block; margin: auto;" />
-<div class="alert alert-warning">
-<p>
-<strong>Warning:</strong> The above code chunk cached its results, but it won’t be re-run if previous chunks it depends on are updated. If you need to use caching, it is highly recommended to also set <code>knitr::opts_chunk$set(autodep = TRUE)</code> at the top of the file (in a chunk that is not cached). Alternatively, you can customize the option <code>dependson</code> for each individual chunk that is cached. Using either <code>autodep</code> or <code>dependson</code> will remove this warning. See the <a href="https://yihui.name/knitr/options/#cache"
->knitr cache options</a> for more details.
-</p>
-</div>
+<p><img src="figure/data_processing_nci_umd.Rmd/5-thresh-1-1.png" width="225%" height="10" style="display: block; margin: auto;" /></p>
 <p>Note: for plotting purposes, a <span class="math inline">\(+1\)</span> was added to all TotalAbundances to avoid a taking the log of 0.</p>
 <p>Next, we define a prevalence threshold, that way the taxa can be pruned to a prespecified level. In this study, we used 0.01 (1%) of total samples.</p>
-<pre class="r"><code>prevalenceThreshold &lt;- 0.01*nsamples(phylo.data.nci.umd)
+<pre class="r"><code>prevalenceThreshold &lt;- 0.01*(phyloseq::nsamples(phylo.data.nci.umd))
 prevalenceThreshold</code></pre>
 <pre><code>[1] 1.58</code></pre>
 <pre class="r"><code># execute the filtering to this level
 keepTaxa &lt;- rownames(prevdf1)[(prevdf1$Prevalence &gt;= prevalenceThreshold)]
-phylo.data2 &lt;- prune_taxa(keepTaxa, phylo.data1)</code></pre>
-<div class="alert alert-warning">
-<p>
-<strong>Warning:</strong> The above code chunk cached its results, but it won’t be re-run if previous chunks it depends on are updated. If you need to use caching, it is highly recommended to also set <code>knitr::opts_chunk$set(autodep = TRUE)</code> at the top of the file (in a chunk that is not cached). Alternatively, you can customize the option <code>dependson</code> for each individual chunk that is cached. Using either <code>autodep</code> or <code>dependson</code> will remove this warning. See the <a href="https://yihui.name/knitr/options/#cache"
->knitr cache options</a> for more details.
-</p>
-</div>
+phylo.data2 &lt;- phyloseq::prune_taxa(keepTaxa, phylo.data1)</code></pre>
 </div>
 <div id="merge-taxa-to-genus-level" class="section level2">
 <h2>6. Merge taxa (to genus level)</h2>
-<pre class="r"><code>genusNames &lt;- get_taxa_unique(phylo.data2, &quot;Genus&quot;)
+<pre class="r"><code>genusNames &lt;- phyloseq::get_taxa_unique(phylo.data2, &quot;Genus&quot;)
 #phylo.data3 &lt;- merge_taxa(phylo.data2, genusNames, genusNames[which.max(taxa_sums(phylo.data2)[genusNames])])
 
 
 # How many genera would be present after filtering?
-length(get_taxa_unique(phylo.data2, taxonomic.rank = &quot;Genus&quot;))</code></pre>
+length(phyloseq::get_taxa_unique(phylo.data2, taxonomic.rank = &quot;Genus&quot;))</code></pre>
 <pre><code>[1] 144</code></pre>
 <pre class="r"><code>## [1] 144
 
-phylo.data3 = tax_glom(phylo.data2, &quot;Genus&quot;, NArm = TRUE)</code></pre>
-<div class="alert alert-warning">
-<p>
-<strong>Warning:</strong> The above code chunk cached its results, but it won’t be re-run if previous chunks it depends on are updated. If you need to use caching, it is highly recommended to also set <code>knitr::opts_chunk$set(autodep = TRUE)</code> at the top of the file (in a chunk that is not cached). Alternatively, you can customize the option <code>dependson</code> for each individual chunk that is cached. Using either <code>autodep</code> or <code>dependson</code> will remove this warning. See the <a href="https://yihui.name/knitr/options/#cache"
->knitr cache options</a> for more details.
-</p>
-</div>
+phylo.data3 = phyloseq::tax_glom(phylo.data2, &quot;Genus&quot;, NArm = TRUE)</code></pre>
 </div>
 <div id="relative-adbundance-plot" class="section level2">
 <h2>7. Relative Adbundance Plot</h2>
 <pre class="r"><code>plot_abundance = function(physeq, title = &quot;&quot;, ylab=&quot;Abundance&quot;){
-  # Arbitrary subset, based on Phylum, for plotting
-  #p1f = subset_taxa(physeq, Phylum %in% &quot;__Firmicutes&quot;)
-  mphyseq = psmelt(physeq)
+  mphyseq = phyloseq::psmelt(physeq)
   mphyseq &lt;- subset(mphyseq, Abundance &gt; 0)
   ggplot(data = mphyseq, aes(x=tissue, y=Abundance)) +
     geom_violin(fill = NA) +
@@ -881,21 +933,15 @@ phylo.data3ra = transform_sample_counts(phylo.data3, function(x){x / sum(x)})
 plotBefore = plot_abundance(phylo.data3, ylab=&quot;Abundance prior to transformation&quot;)
 plotAfter = plot_abundance(phylo.data3ra, ylab=&quot;Relative Abundance&quot;)
 # Combine each plot into one graphic.
-grid.arrange(nrow = 2, plotBefore, plotAfter)</code></pre>
-<img src="figure/data_processing_nci_umd.Rmd/4-rel-abund-1.png" width="225%" height="10" style="display: block; margin: auto;" />
-<div class="alert alert-warning">
-<p>
-<strong>Warning:</strong> The above code chunk cached its results, but it won’t be re-run if previous chunks it depends on are updated. If you need to use caching, it is highly recommended to also set <code>knitr::opts_chunk$set(autodep = TRUE)</code> at the top of the file (in a chunk that is not cached). Alternatively, you can customize the option <code>dependson</code> for each individual chunk that is cached. Using either <code>autodep</code> or <code>dependson</code> will remove this warning. See the <a href="https://yihui.name/knitr/options/#cache"
->knitr cache options</a> for more details.
-</p>
+plotBefore + plotAfter + plot_layout(nrow=2)</code></pre>
+<p><img src="figure/data_processing_nci_umd.Rmd/4-rel-abund-1.png" width="225%" height="10" style="display: block; margin: auto;" /></p>
 </div>
-</div>
-<div id="abundance-by-phylum" class="section level2">
-<h2>Abundance by Phylum</h2>
+<div id="plotting-abundance" class="section level2">
+<h2>8. Plotting Abundance</h2>
+<div id="abundance-by-phylum" class="section level3">
+<h3>Abundance by Phylum</h3>
 <pre class="r"><code>plot_abundance = function(physeq, title = &quot;&quot;, Facet = &quot;Phylum&quot;, ylab=&quot;Abundance&quot;){
-  # Arbitrary subset, based on Phylum, for plotting
-  #p1f = subset_taxa(physeq, Phylum %in% &quot;__Firmicutes&quot;)
-  mphyseq = psmelt(physeq)
+  mphyseq &lt;- phyloseq::psmelt(physeq)
   mphyseq &lt;- subset(mphyseq, Abundance &gt; 0)
   ggplot(data = mphyseq, aes(x=tissue, y=Abundance)) +
     geom_violin(fill = NA) +
@@ -905,63 +951,19 @@ grid.arrange(nrow = 2, plotBefore, plotAfter)</code></pre>
     labs(y=ylab)+
     theme(legend.position=&quot;none&quot;)
 }
-
-
-
-plotBefore = plot_abundance(phylo.data3, ylab=&quot;Abundance prior to transformation&quot;)
-plotAfter = plot_abundance(phylo.data3ra, ylab=&quot;Relative Abundance&quot;)
-# Combine each plot into one graphic.
-grid.arrange(nrow = 2, plotBefore, plotAfter)</code></pre>
-<img src="figure/data_processing_nci_umd.Rmd/4-phylum-1.png" width="225%" height="10" style="display: block; margin: auto;" />
-<div class="alert alert-warning">
-<p>
-<strong>Warning:</strong> The above code chunk cached its results, but it won’t be re-run if previous chunks it depends on are updated. If you need to use caching, it is highly recommended to also set <code>knitr::opts_chunk$set(autodep = TRUE)</code> at the top of the file (in a chunk that is not cached). Alternatively, you can customize the option <code>dependson</code> for each individual chunk that is cached. Using either <code>autodep</code> or <code>dependson</code> will remove this warning. See the <a href="https://yihui.name/knitr/options/#cache"
->knitr cache options</a> for more details.
-</p>
-</div>
-<div id="phylum-bacteroidetes" class="section level3">
-<h3>Phylum: Bacteroidetes</h3>
-<pre class="r"><code>plot_abundance = function(physeq, title = &quot;&quot;, Facet = &quot;Order&quot;, ylab=&quot;Abundance&quot;){
-  # Arbitrary subset, based on Phylum, for plotting
-  p1f = subset_taxa(physeq, Phylum %in%  &quot;p__Bacteroidetes&quot;)
-  mphyseq = psmelt(p1f)
-  mphyseq &lt;- subset(mphyseq, Abundance &gt; 0)
-  ggplot(data = mphyseq, aes(x=tissue, y=Abundance)) +
-    geom_violin(fill = NA) +
-    geom_point(size = 1, alpha = 0.9,
-    position = position_jitter(width = 0.3)) +
-    facet_wrap(facets = Facet) + scale_y_log10()+
-    labs(y=ylab)+
-    theme(legend.position=&quot;none&quot;)
-}
-
 
 plotBefore = plot_abundance(phylo.data3,
                             ylab=&quot;Abundance prior to transformation&quot;)
 plotAfter = plot_abundance(phylo.data3ra,
                            ylab=&quot;Relative Abundance&quot;)
-# Combine each plot into one graphic.
-grid.arrange(nrow = 2, plotBefore, plotAfter)</code></pre>
-<pre><code>Warning in max(data$density): no non-missing arguments to max; returning -Inf</code></pre>
-<pre><code>Warning: Computation failed in `stat_ydensity()`:
-replacement has 1 row, data has 0</code></pre>
-<pre><code>Warning in max(data$density): no non-missing arguments to max; returning -Inf</code></pre>
-<pre><code>Warning: Computation failed in `stat_ydensity()`:
-replacement has 1 row, data has 0</code></pre>
-<img src="figure/data_processing_nci_umd.Rmd/4-rel-abund-2-1.png" width="225%" height="10" style="display: block; margin: auto;" />
-<div class="alert alert-warning">
-<p>
-<strong>Warning:</strong> The above code chunk cached its results, but it won’t be re-run if previous chunks it depends on are updated. If you need to use caching, it is highly recommended to also set <code>knitr::opts_chunk$set(autodep = TRUE)</code> at the top of the file (in a chunk that is not cached). Alternatively, you can customize the option <code>dependson</code> for each individual chunk that is cached. Using either <code>autodep</code> or <code>dependson</code> will remove this warning. See the <a href="https://yihui.name/knitr/options/#cache"
->knitr cache options</a> for more details.
-</p>
-</div>
-</div>
-<div id="phylum-firmicutes" class="section level3">
-<h3>Phylum: Firmicutes</h3>
-<pre class="r"><code>plot_abundance = function(physeq, title = &quot;&quot;, Facet = &quot;Order&quot;, ylab=&quot;Abundance&quot;){
-  # Arbitrary subset, based on Phylum, for plotting
-  p1f = subset_taxa(physeq, Phylum %in%  &quot;p__Firmicutes&quot;)
-  mphyseq = psmelt(p1f)
+
+plotBefore + plotAfter + plot_layout(nrow=2)</code></pre>
+<p><img src="figure/data_processing_nci_umd.Rmd/WGS-4-phylum-1.png" width="225%" height="10" style="display: block; margin: auto;" /></p>
+<div id="phylum-bacteroidetes" class="section level4">
+<h4>Phylum: Bacteroidetes</h4>
+<pre class="r"><code>plot_abundance = function(physeq, title = &quot;&quot;, Facet = &quot;Class&quot;, ylab=&quot;Abundance&quot;){
+  mphyseq = phyloseq::subset_taxa(physeq, Phylum %in% &quot;p__Bacteroidetes&quot;)
+  mphyseq &lt;- phyloseq::psmelt(mphyseq)
   mphyseq &lt;- subset(mphyseq, Abundance &gt; 0)
   ggplot(data = mphyseq, aes(x=tissue, y=Abundance)) +
     geom_violin(fill = NA) +
@@ -972,27 +974,25 @@ replacement has 1 row, data has 0</code></pre>
     theme(legend.position=&quot;none&quot;)
 }
 
-
 plotBefore = plot_abundance(phylo.data3,
                             ylab=&quot;Abundance prior to transformation&quot;)
 plotAfter = plot_abundance(phylo.data3ra,
                            ylab=&quot;Relative Abundance&quot;)
-# Combine each plot into one graphic.
-grid.arrange(nrow = 2, plotBefore, plotAfter)</code></pre>
-<img src="figure/data_processing_nci_umd.Rmd/4-rel-abund-3-1.png" width="225%" height="10" style="display: block; margin: auto;" />
-<div class="alert alert-warning">
-<p>
-<strong>Warning:</strong> The above code chunk cached its results, but it won’t be re-run if previous chunks it depends on are updated. If you need to use caching, it is highly recommended to also set <code>knitr::opts_chunk$set(autodep = TRUE)</code> at the top of the file (in a chunk that is not cached). Alternatively, you can customize the option <code>dependson</code> for each individual chunk that is cached. Using either <code>autodep</code> or <code>dependson</code> will remove this warning. See the <a href="https://yihui.name/knitr/options/#cache"
->knitr cache options</a> for more details.
-</p>
+
+plotBefore + plotAfter + plot_layout(nrow=2)</code></pre>
+<pre><code>Warning in max(data$density): no non-missing arguments to max; returning -Inf</code></pre>
+<pre><code>Warning: Computation failed in `stat_ydensity()`:
+replacement has 1 row, data has 0</code></pre>
+<pre><code>Warning in max(data$density): no non-missing arguments to max; returning -Inf</code></pre>
+<pre><code>Warning: Computation failed in `stat_ydensity()`:
+replacement has 1 row, data has 0</code></pre>
+<p><img src="figure/data_processing_nci_umd.Rmd/WGS-4-rel-abund-2-1.png" width="225%" height="10" style="display: block; margin: auto;" /></p>
 </div>
-</div>
-<div id="phylum-fusobacteria" class="section level3">
-<h3>Phylum: Fusobacteria</h3>
-<pre class="r"><code>plot_abundance = function(physeq, title = &quot;&quot;, Facet = &quot;Order&quot;, ylab=&quot;Abundance&quot;){
-  # Arbitrary subset, based on Phylum, for plotting
-  p1f = subset_taxa(physeq, Phylum %in%  &quot;p__Fusobacteria&quot;)
-  mphyseq = psmelt(p1f)
+<div id="phylum-firmicutes" class="section level4">
+<h4>Phylum: Firmicutes</h4>
+<pre class="r"><code>plot_abundance = function(physeq, title = &quot;&quot;, Facet = &quot;Class&quot;, ylab=&quot;Abundance&quot;){
+  mphyseq = phyloseq::subset_taxa(physeq, Phylum %in% &quot;p__Firmicutes&quot;)
+  mphyseq &lt;- phyloseq::psmelt(mphyseq)
   mphyseq &lt;- subset(mphyseq, Abundance &gt; 0)
   ggplot(data = mphyseq, aes(x=tissue, y=Abundance)) +
     geom_violin(fill = NA) +
@@ -1003,27 +1003,19 @@ grid.arrange(nrow = 2, plotBefore, plotAfter)</code></pre>
     theme(legend.position=&quot;none&quot;)
 }
 
-
 plotBefore = plot_abundance(phylo.data3,
                             ylab=&quot;Abundance prior to transformation&quot;)
 plotAfter = plot_abundance(phylo.data3ra,
                            ylab=&quot;Relative Abundance&quot;)
-# Combine each plot into one graphic.
-grid.arrange(nrow = 2, plotBefore, plotAfter)</code></pre>
-<img src="figure/data_processing_nci_umd.Rmd/4-rel-abund-4-1.png" width="225%" height="10" style="display: block; margin: auto;" />
-<div class="alert alert-warning">
-<p>
-<strong>Warning:</strong> The above code chunk cached its results, but it won’t be re-run if previous chunks it depends on are updated. If you need to use caching, it is highly recommended to also set <code>knitr::opts_chunk$set(autodep = TRUE)</code> at the top of the file (in a chunk that is not cached). Alternatively, you can customize the option <code>dependson</code> for each individual chunk that is cached. Using either <code>autodep</code> or <code>dependson</code> will remove this warning. See the <a href="https://yihui.name/knitr/options/#cache"
->knitr cache options</a> for more details.
-</p>
+
+plotBefore + plotAfter + plot_layout(nrow=2)</code></pre>
+<p><img src="figure/data_processing_nci_umd.Rmd/WGS-4-rel-abund-3-1.png" width="225%" height="10" style="display: block; margin: auto;" /></p>
 </div>
-</div>
-<div id="phylum-proteobacteria" class="section level3">
-<h3>Phylum: Proteobacteria</h3>
-<pre class="r"><code>plot_abundance = function(physeq, title = &quot;&quot;, Facet = &quot;Family&quot;, ylab=&quot;Abundance&quot;){
-  # Arbitrary subset, based on Phylum, for plotting
-  p1f = subset_taxa(physeq, Phylum %in%  &quot;p__Proteobacteria&quot;)
-  mphyseq = psmelt(p1f)
+<div id="phylum-fusobacteria" class="section level4">
+<h4>Phylum: Fusobacteria</h4>
+<pre class="r"><code>plot_abundance = function(physeq, title = &quot;&quot;, Facet = &quot;Class&quot;, ylab=&quot;Abundance&quot;){
+  mphyseq = phyloseq::subset_taxa(physeq, Phylum %in% &quot;p__Fusobacteria&quot;)
+  mphyseq &lt;- phyloseq::psmelt(mphyseq)
   mphyseq &lt;- subset(mphyseq, Abundance &gt; 0)
   ggplot(data = mphyseq, aes(x=tissue, y=Abundance)) +
     geom_violin(fill = NA) +
@@ -1034,104 +1026,42 @@ grid.arrange(nrow = 2, plotBefore, plotAfter)</code></pre>
     theme(legend.position=&quot;none&quot;)
 }
 
+plotBefore = plot_abundance(phylo.data3,
+                            ylab=&quot;Abundance prior to transformation&quot;)
+plotAfter = plot_abundance(phylo.data3ra,
+                           ylab=&quot;Relative Abundance&quot;)
+
+plotBefore + plotAfter + plot_layout(nrow=2)</code></pre>
+<p><img src="figure/data_processing_nci_umd.Rmd/WGS-4-rel-abund-4-1.png" width="225%" height="10" style="display: block; margin: auto;" /></p>
+</div>
+<div id="phylum-proteobacteria" class="section level4">
+<h4>Phylum: Proteobacteria</h4>
+<pre class="r"><code>plot_abundance = function(physeq, title = &quot;&quot;, Facet = &quot;Class&quot;, ylab=&quot;Abundance&quot;){
+  mphyseq = phyloseq::subset_taxa(physeq, Phylum %in% &quot;p__Proteobacteria&quot;)
+  mphyseq &lt;- phyloseq::psmelt(mphyseq)
+  mphyseq &lt;- subset(mphyseq, Abundance &gt; 0)
+  ggplot(data = mphyseq, aes(x=tissue, y=Abundance)) +
+    geom_violin(fill = NA) +
+    geom_point(size = 1, alpha = 0.9,
+    position = position_jitter(width = 0.3)) +
+    facet_wrap(facets = Facet) + scale_y_log10()+
+    labs(y=ylab)+
+    theme(legend.position=&quot;none&quot;)
+}
 
 plotBefore = plot_abundance(phylo.data3,
                             ylab=&quot;Abundance prior to transformation&quot;)
 plotAfter = plot_abundance(phylo.data3ra,
                            ylab=&quot;Relative Abundance&quot;)
-# Combine each plot into one graphic.
-grid.arrange(nrow = 2, plotBefore, plotAfter)</code></pre>
+
+plotBefore + plotAfter + plot_layout(nrow=2)</code></pre>
 <pre><code>Warning in max(data$density): no non-missing arguments to max; returning -Inf</code></pre>
 <pre><code>Warning: Computation failed in `stat_ydensity()`:
 replacement has 1 row, data has 0</code></pre>
 <pre><code>Warning in max(data$density): no non-missing arguments to max; returning -Inf</code></pre>
 <pre><code>Warning: Computation failed in `stat_ydensity()`:
 replacement has 1 row, data has 0</code></pre>
-<pre><code>Warning in max(data$density): no non-missing arguments to max; returning -Inf</code></pre>
-<pre><code>Warning: Computation failed in `stat_ydensity()`:
-replacement has 1 row, data has 0</code></pre>
-<pre><code>Warning in max(data$density): no non-missing arguments to max; returning -Inf</code></pre>
-<pre><code>Warning: Computation failed in `stat_ydensity()`:
-replacement has 1 row, data has 0</code></pre>
-<pre><code>Warning in max(data$density): no non-missing arguments to max; returning -Inf</code></pre>
-<pre><code>Warning: Computation failed in `stat_ydensity()`:
-replacement has 1 row, data has 0</code></pre>
-<pre><code>Warning in max(data$density): no non-missing arguments to max; returning -Inf</code></pre>
-<pre><code>Warning: Computation failed in `stat_ydensity()`:
-replacement has 1 row, data has 0</code></pre>
-<pre><code>Warning in max(data$density): no non-missing arguments to max; returning -Inf</code></pre>
-<pre><code>Warning: Computation failed in `stat_ydensity()`:
-replacement has 1 row, data has 0</code></pre>
-<pre><code>Warning in max(data$density): no non-missing arguments to max; returning -Inf</code></pre>
-<pre><code>Warning: Computation failed in `stat_ydensity()`:
-replacement has 1 row, data has 0</code></pre>
-<pre><code>Warning in max(data$density): no non-missing arguments to max; returning -Inf</code></pre>
-<pre><code>Warning: Computation failed in `stat_ydensity()`:
-replacement has 1 row, data has 0</code></pre>
-<pre><code>Warning in max(data$density): no non-missing arguments to max; returning -Inf</code></pre>
-<pre><code>Warning: Computation failed in `stat_ydensity()`:
-replacement has 1 row, data has 0</code></pre>
-<pre><code>Warning in max(data$density): no non-missing arguments to max; returning -Inf</code></pre>
-<pre><code>Warning: Computation failed in `stat_ydensity()`:
-replacement has 1 row, data has 0</code></pre>
-<pre><code>Warning in max(data$density): no non-missing arguments to max; returning -Inf</code></pre>
-<pre><code>Warning: Computation failed in `stat_ydensity()`:
-replacement has 1 row, data has 0</code></pre>
-<pre><code>Warning in max(data$density): no non-missing arguments to max; returning -Inf</code></pre>
-<pre><code>Warning: Computation failed in `stat_ydensity()`:
-replacement has 1 row, data has 0</code></pre>
-<pre><code>Warning in max(data$density): no non-missing arguments to max; returning -Inf</code></pre>
-<pre><code>Warning: Computation failed in `stat_ydensity()`:
-replacement has 1 row, data has 0</code></pre>
-<pre><code>Warning in max(data$density): no non-missing arguments to max; returning -Inf</code></pre>
-<pre><code>Warning: Computation failed in `stat_ydensity()`:
-replacement has 1 row, data has 0</code></pre>
-<pre><code>Warning in max(data$density): no non-missing arguments to max; returning -Inf</code></pre>
-<pre><code>Warning: Computation failed in `stat_ydensity()`:
-replacement has 1 row, data has 0</code></pre>
-<pre><code>Warning in max(data$density): no non-missing arguments to max; returning -Inf</code></pre>
-<pre><code>Warning: Computation failed in `stat_ydensity()`:
-replacement has 1 row, data has 0</code></pre>
-<pre><code>Warning in max(data$density): no non-missing arguments to max; returning -Inf</code></pre>
-<pre><code>Warning: Computation failed in `stat_ydensity()`:
-replacement has 1 row, data has 0</code></pre>
-<pre><code>Warning in max(data$density): no non-missing arguments to max; returning -Inf</code></pre>
-<pre><code>Warning: Computation failed in `stat_ydensity()`:
-replacement has 1 row, data has 0</code></pre>
-<pre><code>Warning in max(data$density): no non-missing arguments to max; returning -Inf</code></pre>
-<pre><code>Warning: Computation failed in `stat_ydensity()`:
-replacement has 1 row, data has 0</code></pre>
-<pre><code>Warning in max(data$density): no non-missing arguments to max; returning -Inf</code></pre>
-<pre><code>Warning: Computation failed in `stat_ydensity()`:
-replacement has 1 row, data has 0</code></pre>
-<pre><code>Warning in max(data$density): no non-missing arguments to max; returning -Inf</code></pre>
-<pre><code>Warning: Computation failed in `stat_ydensity()`:
-replacement has 1 row, data has 0</code></pre>
-<pre><code>Warning in max(data$density): no non-missing arguments to max; returning -Inf</code></pre>
-<pre><code>Warning: Computation failed in `stat_ydensity()`:
-replacement has 1 row, data has 0</code></pre>
-<pre><code>Warning in max(data$density): no non-missing arguments to max; returning -Inf</code></pre>
-<pre><code>Warning: Computation failed in `stat_ydensity()`:
-replacement has 1 row, data has 0</code></pre>
-<pre><code>Warning in max(data$density): no non-missing arguments to max; returning -Inf</code></pre>
-<pre><code>Warning: Computation failed in `stat_ydensity()`:
-replacement has 1 row, data has 0</code></pre>
-<pre><code>Warning in max(data$density): no non-missing arguments to max; returning -Inf</code></pre>
-<pre><code>Warning: Computation failed in `stat_ydensity()`:
-replacement has 1 row, data has 0</code></pre>
-<pre><code>Warning in max(data$density): no non-missing arguments to max; returning -Inf</code></pre>
-<pre><code>Warning: Computation failed in `stat_ydensity()`:
-replacement has 1 row, data has 0</code></pre>
-<pre><code>Warning in max(data$density): no non-missing arguments to max; returning -Inf</code></pre>
-<pre><code>Warning: Computation failed in `stat_ydensity()`:
-replacement has 1 row, data has 0</code></pre>
-<img src="figure/data_processing_nci_umd.Rmd/4-rel-abund-5-1.png" width="225%" height="10" style="display: block; margin: auto;" />
-<div class="alert alert-warning">
-<p>
-<strong>Warning:</strong> The above code chunk cached its results, but it won’t be re-run if previous chunks it depends on are updated. If you need to use caching, it is highly recommended to also set <code>knitr::opts_chunk$set(autodep = TRUE)</code> at the top of the file (in a chunk that is not cached). Alternatively, you can customize the option <code>dependson</code> for each individual chunk that is cached. Using either <code>autodep</code> or <code>dependson</code> will remove this warning. See the <a href="https://yihui.name/knitr/options/#cache"
->knitr cache options</a> for more details.
-</p>
-</div>
+<p><img src="figure/data_processing_nci_umd.Rmd/WGS-4-rel-abund-5-1.png" width="225%" height="10" style="display: block; margin: auto;" /></p>
 <br>
 <p>
 <button type="button" class="btn btn-default btn-workflowr btn-workflowr-sessioninfo" data-toggle="collapse" data-target="#workflowr-sessioninfo" style="display: block;">
@@ -1193,12 +1123,13 @@ loaded via a namespace (and not attached):
 [70] tidyselect_1.1.0    magrittr_1.5        R6_2.4.1           
 [73] IRanges_2.22.2      generics_0.0.2      DBI_1.1.0          
 [76] foreign_0.8-80      pillar_1.4.6        haven_2.3.1        
-[79] withr_2.2.0         mgcv_1.8-31         abind_1.4-5        
-[82] survival_3.2-3      modelr_0.1.8        crayon_1.3.4       
-[85] rmarkdown_2.3       grid_4.0.2          blob_1.2.1         
-[88] git2r_0.27.1        reprex_0.3.0        digest_0.6.25      
-[91] webshot_0.5.2       httpuv_1.5.4        numDeriv_2016.8-1.1
-[94] stats4_4.0.2        munsell_0.5.0      </code></pre>
+[79] whisker_0.4         withr_2.2.0         mgcv_1.8-31        
+[82] abind_1.4-5         survival_3.2-3      modelr_0.1.8       
+[85] crayon_1.3.4        rmarkdown_2.3       grid_4.0.2         
+[88] blob_1.2.1          git2r_0.27.1        reprex_0.3.0       
+[91] digest_0.6.25       webshot_0.5.2       httpuv_1.5.4       
+[94] numDeriv_2016.8-1.1 stats4_4.0.2        munsell_0.5.0      </code></pre>
+</div>
 </div>
 </div>
 </div>

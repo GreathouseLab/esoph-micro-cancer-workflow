@@ -1,10 +1,10 @@
 # ============================================= #
 # script: load_packages.R
-# Project: Fiber Intervention Study
+# Project: Esoph Micro Cancer Study
 # Author(s): L. Greathouse et al.
 # ============================================= #
 # Date Created: 2019-12-10
-# Date Modified: 2019-12-10
+# Date Modified: 2020-09-24
 # By: R. Noah Padgett
 # ============================================= #
 # ============================================= #
@@ -33,7 +33,7 @@ packages <- c("phyloseq","vegan", "lme4", "lmerTest",
               "tidyverse", "readr", "readxl", "forcats",
               "data.table", "plyr", "ggplot2",
               "kableExtra", "xtable", "gridExtra", "viridis",
-              "patchwork", "gvlma", "car", "dplyr")
+              "patchwork", "gvlma", "car", "dplyr", "stringr")
 new.packages <- packages[!(packages %in% installed.packages()[,"Package"])]
 if(length(new.packages)) install.packages(new.packages, quiet = T, dependencies = T)
 # Load packages

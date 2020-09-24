@@ -24,7 +24,7 @@ This file goes through the following checks:
 
 
 
-```{r data, include=FALSE, echo=FALSE, cache=T, autodep=T}
+```{r data, include=FALSE, echo=FALSE}
 # load packages
 source("code/load_packages.R")
 
@@ -40,8 +40,7 @@ scale_fill_discrete <-  function(palname=pal, ...){
   scale_fill_brewer(palette=palname, ...)
 }
 
-knitr::opts_chunk$set(out.width = "225%", out.height = 10,
-                      autodep = TRUE, cache=T)
+knitr::opts_chunk$set(out.width = "225%", out.height = 10)
 ```
 
 # Taxonomic Filtering
@@ -50,7 +49,7 @@ knitr::opts_chunk$set(out.width = "225%", out.height = 10,
 
 ```{r 0-rarify }
 
-sampleReads <- sample_sums(phylo.data.nci.umd)
+sampleReads <- phyloseq::sample_sums(phylo.data.nci.umd)
 
 # Total quality Reads
 sum(sampleReads)
@@ -62,10 +61,10 @@ mean(sampleReads)
 max(sampleReads)
 
 # rarified to an even depth of
-phylo.data.nci.umd <- rarefy_even_depth(phylo.data.nci.umd, replace = T, rngseed = 20200923)
+phylo.data.nci.umd <- phyloseq::rarefy_even_depth(phylo.data.nci.umd, replace = T, rngseed = 20200923)
 
 # even depth of:
-sample_sums(phylo.data.nci.umd)
+phyloseq::sample_sums(phylo.data.nci.umd)
 
 ```
 
@@ -74,10 +73,10 @@ sample_sums(phylo.data.nci.umd)
 ```{r 1-removal }
 
 # show ranks
-rank_names(phylo.data.nci.umd)
+phyloseq::rank_names(phylo.data.nci.umd)
 
 # table of features for each phylum
-table(tax_table(phylo.data.nci.umd)[,"Phylum"], exclude=NULL)
+table(phyloseq::tax_table(phylo.data.nci.umd)[,"Phylum"], exclude=NULL)
 
 ```
 
@@ -87,13 +86,13 @@ Note that no taxa were labels as *NA* so none were removed.
 
 ```{r 2-comp-1 }
 # compute prevalence of each feature
-prevdf <- apply(X=otu_table(phylo.data.nci.umd), 
-                MARGIN= ifelse(taxa_are_rows(phylo.data.nci.umd), yes=1, no=2),
+prevdf <- apply(X=phyloseq::otu_table(phylo.data.nci.umd), 
+                MARGIN= ifelse(phyloseq::taxa_are_rows(phylo.data.nci.umd), yes=1, no=2),
                 FUN=function(x){sum(x>0)})
 # store as data.frame with labels
 prevdf <- data.frame(Prevalence=prevdf,
-                     TotalAbundance=taxa_sums(phylo.data.nci.umd),
-                     tax_table(phylo.data.nci.umd))
+                     TotalAbundance=phyloseq::taxa_sums(phylo.data.nci.umd),
+                     phyloseq::tax_table(phylo.data.nci.umd))
 
 ```
 
@@ -113,15 +112,14 @@ totals
 
 ```
 
-The Phylum that appear to be quite low in abundance are Cyanobacteria, Epsilonbacteraeota, Euryarchaeota, Fusobacteria and Synergistetes. 
-However, any of the taxa under a total of 100 may be suspect.
-First, we will remove the taxa that are clearly too low in abudance (<=5).
+Any of the taxa under a total of 100 may be suspect.
+First, we will remove the taxa that are clearly too low in abundance (<=5).
 
 ```{r 2-comp-3 }
 
 filterPhyla <- totals$Phylum[totals$Total <= 5, drop=T] # drop allows some of the attributes to be removed
 
-phylo.data1 <- subset_taxa(phylo.data.nci.umd, !Phylum %in% filterPhyla)
+phylo.data1 <- phyloseq::subset_taxa(phylo.data.nci.umd, !Phylum %in% filterPhyla)
 phylo.data1
 
 ```
@@ -134,7 +132,7 @@ Next, we explore the taxa in more detail next as we move to remove some of these
 
 ```{r 3-remove-phylum-1 }
 
-prevdf1 <- subset(prevdf, Phylum %in% get_taxa_unique(phylo.data1, "Phylum"))
+prevdf1 <- subset(prevdf, Phylum %in% phyloseq::get_taxa_unique(phylo.data1, "Phylum"))
 
 
 ```
@@ -170,12 +168,12 @@ In this study, we used 0.01 (1\%) of total samples.
 
 ```{r 3-prev-threshold }
 
-prevalenceThreshold <- 0.01*nsamples(phylo.data.nci.umd)
+prevalenceThreshold <- 0.01*(phyloseq::nsamples(phylo.data.nci.umd))
 prevalenceThreshold
 
 # execute the filtering to this level
 keepTaxa <- rownames(prevdf1)[(prevdf1$Prevalence >= prevalenceThreshold)]
-phylo.data2 <- prune_taxa(keepTaxa, phylo.data1)
+phylo.data2 <- phyloseq::prune_taxa(keepTaxa, phylo.data1)
 
 ```
 
@@ -183,16 +181,16 @@ phylo.data2 <- prune_taxa(keepTaxa, phylo.data1)
 ## 6. Merge taxa (to genus level)
 
 ```{r 4-merge-taxa }
-genusNames <- get_taxa_unique(phylo.data2, "Genus")
+genusNames <- phyloseq::get_taxa_unique(phylo.data2, "Genus")
 #phylo.data3 <- merge_taxa(phylo.data2, genusNames, genusNames[which.max(taxa_sums(phylo.data2)[genusNames])])
 
 
 # How many genera would be present after filtering?
-length(get_taxa_unique(phylo.data2, taxonomic.rank = "Genus"))
+length(phyloseq::get_taxa_unique(phylo.data2, taxonomic.rank = "Genus"))
 
 ## [1] 144
 
-phylo.data3 = tax_glom(phylo.data2, "Genus", NArm = TRUE)
+phylo.data3 = phyloseq::tax_glom(phylo.data2, "Genus", NArm = TRUE)
 
 ```
 
@@ -201,9 +199,7 @@ phylo.data3 = tax_glom(phylo.data2, "Genus", NArm = TRUE)
 ```{r 4-rel-abund }
 
 plot_abundance = function(physeq, title = "", ylab="Abundance"){
-  # Arbitrary subset, based on Phylum, for plotting
-  #p1f = subset_taxa(physeq, Phylum %in% "__Firmicutes")
-  mphyseq = psmelt(physeq)
+  mphyseq = phyloseq::psmelt(physeq)
   mphyseq <- subset(mphyseq, Abundance > 0)
   ggplot(data = mphyseq, aes(x=tissue, y=Abundance)) +
     geom_violin(fill = NA) +
@@ -222,7 +218,7 @@ phylo.data3ra = transform_sample_counts(phylo.data3, function(x){x / sum(x)})
 plotBefore = plot_abundance(phylo.data3, ylab="Abundance prior to transformation")
 plotAfter = plot_abundance(phylo.data3ra, ylab="Relative Abundance")
 # Combine each plot into one graphic.
-grid.arrange(nrow = 2, plotBefore, plotAfter)
+plotBefore + plotAfter + plot_layout(nrow=2)
 
 
 ```
@@ -231,12 +227,10 @@ grid.arrange(nrow = 2, plotBefore, plotAfter)
 
 ### Abundance by Phylum
 
-```{r 4-phylum }
+```{r WGS-4-phylum }
 
 plot_abundance = function(physeq, title = "", Facet = "Phylum", ylab="Abundance"){
-  # Arbitrary subset, based on Phylum, for plotting
-  #p1f = subset_taxa(physeq, Phylum %in% "__Firmicutes")
-  mphyseq = psmelt(physeq)
+  mphyseq <- phyloseq::psmelt(physeq)
   mphyseq <- subset(mphyseq, Abundance > 0)
   ggplot(data = mphyseq, aes(x=tissue, y=Abundance)) +
     geom_violin(fill = NA) +
@@ -246,55 +240,50 @@ plot_abundance = function(physeq, title = "", Facet = "Phylum", ylab="Abundance"
     labs(y=ylab)+
     theme(legend.position="none")
 }
-
-
-
-plotBefore = plot_abundance(phylo.data3, ylab="Abundance prior to transformation")
-plotAfter = plot_abundance(phylo.data3ra, ylab="Relative Abundance")
-# Combine each plot into one graphic.
-grid.arrange(nrow = 2, plotBefore, plotAfter)
-
-```
-
-
-#### Phylum: Bacteroidetes
-
-```{r 4-rel-abund-2 }
-
-plot_abundance = function(physeq, title = "", Facet = "Order", ylab="Abundance"){
-  # Arbitrary subset, based on Phylum, for plotting
-  p1f = subset_taxa(physeq, Phylum %in%  "p__Bacteroidetes")
-  mphyseq = psmelt(p1f)
-  mphyseq <- subset(mphyseq, Abundance > 0)
-  ggplot(data = mphyseq, aes(x=tissue, y=Abundance)) +
-    geom_violin(fill = NA) +
-    geom_point(size = 1, alpha = 0.9,
-    position = position_jitter(width = 0.3)) +
-    facet_wrap(facets = Facet) + scale_y_log10()+
-    labs(y=ylab)+
-    theme(legend.position="none")
-}
-
 
 plotBefore = plot_abundance(phylo.data3,
                             ylab="Abundance prior to transformation")
 plotAfter = plot_abundance(phylo.data3ra,
                            ylab="Relative Abundance")
-# Combine each plot into one graphic.
-grid.arrange(nrow = 2, plotBefore, plotAfter)
 
+plotBefore + plotAfter + plot_layout(nrow=2)
+```
+
+
+#### Phylum: Bacteroidetes
+
+```{r WGS-4-rel-abund-2 }
+
+plot_abundance = function(physeq, title = "", Facet = "Class", ylab="Abundance"){
+  mphyseq = phyloseq::subset_taxa(physeq, Phylum %in% "p__Bacteroidetes")
+  mphyseq <- phyloseq::psmelt(mphyseq)
+  mphyseq <- subset(mphyseq, Abundance > 0)
+  ggplot(data = mphyseq, aes(x=tissue, y=Abundance)) +
+    geom_violin(fill = NA) +
+    geom_point(size = 1, alpha = 0.9,
+    position = position_jitter(width = 0.3)) +
+    facet_wrap(facets = Facet) + scale_y_log10()+
+    labs(y=ylab)+
+    theme(legend.position="none")
+}
+
+plotBefore = plot_abundance(phylo.data3,
+                            ylab="Abundance prior to transformation")
+plotAfter = plot_abundance(phylo.data3ra,
+                           ylab="Relative Abundance")
+
+plotBefore + plotAfter + plot_layout(nrow=2)
 
 ```
 
 
 #### Phylum: Firmicutes
 
-```{r 4-rel-abund-3 }
+```{r WGS-4-rel-abund-3 }
 
-plot_abundance = function(physeq, title = "", Facet = "Order", ylab="Abundance"){
-  # Arbitrary subset, based on Phylum, for plotting
-  p1f = subset_taxa(physeq, Phylum %in%  "p__Firmicutes")
-  mphyseq = psmelt(p1f)
+plot_abundance = function(physeq, title = "", Facet = "Class", ylab="Abundance"){
+  mphyseq = phyloseq::subset_taxa(physeq, Phylum %in% "p__Firmicutes")
+  mphyseq <- phyloseq::psmelt(mphyseq)
   mphyseq <- subset(mphyseq, Abundance > 0)
   ggplot(data = mphyseq, aes(x=tissue, y=Abundance)) +
     geom_violin(fill = NA) +
@@ -305,26 +294,22 @@ plot_abundance = function(physeq, title = "", Facet = "Order", ylab="Abundance")
     theme(legend.position="none")
 }
 
-
 plotBefore = plot_abundance(phylo.data3,
                             ylab="Abundance prior to transformation")
 plotAfter = plot_abundance(phylo.data3ra,
                            ylab="Relative Abundance")
-# Combine each plot into one graphic.
-grid.arrange(nrow = 2, plotBefore, plotAfter)
 
-
+plotBefore + plotAfter + plot_layout(nrow=2)
 ```
 
 
 #### Phylum: Fusobacteria
 
-```{r 4-rel-abund-4 }
+```{r WGS-4-rel-abund-4 }
 
-plot_abundance = function(physeq, title = "", Facet = "Order", ylab="Abundance"){
-  # Arbitrary subset, based on Phylum, for plotting
-  p1f = subset_taxa(physeq, Phylum %in%  "p__Fusobacteria")
-  mphyseq = psmelt(p1f)
+plot_abundance = function(physeq, title = "", Facet = "Class", ylab="Abundance"){
+  mphyseq = phyloseq::subset_taxa(physeq, Phylum %in% "p__Fusobacteria")
+  mphyseq <- phyloseq::psmelt(mphyseq)
   mphyseq <- subset(mphyseq, Abundance > 0)
   ggplot(data = mphyseq, aes(x=tissue, y=Abundance)) +
     geom_violin(fill = NA) +
@@ -335,13 +320,12 @@ plot_abundance = function(physeq, title = "", Facet = "Order", ylab="Abundance")
     theme(legend.position="none")
 }
 
-
 plotBefore = plot_abundance(phylo.data3,
                             ylab="Abundance prior to transformation")
 plotAfter = plot_abundance(phylo.data3ra,
                            ylab="Relative Abundance")
-# Combine each plot into one graphic.
-grid.arrange(nrow = 2, plotBefore, plotAfter)
+
+plotBefore + plotAfter + plot_layout(nrow=2)
 
 
 ```
@@ -349,12 +333,11 @@ grid.arrange(nrow = 2, plotBefore, plotAfter)
 
 #### Phylum: Proteobacteria
 
-```{r 4-rel-abund-5 }
+```{r WGS-4-rel-abund-5 }
 
-plot_abundance = function(physeq, title = "", Facet = "Family", ylab="Abundance"){
-  # Arbitrary subset, based on Phylum, for plotting
-  p1f = subset_taxa(physeq, Phylum %in%  "p__Proteobacteria")
-  mphyseq = psmelt(p1f)
+plot_abundance = function(physeq, title = "", Facet = "Class", ylab="Abundance"){
+  mphyseq = phyloseq::subset_taxa(physeq, Phylum %in% "p__Proteobacteria")
+  mphyseq <- phyloseq::psmelt(mphyseq)
   mphyseq <- subset(mphyseq, Abundance > 0)
   ggplot(data = mphyseq, aes(x=tissue, y=Abundance)) +
     geom_violin(fill = NA) +
@@ -365,14 +348,11 @@ plot_abundance = function(physeq, title = "", Facet = "Family", ylab="Abundance"
     theme(legend.position="none")
 }
 
-
 plotBefore = plot_abundance(phylo.data3,
                             ylab="Abundance prior to transformation")
 plotAfter = plot_abundance(phylo.data3ra,
                            ylab="Relative Abundance")
-# Combine each plot into one graphic.
-grid.arrange(nrow = 2, plotBefore, plotAfter)
 
+plotBefore + plotAfter + plot_layout(nrow=2)
 
 ```
-
