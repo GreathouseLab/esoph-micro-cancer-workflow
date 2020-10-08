@@ -90,8 +90,8 @@ meta.data1 <- read_xlsx("data/TCGA/tcga_clincal_metadata.xlsx")
 meta.data2 <- read_xlsx("data/TCGA/tcga_sample_summary.xlsx")
 meta.data3 <- read_xlsx("data/TCGA/tcga_samples_and_metadata.xlsx")
 
-meta.data <- left_join(meta.data1, meta.data2, by="Patient_ID")
-meta.data <- left_join(meta.data, meta.data3, by="Patient_ID")
+meta.data <- full_join(meta.data1, meta.data2, by="Patient_ID")
+meta.data <- full_join(meta.data, meta.data3, by="Patient_ID")
 
 meta.data$ID <- meta.data$UniqueID
 meta.data$ID <- stringr::str_replace_all(meta.data$ID, "-", ".")
@@ -113,7 +113,6 @@ otus.RNAseq[nrow(otus.RNAseq) + 1,] <- colSums(otus.RNAseq)
 otus.RNAseq[nrow(otus.RNAseq),][otus.RNAseq[nrow(otus.RNAseq),] == 0] <- NA
 otus.RNAseq <- otus.RNAseq %>%  select_if(~ !any(is.na(.)))
 otus.RNAseq <- otus.RNAseq[-780, ]
-
 # ncol(otus.RNAseq) = 66
 
 # ncol(otus.WGS) = 139

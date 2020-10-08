@@ -383,7 +383,7 @@ div.tocify {
 
 <p>
 <button type="button" class="btn btn-default btn-workflowr btn-workflowr-report" data-toggle="collapse" data-target="#workflowr-report">
-<span class="glyphicon glyphicon-list" aria-hidden="true"></span> workflowr <span class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span>
+<span class="glyphicon glyphicon-list" aria-hidden="true"></span> workflowr <span class="glyphicon glyphicon-exclamation-sign text-danger" aria-hidden="true"></span>
 </button>
 </p>
 <div id="workflowr-report" class="collapse">
@@ -392,7 +392,7 @@ div.tocify {
 <a data-toggle="tab" href="#summary">Summary</a>
 </li>
 <li>
-<a data-toggle="tab" href="#checks"> Checks <span class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span> </a>
+<a data-toggle="tab" href="#checks"> Checks <span class="glyphicon glyphicon-exclamation-sign text-danger" aria-hidden="true"></span> </a>
 </li>
 <li>
 <a data-toggle="tab" href="#versions">Past versions</a>
@@ -401,10 +401,10 @@ div.tocify {
 <div class="tab-content">
 <div id="summary" class="tab-pane fade in active">
 <p>
-<strong>Last updated:</strong> 2020-09-24
+<strong>Last updated:</strong> 2020-10-08
 </p>
 <p>
-<strong>Checks:</strong> <span class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span> 7 <span class="glyphicon glyphicon-exclamation-sign text-danger" aria-hidden="true"></span> 0
+<strong>Checks:</strong> <span class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span> 6 <span class="glyphicon glyphicon-exclamation-sign text-danger" aria-hidden="true"></span> 1
 </p>
 <p>
 <strong>Knit directory:</strong> <code>esoph-micro-cancer-workflow/</code> <span class="glyphicon glyphicon-question-sign" aria-hidden="true" title="This is the local directory in which the code in this file was executed."> </span>
@@ -420,12 +420,12 @@ This reproducible <a href="http://rmarkdown.rstudio.com">R Markdown</a> analysis
 <div class="panel panel-default">
 <div class="panel-heading">
 <p class="panel-title">
-<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongRMarkdownfilestronguptodate"> <span class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span> <strong>R Markdown file:</strong> up-to-date </a>
+<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongRMarkdownfilestronguncommittedchanges"> <span class="glyphicon glyphicon-exclamation-sign text-danger" aria-hidden="true"></span> <strong>R Markdown file:</strong> uncommitted changes </a>
 </p>
 </div>
-<div id="strongRMarkdownfilestronguptodate" class="panel-collapse collapse">
+<div id="strongRMarkdownfilestronguncommittedchanges" class="panel-collapse collapse">
 <div class="panel-body">
-<p>Great! Since the R Markdown file has been committed to the Git repository, you know the exact version of the code that produced these results.</p>
+<p>The R Markdown file has unstaged changes. To know which version of the R Markdown file created these results, you’ll want to first commit it to the Git repo. If you’re still working on the analysis, you can ignore this warning. When you’re finished, you can run <code>wflow_publish</code> to commit the R Markdown file and build the HTML.</p>
 </div>
 </div>
 </div>
@@ -492,24 +492,30 @@ This reproducible <a href="http://rmarkdown.rstudio.com">R Markdown</a> analysis
 <div class="panel panel-default">
 <div class="panel-heading">
 <p class="panel-title">
-<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongRepositoryversionstrongahrefhttpsgithubcomGreathouseLabesophmicrocancerworkflowtreedcbddd1fab7c6443bee61276c9acceeb1540c8b6targetblankdcbddd1a"> <span class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span> <strong>Repository version:</strong> <a href="https://github.com/GreathouseLab/esoph-micro-cancer-workflow/tree/dcbddd1fab7c6443bee61276c9acceeb1540c8b6" target="_blank">dcbddd1</a> </a>
+<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongRepositoryversionstrongahrefhttpsgithubcomGreathouseLabesophmicrocancerworkflowtree67ac872cc205b409227c3ee0f11de2dd3b67cb5atargetblank67ac872a"> <span class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span> <strong>Repository version:</strong> <a href="https://github.com/GreathouseLab/esoph-micro-cancer-workflow/tree/67ac872cc205b409227c3ee0f11de2dd3b67cb5a" target="_blank">67ac872</a> </a>
 </p>
 </div>
-<div id="strongRepositoryversionstrongahrefhttpsgithubcomGreathouseLabesophmicrocancerworkflowtreedcbddd1fab7c6443bee61276c9acceeb1540c8b6targetblankdcbddd1a" class="panel-collapse collapse">
+<div id="strongRepositoryversionstrongahrefhttpsgithubcomGreathouseLabesophmicrocancerworkflowtree67ac872cc205b409227c3ee0f11de2dd3b67cb5atargetblank67ac872a" class="panel-collapse collapse">
 <div class="panel-body">
 <p>
 Great! You are using Git for version control. Tracking code development and connecting the code version to the results is critical for reproducibility.
 </p>
 <p>
-The results in this page were generated with repository version <a href="https://github.com/GreathouseLab/esoph-micro-cancer-workflow/tree/dcbddd1fab7c6443bee61276c9acceeb1540c8b6" target="_blank">dcbddd1</a>. See the <em>Past versions</em> tab to see a history of the changes made to the R Markdown and HTML files.
+The results in this page were generated with repository version <a href="https://github.com/GreathouseLab/esoph-micro-cancer-workflow/tree/67ac872cc205b409227c3ee0f11de2dd3b67cb5a" target="_blank">67ac872</a>. See the <em>Past versions</em> tab to see a history of the changes made to the R Markdown and HTML files.
 </p>
 <p>
 Note that you need to be careful to ensure that all relevant files for the analysis have been committed to Git prior to generating the results (you can use <code>wflow_publish</code> or <code>wflow_git_commit</code>). workflowr only checks the R Markdown file, but you know if there are other scripts or data files that it depends on. Below is the status of the Git repository when the results were generated:
 </p>
 <pre><code>
 Ignored files:
+    Ignored:    .Rhistory
     Ignored:    .Rproj.user/
     Ignored:    data/
+
+Unstaged changes:
+    Modified:   analysis/data_processing_nci_umd.Rmd
+    Modified:   analysis/data_processing_tcga.Rmd
+    Modified:   code/get_data.R
 
 </code></pre>
 <p>
@@ -548,6 +554,23 @@ Message
 </tr>
 </thead>
 <tbody>
+<tr>
+<td>
+html
+</td>
+<td>
+<a href="https://rawcdn.githack.com/GreathouseLab/esoph-micro-cancer-workflow/67ac872cc205b409227c3ee0f11de2dd3b67cb5a/docs/data_processing_tcga.html" target="_blank">67ac872</a>
+</td>
+<td>
+noah-padgett
+</td>
+<td>
+2020-09-24
+</td>
+<td>
+Build site.
+</td>
+</tr>
 <tr>
 <td>
 Rmd
@@ -792,7 +815,7 @@ tax_table()   Taxonomy Table:    [ 721 taxa by 6 taxonomic ranks ]</code></pre>
   scale_x_log10()+
   labs(x=&quot;Total Abundance&quot;, y=&quot;Prevalance [Frac. Samples]&quot;)+
   facet_wrap(.~Phylum) + theme(legend.position = &quot;none&quot;)</code></pre>
-<p><img src="figure/data_processing_tcga.Rmd/5-thresh-1-1.png" width="225%" height="10" style="display: block; margin: auto;" /></p>
+<p><img src="figure/data_processing_tcga.Rmd/5-thresh-1%20-1.png" width="100%" height="100%" style="display: block; margin: auto;" /></p>
 <p>Note: for plotting purposes, a <span class="math inline">\(+1\)</span> was added to all TotalAbundances to avoid a taking the log of 0.</p>
 <p>Next, we define a prevalence threshold, that way the taxa can be pruned to a prespecified level. In this study, we used 0.01 (1%) of total samples.</p>
 <pre class="r"><code>prevalenceThreshold &lt;- 0.01*(phyloseq::nsamples(phylo.data.tcga))
@@ -838,7 +861,7 @@ plotBefore = plot_abundance(phylo.data3, ylab=&quot;Abundance prior to transform
 plotAfter = plot_abundance(phylo.data3ra, ylab=&quot;Relative Abundance&quot;)
 # Combine each plot into one graphic.
 plotBefore + plotAfter + plot_layout(nrow=2)</code></pre>
-<p><img src="figure/data_processing_tcga.Rmd/4-rel-abund-1.png" width="225%" height="10" style="display: block; margin: auto;" /></p>
+<p><img src="figure/data_processing_tcga.Rmd/4-rel-abund-1.png" width="100%" height="100%" style="display: block; margin: auto;" /></p>
 </div>
 <div id="plotting-abundance" class="section level2">
 <h2>8. Plotting Abundance</h2>
@@ -863,7 +886,7 @@ plotBefore = plot_abundance(phylo.data3, ylab=&quot;Abundance prior to transform
 plotAfter = plot_abundance(phylo.data3ra, ylab=&quot;Relative Abundance&quot;)
 # Combine each plot into one graphic.
 plotBefore + plotAfter + plot_layout(nrow=2)</code></pre>
-<p><img src="figure/data_processing_tcga.Rmd/4-phylum-1.png" width="225%" height="10" style="display: block; margin: auto;" /></p>
+<p><img src="figure/data_processing_tcga.Rmd/4-phylum-1.png" width="100%" height="100%" style="display: block; margin: auto;" /></p>
 <div id="phylum-bacteroidetes" class="section level4">
 <h4>Phylum: Bacteroidetes</h4>
 <pre class="r"><code>plot_abundance = function(physeq, title = &quot;&quot;,
@@ -887,7 +910,7 @@ plotAfter = plot_abundance(phylo.data3ra,
                            ylab=&quot;Relative Abundance&quot;)
 
 plotBefore + plotAfter + plot_layout(nrow=2)</code></pre>
-<p><img src="figure/data_processing_tcga.Rmd/4-rel-abund-2-1.png" width="225%" height="10" style="display: block; margin: auto;" /></p>
+<p><img src="figure/data_processing_tcga.Rmd/4-rel-abund-2-1.png" width="100%" height="100%" style="display: block; margin: auto;" /></p>
 </div>
 <div id="phylum-firmicutes" class="section level4">
 <h4>Phylum: Firmicutes</h4>
@@ -910,7 +933,7 @@ plotAfter = plot_abundance(phylo.data3ra,
                            ylab=&quot;Relative Abundance&quot;)
 
 plotBefore + plotAfter + plot_layout(nrow=2)</code></pre>
-<p><img src="figure/data_processing_tcga.Rmd/4-rel-abund-3-1.png" width="225%" height="10" style="display: block; margin: auto;" /></p>
+<p><img src="figure/data_processing_tcga.Rmd/4-rel-abund-3-1.png" width="100%" height="100%" style="display: block; margin: auto;" /></p>
 </div>
 <div id="phylum-fusobacteria" class="section level4">
 <h4>Phylum: Fusobacteria</h4>
@@ -933,7 +956,7 @@ plotAfter = plot_abundance(phylo.data3ra,
                            ylab=&quot;Relative Abundance&quot;)
 
 plotBefore + plotAfter + plot_layout(nrow=2)</code></pre>
-<p><img src="figure/data_processing_tcga.Rmd/4-rel-abund-4-1.png" width="225%" height="10" style="display: block; margin: auto;" /></p>
+<p><img src="figure/data_processing_tcga.Rmd/4-rel-abund-4-1.png" width="100%" height="100%" style="display: block; margin: auto;" /></p>
 </div>
 <div id="phylum-proteobacteria" class="section level4">
 <h4>Phylum: Proteobacteria</h4>
@@ -956,7 +979,7 @@ plotAfter = plot_abundance(phylo.data3ra,
                            ylab=&quot;Relative Abundance&quot;)
 
 plotBefore + plotAfter + plot_layout(nrow=2)</code></pre>
-<p><img src="figure/data_processing_tcga.Rmd/4-rel-abund-5-1.png" width="225%" height="10" style="display: block; margin: auto;" /></p>
+<p><img src="figure/data_processing_tcga.Rmd/4-rel-abund-5-1.png" width="100%" height="100%" style="display: block; margin: auto;" /></p>
 </div>
 </div>
 </div>
@@ -969,10 +992,10 @@ plotBefore + plotAfter + plot_layout(nrow=2)</code></pre>
 
 # Total quality Reads
 sum(sampleReads)</code></pre>
-<pre><code>[1] 3278126</code></pre>
+<pre><code>[1] 3817495</code></pre>
 <pre class="r"><code># Average reads
 mean(sampleReads)</code></pre>
-<pre><code>[1] 34506.59</code></pre>
+<pre><code>[1] 31036.54</code></pre>
 <pre class="r"><code># max sequencing depth
 max(sampleReads)</code></pre>
 <pre><code>[1] 559963</code></pre>
@@ -985,8 +1008,10 @@ sample_sums(phylo.data.tcga)</code></pre>
                         412                         447 
  TCGA.IG.A3I8.Tumor.WGS.d45 TCGA.IG.A3QL.Normal.WGS.e64 
                        1576                       42617 
- TCGA.IG.A3QL.Tumor.WGS.da1 TCGA.IG.A3YA.Normal.WGS.30a 
-                       6268                       40161 
+ TCGA.IG.A3QL.Tumor.WGS.da1 TCGA.IG.A3Y9.Normal.WGS.dbf 
+                       6268                       34517 
+ TCGA.IG.A3Y9.Tumor.WGS.c2e TCGA.IG.A3YA.Normal.WGS.30a 
+                      24967                       40161 
  TCGA.IG.A3YA.Tumor.WGS.d20 TCGA.IG.A3YB.Normal.WGS.be8 
                       23320                       26565 
  TCGA.IG.A3YB.Tumor.WGS.6b5  TCGA.IG.A3YB.Tumor.WGS.aac 
@@ -995,6 +1020,8 @@ TCGA.IG.A3YC.Normal.WGS.42f  TCGA.IG.A3YC.Tumor.WGS.a12
                       23137                       15430 
 TCGA.IG.A4P3.Normal.WGS.905  TCGA.IG.A4P3.Tumor.WGS.a5b 
                        2740                        2206 
+TCGA.IG.A4QT.Normal.WGS.555  TCGA.IG.A4QT.Tumor.WGS.4bf 
+                       4023                        4020 
 TCGA.IG.A50L.Normal.WGS.076  TCGA.IG.A50L.Tumor.WGS.3e7 
                        5095                      289811 
 TCGA.IG.A51D.Normal.WGS.780  TCGA.IG.A51D.Tumor.WGS.c42 
@@ -1009,10 +1036,16 @@ TCGA.L5.A43C.Normal.WGS.311  TCGA.L5.A43C.Tumor.WGS.f5b
                       21546                       12862 
 TCGA.L5.A43E.Normal.WGS.280 TCGA.L5.A43E.Normal.WGS.56f 
                       40554                       47251 
- TCGA.L5.A43E.Tumor.WGS.70d TCGA.L5.A43J.Normal.WGS.e99 
-                      11531                       26652 
- TCGA.L5.A43J.Tumor.WGS.ed6 TCGA.L5.A4OE.Normal.WGS.a69 
-                       6627                       12714 
+ TCGA.L5.A43E.Tumor.WGS.70d TCGA.L5.A43H.Normal.WGS.d67 
+                      11531                       49147 
+ TCGA.L5.A43H.Tumor.WGS.f8c TCGA.L5.A43I.Normal.WGS.293 
+                      28611                       40707 
+ TCGA.L5.A43I.Tumor.WGS.dee TCGA.L5.A43J.Normal.WGS.e99 
+                       8126                       26652 
+ TCGA.L5.A43J.Tumor.WGS.ed6 TCGA.L5.A43M.Normal.WGS.ec5 
+                       6627                         369 
+ TCGA.L5.A43M.Tumor.WGS.4e3 TCGA.L5.A4OE.Normal.WGS.a69 
+                       1478                       12714 
  TCGA.L5.A4OE.Tumor.WGS.498 TCGA.L5.A4OF.Normal.WGS.948 
                        2948                       18579 
  TCGA.L5.A4OF.Tumor.WGS.0b3  TCGA.L5.A4OF.Tumor.WGS.3ee 
@@ -1041,16 +1074,28 @@ TCGA.L5.A4OJ.Normal.WGS.3de TCGA.L5.A4OJ.Normal.WGS.9dc
                      559963                       25856 
 TCGA.L7.A56G.Normal.WGS.706  TCGA.L7.A56G.Tumor.WGS.8e8 
                        2946                      173707 
+TCGA.LN.A49K.Normal.WGS.46d  TCGA.LN.A49K.Tumor.WGS.acf 
+                      28461                       15830 
+TCGA.LN.A49L.Normal.WGS.99b TCGA.LN.A49L.Normal.WGS.c79 
+                       1793                       37639 
+ TCGA.LN.A49L.Tumor.WGS.a95  TCGA.LN.A49L.Tumor.WGS.a9a 
+                      30608                        8660 
 TCGA.LN.A49M.Normal.WGS.86f  TCGA.LN.A49M.Tumor.WGS.821 
                        6224                        5518 
+TCGA.LN.A49N.Normal.WGS.aa8  TCGA.LN.A49N.Tumor.WGS.cc2 
+                      69332                       39430 
 TCGA.LN.A49O.Normal.WGS.0e9  TCGA.LN.A49O.Tumor.WGS.e46 
                       78468                       33726 
 TCGA.LN.A49P.Normal.WGS.09a  TCGA.LN.A49P.Tumor.WGS.bc9 
                       57063                       21648 
+TCGA.LN.A49R.Normal.WGS.427  TCGA.LN.A49R.Tumor.WGS.94a 
+                        898                       14897 
 TCGA.LN.A49S.Normal.WGS.a7e  TCGA.LN.A49S.Tumor.WGS.f17 
                       12081                        8885 
 TCGA.LN.A49U.Normal.WGS.bc2  TCGA.LN.A49U.Tumor.WGS.c07 
                        5318                       51386 
+TCGA.LN.A49V.Normal.WGS.693  TCGA.LN.A49V.Tumor.WGS.331 
+                      22949                       34529 
 TCGA.LN.A49W.Normal.WGS.cfd  TCGA.LN.A49W.Tumor.WGS.30b 
                        3514                        2374 
 TCGA.LN.A49X.Normal.WGS.36d  TCGA.LN.A49X.Tumor.WGS.e3d 
@@ -1059,16 +1104,22 @@ TCGA.LN.A49Y.Normal.WGS.859 TCGA.LN.A49Y.Normal.WGS.902
                        7802                        2661 
  TCGA.LN.A49Y.Tumor.WGS.61d TCGA.LN.A4A1.Normal.WGS.774 
                         526                       13062 
+TCGA.LN.A4A2.Normal.WGS.851  TCGA.LN.A4A2.Tumor.WGS.2f7 
+                      16038                       14355 
 TCGA.LN.A4A3.Normal.WGS.bee  TCGA.LN.A4A3.Tumor.WGS.e04 
                        3899                      172865 
 TCGA.LN.A4A4.Normal.WGS.200 TCGA.LN.A4A4.Normal.WGS.c72 
                        6580                       33938 
- TCGA.LN.A4A4.Tumor.WGS.8f2 TCGA.LN.A4A8.Normal.WGS.3df 
-                       1302                        3468 
+ TCGA.LN.A4A4.Tumor.WGS.8f2 TCGA.LN.A4A6.Normal.WGS.298 
+                       1302                        2142 
+ TCGA.LN.A4A6.Tumor.WGS.113 TCGA.LN.A4A8.Normal.WGS.3df 
+                       1280                        3468 
  TCGA.LN.A4A8.Tumor.WGS.fd3 TCGA.LN.A4MQ.Normal.WGS.51c 
                        1688                        9082 
- TCGA.LN.A4MQ.Tumor.WGS.beb TCGA.LN.A5U5.Normal.WGS.25f 
-                       3647                        3029 
+ TCGA.LN.A4MQ.Tumor.WGS.beb TCGA.LN.A4MR.Normal.WGS.a1b 
+                       3647                        1810 
+ TCGA.LN.A4MR.Tumor.WGS.6c3 TCGA.LN.A5U5.Normal.WGS.25f 
+                       2753                        3029 
 TCGA.LN.A5U5.Normal.WGS.e87  TCGA.LN.A5U5.Tumor.WGS.d38 
                       21262                        2427 
  TCGA.LN.A5U5.Tumor.WGS.ee1 TCGA.LN.A8I1.Normal.WGS.e4b 
@@ -1129,33 +1180,33 @@ prevdf &lt;- data.frame(Prevalence=prevdf,
 
 totals</code></pre>
 <pre><code>                        Phylum   Average Total
-1                Acidobacteria  2.200000    11
-2               Actinobacteria 11.422535  1622
-3                    Aquificae  1.000000     1
-4                Bacteroidetes 12.274194   761
+1                Acidobacteria  2.400000    12
+2               Actinobacteria 13.190141  1873
+3                    Aquificae  2.000000     2
+4                Bacteroidetes 14.790323   917
 5      candidate division NC10  3.000000     3
-6  Candidatus Saccharibacteria 49.000000   147
+6  Candidatus Saccharibacteria 61.666667   185
 7                  Chloroflexi  2.000000     2
-8                Cyanobacteria 10.727273   118
-9          Deinococcus-Thermus  4.416667    53
+8                Cyanobacteria 13.454545   148
+9          Deinococcus-Thermus  4.833333    58
 10               Euryarchaeota  1.000000     1
-11                  Firmicutes 11.679558  2114
-12                Fusobacteria 21.800000   109
+11                  Firmicutes 13.696133  2479
+12                Fusobacteria 25.600000   128
 13            Gemmatimonadetes  6.000000     6
 14                 Nitrospirae  4.000000     4
-15              Planctomycetes  7.166667    43
-16              Proteobacteria 11.545171  3706
-17                Spirochaetes  9.166667    55
-18                 Tenericutes  4.000000    56
-19             Verrucomicrobia  5.000000    25</code></pre>
+15              Planctomycetes  8.500000    51
+16              Proteobacteria 13.875389  4454
+17                Spirochaetes 11.166667    67
+18                 Tenericutes  5.500000    77
+19             Verrucomicrobia  5.400000    27</code></pre>
 <p>Any of the taxa under a total of 100 may be suspect. First, we will remove the taxa that are clearly too low in abundance (&lt;=5).</p>
 <pre class="r"><code>filterPhyla &lt;- totals$Phylum[totals$Total &lt;= 5, drop=T] # drop allows some of the attributes to be removed
 
 phylo.data1 &lt;- subset_taxa(phylo.data.tcga, !Phylum %in% filterPhyla)
 phylo.data1</code></pre>
 <pre><code>phyloseq-class experiment-level object
-otu_table()   OTU Table:         [ 774 taxa and 95 samples ]
-sample_data() Sample Data:       [ 95 samples by 43 sample variables ]
+otu_table()   OTU Table:         [ 774 taxa and 123 samples ]
+sample_data() Sample Data:       [ 123 samples by 43 sample variables ]
 tax_table()   Taxonomy Table:    [ 774 taxa by 6 taxonomic ranks ]</code></pre>
 <p>Next, we explore the taxa in more detail next as we move to remove some of these low abundance taxa.</p>
 </div>
@@ -1176,12 +1227,12 @@ tax_table()   Taxonomy Table:    [ 774 taxa by 6 taxonomic ranks ]</code></pre>
   scale_x_log10()+
   labs(x=&quot;Total Abundance&quot;, y=&quot;Prevalance [Frac. Samples]&quot;)+
   facet_wrap(.~Phylum) + theme(legend.position = &quot;none&quot;)</code></pre>
-<p><img src="figure/data_processing_tcga.Rmd/WGS-5-thresh-1-1.png" width="225%" height="10" style="display: block; margin: auto;" /></p>
+<p><img src="figure/data_processing_tcga.Rmd/WGS-5-thresh-1-1.png" width="100%" height="100%" style="display: block; margin: auto;" /></p>
 <p>Note: for plotting purposes, a <span class="math inline">\(+1\)</span> was added to all TotalAbundances to avoid a taking the log of 0.</p>
 <p>Next, we define a prevalence threshold, that way the taxa can be pruned to a prespecified level. In this study, we used 0.01 (1%) of total samples.</p>
 <pre class="r"><code>prevalenceThreshold &lt;- 0.01*nsamples(phylo.data.tcga)
 prevalenceThreshold</code></pre>
-<pre><code>[1] 0.95</code></pre>
+<pre><code>[1] 1.23</code></pre>
 <pre class="r"><code># execute the filtering to this level
 keepTaxa &lt;- rownames(prevdf1)[(prevdf1$Prevalence &gt;= prevalenceThreshold)]
 phylo.data2 &lt;- prune_taxa(keepTaxa, phylo.data1)</code></pre>
@@ -1194,7 +1245,7 @@ phylo.data2 &lt;- prune_taxa(keepTaxa, phylo.data1)</code></pre>
 
 # How many genera would be present after filtering?
 length(get_taxa_unique(phylo.data2, taxonomic.rank = &quot;Genus&quot;))</code></pre>
-<pre><code>[1] 371</code></pre>
+<pre><code>[1] 358</code></pre>
 <pre class="r"><code>## [1] 371
 
 phylo.data3 = tax_glom(phylo.data2, &quot;Genus&quot;, NArm = TRUE)</code></pre>
@@ -1222,7 +1273,7 @@ plotBefore = plot_abundance(phylo.data3, ylab=&quot;Abundance prior to transform
 plotAfter = plot_abundance(phylo.data3ra, ylab=&quot;Relative Abundance&quot;)
 # Combine each plot into one graphic.
 plotBefore + plotAfter + plot_layout(nrow=2)</code></pre>
-<p><img src="figure/data_processing_tcga.Rmd/WGS-4-rel-abund-1.png" width="225%" height="10" style="display: block; margin: auto;" /></p>
+<p><img src="figure/data_processing_tcga.Rmd/WGS-4-rel-abund-1.png" width="100%" height="100%" style="display: block; margin: auto;" /></p>
 </div>
 <div id="plotting-abundance-1" class="section level2">
 <h2>8. Plotting Abundance</h2>
@@ -1246,7 +1297,7 @@ plotAfter = plot_abundance(phylo.data3ra,
                            ylab=&quot;Relative Abundance&quot;)
 
 plotBefore + plotAfter + plot_layout(nrow=2)</code></pre>
-<p><img src="figure/data_processing_tcga.Rmd/WGS-4-phylum-1.png" width="225%" height="10" style="display: block; margin: auto;" /></p>
+<p><img src="figure/data_processing_tcga.Rmd/WGS-4-phylum%20-1.png" width="100%" height="100%" style="display: block; margin: auto;" /></p>
 <div id="phylum-bacteroidetes-1" class="section level4">
 <h4>Phylum: Bacteroidetes</h4>
 <pre class="r"><code>plot_abundance = function(physeq, title = &quot;&quot;, Facet = &quot;Class&quot;, ylab=&quot;Abundance&quot;){
@@ -1268,7 +1319,7 @@ plotAfter = plot_abundance(phylo.data3ra,
                            ylab=&quot;Relative Abundance&quot;)
 
 plotBefore + plotAfter + plot_layout(nrow=2)</code></pre>
-<p><img src="figure/data_processing_tcga.Rmd/WGS-4-rel-abund-2-1.png" width="225%" height="10" style="display: block; margin: auto;" /></p>
+<p><img src="figure/data_processing_tcga.Rmd/WGS-4-rel-abund-2-1.png" width="100%" height="100%" style="display: block; margin: auto;" /></p>
 </div>
 <div id="phylum-firmicutes-1" class="section level4">
 <h4>Phylum: Firmicutes</h4>
@@ -1291,7 +1342,7 @@ plotAfter = plot_abundance(phylo.data3ra,
                            ylab=&quot;Relative Abundance&quot;)
 
 plotBefore + plotAfter + plot_layout(nrow=2)</code></pre>
-<p><img src="figure/data_processing_tcga.Rmd/WGS-4-rel-abund-3-1.png" width="225%" height="10" style="display: block; margin: auto;" /></p>
+<p><img src="figure/data_processing_tcga.Rmd/WGS-4-rel-abund-3-1.png" width="100%" height="100%" style="display: block; margin: auto;" /></p>
 </div>
 <div id="phylum-fusobacteria-1" class="section level4">
 <h4>Phylum: Fusobacteria</h4>
@@ -1314,7 +1365,7 @@ plotAfter = plot_abundance(phylo.data3ra,
                            ylab=&quot;Relative Abundance&quot;)
 
 plotBefore + plotAfter + plot_layout(nrow=2)</code></pre>
-<p><img src="figure/data_processing_tcga.Rmd/WGS-4-rel-abund-4-1.png" width="225%" height="10" style="display: block; margin: auto;" /></p>
+<p><img src="figure/data_processing_tcga.Rmd/WGS-4-rel-abund-4-1.png" width="100%" height="100%" style="display: block; margin: auto;" /></p>
 </div>
 <div id="phylum-proteobacteria-1" class="section level4">
 <h4>Phylum: Proteobacteria</h4>
@@ -1337,7 +1388,7 @@ plotAfter = plot_abundance(phylo.data3ra,
                            ylab=&quot;Relative Abundance&quot;)
 
 plotBefore + plotAfter + plot_layout(nrow=2)</code></pre>
-<p><img src="figure/data_processing_tcga.Rmd/WGS-4-rel-abund-5-1.png" width="225%" height="10" style="display: block; margin: auto;" /></p>
+<p><img src="figure/data_processing_tcga.Rmd/WGS-4-rel-abund-5-1.png" width="100%" height="100%" style="display: block; margin: auto;" /></p>
 <br>
 <p>
 <button type="button" class="btn btn-default btn-workflowr btn-workflowr-sessioninfo" data-toggle="collapse" data-target="#workflowr-sessioninfo" style="display: block;">
