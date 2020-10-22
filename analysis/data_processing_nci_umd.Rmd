@@ -227,7 +227,7 @@ plotBefore + plotAfter + plot_layout(nrow=2)
 
 ### Abundance by Phylum
 
-```{r WGS-4-phylum, out.width="100%", out.height="100%" }
+```{r WGS-4-phylum, out.width="100%", out.height="200%" }
 
 plot_abundance = function(physeq, title = "", Facet = "Phylum", ylab="Abundance"){
   mphyseq <- phyloseq::psmelt(physeq)
@@ -235,7 +235,7 @@ plot_abundance = function(physeq, title = "", Facet = "Phylum", ylab="Abundance"
   ggplot(data = mphyseq, aes(x=tissue, y=Abundance)) +
     geom_violin(fill = NA) +
     geom_point(size = 1, alpha = 0.9,
-    position = position_jitter(width = 0.3)) +
+              position = position_jitter(width = 0.3)) +
     facet_wrap(facets = Facet) + scale_y_log10()+
     labs(y=ylab)+
     theme(legend.position="none")
@@ -248,73 +248,19 @@ plotAfter = plot_abundance(phylo.data3ra,
 
 plotBefore + plotAfter + plot_layout(nrow=2)
 ```
-
-
-#### Phylum: Bacteroidetes
-
-```{r WGS-4-rel-abund-2, out.width="100%", out.height="100%" }
-
-plot_abundance = function(physeq, title = "", Facet = "Class", ylab="Abundance"){
-  mphyseq = phyloseq::subset_taxa(physeq, Phylum %in% "p__Bacteroidetes")
-  mphyseq <- phyloseq::psmelt(mphyseq)
-  mphyseq <- subset(mphyseq, Abundance > 0)
-  ggplot(data = mphyseq, aes(x=tissue, y=Abundance)) +
-    geom_violin(fill = NA) +
-    geom_point(size = 1, alpha = 0.9,
-    position = position_jitter(width = 0.3)) +
-    facet_wrap(facets = Facet) + scale_y_log10()+
-    labs(y=ylab)+
-    theme(legend.position="none")
-}
-
-plotBefore = plot_abundance(phylo.data3,
-                            ylab="Abundance prior to transformation")
-plotAfter = plot_abundance(phylo.data3ra,
-                           ylab="Relative Abundance")
-
-plotBefore + plotAfter + plot_layout(nrow=2)
-
-```
-
-
-#### Phylum: Firmicutes
-
-```{r WGS-4-rel-abund-3, out.width="100%", out.height="100%" }
-
-plot_abundance = function(physeq, title = "", Facet = "Class", ylab="Abundance"){
-  mphyseq = phyloseq::subset_taxa(physeq, Phylum %in% "p__Firmicutes")
-  mphyseq <- phyloseq::psmelt(mphyseq)
-  mphyseq <- subset(mphyseq, Abundance > 0)
-  ggplot(data = mphyseq, aes(x=tissue, y=Abundance)) +
-    geom_violin(fill = NA) +
-    geom_point(size = 1, alpha = 0.9,
-    position = position_jitter(width = 0.3)) +
-    facet_wrap(facets = Facet) + scale_y_log10()+
-    labs(y=ylab)+
-    theme(legend.position="none")
-}
-
-plotBefore = plot_abundance(phylo.data3,
-                            ylab="Abundance prior to transformation")
-plotAfter = plot_abundance(phylo.data3ra,
-                           ylab="Relative Abundance")
-
-plotBefore + plotAfter + plot_layout(nrow=2)
-```
-
 
 #### Phylum: Fusobacteria
 
 ```{r WGS-4-rel-abund-4, out.width="100%", out.height="100%" }
 
-plot_abundance = function(physeq, title = "", Facet = "Class", ylab="Abundance"){
+plot_abundance = function(physeq, title = "", Facet = "Genus", ylab="Abundance"){
   mphyseq = phyloseq::subset_taxa(physeq, Phylum %in% "p__Fusobacteria")
   mphyseq <- phyloseq::psmelt(mphyseq)
   mphyseq <- subset(mphyseq, Abundance > 0)
   ggplot(data = mphyseq, aes(x=tissue, y=Abundance)) +
     geom_violin(fill = NA) +
     geom_point(size = 1, alpha = 0.9,
-    position = position_jitter(width = 0.3)) +
+               position = position_jitter(width = 0.3)) +
     facet_wrap(facets = Facet) + scale_y_log10()+
     labs(y=ylab)+
     theme(legend.position="none")
@@ -331,28 +277,3 @@ plotBefore + plotAfter + plot_layout(nrow=2)
 ```
 
 
-#### Phylum: Proteobacteria
-
-```{r WGS-4-rel-abund-5, out.width="100%", out.height="100%" }
-
-plot_abundance = function(physeq, title = "", Facet = "Class", ylab="Abundance"){
-  mphyseq = phyloseq::subset_taxa(physeq, Phylum %in% "p__Proteobacteria")
-  mphyseq <- phyloseq::psmelt(mphyseq)
-  mphyseq <- subset(mphyseq, Abundance > 0)
-  ggplot(data = mphyseq, aes(x=tissue, y=Abundance)) +
-    geom_violin(fill = NA) +
-    geom_point(size = 1, alpha = 0.9,
-    position = position_jitter(width = 0.3)) +
-    facet_wrap(facets = Facet) + scale_y_log10()+
-    labs(y=ylab)+
-    theme(legend.position="none")
-}
-
-plotBefore = plot_abundance(phylo.data3,
-                            ylab="Abundance prior to transformation")
-plotAfter = plot_abundance(phylo.data3ra,
-                           ylab="Relative Abundance")
-
-plotBefore + plotAfter + plot_layout(nrow=2)
-
-```

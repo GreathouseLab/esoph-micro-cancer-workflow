@@ -401,7 +401,7 @@ div.tocify {
 <div class="tab-content">
 <div id="summary" class="tab-pane fade in active">
 <p>
-<strong>Last updated:</strong> 2020-10-08
+<strong>Last updated:</strong> 2020-10-22
 </p>
 <p>
 <strong>Checks:</strong> <span class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span> 6 <span class="glyphicon glyphicon-exclamation-sign text-danger" aria-hidden="true"></span> 1
@@ -492,16 +492,16 @@ This reproducible <a href="http://rmarkdown.rstudio.com">R Markdown</a> analysis
 <div class="panel panel-default">
 <div class="panel-heading">
 <p class="panel-title">
-<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongRepositoryversionstrongahrefhttpsgithubcomGreathouseLabesophmicrocancerworkflowtree67ac872cc205b409227c3ee0f11de2dd3b67cb5atargetblank67ac872a"> <span class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span> <strong>Repository version:</strong> <a href="https://github.com/GreathouseLab/esoph-micro-cancer-workflow/tree/67ac872cc205b409227c3ee0f11de2dd3b67cb5a" target="_blank">67ac872</a> </a>
+<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongRepositoryversionstrongahrefhttpsgithubcomGreathouseLabesophmicrocancerworkflowtree5b186b40e0c9a4dc1c7f2a1c421ea57d03377d16targetblank5b186b4a"> <span class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span> <strong>Repository version:</strong> <a href="https://github.com/GreathouseLab/esoph-micro-cancer-workflow/tree/5b186b40e0c9a4dc1c7f2a1c421ea57d03377d16" target="_blank">5b186b4</a> </a>
 </p>
 </div>
-<div id="strongRepositoryversionstrongahrefhttpsgithubcomGreathouseLabesophmicrocancerworkflowtree67ac872cc205b409227c3ee0f11de2dd3b67cb5atargetblank67ac872a" class="panel-collapse collapse">
+<div id="strongRepositoryversionstrongahrefhttpsgithubcomGreathouseLabesophmicrocancerworkflowtree5b186b40e0c9a4dc1c7f2a1c421ea57d03377d16targetblank5b186b4a" class="panel-collapse collapse">
 <div class="panel-body">
 <p>
 Great! You are using Git for version control. Tracking code development and connecting the code version to the results is critical for reproducibility.
 </p>
 <p>
-The results in this page were generated with repository version <a href="https://github.com/GreathouseLab/esoph-micro-cancer-workflow/tree/67ac872cc205b409227c3ee0f11de2dd3b67cb5a" target="_blank">67ac872</a>. See the <em>Past versions</em> tab to see a history of the changes made to the R Markdown and HTML files.
+The results in this page were generated with repository version <a href="https://github.com/GreathouseLab/esoph-micro-cancer-workflow/tree/5b186b40e0c9a4dc1c7f2a1c421ea57d03377d16" target="_blank">5b186b4</a>. See the <em>Past versions</em> tab to see a history of the changes made to the R Markdown and HTML files.
 </p>
 <p>
 Note that you need to be careful to ensure that all relevant files for the analysis have been committed to Git prior to generating the results (you can use <code>wflow_publish</code> or <code>wflow_git_commit</code>). workflowr only checks the R Markdown file, but you know if there are other scripts or data files that it depends on. Below is the status of the Git repository when the results were generated:
@@ -512,10 +512,13 @@ Ignored files:
     Ignored:    .Rproj.user/
     Ignored:    data/
 
+Untracked files:
+    Untracked:  analysis/ids_abundance_misc.Rmd
+
 Unstaged changes:
     Modified:   analysis/data_processing_nci_umd.Rmd
     Modified:   analysis/data_processing_tcga.Rmd
-    Modified:   code/get_data.R
+    Modified:   code/get_cleaned_data.R
 
 </code></pre>
 <p>
@@ -554,6 +557,40 @@ Message
 </tr>
 </thead>
 <tbody>
+<tr>
+<td>
+Rmd
+</td>
+<td>
+<a href="https://github.com/GreathouseLab/esoph-micro-cancer-workflow/blob/5b186b40e0c9a4dc1c7f2a1c421ea57d03377d16/analysis/data_processing_tcga.Rmd" target="_blank">5b186b4</a>
+</td>
+<td>
+noah-padgett
+</td>
+<td>
+2020-10-08
+</td>
+<td>
+fixed image showing
+</td>
+</tr>
+<tr>
+<td>
+html
+</td>
+<td>
+<a href="https://rawcdn.githack.com/GreathouseLab/esoph-micro-cancer-workflow/5b186b40e0c9a4dc1c7f2a1c421ea57d03377d16/docs/data_processing_tcga.html" target="_blank">5b186b4</a>
+</td>
+<td>
+noah-padgett
+</td>
+<td>
+2020-10-08
+</td>
+<td>
+fixed image showing
+</td>
+</tr>
 <tr>
 <td>
 html
@@ -886,58 +923,10 @@ plotBefore = plot_abundance(phylo.data3, ylab=&quot;Abundance prior to transform
 plotAfter = plot_abundance(phylo.data3ra, ylab=&quot;Relative Abundance&quot;)
 # Combine each plot into one graphic.
 plotBefore + plotAfter + plot_layout(nrow=2)</code></pre>
-<p><img src="figure/data_processing_tcga.Rmd/4-phylum-1.png" width="100%" height="100%" style="display: block; margin: auto;" /></p>
-<div id="phylum-bacteroidetes" class="section level4">
-<h4>Phylum: Bacteroidetes</h4>
-<pre class="r"><code>plot_abundance = function(physeq, title = &quot;&quot;,
-                          Facet = &quot;Phylum&quot;,
-                          ylab=&quot;Abundance&quot;){
-  mphyseq = phyloseq::subset_taxa(physeq, Phylum %in% &quot;Bacteroidetes&quot;)
-  mphyseq &lt;- phyloseq::psmelt(mphyseq)
-  mphyseq &lt;- subset(mphyseq, Abundance &gt; 0)
-  ggplot(data = mphyseq, aes(x=SampleType_Level2, y=Abundance)) +
-    geom_violin(fill = NA) +
-    geom_point(size = 1, alpha = 0.9,
-    position = position_jitter(width = 0.3)) +
-    facet_wrap(facets = Facet) + scale_y_log10()+
-    labs(y=ylab)+
-    theme(legend.position=&quot;none&quot;)
-}
-
-plotBefore = plot_abundance(phylo.data3,
-                            ylab=&quot;Abundance prior to transformation&quot;)
-plotAfter = plot_abundance(phylo.data3ra,
-                           ylab=&quot;Relative Abundance&quot;)
-
-plotBefore + plotAfter + plot_layout(nrow=2)</code></pre>
-<p><img src="figure/data_processing_tcga.Rmd/4-rel-abund-2-1.png" width="100%" height="100%" style="display: block; margin: auto;" /></p>
-</div>
-<div id="phylum-firmicutes" class="section level4">
-<h4>Phylum: Firmicutes</h4>
-<pre class="r"><code>plot_abundance = function(physeq, title = &quot;&quot;, Facet = &quot;Class&quot;, ylab=&quot;Abundance&quot;){
-  mphyseq = phyloseq::subset_taxa(physeq, Phylum %in% &quot;Firmicutes&quot;)
-  mphyseq &lt;- phyloseq::psmelt(mphyseq)
-  mphyseq &lt;- subset(mphyseq, Abundance &gt; 0)
-  ggplot(data = mphyseq, aes(x=SampleType_Level2, y=Abundance)) +
-    geom_violin(fill = NA) +
-    geom_point(size = 1, alpha = 0.9,
-    position = position_jitter(width = 0.3)) +
-    facet_wrap(facets = Facet) + scale_y_log10()+
-    labs(y=ylab)+
-    theme(legend.position=&quot;none&quot;)
-}
-
-plotBefore = plot_abundance(phylo.data3,
-                            ylab=&quot;Abundance prior to transformation&quot;)
-plotAfter = plot_abundance(phylo.data3ra,
-                           ylab=&quot;Relative Abundance&quot;)
-
-plotBefore + plotAfter + plot_layout(nrow=2)</code></pre>
-<p><img src="figure/data_processing_tcga.Rmd/4-rel-abund-3-1.png" width="100%" height="100%" style="display: block; margin: auto;" /></p>
-</div>
+<p><img src="figure/data_processing_tcga.Rmd/4-phylum-1.png" width="100%" height="200%" style="display: block; margin: auto;" /></p>
 <div id="phylum-fusobacteria" class="section level4">
 <h4>Phylum: Fusobacteria</h4>
-<pre class="r"><code>plot_abundance = function(physeq, title = &quot;&quot;, Facet = &quot;Class&quot;, ylab=&quot;Abundance&quot;){
+<pre class="r"><code>plot_abundance = function(physeq, title = &quot;&quot;, Facet = &quot;Genus&quot;, ylab=&quot;Abundance&quot;){
   mphyseq = phyloseq::subset_taxa(physeq, Phylum %in% &quot;Fusobacteria&quot;)
   mphyseq &lt;- phyloseq::psmelt(mphyseq)
   mphyseq &lt;- subset(mphyseq, Abundance &gt; 0)
@@ -956,30 +945,19 @@ plotAfter = plot_abundance(phylo.data3ra,
                            ylab=&quot;Relative Abundance&quot;)
 
 plotBefore + plotAfter + plot_layout(nrow=2)</code></pre>
+<pre><code>Warning in max(data$density): no non-missing arguments to max; returning -Inf</code></pre>
+<pre><code>Warning: Computation failed in `stat_ydensity()`:
+replacement has 1 row, data has 0</code></pre>
+<pre><code>Warning in max(data$density): no non-missing arguments to max; returning -Inf</code></pre>
+<pre><code>Warning: Computation failed in `stat_ydensity()`:
+replacement has 1 row, data has 0</code></pre>
+<pre><code>Warning in max(data$density): no non-missing arguments to max; returning -Inf</code></pre>
+<pre><code>Warning: Computation failed in `stat_ydensity()`:
+replacement has 1 row, data has 0</code></pre>
+<pre><code>Warning in max(data$density): no non-missing arguments to max; returning -Inf</code></pre>
+<pre><code>Warning: Computation failed in `stat_ydensity()`:
+replacement has 1 row, data has 0</code></pre>
 <p><img src="figure/data_processing_tcga.Rmd/4-rel-abund-4-1.png" width="100%" height="100%" style="display: block; margin: auto;" /></p>
-</div>
-<div id="phylum-proteobacteria" class="section level4">
-<h4>Phylum: Proteobacteria</h4>
-<pre class="r"><code>plot_abundance = function(physeq, title = &quot;&quot;, Facet = &quot;Class&quot;, ylab=&quot;Abundance&quot;){
-  mphyseq = phyloseq::subset_taxa(physeq, Phylum %in% &quot;Proteobacteria&quot;)
-  mphyseq &lt;- phyloseq::psmelt(mphyseq)
-  mphyseq &lt;- subset(mphyseq, Abundance &gt; 0)
-  ggplot(data = mphyseq, aes(x=SampleType_Level2, y=Abundance)) +
-    geom_violin(fill = NA) +
-    geom_point(size = 1, alpha = 0.9,
-    position = position_jitter(width = 0.3)) +
-    facet_wrap(facets = Facet) + scale_y_log10()+
-    labs(y=ylab)+
-    theme(legend.position=&quot;none&quot;)
-}
-
-plotBefore = plot_abundance(phylo.data3,
-                            ylab=&quot;Abundance prior to transformation&quot;)
-plotAfter = plot_abundance(phylo.data3ra,
-                           ylab=&quot;Relative Abundance&quot;)
-
-plotBefore + plotAfter + plot_layout(nrow=2)</code></pre>
-<p><img src="figure/data_processing_tcga.Rmd/4-rel-abund-5-1.png" width="100%" height="100%" style="display: block; margin: auto;" /></p>
 </div>
 </div>
 </div>
@@ -1297,53 +1275,7 @@ plotAfter = plot_abundance(phylo.data3ra,
                            ylab=&quot;Relative Abundance&quot;)
 
 plotBefore + plotAfter + plot_layout(nrow=2)</code></pre>
-<p><img src="figure/data_processing_tcga.Rmd/WGS-4-phylum%20-1.png" width="100%" height="100%" style="display: block; margin: auto;" /></p>
-<div id="phylum-bacteroidetes-1" class="section level4">
-<h4>Phylum: Bacteroidetes</h4>
-<pre class="r"><code>plot_abundance = function(physeq, title = &quot;&quot;, Facet = &quot;Class&quot;, ylab=&quot;Abundance&quot;){
-  mphyseq = phyloseq::subset_taxa(physeq, Phylum %in% &quot;Bacteroidetes&quot;)
-  mphyseq &lt;- phyloseq::psmelt(mphyseq)
-  mphyseq &lt;- subset(mphyseq, Abundance &gt; 0)
-  ggplot(data = mphyseq, aes(x=SampleType_Level2, y=Abundance)) +
-    geom_violin(fill = NA) +
-    geom_point(size = 1, alpha = 0.9,
-    position = position_jitter(width = 0.3)) +
-    facet_wrap(facets = Facet) + scale_y_log10()+
-    labs(y=ylab)+
-    theme(legend.position=&quot;none&quot;)
-}
-
-plotBefore = plot_abundance(phylo.data3,
-                            ylab=&quot;Abundance prior to transformation&quot;)
-plotAfter = plot_abundance(phylo.data3ra,
-                           ylab=&quot;Relative Abundance&quot;)
-
-plotBefore + plotAfter + plot_layout(nrow=2)</code></pre>
-<p><img src="figure/data_processing_tcga.Rmd/WGS-4-rel-abund-2-1.png" width="100%" height="100%" style="display: block; margin: auto;" /></p>
-</div>
-<div id="phylum-firmicutes-1" class="section level4">
-<h4>Phylum: Firmicutes</h4>
-<pre class="r"><code>plot_abundance = function(physeq, title = &quot;&quot;, Facet = &quot;Class&quot;, ylab=&quot;Abundance&quot;){
-  mphyseq = phyloseq::subset_taxa(physeq, Phylum %in% &quot;Firmicutes&quot;)
-  mphyseq &lt;- phyloseq::psmelt(mphyseq)
-  mphyseq &lt;- subset(mphyseq, Abundance &gt; 0)
-  ggplot(data = mphyseq, aes(x=SampleType_Level2, y=Abundance)) +
-    geom_violin(fill = NA) +
-    geom_point(size = 1, alpha = 0.9,
-    position = position_jitter(width = 0.3)) +
-    facet_wrap(facets = Facet) + scale_y_log10()+
-    labs(y=ylab)+
-    theme(legend.position=&quot;none&quot;)
-}
-
-plotBefore = plot_abundance(phylo.data3,
-                            ylab=&quot;Abundance prior to transformation&quot;)
-plotAfter = plot_abundance(phylo.data3ra,
-                           ylab=&quot;Relative Abundance&quot;)
-
-plotBefore + plotAfter + plot_layout(nrow=2)</code></pre>
-<p><img src="figure/data_processing_tcga.Rmd/WGS-4-rel-abund-3-1.png" width="100%" height="100%" style="display: block; margin: auto;" /></p>
-</div>
+<p><img src="figure/data_processing_tcga.Rmd/WGS-4-phylum%20-1.png" width="100%" height="200%" style="display: block; margin: auto;" /></p>
 <div id="phylum-fusobacteria-1" class="section level4">
 <h4>Phylum: Fusobacteria</h4>
 <pre class="r"><code>plot_abundance = function(physeq, title = &quot;&quot;, Facet = &quot;Class&quot;, ylab=&quot;Abundance&quot;){
@@ -1366,29 +1298,6 @@ plotAfter = plot_abundance(phylo.data3ra,
 
 plotBefore + plotAfter + plot_layout(nrow=2)</code></pre>
 <p><img src="figure/data_processing_tcga.Rmd/WGS-4-rel-abund-4-1.png" width="100%" height="100%" style="display: block; margin: auto;" /></p>
-</div>
-<div id="phylum-proteobacteria-1" class="section level4">
-<h4>Phylum: Proteobacteria</h4>
-<pre class="r"><code>plot_abundance = function(physeq, title = &quot;&quot;, Facet = &quot;Class&quot;, ylab=&quot;Abundance&quot;){
-  mphyseq = phyloseq::subset_taxa(physeq, Phylum %in% &quot;Proteobacteria&quot;)
-  mphyseq &lt;- phyloseq::psmelt(mphyseq)
-  mphyseq &lt;- subset(mphyseq, Abundance &gt; 0)
-  ggplot(data = mphyseq, aes(x=SampleType_Level2, y=Abundance)) +
-    geom_violin(fill = NA) +
-    geom_point(size = 1, alpha = 0.9,
-    position = position_jitter(width = 0.3)) +
-    facet_wrap(facets = Facet) + scale_y_log10()+
-    labs(y=ylab)+
-    theme(legend.position=&quot;none&quot;)
-}
-
-plotBefore = plot_abundance(phylo.data3,
-                            ylab=&quot;Abundance prior to transformation&quot;)
-plotAfter = plot_abundance(phylo.data3ra,
-                           ylab=&quot;Relative Abundance&quot;)
-
-plotBefore + plotAfter + plot_layout(nrow=2)</code></pre>
-<p><img src="figure/data_processing_tcga.Rmd/WGS-4-rel-abund-5-1.png" width="100%" height="100%" style="display: block; margin: auto;" /></p>
 <br>
 <p>
 <button type="button" class="btn btn-default btn-workflowr btn-workflowr-sessioninfo" data-toggle="collapse" data-target="#workflowr-sessioninfo" style="display: block;">

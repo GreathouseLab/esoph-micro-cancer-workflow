@@ -1,0 +1,88 @@
+---
+title: "Sample IDs and Relative Abundance Misc."
+output:
+  workflowr::wflow_html:
+    toc: true
+editor_options:
+  chunk_output_type: console
+---
+
+*	Sampling IDs in each dataset with Fusobacterium (genus level) abundance above 0.1%
+* I need to know the relative abundance of Streptococcus sanguinis, Prevotella (genus level), Fusobacterium nucleatum, Camplybactor concisus in the NCI-MD dataset for tumors only.
+
+
+```{r data, include=FALSE, echo=FALSE}
+# load packages
+source("code/load_packages.R")
+
+# get data
+source("code/get_cleaned_data.R")
+
+theme_set(theme_bw())
+pal = "Sequential"
+scale_colour_discrete <-  function(palname=pal, ...){
+  scale_colour_brewer(palette=palname, ...)
+}
+scale_fill_discrete <-  function(palname=pal, ...){
+  scale_fill_brewer(palette=palname, ...)
+}
+
+knitr::opts_chunk$set(out.width = "225%", out.height = 10)
+```
+
+
+
+# IDs with Fuso. > .01
+
+## NCI Data
+
+```{r}
+
+# Transform to relative abundance. Save as new object.
+ra.dat = transform_sample_counts(phylo.data.nci.umd, function(x){x / sum(x)})
+mphyseq = phyloseq::psmelt(ra.dat)
+mphyseq <- subset(mphyseq, Abundance > 0.01)
+
+A <- mphyseq %>%
+  filter(Genus == "g__Fusobacterium", Abundance > .01)
+
+kable(A[, c("Sample", "Abundance")], style= "html", digits=3) %>%
+  kable_styling(full_width = T)
+
+
+```
+
+## TCGA RNAseq
+
+```{r}
+
+# Transform to relative abundance. Save as new object.
+ra.dat = transform_sample_counts(phylo.data.tcga.RNAseq, function(x){x / sum(x)})
+mphyseq = phyloseq::psmelt(ra.dat)
+
+A <- mphyseq %>%
+  filter(Genus == "Fusobacterium", Abundance > .01)
+
+kable(A[, c("Sample", "Abundance")], style= "html", digits=3) %>%
+  kable_styling(full_width = T)
+
+
+```
+
+
+## TCGA WGS
+
+```{r}
+
+# Transform to relative abundance. Save as new object.
+ra.dat = transform_sample_counts(phylo.data.tcga.WGS, function(x){x / sum(x)})
+mphyseq = phyloseq::psmelt(ra.dat)
+
+A <- mphyseq %>%
+  filter(Genus == "Fusobacterium", Abundance > .01)
+
+kable(A[, c("Sample", "Abundance")], style= "html", digits=3) %>%
+  kable_styling(full_width = T)
+
+
+```
