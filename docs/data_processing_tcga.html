@@ -492,16 +492,16 @@ This reproducible <a href="http://rmarkdown.rstudio.com">R Markdown</a> analysis
 <div class="panel panel-default">
 <div class="panel-heading">
 <p class="panel-title">
-<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongRepositoryversionstrongahrefhttpsgithubcomGreathouseLabesophmicrocancerworkflowtree5b186b40e0c9a4dc1c7f2a1c421ea57d03377d16targetblank5b186b4a"> <span class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span> <strong>Repository version:</strong> <a href="https://github.com/GreathouseLab/esoph-micro-cancer-workflow/tree/5b186b40e0c9a4dc1c7f2a1c421ea57d03377d16" target="_blank">5b186b4</a> </a>
+<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongRepositoryversionstrongahrefhttpsgithubcomGreathouseLabesophmicrocancerworkflowtreee41080d18fbcbeb21d63dd4a16b5be499d5f5153targetblanke41080da"> <span class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span> <strong>Repository version:</strong> <a href="https://github.com/GreathouseLab/esoph-micro-cancer-workflow/tree/e41080d18fbcbeb21d63dd4a16b5be499d5f5153" target="_blank">e41080d</a> </a>
 </p>
 </div>
-<div id="strongRepositoryversionstrongahrefhttpsgithubcomGreathouseLabesophmicrocancerworkflowtree5b186b40e0c9a4dc1c7f2a1c421ea57d03377d16targetblank5b186b4a" class="panel-collapse collapse">
+<div id="strongRepositoryversionstrongahrefhttpsgithubcomGreathouseLabesophmicrocancerworkflowtreee41080d18fbcbeb21d63dd4a16b5be499d5f5153targetblanke41080da" class="panel-collapse collapse">
 <div class="panel-body">
 <p>
 Great! You are using Git for version control. Tracking code development and connecting the code version to the results is critical for reproducibility.
 </p>
 <p>
-The results in this page were generated with repository version <a href="https://github.com/GreathouseLab/esoph-micro-cancer-workflow/tree/5b186b40e0c9a4dc1c7f2a1c421ea57d03377d16" target="_blank">5b186b4</a>. See the <em>Past versions</em> tab to see a history of the changes made to the R Markdown and HTML files.
+The results in this page were generated with repository version <a href="https://github.com/GreathouseLab/esoph-micro-cancer-workflow/tree/e41080d18fbcbeb21d63dd4a16b5be499d5f5153" target="_blank">e41080d</a>. See the <em>Past versions</em> tab to see a history of the changes made to the R Markdown and HTML files.
 </p>
 <p>
 Note that you need to be careful to ensure that all relevant files for the analysis have been committed to Git prior to generating the results (you can use <code>wflow_publish</code> or <code>wflow_git_commit</code>). workflowr only checks the R Markdown file, but you know if there are other scripts or data files that it depends on. Below is the status of the Git repository when the results were generated:
@@ -512,13 +512,8 @@ Ignored files:
     Ignored:    .Rproj.user/
     Ignored:    data/
 
-Untracked files:
-    Untracked:  analysis/ids_abundance_misc.Rmd
-
 Unstaged changes:
-    Modified:   analysis/data_processing_nci_umd.Rmd
     Modified:   analysis/data_processing_tcga.Rmd
-    Modified:   code/get_cleaned_data.R
 
 </code></pre>
 <p>
@@ -557,6 +552,40 @@ Message
 </tr>
 </thead>
 <tbody>
+<tr>
+<td>
+Rmd
+</td>
+<td>
+<a href="https://github.com/GreathouseLab/esoph-micro-cancer-workflow/blob/e41080d18fbcbeb21d63dd4a16b5be499d5f5153/analysis/data_processing_tcga.Rmd" target="_blank">e41080d</a>
+</td>
+<td>
+noah-padgett
+</td>
+<td>
+2020-10-22
+</td>
+<td>
+updated cleaning and ids data
+</td>
+</tr>
+<tr>
+<td>
+html
+</td>
+<td>
+<a href="https://rawcdn.githack.com/GreathouseLab/esoph-micro-cancer-workflow/e41080d18fbcbeb21d63dd4a16b5be499d5f5153/docs/data_processing_tcga.html" target="_blank">e41080d</a>
+</td>
+<td>
+noah-padgett
+</td>
+<td>
+2020-10-22
+</td>
+<td>
+updated cleaning and ids data
+</td>
+</tr>
 <tr>
 <td>
 Rmd
@@ -1278,7 +1307,7 @@ plotBefore + plotAfter + plot_layout(nrow=2)</code></pre>
 <p><img src="figure/data_processing_tcga.Rmd/WGS-4-phylum%20-1.png" width="100%" height="200%" style="display: block; margin: auto;" /></p>
 <div id="phylum-fusobacteria-1" class="section level4">
 <h4>Phylum: Fusobacteria</h4>
-<pre class="r"><code>plot_abundance = function(physeq, title = &quot;&quot;, Facet = &quot;Class&quot;, ylab=&quot;Abundance&quot;){
+<pre class="r"><code>plot_abundance = function(physeq, title = &quot;&quot;, Facet = &quot;Genus&quot;, ylab=&quot;Abundance&quot;){
   mphyseq = phyloseq::subset_taxa(physeq, Phylum %in% &quot;Fusobacteria&quot;)
   mphyseq &lt;- phyloseq::psmelt(mphyseq)
   mphyseq &lt;- subset(mphyseq, Abundance &gt; 0)

@@ -490,7 +490,7 @@ plotBefore + plotAfter + plot_layout(nrow=2)
 
 ```{r WGS-4-rel-abund-4, out.width="100%", out.height="100%" }
 
-plot_abundance = function(physeq, title = "", Facet = "Class", ylab="Abundance"){
+plot_abundance = function(physeq, title = "", Facet = "Genus", ylab="Abundance"){
   mphyseq = phyloseq::subset_taxa(physeq, Phylum %in% "Fusobacteria")
   mphyseq <- phyloseq::psmelt(mphyseq)
   mphyseq <- subset(mphyseq, Abundance > 0)
