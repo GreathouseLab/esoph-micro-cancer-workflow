@@ -52,6 +52,17 @@ kable(A[, c("Sample", "Abundance")], style= "html", digits=3) %>%
 
 ```
 
+
+```{r}
+
+
+p <- ggplot(mphyseq, aes(x=Phylum, y=Abundance))+
+  geom_violin()+
+  geom_jitter(alpha=0.3)
+p
+
+```
+
 ## TCGA RNAseq
 
 ```{r}
@@ -86,3 +97,164 @@ kable(A[, c("Sample", "Abundance")], style= "html", digits=3) %>%
 
 
 ```
+
+
+
+
+# Addtional Information
+
+Table with sample IDs with highest abundance of the following: 
+
+* Fusobacterium nucleatum
+* Streptococcus sanguinis
+* Campylobacter concisus
+
+## NCI
+
+### Fusobacterium nucleatum
+
+```{r}
+
+# Transform to relative abundance. Save as new object.
+ra.dat = transform_sample_counts(phylo.data.nci.umd, function(x){x / sum(x)})
+mphyseq = phyloseq::psmelt(ra.dat)
+
+A <- mphyseq %>%
+  filter(OTU == "Fusobacterium_nucleatum", Abundance > 0.001)
+
+kable(A[, c("Sample", "Abundance")], style= "html", digits=3) %>%
+  kable_styling(full_width = T)
+
+
+```
+
+### Streptococcus sanguinis
+
+**NOT UNIQUELY FOUND**
+
+Only found as: ` Streptococcus_dentisani:Streptococcus_infantis:Streptococcus_mitis:Streptococcus_oligofermentans:Streptococcus_oralis:Streptococcus_pneumoniae:Streptococcus_pseudopneumoniae:Streptococcus_sanguinis`
+
+```{r}
+
+A <- mphyseq %>%
+  filter(OTU %like% "Streptococcus_sanguinis", Abundance > 0.001)
+
+kable(A[, c("OTU","Sample", "Abundance")], style= "html", digits=3) %>%
+  kable_styling(full_width = T)
+
+
+```
+
+### Campylobacter concisus
+
+**NOT FOUND**
+
+Only found: ` Campylobacter_rectus:Campylobacter_showae`
+
+```{r}
+
+A <- mphyseq %>%
+  filter(OTU == "Campylobacter_rectus:Campylobacter_showae", Abundance > 0.001)
+
+kable(A[, c("Sample", "Abundance")], style= "html", digits=3) %>%
+  kable_styling(full_width = T)
+
+
+```
+
+## TCGA RNAseq
+
+### Fusobacterium nucleatum
+
+```{r}
+
+# Transform to relative abundance. Save as new object.
+ra.dat = transform_sample_counts(phylo.data.tcga.RNAseq, function(x){x / sum(x)})
+mphyseq = phyloseq::psmelt(ra.dat)
+
+A <- mphyseq %>%
+  filter(OTU %like% "Fusobacterium nucleatum", Abundance > 0.001)
+
+
+kable(A[, c("OTU","Sample", "Abundance")], style= "html", digits=3) %>%
+  kable_styling(full_width = T)
+
+
+```
+
+### Streptococcus sanguinis
+
+
+```{r}
+
+A <- mphyseq %>%
+  filter(OTU %like% "Streptococcus sanguinis", Abundance > 0.001)
+
+kable(A[, c("OTU","Sample", "Abundance")], style= "html", digits=3) %>%
+  kable_styling(full_width = T)
+
+
+```
+
+### Campylobacter concisus
+
+```{r}
+
+A <- mphyseq %>%
+  filter(OTU %like% "Campylobacter concisus", Abundance > 0.001)
+
+kable(A[, c("OTU","Sample", "Abundance")], style= "html", digits=3) %>%
+  kable_styling(full_width = T)
+
+
+```
+
+
+## TCGA WGS
+
+### Fusobacterium nucleatum
+
+```{r}
+
+# Transform to relative abundance. Save as new object.
+ra.dat = transform_sample_counts(phylo.data.tcga.WGS, function(x){x / sum(x)})
+mphyseq = phyloseq::psmelt(ra.dat)
+
+A <- mphyseq %>%
+  filter(OTU %like% "Fusobacterium nucleatum", Abundance > 0.001)
+
+
+kable(A[, c("OTU","Sample", "Abundance")], style= "html", digits=3) %>%
+  kable_styling(full_width = T)
+
+
+```
+
+### Streptococcus sanguinis
+
+
+```{r}
+
+A <- mphyseq %>%
+  filter(OTU %like% "Streptococcus sanguinis", Abundance > 0.001)
+
+kable(A[, c("OTU","Sample", "Abundance")], style= "html", digits=3) %>%
+  kable_styling(full_width = T)
+
+
+```
+
+### Campylobacter concisus
+
+```{r}
+
+A <- mphyseq %>%
+  filter(OTU %like% "Campylobacter concisus", Abundance > 0.001)
+
+kable(A[, c("OTU","Sample", "Abundance")], style= "html", digits=3) %>%
+  kable_styling(full_width = T)
+
+
+```
+
+

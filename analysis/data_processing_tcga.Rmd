@@ -53,6 +53,8 @@ knitr::opts_chunk$set(out.width = "225%", out.height = 10)
 
 sampleReads <- phyloseq::sample_sums(phylo.data.tcga.RNAseq)
 
+sampleReads
+
 # Total quality Reads
 sum(sampleReads)
 
@@ -229,7 +231,7 @@ plotBefore + plotAfter + plot_layout(nrow=2)
 
 ### Abundance by Phylum
 
-```{r 4-phylum, out.width="100%", out.height="200%" }
+```{r 4-phylum, out.width="100%", out.height="100%", fig.height=10}
 
 plot_abundance = function(physeq, title = "", Facet = "Phylum",
                           ylab="Abundance"){
@@ -255,7 +257,7 @@ plotBefore + plotAfter + plot_layout(nrow=2)
 
 #### Phylum: Fusobacteria
 
-```{r 4-rel-abund-4, out.width="100%", out.height="100%" }
+```{r 4-rel-abund-4, out.width="100%", out.height="100%", fig.height=8}
 
 plot_abundance = function(physeq, title = "", Facet = "Genus", ylab="Abundance"){
   mphyseq = phyloseq::subset_taxa(physeq, Phylum %in% "Fusobacteria")
@@ -463,7 +465,7 @@ plotBefore + plotAfter + plot_layout(nrow=2)
 
 ### Abundance by Phylum
 
-```{r WGS-4-phylum , out.width="100%", out.height="200%"}
+```{r WGS-4-phylum , out.width="100%", out.height="100%", fig.height=10}
 
 plot_abundance = function(physeq, title = "", Facet = "Phylum", ylab="Abundance"){
   mphyseq <- phyloseq::psmelt(physeq)
@@ -488,7 +490,7 @@ plotBefore + plotAfter + plot_layout(nrow=2)
 
 #### Phylum: Fusobacteria
 
-```{r WGS-4-rel-abund-4, out.width="100%", out.height="100%" }
+```{r WGS-4-rel-abund-4, out.width="100%", out.height="100%" , fig.height=8}
 
 plot_abundance = function(physeq, title = "", Facet = "Genus", ylab="Abundance"){
   mphyseq = phyloseq::subset_taxa(physeq, Phylum %in% "Fusobacteria")

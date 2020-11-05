@@ -401,7 +401,7 @@ div.tocify {
 <div class="tab-content">
 <div id="summary" class="tab-pane fade in active">
 <p>
-<strong>Last updated:</strong> 2020-10-22
+<strong>Last updated:</strong> 2020-11-05
 </p>
 <p>
 <strong>Checks:</strong> <span class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span> 6 <span class="glyphicon glyphicon-exclamation-sign text-danger" aria-hidden="true"></span> 1
@@ -492,16 +492,16 @@ This reproducible <a href="http://rmarkdown.rstudio.com">R Markdown</a> analysis
 <div class="panel panel-default">
 <div class="panel-heading">
 <p class="panel-title">
-<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongRepositoryversionstrongahrefhttpsgithubcomGreathouseLabesophmicrocancerworkflowtreee41080d18fbcbeb21d63dd4a16b5be499d5f5153targetblanke41080da"> <span class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span> <strong>Repository version:</strong> <a href="https://github.com/GreathouseLab/esoph-micro-cancer-workflow/tree/e41080d18fbcbeb21d63dd4a16b5be499d5f5153" target="_blank">e41080d</a> </a>
+<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongRepositoryversionstrongahrefhttpsgithubcomGreathouseLabesophmicrocancerworkflowtreeb5c01ed1859751d05afb2312f3356b5d9c7c4fe2targetblankb5c01eda"> <span class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span> <strong>Repository version:</strong> <a href="https://github.com/GreathouseLab/esoph-micro-cancer-workflow/tree/b5c01ed1859751d05afb2312f3356b5d9c7c4fe2" target="_blank">b5c01ed</a> </a>
 </p>
 </div>
-<div id="strongRepositoryversionstrongahrefhttpsgithubcomGreathouseLabesophmicrocancerworkflowtreee41080d18fbcbeb21d63dd4a16b5be499d5f5153targetblanke41080da" class="panel-collapse collapse">
+<div id="strongRepositoryversionstrongahrefhttpsgithubcomGreathouseLabesophmicrocancerworkflowtreeb5c01ed1859751d05afb2312f3356b5d9c7c4fe2targetblankb5c01eda" class="panel-collapse collapse">
 <div class="panel-body">
 <p>
 Great! You are using Git for version control. Tracking code development and connecting the code version to the results is critical for reproducibility.
 </p>
 <p>
-The results in this page were generated with repository version <a href="https://github.com/GreathouseLab/esoph-micro-cancer-workflow/tree/e41080d18fbcbeb21d63dd4a16b5be499d5f5153" target="_blank">e41080d</a>. See the <em>Past versions</em> tab to see a history of the changes made to the R Markdown and HTML files.
+The results in this page were generated with repository version <a href="https://github.com/GreathouseLab/esoph-micro-cancer-workflow/tree/b5c01ed1859751d05afb2312f3356b5d9c7c4fe2" target="_blank">b5c01ed</a>. See the <em>Past versions</em> tab to see a history of the changes made to the R Markdown and HTML files.
 </p>
 <p>
 Note that you need to be careful to ensure that all relevant files for the analysis have been committed to Git prior to generating the results (you can use <code>wflow_publish</code> or <code>wflow_git_commit</code>). workflowr only checks the R Markdown file, but you know if there are other scripts or data files that it depends on. Below is the status of the Git repository when the results were generated:
@@ -514,6 +514,7 @@ Ignored files:
 
 Unstaged changes:
     Modified:   analysis/data_processing_tcga.Rmd
+    Modified:   analysis/ids_abundance_misc.Rmd
 
 </code></pre>
 <p>
@@ -552,6 +553,40 @@ Message
 </tr>
 </thead>
 <tbody>
+<tr>
+<td>
+Rmd
+</td>
+<td>
+<a href="https://github.com/GreathouseLab/esoph-micro-cancer-workflow/blob/b5c01ed1859751d05afb2312f3356b5d9c7c4fe2/analysis/data_processing_tcga.Rmd" target="_blank">b5c01ed</a>
+</td>
+<td>
+noah-padgett
+</td>
+<td>
+2020-10-22
+</td>
+<td>
+fixed TCGA figure
+</td>
+</tr>
+<tr>
+<td>
+html
+</td>
+<td>
+<a href="https://rawcdn.githack.com/GreathouseLab/esoph-micro-cancer-workflow/b5c01ed1859751d05afb2312f3356b5d9c7c4fe2/docs/data_processing_tcga.html" target="_blank">b5c01ed</a>
+</td>
+<td>
+noah-padgett
+</td>
+<td>
+2020-10-22
+</td>
+<td>
+fixed TCGA figure
+</td>
+</tr>
 <tr>
 <td>
 Rmd
@@ -696,7 +731,74 @@ updated processing files
 <h2>0. Sample Reads, Totals, and Rarifying</h2>
 <pre class="r"><code>sampleReads &lt;- phyloseq::sample_sums(phylo.data.tcga.RNAseq)
 
-# Total quality Reads
+sampleReads</code></pre>
+<pre><code> TCGA.2H.A9GF.Tumor.RNAseq.579  TCGA.2H.A9GJ.Tumor.RNAseq.a43 
+                       2196746                        2258184 
+ TCGA.IG.A3I8.Tumor.RNAseq.f83  TCGA.IG.A3QL.Tumor.RNAseq.85d 
+                        208954                          91069 
+ TCGA.IG.A3YA.Tumor.RNAseq.66a  TCGA.IG.A3YC.Tumor.RNAseq.276 
+                         57093                         581915 
+ TCGA.IG.A4P3.Tumor.RNAseq.50d  TCGA.IG.A4QS.Tumor.RNAseq.542 
+                        309817                         964946 
+ TCGA.IG.A50L.Tumor.RNAseq.93f  TCGA.IG.A5B8.Tumor.RNAseq.3b2 
+                        486713                         677270 
+ TCGA.IG.A5S3.Tumor.RNAseq.200  TCGA.IG.A625.Tumor.RNAseq.096 
+                        195220                         143832 
+ TCGA.JY.A93C.Tumor.RNAseq.3ba TCGA.L5.A43C.Normal.RNAseq.ffd 
+                       1912961                         434352 
+ TCGA.L5.A43C.Tumor.RNAseq.5fe  TCGA.L5.A43E.Tumor.RNAseq.6bb 
+                        751188                         148331 
+ TCGA.L5.A43J.Tumor.RNAseq.64f  TCGA.L5.A4OE.Tumor.RNAseq.0e5 
+                         31941                         242287 
+TCGA.L5.A4OF.Normal.RNAseq.4cb TCGA.L5.A4OG.Normal.RNAseq.76d 
+                        281031                         449297 
+ TCGA.L5.A4OG.Tumor.RNAseq.ef4  TCGA.L5.A4OH.Tumor.RNAseq.0ce 
+                        212212                         242003 
+TCGA.L5.A4OJ.Normal.RNAseq.d64  TCGA.L5.A4OJ.Tumor.RNAseq.17c 
+                        413474                         236190 
+ TCGA.L5.A4OM.Tumor.RNAseq.9d2  TCGA.L5.A4ON.Tumor.RNAseq.2e8 
+                        161300                          94813 
+TCGA.L5.A4OO.Normal.RNAseq.646  TCGA.L5.A4OO.Tumor.RNAseq.1f1 
+                        462884                         364963 
+ TCGA.L5.A4OP.Tumor.RNAseq.6be TCGA.L5.A4OQ.Normal.RNAseq.c24 
+                        293979                         213727 
+TCGA.L5.A4OR.Normal.RNAseq.22f  TCGA.L5.A4OS.Tumor.RNAseq.85f 
+                        374051                         233892 
+ TCGA.L5.A4OT.Tumor.RNAseq.71d  TCGA.L5.A4OU.Tumor.RNAseq.df3 
+                        507148                         433111 
+ TCGA.L5.A4OW.Tumor.RNAseq.e8e  TCGA.L5.A4OX.Tumor.RNAseq.c54 
+                        317861                         238826 
+ TCGA.L5.A8NS.Tumor.RNAseq.69a  TCGA.L7.A56G.Tumor.RNAseq.70a 
+                       2377000                         328304 
+ TCGA.LN.A49M.Tumor.RNAseq.d16  TCGA.LN.A49O.Tumor.RNAseq.d4f 
+                        269249                          18157 
+ TCGA.LN.A49P.Tumor.RNAseq.346  TCGA.LN.A49S.Tumor.RNAseq.0a9 
+                         60432                          55311 
+ TCGA.LN.A49U.Tumor.RNAseq.450  TCGA.LN.A49W.Tumor.RNAseq.dfd 
+                        183716                         293817 
+ TCGA.LN.A49X.Tumor.RNAseq.36d  TCGA.LN.A49Y.Tumor.RNAseq.32b 
+                        266304                         589419 
+ TCGA.LN.A4A1.Tumor.RNAseq.ffd  TCGA.LN.A4A3.Tumor.RNAseq.7ab 
+                        198953                         330219 
+ TCGA.LN.A4A4.Tumor.RNAseq.fc5  TCGA.LN.A4A5.Tumor.RNAseq.11e 
+                        345745                         167082 
+ TCGA.LN.A4A8.Tumor.RNAseq.e2a  TCGA.LN.A4A9.Tumor.RNAseq.cc6 
+                        169882                         498383 
+ TCGA.LN.A4MQ.Tumor.RNAseq.5b4  TCGA.LN.A5U5.Tumor.RNAseq.ef4 
+                        210714                         208664 
+ TCGA.LN.A5U6.Tumor.RNAseq.c00  TCGA.LN.A5U7.Tumor.RNAseq.88b 
+                        205554                         111690 
+ TCGA.M9.A5M8.Tumor.RNAseq.4ef  TCGA.Q9.A6FW.Tumor.RNAseq.d88 
+                        233106                         472304 
+ TCGA.R6.A6DN.Tumor.RNAseq.7ed  TCGA.R6.A6DQ.Tumor.RNAseq.a41 
+                        197164                         302461 
+ TCGA.R6.A6KZ.Tumor.RNAseq.22d  TCGA.R6.A6L4.Tumor.RNAseq.19e 
+                        188388                         242143 
+ TCGA.R6.A8W8.Tumor.RNAseq.fb2  TCGA.R6.A8WC.Tumor.RNAseq.64b 
+                       2269286                        2118504 
+ TCGA.S8.A6BV.Tumor.RNAseq.86b  TCGA.S8.A6BW.Tumor.RNAseq.802 
+                        215598                         136204 </code></pre>
+<pre class="r"><code># Total quality Reads
 sum(sampleReads)</code></pre>
 <pre><code>[1] 30487334</code></pre>
 <pre class="r"><code># Average reads
@@ -952,7 +1054,7 @@ plotBefore = plot_abundance(phylo.data3, ylab=&quot;Abundance prior to transform
 plotAfter = plot_abundance(phylo.data3ra, ylab=&quot;Relative Abundance&quot;)
 # Combine each plot into one graphic.
 plotBefore + plotAfter + plot_layout(nrow=2)</code></pre>
-<p><img src="figure/data_processing_tcga.Rmd/4-phylum-1.png" width="100%" height="200%" style="display: block; margin: auto;" /></p>
+<p><img src="figure/data_processing_tcga.Rmd/4-phylum-1.png" width="100%" height="100%" style="display: block; margin: auto;" /></p>
 <div id="phylum-fusobacteria" class="section level4">
 <h4>Phylum: Fusobacteria</h4>
 <pre class="r"><code>plot_abundance = function(physeq, title = &quot;&quot;, Facet = &quot;Genus&quot;, ylab=&quot;Abundance&quot;){
@@ -1304,7 +1406,7 @@ plotAfter = plot_abundance(phylo.data3ra,
                            ylab=&quot;Relative Abundance&quot;)
 
 plotBefore + plotAfter + plot_layout(nrow=2)</code></pre>
-<p><img src="figure/data_processing_tcga.Rmd/WGS-4-phylum%20-1.png" width="100%" height="200%" style="display: block; margin: auto;" /></p>
+<p><img src="figure/data_processing_tcga.Rmd/WGS-4-phylum%20-1.png" width="100%" height="100%" style="display: block; margin: auto;" /></p>
 <div id="phylum-fusobacteria-1" class="section level4">
 <h4>Phylum: Fusobacteria</h4>
 <pre class="r"><code>plot_abundance = function(physeq, title = &quot;&quot;, Facet = &quot;Genus&quot;, ylab=&quot;Abundance&quot;){

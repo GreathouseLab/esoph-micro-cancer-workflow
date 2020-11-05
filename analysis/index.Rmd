@@ -17,4 +17,4 @@ Welcome to our research website.
 
 *[TCGA Data Process](data_processing_tcga.html)
 
-*[ID Fuso Abund Data](ids_abundance_misc.html)
+*[Sample IDs with Abundances](ids_abundance_misc.html)
