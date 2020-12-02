@@ -117,11 +117,11 @@ totals
 ```
 
 Any of the taxa under a total of 100 may be suspect.
-First, we will remove the taxa that are clearly too low in abundance (<=5).
+First, we will remove the taxa that are clearly too low in abundance (<=3).
 
 ```{r 2-comp-3 }
 
-filterPhyla <- totals$Phylum[totals$Total <= 5, drop=T] # drop allows some of the attributes to be removed
+filterPhyla <- totals$Phylum[totals$Total <= 3, drop=T] # drop allows some of the attributes to be removed
 
 phylo.data1 <- phyloseq::subset_taxa(phylo.data.tcga, !Phylum %in% filterPhyla)
 phylo.data1
@@ -131,7 +131,7 @@ phylo.data1
 Next, we explore the taxa in more detail next as we move to remove some of these low abundance taxa.
 
 
-## 3. Removal Phyla with 1% or less of all samples (prevalence filtering)
+## 3. Removal Phyla with 0.1% or less of all samples (prevalence filtering)
 
 
 ```{r 3-remove-phylum-1 }
@@ -168,11 +168,11 @@ Note: for plotting purposes, a $+1$ was added to all TotalAbundances to avoid a 
 
 
 Next, we define a prevalence threshold, that way the taxa can be pruned to a prespecified level. 
-In this study, we used 0.01 (1\%) of total samples.
+In this study, we used 0.001 (0.1\%) of total samples.
 
 ```{r 3-prev-threshold }
 
-prevalenceThreshold <- 0.01*(phyloseq::nsamples(phylo.data.tcga))
+prevalenceThreshold <- 0.001*(phyloseq::nsamples(phylo.data.tcga))
 prevalenceThreshold
 
 # execute the filtering to this level
@@ -192,13 +192,31 @@ genusNames <- phyloseq::get_taxa_unique(phylo.data2, "Genus")
 # How many genera would be present after filtering?
 length(phyloseq::get_taxa_unique(phylo.data2, taxonomic.rank = "Genus"))
 
-## [1] 144
-
 phylo.data3 = phyloseq::tax_glom(phylo.data2, "Genus", NArm = TRUE)
 
 ```
 
-## 7. Relative Adbundance Plot
+## 7. Removal of Genera Contaminants
+
+```{r}
+
+a <- taxa_names(phylo.data3)
+
+conTaxa <- c("Pseudomonadales", "Comamonadaceae", "Rhizobiales", "Burkholderiales", "Paenibacillaceae", "Staphylococcus epidermidis", "Propionibacterium acnes", "Escherichia", "Bacillaceae")
+i <- 1
+K <- 0
+for(i in 1:length(conTaxa)){
+  kT <- a[a %like% conTaxa[i]]
+  K <- c(K, kT)
+}
+
+b <- !a %in% K
+
+phylo.data3 <- phyloseq::prune_taxa(b, phylo.data3)
+
+```
+
+## 8. Relative Adbundance Plot
 
 ```{r 4-rel-abund, out.width="100%", out.height="100%"}
 
@@ -227,7 +245,7 @@ plotBefore + plotAfter + plot_layout(nrow=2)
 
 ```
 
-## 8. Plotting Abundance
+## 9. Plotting Abundance
 
 ### Abundance by Phylum
 
@@ -351,11 +369,11 @@ totals
 ```
 
 Any of the taxa under a total of 100 may be suspect.
-First, we will remove the taxa that are clearly too low in abundance (<=5).
+First, we will remove the taxa that are clearly too low in abundance (<=3).
 
 ```{r WGS-2-comp-3 }
 
-filterPhyla <- totals$Phylum[totals$Total <= 5, drop=T] # drop allows some of the attributes to be removed
+filterPhyla <- totals$Phylum[totals$Total <= 3, drop=T] # drop allows some of the attributes to be removed
 
 phylo.data1 <- subset_taxa(phylo.data.tcga, !Phylum %in% filterPhyla)
 phylo.data1
@@ -365,7 +383,7 @@ phylo.data1
 Next, we explore the taxa in more detail next as we move to remove some of these low abundance taxa.
 
 
-## 3. Removal Phyla with 1% or less of all samples (prevalence filtering)
+## 3. Removal Phyla with 0.1% or less of all samples (prevalence filtering)
 
 
 ```{r WGS-3-remove-phylum-1 }
@@ -402,11 +420,11 @@ Note: for plotting purposes, a $+1$ was added to all TotalAbundances to avoid a 
 
 
 Next, we define a prevalence threshold, that way the taxa can be pruned to a prespecified level. 
-In this study, we used 0.01 (1\%) of total samples.
+In this study, we used 0.001 (0.1\%) of total samples.
 
 ```{r WGS-3-prev-threshold }
 
-prevalenceThreshold <- 0.01*nsamples(phylo.data.tcga)
+prevalenceThreshold <- 0.001*nsamples(phylo.data.tcga)
 prevalenceThreshold
 
 # execute the filtering to this level
@@ -426,13 +444,31 @@ genusNames <- get_taxa_unique(phylo.data2, "Genus")
 # How many genera would be present after filtering?
 length(get_taxa_unique(phylo.data2, taxonomic.rank = "Genus"))
 
-## [1] 371
-
 phylo.data3 = tax_glom(phylo.data2, "Genus", NArm = TRUE)
 
 ```
 
-## 7. Relative Adbundance Plot
+## 7. Removal of Genera Contaminants
+
+```{r}
+
+a <- taxa_names(phylo.data3)
+
+conTaxa <- c("Pseudomonadales", "Comamonadaceae", "Rhizobiales", "Burkholderiales", "Paenibacillaceae", "Staphylococcus epidermidis", "Propionibacterium acnes", "Escherichia", "Bacillaceae")
+i <- 1
+K <- 0
+for(i in 1:length(conTaxa)){
+  kT <- a[a %like% conTaxa[i]]
+  K <- c(K, kT)
+}
+
+b <- !a %in% K
+
+phylo.data3 <- phyloseq::prune_taxa(b, phylo.data3)
+
+```
+
+## 8. Relative Adbundance Plot
 
 ```{r WGS-4-rel-abund, out.width="100%", out.height="100%" }
 
@@ -461,7 +497,7 @@ plotBefore + plotAfter + plot_layout(nrow=2)
 
 ```
 
-## 8. Plotting Abundance
+## 9. Plotting Abundance
 
 ### Abundance by Phylum
 

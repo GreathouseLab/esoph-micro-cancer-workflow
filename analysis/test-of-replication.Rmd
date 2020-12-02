@@ -1,0 +1,203 @@
+---
+title: "Sample IDs and Relative Abundance Misc."
+output:
+  workflowr::wflow_html:
+    toc: true
+editor_options:
+  chunk_output_type: console
+---
+
+* Goal is to replicate Fisher's exact test.
+
+
+```{r data, include=FALSE, echo=FALSE}
+# load packages
+source("code/load_packages.R")
+
+# get data
+source("code/get_cleaned_data.R")
+
+theme_set(theme_bw())
+pal = "Sequential"
+scale_colour_discrete <-  function(palname=pal, ...){
+  scale_colour_brewer(palette=palname, ...)
+}
+scale_fill_discrete <-  function(palname=pal, ...){
+  scale_fill_brewer(palette=palname, ...)
+}
+
+knitr::opts_chunk$set(out.width = "225%", out.height = 10)
+```
+
+
+# Data mung
+
+First, we need to format the data for the analyses.
+
+
+```{r}
+# transform to relative abundances
+phylo.data.nci.umd <- transform_sample_counts(phylo.data.nci.umd, function(x){x / sum(x)})
+phylo.data.tcga.RNAseq <- transform_sample_counts(phylo.data.tcga.RNAseq, function(x){x / sum(x)})
+phylo.data.tcga.WGS <- transform_sample_counts(phylo.data.tcga.WGS, function(x){x / sum(x)})
+
+# melt data down for use
+dat.16s <- psmelt(phylo.data.nci.umd)
+dat.rna <- psmelt(phylo.data.tcga.RNAseq)
+dat.wgs <- psmelt(phylo.data.tcga.WGS)
+
+# fix otu formatting
+dat.rna$otu2 <- "a"
+dat.wgs$otu2 <- "a"
+i <- 1
+for(i in 1:nrow(dat.rna)){
+  dat.rna$otu2[i] <- str_split(dat.rna$OTU[i], ";")[[1]][7]
+}
+for(i in 1:nrow(dat.wgs)){
+  dat.wgs$otu2[i] <- str_split(dat.wgs$OTU[i], ";")[[1]][7]
+}
+
+
+# subset to fuso. nuc. only
+dat.16s <- filter(dat.16s, OTU == "Fusobacterium_nucleatum")
+dat.rna <- filter(dat.rna, otu2 == "Fusobacterium nucleatum")
+dat.wgs <- filter(dat.wgs, otu2 == "Fusobacterium nucleatum")
+
+# make tumor vs normal variable
+dat.16s$tumor <- factor(dat.16s$tissue, levels=c("BO", "N", "T"), labels = c("Non-Tumor", "Non-Tumor", "Tumor"))
+dat.rna$tumor <- factor(dat.rna$SampleType_Level2, levels=c("Normal", "Tumor"), labels = c("Non-Tumor", "Tumor"))
+dat.wgs$tumor <- factor(dat.wgs$SampleType_Level2, levels=c("Normal", "Tumor"), labels = c("Non-Tumor", "Tumor"))
+
+# dataset id
+dat.16s$source <- "16s"
+dat.rna$source <- "rna"
+dat.wgs$source <- "wgs"
+
+# plotting ids
+dat.16s$X <- paste0(dat.16s$source, "-", dat.16s$tumor)
+dat.rna$X <- paste0(dat.rna$source, "-", dat.rna$tumor)
+dat.wgs$X <- paste0(dat.wgs$source, "-", dat.wgs$tumor)
+
+# merge data
+cls <- c("OTU", "Sample", "Abundance", "tumor", "source", "X")
+mydata <- full_join(dat.16s[,cls], dat.rna[,cls])
+mydata <- full_join(mydata, dat.wgs[,cls])
+
+```
+
+
+# Replicating the Analysis
+
+## Plot
+
+```{r}
+
+
+p <- ggplot(mydata, aes(x=X, y=Abundance)) +
+  geom_violin() +
+  geom_jitter(alpha=0.5) +
+  scale_y_continuous(
+    trans = "sqrt",
+    breaks=c(0.002, 0.01, 0.025, 0.05, 0.1, 0.25, 0.5, 0.8)) +
+  theme_classic()
+p
+
+```
+
+
+## Fisher Exact Test
+
+```{r hidden, echo=FALSE}
+# transform to relative abundances
+phylo.data.nci.umd <- transform_sample_counts(phylo.data.nci.umd, function(x){x / sum(x)})
+phylo.data.tcga.RNAseq <- transform_sample_counts(phylo.data.tcga.RNAseq, function(x){x / sum(x)})
+phylo.data.tcga.WGS <- transform_sample_counts(phylo.data.tcga.WGS, function(x){x / sum(x)})
+
+# melt data down for use
+dat.16s <- psmelt(phylo.data.nci.umd)
+dat.rna <- psmelt(phylo.data.tcga.RNAseq)
+dat.wgs <- psmelt(phylo.data.tcga.WGS)
+
+# fix otu formatting
+dat.rna$otu2 <- "a"
+dat.wgs$otu2 <- "a"
+i <- 1
+for(i in 1:nrow(dat.rna)){
+  dat.rna$otu2[i] <- str_split(dat.rna$OTU[i], ";")[[1]][7]
+}
+for(i in 1:nrow(dat.wgs)){
+  dat.wgs$otu2[i] <- str_split(dat.wgs$OTU[i], ";")[[1]][7]
+}
+
+
+# subset to fuso. nuc. only
+dat.16s <- filter(dat.16s, OTU == "Fusobacterium_nucleatum")
+dat.rna <- filter(dat.rna, otu2 == "Fusobacterium nucleatum")
+dat.wgs <- filter(dat.wgs, otu2 == "Fusobacterium nucleatum")
+
+# make tumor vs normal variable
+dat.16s$tumor <- as.numeric(factor(dat.16s$tissue, levels=c("BO", "N", "T"), labels = c("Non-Tumor", "Non-Tumor", "Tumor"))) - 1
+dat.rna$tumor <- as.numeric(factor(dat.rna$SampleType_Level2, levels=c("Normal", "Tumor"), labels = c("Non-Tumor", "Tumor"))) - 1
+dat.wgs$tumor <- as.numeric(factor(dat.wgs$SampleType_Level2, levels=c("Normal", "Tumor"), labels = c("Non-Tumor", "Tumor"))) - 1
+
+# dataset id
+dat.16s$source <- "16s"
+dat.rna$source <- "rna"
+dat.wgs$source <- "wgs"
+
+# plotting ids
+dat.16s$X <- paste0(dat.16s$source, "-", dat.16s$tumor)
+dat.rna$X <- paste0(dat.rna$source, "-", dat.rna$tumor)
+dat.wgs$X <- paste0(dat.wgs$source, "-", dat.wgs$tumor)
+
+# barrets
+dat.16s$barrett <- ifelse(dat.16s$barretts == "Y", 1, 0)
+dat.rna$barrett <- dat.rna$Barrett.s.Esophagus.Reported
+  dat.rna$barrett[dat.rna$barrett == "Yes"] <- 1
+  dat.rna$barrett[dat.rna$barrett == "No"] <- 0
+  dat.rna$barrett[dat.rna$barrett == "Not Available"] <- NA
+  dat.rna$barrett <- as.numeric(dat.rna$barrett)
+dat.wgs$barrett <- dat.wgs$Barrett.s.Esophagus.Reported
+  dat.wgs$barrett[dat.wgs$barrett == "Not Available"] <- NA
+  dat.wgs$barrett[dat.wgs$barrett == "Yes"] <- 1
+  dat.wgs$barrett[dat.wgs$barrett == "No"] <- 0
+  dat.wgs$barrett <- as.numeric(dat.wgs$barrett)
+  
+# merge data
+cls <- c("OTU", "Sample", "Abundance", "tumor", "source", "X")
+mydata <- full_join(dat.16s[,cls], dat.rna[,cls])
+mydata <- full_join(mydata, dat.wgs[,cls])
+
+```
+
+Mann-Whitney U-Test
+
+```{r}
+
+#
+wilcox.test(dat.16s$Abundance ~ dat.16s$tumor)
+wilcox.test(dat.rna$Abundance ~ dat.rna$tumor)
+wilcox.test(dat.wgs$Abundance ~ dat.wgs$tumor)
+
+
+```
+
+Fisher Exact Test.
+
+
+```{r}
+
+
+a <- na.omit(dat.16s[, c("barrett", "tumor")])
+fisher.test(a$barrett, a$tumor)
+
+a <- na.omit(dat.rna[, c("barrett", "tumor")])
+fisher.test(a$barrett, a$tumor)
+
+a <- na.omit(dat.wgs[, c("barrett", "tumor")])
+fisher.test(a$barrett, a$tumor)
+
+```
+
+
+
