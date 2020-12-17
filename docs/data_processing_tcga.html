@@ -412,7 +412,7 @@ div.tocify {
 <div class="tab-content">
 <div id="summary" class="tab-pane fade in active">
 <p>
-<strong>Last updated:</strong> 2020-12-01
+<strong>Last updated:</strong> 2020-12-02
 </p>
 <p>
 <strong>Checks:</strong> <span class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span> 6 <span class="glyphicon glyphicon-exclamation-sign text-danger" aria-hidden="true"></span> 1
@@ -503,16 +503,16 @@ This reproducible <a href="http://rmarkdown.rstudio.com">R Markdown</a> analysis
 <div class="panel panel-default">
 <div class="panel-heading">
 <p class="panel-title">
-<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongRepositoryversionstrongahrefhttpsgithubcomGreathouseLabesophmicrocancerworkflowtree9937a7e527e584ba62d2b3496d62ba6aa4e04dfbtargetblank9937a7ea"> <span class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span> <strong>Repository version:</strong> <a href="https://github.com/GreathouseLab/esoph-micro-cancer-workflow/tree/9937a7e527e584ba62d2b3496d62ba6aa4e04dfb" target="_blank">9937a7e</a> </a>
+<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongRepositoryversionstrongahrefhttpsgithubcomGreathouseLabesophmicrocancerworkflowtreecf91029edb7253f0b4c6ea60d979ff38f446b111targetblankcf91029a"> <span class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span> <strong>Repository version:</strong> <a href="https://github.com/GreathouseLab/esoph-micro-cancer-workflow/tree/cf91029edb7253f0b4c6ea60d979ff38f446b111" target="_blank">cf91029</a> </a>
 </p>
 </div>
-<div id="strongRepositoryversionstrongahrefhttpsgithubcomGreathouseLabesophmicrocancerworkflowtree9937a7e527e584ba62d2b3496d62ba6aa4e04dfbtargetblank9937a7ea" class="panel-collapse collapse">
+<div id="strongRepositoryversionstrongahrefhttpsgithubcomGreathouseLabesophmicrocancerworkflowtreecf91029edb7253f0b4c6ea60d979ff38f446b111targetblankcf91029a" class="panel-collapse collapse">
 <div class="panel-body">
 <p>
 Great! You are using Git for version control. Tracking code development and connecting the code version to the results is critical for reproducibility.
 </p>
 <p>
-The results in this page were generated with repository version <a href="https://github.com/GreathouseLab/esoph-micro-cancer-workflow/tree/9937a7e527e584ba62d2b3496d62ba6aa4e04dfb" target="_blank">9937a7e</a>. See the <em>Past versions</em> tab to see a history of the changes made to the R Markdown and HTML files.
+The results in this page were generated with repository version <a href="https://github.com/GreathouseLab/esoph-micro-cancer-workflow/tree/cf91029edb7253f0b4c6ea60d979ff38f446b111" target="_blank">cf91029</a>. See the <em>Past versions</em> tab to see a history of the changes made to the R Markdown and HTML files.
 </p>
 <p>
 Note that you need to be careful to ensure that all relevant files for the analysis have been committed to Git prior to generating the results (you can use <code>wflow_publish</code> or <code>wflow_git_commit</code>). workflowr only checks the R Markdown file, but you know if there are other scripts or data files that it depends on. Below is the status of the Git repository when the results were generated:
@@ -524,9 +524,10 @@ Ignored files:
     Ignored:    data/
 
 Unstaged changes:
-    Modified:   analysis/data_processing_nci_umd.Rmd
     Modified:   analysis/data_processing_tcga.Rmd
+    Modified:   analysis/test-of-replication.Rmd
     Modified:   code/get_cleaned_data.R
+    Modified:   code/get_data.R
 
 </code></pre>
 <p>
@@ -565,6 +566,40 @@ Message
 </tr>
 </thead>
 <tbody>
+<tr>
+<td>
+Rmd
+</td>
+<td>
+<a href="https://github.com/GreathouseLab/esoph-micro-cancer-workflow/blob/cf91029edb7253f0b4c6ea60d979ff38f446b111/analysis/data_processing_tcga.Rmd" target="_blank">cf91029</a>
+</td>
+<td>
+noah-padgett
+</td>
+<td>
+2020-12-02
+</td>
+<td>
+updated analyses
+</td>
+</tr>
+<tr>
+<td>
+html
+</td>
+<td>
+<a href="https://rawcdn.githack.com/GreathouseLab/esoph-micro-cancer-workflow/cf91029edb7253f0b4c6ea60d979ff38f446b111/docs/data_processing_tcga.html" target="_blank">cf91029</a>
+</td>
+<td>
+noah-padgett
+</td>
+<td>
+2020-12-02
+</td>
+<td>
+updated analyses
+</td>
+</tr>
 <tr>
 <td>
 Rmd
@@ -778,28 +813,62 @@ updated processing files
 <pre class="r"><code>sampleReads &lt;- phyloseq::sample_sums(phylo.data.tcga.RNAseq)
 
 sampleReads</code></pre>
-<pre><code> TCGA.2H.A9GF.Tumor.RNAseq.579  TCGA.2H.A9GJ.Tumor.RNAseq.a43 
-                       2196746                        2258184 
+<pre><code> TCGA.2H.A9GF.Tumor.RNAseq.579  TCGA.2H.A9GG.Tumor.RNAseq.755 
+                       2196746                              0 
+ TCGA.2H.A9GH.Tumor.RNAseq.2a3  TCGA.2H.A9GI.Tumor.RNAseq.eed 
+                             0                              0 
+ TCGA.2H.A9GJ.Tumor.RNAseq.a43  TCGA.2H.A9GK.Tumor.RNAseq.942 
+                       2258184                              0 
+ TCGA.2H.A9GL.Tumor.RNAseq.82d  TCGA.2H.A9GM.Tumor.RNAseq.886 
+                             0                              0 
+ TCGA.2H.A9GN.Tumor.RNAseq.c45  TCGA.2H.A9GO.Tumor.RNAseq.033 
+                             0                              0 
+ TCGA.2H.A9GQ.Tumor.RNAseq.d23  TCGA.2H.A9GR.Tumor.RNAseq.397 
+                             0                              0 
+TCGA.IC.A6RE.Normal.RNAseq.eb2  TCGA.IC.A6RE.Tumor.RNAseq.6c9 
+                             0                              0 
+TCGA.IC.A6RF.Normal.RNAseq.639  TCGA.IC.A6RF.Tumor.RNAseq.5d9 
+                             0                              0 
  TCGA.IG.A3I8.Tumor.RNAseq.f83  TCGA.IG.A3QL.Tumor.RNAseq.85d 
                         208954                          91069 
- TCGA.IG.A3YA.Tumor.RNAseq.66a  TCGA.IG.A3YC.Tumor.RNAseq.276 
-                         57093                         581915 
- TCGA.IG.A4P3.Tumor.RNAseq.50d  TCGA.IG.A4QS.Tumor.RNAseq.542 
-                        309817                         964946 
- TCGA.IG.A50L.Tumor.RNAseq.93f  TCGA.IG.A5B8.Tumor.RNAseq.3b2 
-                        486713                         677270 
+ TCGA.IG.A3YA.Tumor.RNAseq.66a  TCGA.IG.A3YB.Tumor.RNAseq.8fe 
+                         57093                              0 
+ TCGA.IG.A3YC.Tumor.RNAseq.276  TCGA.IG.A4P3.Tumor.RNAseq.50d 
+                        581915                         309817 
+ TCGA.IG.A4QS.Tumor.RNAseq.542  TCGA.IG.A50L.Tumor.RNAseq.93f 
+                        964946                         486713 
+ TCGA.IG.A51D.Tumor.RNAseq.feb  TCGA.IG.A5B8.Tumor.RNAseq.3b2 
+                             0                         677270 
  TCGA.IG.A5S3.Tumor.RNAseq.200  TCGA.IG.A625.Tumor.RNAseq.096 
                         195220                         143832 
- TCGA.JY.A93C.Tumor.RNAseq.3ba TCGA.L5.A43C.Normal.RNAseq.ffd 
-                       1912961                         434352 
- TCGA.L5.A43C.Tumor.RNAseq.5fe  TCGA.L5.A43E.Tumor.RNAseq.6bb 
-                        751188                         148331 
- TCGA.L5.A43J.Tumor.RNAseq.64f  TCGA.L5.A4OE.Tumor.RNAseq.0e5 
-                         31941                         242287 
-TCGA.L5.A4OF.Normal.RNAseq.4cb TCGA.L5.A4OG.Normal.RNAseq.76d 
-                        281031                         449297 
- TCGA.L5.A4OG.Tumor.RNAseq.ef4  TCGA.L5.A4OH.Tumor.RNAseq.0ce 
-                        212212                         242003 
+ TCGA.IG.A6QS.Tumor.RNAseq.817  TCGA.IG.A7DP.Tumor.RNAseq.ba3 
+                             0                              0 
+ TCGA.IG.A8O2.Tumor.RNAseq.982  TCGA.IG.A97H.Tumor.RNAseq.1d7 
+                             0                              0 
+ TCGA.IG.A97I.Tumor.RNAseq.432  TCGA.JY.A6FA.Tumor.RNAseq.f91 
+                             0                              0 
+ TCGA.JY.A6FB.Tumor.RNAseq.6b6  TCGA.JY.A6FD.Tumor.RNAseq.339 
+                             0                              0 
+ TCGA.JY.A6FE.Tumor.RNAseq.3bf  TCGA.JY.A6FG.Tumor.RNAseq.cf4 
+                             0                              0 
+ TCGA.JY.A6FH.Tumor.RNAseq.ede  TCGA.JY.A938.Tumor.RNAseq.385 
+                             0                              0 
+ TCGA.JY.A939.Tumor.RNAseq.9a2  TCGA.JY.A93C.Tumor.RNAseq.3ba 
+                             0                        1912961 
+ TCGA.JY.A93D.Tumor.RNAseq.2c3  TCGA.JY.A93E.Tumor.RNAseq.2a0 
+                             0                              0 
+ TCGA.JY.A93F.Tumor.RNAseq.f8f  TCGA.KH.A6WC.Tumor.RNAseq.743 
+                             0                              0 
+TCGA.L5.A43C.Normal.RNAseq.ffd  TCGA.L5.A43C.Tumor.RNAseq.5fe 
+                        434352                         751188 
+ TCGA.L5.A43E.Tumor.RNAseq.6bb  TCGA.L5.A43J.Tumor.RNAseq.64f 
+                        148331                          31941 
+ TCGA.L5.A4OE.Tumor.RNAseq.0e5 TCGA.L5.A4OF.Normal.RNAseq.4cb 
+                        242287                         281031 
+TCGA.L5.A4OG.Normal.RNAseq.76d  TCGA.L5.A4OG.Tumor.RNAseq.ef4 
+                        449297                         212212 
+ TCGA.L5.A4OH.Tumor.RNAseq.0ce  TCGA.L5.A4OI.Tumor.RNAseq.1fe 
+                        242003                              0 
 TCGA.L5.A4OJ.Normal.RNAseq.d64  TCGA.L5.A4OJ.Tumor.RNAseq.17c 
                         413474                         236190 
  TCGA.L5.A4OM.Tumor.RNAseq.9d2  TCGA.L5.A4ON.Tumor.RNAseq.2e8 
@@ -814,122 +883,301 @@ TCGA.L5.A4OR.Normal.RNAseq.22f  TCGA.L5.A4OS.Tumor.RNAseq.85f
                         507148                         433111 
  TCGA.L5.A4OW.Tumor.RNAseq.e8e  TCGA.L5.A4OX.Tumor.RNAseq.c54 
                         317861                         238826 
- TCGA.L5.A8NS.Tumor.RNAseq.69a  TCGA.L7.A56G.Tumor.RNAseq.70a 
-                       2377000                         328304 
- TCGA.LN.A49M.Tumor.RNAseq.d16  TCGA.LN.A49O.Tumor.RNAseq.d4f 
-                        269249                          18157 
- TCGA.LN.A49P.Tumor.RNAseq.346  TCGA.LN.A49S.Tumor.RNAseq.0a9 
-                         60432                          55311 
- TCGA.LN.A49U.Tumor.RNAseq.450  TCGA.LN.A49W.Tumor.RNAseq.dfd 
-                        183716                         293817 
- TCGA.LN.A49X.Tumor.RNAseq.36d  TCGA.LN.A49Y.Tumor.RNAseq.32b 
-                        266304                         589419 
- TCGA.LN.A4A1.Tumor.RNAseq.ffd  TCGA.LN.A4A3.Tumor.RNAseq.7ab 
-                        198953                         330219 
- TCGA.LN.A4A4.Tumor.RNAseq.fc5  TCGA.LN.A4A5.Tumor.RNAseq.11e 
-                        345745                         167082 
- TCGA.LN.A4A8.Tumor.RNAseq.e2a  TCGA.LN.A4A9.Tumor.RNAseq.cc6 
-                        169882                         498383 
- TCGA.LN.A4MQ.Tumor.RNAseq.5b4  TCGA.LN.A5U5.Tumor.RNAseq.ef4 
-                        210714                         208664 
- TCGA.LN.A5U6.Tumor.RNAseq.c00  TCGA.LN.A5U7.Tumor.RNAseq.88b 
-                        205554                         111690 
- TCGA.M9.A5M8.Tumor.RNAseq.4ef  TCGA.Q9.A6FW.Tumor.RNAseq.d88 
-                        233106                         472304 
- TCGA.R6.A6DN.Tumor.RNAseq.7ed  TCGA.R6.A6DQ.Tumor.RNAseq.a41 
-                        197164                         302461 
- TCGA.R6.A6KZ.Tumor.RNAseq.22d  TCGA.R6.A6L4.Tumor.RNAseq.19e 
-                        188388                         242143 
- TCGA.R6.A8W8.Tumor.RNAseq.fb2  TCGA.R6.A8WC.Tumor.RNAseq.64b 
-                       2269286                        2118504 
- TCGA.S8.A6BV.Tumor.RNAseq.86b  TCGA.S8.A6BW.Tumor.RNAseq.802 
-                        215598                         136204 </code></pre>
+ TCGA.L5.A88S.Tumor.RNAseq.906  TCGA.L5.A88T.Tumor.RNAseq.e81 
+                             0                              0 
+ TCGA.L5.A88V.Tumor.RNAseq.ecb  TCGA.L5.A88W.Tumor.RNAseq.2b3 
+                             0                              0 
+ TCGA.L5.A88Y.Tumor.RNAseq.9f3  TCGA.L5.A88Z.Tumor.RNAseq.6c5 
+                             0                              0 
+ TCGA.L5.A891.Tumor.RNAseq.b37  TCGA.L5.A893.Tumor.RNAseq.4df 
+                             0                              0 
+ TCGA.L5.A8NE.Tumor.RNAseq.0e5  TCGA.L5.A8NF.Tumor.RNAseq.42a 
+                             0                              0 
+ TCGA.L5.A8NG.Tumor.RNAseq.106  TCGA.L5.A8NH.Tumor.RNAseq.e87 
+                             0                              0 
+ TCGA.L5.A8NI.Tumor.RNAseq.5da  TCGA.L5.A8NJ.Tumor.RNAseq.fc1 
+                             0                              0 
+ TCGA.L5.A8NK.Tumor.RNAseq.2e1  TCGA.L5.A8NL.Tumor.RNAseq.702 
+                             0                              0 
+ TCGA.L5.A8NM.Tumor.RNAseq.8c6  TCGA.L5.A8NN.Tumor.RNAseq.b33 
+                             0                              0 
+ TCGA.L5.A8NQ.Tumor.RNAseq.e97  TCGA.L5.A8NR.Tumor.RNAseq.05b 
+                             0                              0 
+ TCGA.L5.A8NS.Tumor.RNAseq.69a  TCGA.L5.A8NT.Tumor.RNAseq.8c4 
+                       2377000                              0 
+ TCGA.L5.A8NU.Tumor.RNAseq.411  TCGA.L5.A8NV.Tumor.RNAseq.9c7 
+                             0                              0 
+ TCGA.L5.A8NW.Tumor.RNAseq.023  TCGA.L7.A56G.Tumor.RNAseq.70a 
+                             0                         328304 
+ TCGA.L7.A6VZ.Tumor.RNAseq.f69  TCGA.LN.A49M.Tumor.RNAseq.d16 
+                             0                         269249 
+ TCGA.LN.A49O.Tumor.RNAseq.d4f  TCGA.LN.A49P.Tumor.RNAseq.346 
+                         18157                          60432 
+ TCGA.LN.A49S.Tumor.RNAseq.0a9  TCGA.LN.A49U.Tumor.RNAseq.450 
+                         55311                         183716 
+ TCGA.LN.A49W.Tumor.RNAseq.dfd  TCGA.LN.A49X.Tumor.RNAseq.36d 
+                        293817                         266304 
+ TCGA.LN.A49Y.Tumor.RNAseq.32b  TCGA.LN.A4A1.Tumor.RNAseq.ffd 
+                        589419                         198953 
+ TCGA.LN.A4A3.Tumor.RNAseq.7ab  TCGA.LN.A4A4.Tumor.RNAseq.fc5 
+                        330219                         345745 
+ TCGA.LN.A4A5.Tumor.RNAseq.11e  TCGA.LN.A4A8.Tumor.RNAseq.e2a 
+                        167082                         169882 
+ TCGA.LN.A4A9.Tumor.RNAseq.cc6  TCGA.LN.A4MQ.Tumor.RNAseq.5b4 
+                        498383                         210714 
+ TCGA.LN.A5U5.Tumor.RNAseq.ef4  TCGA.LN.A5U6.Tumor.RNAseq.c00 
+                        208664                         205554 
+ TCGA.LN.A5U7.Tumor.RNAseq.88b  TCGA.LN.A7HV.Tumor.RNAseq.504 
+                        111690                              0 
+ TCGA.LN.A7HW.Tumor.RNAseq.1ad  TCGA.LN.A7HX.Tumor.RNAseq.99e 
+                             0                              0 
+ TCGA.LN.A7HY.Tumor.RNAseq.f7b  TCGA.LN.A7HZ.Tumor.RNAseq.740 
+                             0                              0 
+ TCGA.LN.A8HZ.Tumor.RNAseq.628  TCGA.LN.A8I0.Tumor.RNAseq.b5f 
+                             0                              0 
+ TCGA.LN.A8I1.Tumor.RNAseq.838  TCGA.LN.A9FO.Tumor.RNAseq.ae5 
+                             0                              0 
+ TCGA.LN.A9FP.Tumor.RNAseq.350  TCGA.LN.A9FQ.Tumor.RNAseq.082 
+                             0                              0 
+ TCGA.LN.A9FR.Tumor.RNAseq.304  TCGA.M9.A5M8.Tumor.RNAseq.4ef 
+                             0                         233106 
+ TCGA.Q9.A6FW.Tumor.RNAseq.d88  TCGA.R6.A6DN.Tumor.RNAseq.7ed 
+                        472304                         197164 
+ TCGA.R6.A6DQ.Tumor.RNAseq.a41  TCGA.R6.A6KZ.Tumor.RNAseq.22d 
+                        302461                         188388 
+ TCGA.R6.A6L4.Tumor.RNAseq.19e  TCGA.R6.A6XG.Tumor.RNAseq.fde 
+                        242143                              0 
+ TCGA.R6.A6XQ.Tumor.RNAseq.ce6  TCGA.R6.A6Y0.Tumor.RNAseq.815 
+                             0                              0 
+ TCGA.R6.A8W5.Tumor.RNAseq.300  TCGA.R6.A8W8.Tumor.RNAseq.fb2 
+                             0                        2269286 
+ TCGA.R6.A8WC.Tumor.RNAseq.64b  TCGA.R6.A8WG.Tumor.RNAseq.cb5 
+                       2118504                              0 
+ TCGA.RE.A7BO.Tumor.RNAseq.e67  TCGA.S8.A6BV.Tumor.RNAseq.86b 
+                             0                         215598 
+ TCGA.S8.A6BW.Tumor.RNAseq.802  TCGA.V5.A7RB.Tumor.RNAseq.2c7 
+                        136204                              0 
+ TCGA.V5.A7RC.Tumor.RNAseq.15e  TCGA.V5.A7RC.Tumor.RNAseq.5f5 
+                             0                              0 
+TCGA.V5.A7RE.Normal.RNAseq.848  TCGA.V5.A7RE.Tumor.RNAseq.7c1 
+                             0                              0 
+ TCGA.V5.AASV.Tumor.RNAseq.2bb  TCGA.V5.AASW.Tumor.RNAseq.a2a 
+                             0                              0 
+TCGA.V5.AASX.Normal.RNAseq.e7e  TCGA.V5.AASX.Tumor.RNAseq.0c4 
+                             0                              0 
+ TCGA.VR.A8EO.Tumor.RNAseq.e76  TCGA.VR.A8EP.Tumor.RNAseq.afe 
+                             0                              0 
+ TCGA.VR.A8EQ.Tumor.RNAseq.350  TCGA.VR.A8ER.Tumor.RNAseq.a53 
+                             0                              0 
+ TCGA.VR.A8ET.Tumor.RNAseq.d5b  TCGA.VR.A8EU.Tumor.RNAseq.421 
+                             0                              0 
+ TCGA.VR.A8EW.Tumor.RNAseq.a6b  TCGA.VR.A8EX.Tumor.RNAseq.547 
+                             0                              0 
+ TCGA.VR.A8EY.Tumor.RNAseq.48e  TCGA.VR.A8EZ.Tumor.RNAseq.48d 
+                             0                              0 
+ TCGA.VR.A8Q7.Tumor.RNAseq.053  TCGA.VR.AA4D.Tumor.RNAseq.325 
+                             0                              0 
+ TCGA.VR.AA4G.Tumor.RNAseq.52c  TCGA.VR.AA7I.Tumor.RNAseq.1a6 
+                             0                              0 
+ TCGA.XP.A8T6.Tumor.RNAseq.5ca  TCGA.XP.A8T8.Tumor.RNAseq.2d9 
+                             0                              0 
+ TCGA.Z6.A8JD.Tumor.RNAseq.d53  TCGA.Z6.A8JE.Tumor.RNAseq.e1a 
+                             0                              0 
+ TCGA.Z6.A9VB.Tumor.RNAseq.f2b  TCGA.Z6.AAPN.Tumor.RNAseq.64f 
+                             0                              0 
+ TCGA.ZR.A9CJ.Tumor.RNAseq.d6f 
+                             0 </code></pre>
 <pre class="r"><code># Total quality Reads
 sum(sampleReads)</code></pre>
 <pre><code>[1] 30487334</code></pre>
 <pre class="r"><code># Average reads
 mean(sampleReads)</code></pre>
-<pre><code>[1] 461929.3</code></pre>
+<pre><code>[1] 176227.4</code></pre>
 <pre class="r"><code># max sequencing depth
 max(sampleReads)</code></pre>
 <pre><code>[1] 2377000</code></pre>
+<pre class="r"><code># min sequencing depth
+min(sampleReads)</code></pre>
+<pre><code>[1] 0</code></pre>
 <pre class="r"><code># rarified to an even depth of
-phylo.data.tcga &lt;- phyloseq::rarefy_even_depth(phylo.data.tcga.RNAseq, replace = T, rngseed = 20200923)</code></pre>
-<pre><code>`set.seed(20200923)` was used to initialize repeatable random subsampling.</code></pre>
-<pre><code>Please record this for your records so others can reproduce.</code></pre>
-<pre><code>Try `set.seed(20200923); .Random.seed` for the full vector</code></pre>
-<pre><code>...</code></pre>
-<pre><code>52OTUs were removed because they are no longer 
-present in any sample after random subsampling</code></pre>
-<pre><code>...</code></pre>
-<pre class="r"><code># even depth of:
+#phylo.data.tcga &lt;- phyloseq::rarefy_even_depth(phylo.data.tcga.RNAseq, replace = T, rngseed = 20200923)
+phylo.data.tcga &lt;- phylo.data.tcga.RNAseq
+# even depth of:
 phyloseq::sample_sums(phylo.data.tcga)</code></pre>
-<pre><code> TCGA.2H.A9GF.Tumor.RNAseq.579  TCGA.2H.A9GJ.Tumor.RNAseq.a43 
-                         18157                          18157 
+<pre><code> TCGA.2H.A9GF.Tumor.RNAseq.579  TCGA.2H.A9GG.Tumor.RNAseq.755 
+                       2196746                              0 
+ TCGA.2H.A9GH.Tumor.RNAseq.2a3  TCGA.2H.A9GI.Tumor.RNAseq.eed 
+                             0                              0 
+ TCGA.2H.A9GJ.Tumor.RNAseq.a43  TCGA.2H.A9GK.Tumor.RNAseq.942 
+                       2258184                              0 
+ TCGA.2H.A9GL.Tumor.RNAseq.82d  TCGA.2H.A9GM.Tumor.RNAseq.886 
+                             0                              0 
+ TCGA.2H.A9GN.Tumor.RNAseq.c45  TCGA.2H.A9GO.Tumor.RNAseq.033 
+                             0                              0 
+ TCGA.2H.A9GQ.Tumor.RNAseq.d23  TCGA.2H.A9GR.Tumor.RNAseq.397 
+                             0                              0 
+TCGA.IC.A6RE.Normal.RNAseq.eb2  TCGA.IC.A6RE.Tumor.RNAseq.6c9 
+                             0                              0 
+TCGA.IC.A6RF.Normal.RNAseq.639  TCGA.IC.A6RF.Tumor.RNAseq.5d9 
+                             0                              0 
  TCGA.IG.A3I8.Tumor.RNAseq.f83  TCGA.IG.A3QL.Tumor.RNAseq.85d 
-                         18157                          18157 
- TCGA.IG.A3YA.Tumor.RNAseq.66a  TCGA.IG.A3YC.Tumor.RNAseq.276 
-                         18157                          18157 
- TCGA.IG.A4P3.Tumor.RNAseq.50d  TCGA.IG.A4QS.Tumor.RNAseq.542 
-                         18157                          18157 
- TCGA.IG.A50L.Tumor.RNAseq.93f  TCGA.IG.A5B8.Tumor.RNAseq.3b2 
-                         18157                          18157 
+                        208954                          91069 
+ TCGA.IG.A3YA.Tumor.RNAseq.66a  TCGA.IG.A3YB.Tumor.RNAseq.8fe 
+                         57093                              0 
+ TCGA.IG.A3YC.Tumor.RNAseq.276  TCGA.IG.A4P3.Tumor.RNAseq.50d 
+                        581915                         309817 
+ TCGA.IG.A4QS.Tumor.RNAseq.542  TCGA.IG.A50L.Tumor.RNAseq.93f 
+                        964946                         486713 
+ TCGA.IG.A51D.Tumor.RNAseq.feb  TCGA.IG.A5B8.Tumor.RNAseq.3b2 
+                             0                         677270 
  TCGA.IG.A5S3.Tumor.RNAseq.200  TCGA.IG.A625.Tumor.RNAseq.096 
-                         18157                          18157 
- TCGA.JY.A93C.Tumor.RNAseq.3ba TCGA.L5.A43C.Normal.RNAseq.ffd 
-                         18157                          18157 
- TCGA.L5.A43C.Tumor.RNAseq.5fe  TCGA.L5.A43E.Tumor.RNAseq.6bb 
-                         18157                          18157 
- TCGA.L5.A43J.Tumor.RNAseq.64f  TCGA.L5.A4OE.Tumor.RNAseq.0e5 
-                         18157                          18157 
-TCGA.L5.A4OF.Normal.RNAseq.4cb TCGA.L5.A4OG.Normal.RNAseq.76d 
-                         18157                          18157 
- TCGA.L5.A4OG.Tumor.RNAseq.ef4  TCGA.L5.A4OH.Tumor.RNAseq.0ce 
-                         18157                          18157 
+                        195220                         143832 
+ TCGA.IG.A6QS.Tumor.RNAseq.817  TCGA.IG.A7DP.Tumor.RNAseq.ba3 
+                             0                              0 
+ TCGA.IG.A8O2.Tumor.RNAseq.982  TCGA.IG.A97H.Tumor.RNAseq.1d7 
+                             0                              0 
+ TCGA.IG.A97I.Tumor.RNAseq.432  TCGA.JY.A6FA.Tumor.RNAseq.f91 
+                             0                              0 
+ TCGA.JY.A6FB.Tumor.RNAseq.6b6  TCGA.JY.A6FD.Tumor.RNAseq.339 
+                             0                              0 
+ TCGA.JY.A6FE.Tumor.RNAseq.3bf  TCGA.JY.A6FG.Tumor.RNAseq.cf4 
+                             0                              0 
+ TCGA.JY.A6FH.Tumor.RNAseq.ede  TCGA.JY.A938.Tumor.RNAseq.385 
+                             0                              0 
+ TCGA.JY.A939.Tumor.RNAseq.9a2  TCGA.JY.A93C.Tumor.RNAseq.3ba 
+                             0                        1912961 
+ TCGA.JY.A93D.Tumor.RNAseq.2c3  TCGA.JY.A93E.Tumor.RNAseq.2a0 
+                             0                              0 
+ TCGA.JY.A93F.Tumor.RNAseq.f8f  TCGA.KH.A6WC.Tumor.RNAseq.743 
+                             0                              0 
+TCGA.L5.A43C.Normal.RNAseq.ffd  TCGA.L5.A43C.Tumor.RNAseq.5fe 
+                        434352                         751188 
+ TCGA.L5.A43E.Tumor.RNAseq.6bb  TCGA.L5.A43J.Tumor.RNAseq.64f 
+                        148331                          31941 
+ TCGA.L5.A4OE.Tumor.RNAseq.0e5 TCGA.L5.A4OF.Normal.RNAseq.4cb 
+                        242287                         281031 
+TCGA.L5.A4OG.Normal.RNAseq.76d  TCGA.L5.A4OG.Tumor.RNAseq.ef4 
+                        449297                         212212 
+ TCGA.L5.A4OH.Tumor.RNAseq.0ce  TCGA.L5.A4OI.Tumor.RNAseq.1fe 
+                        242003                              0 
 TCGA.L5.A4OJ.Normal.RNAseq.d64  TCGA.L5.A4OJ.Tumor.RNAseq.17c 
-                         18157                          18157 
+                        413474                         236190 
  TCGA.L5.A4OM.Tumor.RNAseq.9d2  TCGA.L5.A4ON.Tumor.RNAseq.2e8 
-                         18157                          18157 
+                        161300                          94813 
 TCGA.L5.A4OO.Normal.RNAseq.646  TCGA.L5.A4OO.Tumor.RNAseq.1f1 
-                         18157                          18157 
+                        462884                         364963 
  TCGA.L5.A4OP.Tumor.RNAseq.6be TCGA.L5.A4OQ.Normal.RNAseq.c24 
-                         18157                          18157 
+                        293979                         213727 
 TCGA.L5.A4OR.Normal.RNAseq.22f  TCGA.L5.A4OS.Tumor.RNAseq.85f 
-                         18157                          18157 
+                        374051                         233892 
  TCGA.L5.A4OT.Tumor.RNAseq.71d  TCGA.L5.A4OU.Tumor.RNAseq.df3 
-                         18157                          18157 
+                        507148                         433111 
  TCGA.L5.A4OW.Tumor.RNAseq.e8e  TCGA.L5.A4OX.Tumor.RNAseq.c54 
-                         18157                          18157 
- TCGA.L5.A8NS.Tumor.RNAseq.69a  TCGA.L7.A56G.Tumor.RNAseq.70a 
-                         18157                          18157 
- TCGA.LN.A49M.Tumor.RNAseq.d16  TCGA.LN.A49O.Tumor.RNAseq.d4f 
-                         18157                          18157 
- TCGA.LN.A49P.Tumor.RNAseq.346  TCGA.LN.A49S.Tumor.RNAseq.0a9 
-                         18157                          18157 
- TCGA.LN.A49U.Tumor.RNAseq.450  TCGA.LN.A49W.Tumor.RNAseq.dfd 
-                         18157                          18157 
- TCGA.LN.A49X.Tumor.RNAseq.36d  TCGA.LN.A49Y.Tumor.RNAseq.32b 
-                         18157                          18157 
- TCGA.LN.A4A1.Tumor.RNAseq.ffd  TCGA.LN.A4A3.Tumor.RNAseq.7ab 
-                         18157                          18157 
- TCGA.LN.A4A4.Tumor.RNAseq.fc5  TCGA.LN.A4A5.Tumor.RNAseq.11e 
-                         18157                          18157 
- TCGA.LN.A4A8.Tumor.RNAseq.e2a  TCGA.LN.A4A9.Tumor.RNAseq.cc6 
-                         18157                          18157 
- TCGA.LN.A4MQ.Tumor.RNAseq.5b4  TCGA.LN.A5U5.Tumor.RNAseq.ef4 
-                         18157                          18157 
- TCGA.LN.A5U6.Tumor.RNAseq.c00  TCGA.LN.A5U7.Tumor.RNAseq.88b 
-                         18157                          18157 
- TCGA.M9.A5M8.Tumor.RNAseq.4ef  TCGA.Q9.A6FW.Tumor.RNAseq.d88 
-                         18157                          18157 
- TCGA.R6.A6DN.Tumor.RNAseq.7ed  TCGA.R6.A6DQ.Tumor.RNAseq.a41 
-                         18157                          18157 
- TCGA.R6.A6KZ.Tumor.RNAseq.22d  TCGA.R6.A6L4.Tumor.RNAseq.19e 
-                         18157                          18157 
- TCGA.R6.A8W8.Tumor.RNAseq.fb2  TCGA.R6.A8WC.Tumor.RNAseq.64b 
-                         18157                          18157 
- TCGA.S8.A6BV.Tumor.RNAseq.86b  TCGA.S8.A6BW.Tumor.RNAseq.802 
-                         18157                          18157 </code></pre>
+                        317861                         238826 
+ TCGA.L5.A88S.Tumor.RNAseq.906  TCGA.L5.A88T.Tumor.RNAseq.e81 
+                             0                              0 
+ TCGA.L5.A88V.Tumor.RNAseq.ecb  TCGA.L5.A88W.Tumor.RNAseq.2b3 
+                             0                              0 
+ TCGA.L5.A88Y.Tumor.RNAseq.9f3  TCGA.L5.A88Z.Tumor.RNAseq.6c5 
+                             0                              0 
+ TCGA.L5.A891.Tumor.RNAseq.b37  TCGA.L5.A893.Tumor.RNAseq.4df 
+                             0                              0 
+ TCGA.L5.A8NE.Tumor.RNAseq.0e5  TCGA.L5.A8NF.Tumor.RNAseq.42a 
+                             0                              0 
+ TCGA.L5.A8NG.Tumor.RNAseq.106  TCGA.L5.A8NH.Tumor.RNAseq.e87 
+                             0                              0 
+ TCGA.L5.A8NI.Tumor.RNAseq.5da  TCGA.L5.A8NJ.Tumor.RNAseq.fc1 
+                             0                              0 
+ TCGA.L5.A8NK.Tumor.RNAseq.2e1  TCGA.L5.A8NL.Tumor.RNAseq.702 
+                             0                              0 
+ TCGA.L5.A8NM.Tumor.RNAseq.8c6  TCGA.L5.A8NN.Tumor.RNAseq.b33 
+                             0                              0 
+ TCGA.L5.A8NQ.Tumor.RNAseq.e97  TCGA.L5.A8NR.Tumor.RNAseq.05b 
+                             0                              0 
+ TCGA.L5.A8NS.Tumor.RNAseq.69a  TCGA.L5.A8NT.Tumor.RNAseq.8c4 
+                       2377000                              0 
+ TCGA.L5.A8NU.Tumor.RNAseq.411  TCGA.L5.A8NV.Tumor.RNAseq.9c7 
+                             0                              0 
+ TCGA.L5.A8NW.Tumor.RNAseq.023  TCGA.L7.A56G.Tumor.RNAseq.70a 
+                             0                         328304 
+ TCGA.L7.A6VZ.Tumor.RNAseq.f69  TCGA.LN.A49M.Tumor.RNAseq.d16 
+                             0                         269249 
+ TCGA.LN.A49O.Tumor.RNAseq.d4f  TCGA.LN.A49P.Tumor.RNAseq.346 
+                         18157                          60432 
+ TCGA.LN.A49S.Tumor.RNAseq.0a9  TCGA.LN.A49U.Tumor.RNAseq.450 
+                         55311                         183716 
+ TCGA.LN.A49W.Tumor.RNAseq.dfd  TCGA.LN.A49X.Tumor.RNAseq.36d 
+                        293817                         266304 
+ TCGA.LN.A49Y.Tumor.RNAseq.32b  TCGA.LN.A4A1.Tumor.RNAseq.ffd 
+                        589419                         198953 
+ TCGA.LN.A4A3.Tumor.RNAseq.7ab  TCGA.LN.A4A4.Tumor.RNAseq.fc5 
+                        330219                         345745 
+ TCGA.LN.A4A5.Tumor.RNAseq.11e  TCGA.LN.A4A8.Tumor.RNAseq.e2a 
+                        167082                         169882 
+ TCGA.LN.A4A9.Tumor.RNAseq.cc6  TCGA.LN.A4MQ.Tumor.RNAseq.5b4 
+                        498383                         210714 
+ TCGA.LN.A5U5.Tumor.RNAseq.ef4  TCGA.LN.A5U6.Tumor.RNAseq.c00 
+                        208664                         205554 
+ TCGA.LN.A5U7.Tumor.RNAseq.88b  TCGA.LN.A7HV.Tumor.RNAseq.504 
+                        111690                              0 
+ TCGA.LN.A7HW.Tumor.RNAseq.1ad  TCGA.LN.A7HX.Tumor.RNAseq.99e 
+                             0                              0 
+ TCGA.LN.A7HY.Tumor.RNAseq.f7b  TCGA.LN.A7HZ.Tumor.RNAseq.740 
+                             0                              0 
+ TCGA.LN.A8HZ.Tumor.RNAseq.628  TCGA.LN.A8I0.Tumor.RNAseq.b5f 
+                             0                              0 
+ TCGA.LN.A8I1.Tumor.RNAseq.838  TCGA.LN.A9FO.Tumor.RNAseq.ae5 
+                             0                              0 
+ TCGA.LN.A9FP.Tumor.RNAseq.350  TCGA.LN.A9FQ.Tumor.RNAseq.082 
+                             0                              0 
+ TCGA.LN.A9FR.Tumor.RNAseq.304  TCGA.M9.A5M8.Tumor.RNAseq.4ef 
+                             0                         233106 
+ TCGA.Q9.A6FW.Tumor.RNAseq.d88  TCGA.R6.A6DN.Tumor.RNAseq.7ed 
+                        472304                         197164 
+ TCGA.R6.A6DQ.Tumor.RNAseq.a41  TCGA.R6.A6KZ.Tumor.RNAseq.22d 
+                        302461                         188388 
+ TCGA.R6.A6L4.Tumor.RNAseq.19e  TCGA.R6.A6XG.Tumor.RNAseq.fde 
+                        242143                              0 
+ TCGA.R6.A6XQ.Tumor.RNAseq.ce6  TCGA.R6.A6Y0.Tumor.RNAseq.815 
+                             0                              0 
+ TCGA.R6.A8W5.Tumor.RNAseq.300  TCGA.R6.A8W8.Tumor.RNAseq.fb2 
+                             0                        2269286 
+ TCGA.R6.A8WC.Tumor.RNAseq.64b  TCGA.R6.A8WG.Tumor.RNAseq.cb5 
+                       2118504                              0 
+ TCGA.RE.A7BO.Tumor.RNAseq.e67  TCGA.S8.A6BV.Tumor.RNAseq.86b 
+                             0                         215598 
+ TCGA.S8.A6BW.Tumor.RNAseq.802  TCGA.V5.A7RB.Tumor.RNAseq.2c7 
+                        136204                              0 
+ TCGA.V5.A7RC.Tumor.RNAseq.15e  TCGA.V5.A7RC.Tumor.RNAseq.5f5 
+                             0                              0 
+TCGA.V5.A7RE.Normal.RNAseq.848  TCGA.V5.A7RE.Tumor.RNAseq.7c1 
+                             0                              0 
+ TCGA.V5.AASV.Tumor.RNAseq.2bb  TCGA.V5.AASW.Tumor.RNAseq.a2a 
+                             0                              0 
+TCGA.V5.AASX.Normal.RNAseq.e7e  TCGA.V5.AASX.Tumor.RNAseq.0c4 
+                             0                              0 
+ TCGA.VR.A8EO.Tumor.RNAseq.e76  TCGA.VR.A8EP.Tumor.RNAseq.afe 
+                             0                              0 
+ TCGA.VR.A8EQ.Tumor.RNAseq.350  TCGA.VR.A8ER.Tumor.RNAseq.a53 
+                             0                              0 
+ TCGA.VR.A8ET.Tumor.RNAseq.d5b  TCGA.VR.A8EU.Tumor.RNAseq.421 
+                             0                              0 
+ TCGA.VR.A8EW.Tumor.RNAseq.a6b  TCGA.VR.A8EX.Tumor.RNAseq.547 
+                             0                              0 
+ TCGA.VR.A8EY.Tumor.RNAseq.48e  TCGA.VR.A8EZ.Tumor.RNAseq.48d 
+                             0                              0 
+ TCGA.VR.A8Q7.Tumor.RNAseq.053  TCGA.VR.AA4D.Tumor.RNAseq.325 
+                             0                              0 
+ TCGA.VR.AA4G.Tumor.RNAseq.52c  TCGA.VR.AA7I.Tumor.RNAseq.1a6 
+                             0                              0 
+ TCGA.XP.A8T6.Tumor.RNAseq.5ca  TCGA.XP.A8T8.Tumor.RNAseq.2d9 
+                             0                              0 
+ TCGA.Z6.A8JD.Tumor.RNAseq.d53  TCGA.Z6.A8JE.Tumor.RNAseq.e1a 
+                             0                              0 
+ TCGA.Z6.A9VB.Tumor.RNAseq.f2b  TCGA.Z6.AAPN.Tumor.RNAseq.64f 
+                             0                              0 
+ TCGA.ZR.A9CJ.Tumor.RNAseq.d6f 
+                             0 </code></pre>
 </div>
 <div id="removal-of-phylum-na-features" class="section level2">
 <h2>1. Removal of Phylum NA features</h2>
@@ -940,25 +1188,25 @@ phyloseq::rank_names(phylo.data.tcga)</code></pre>
 table(phyloseq::tax_table(phylo.data.tcga)[,&quot;Phylum&quot;], exclude=NULL)</code></pre>
 <pre><code>
               Acidobacteria              Actinobacteria 
-                          5                         137 
+                          5                         142 
                   Aquificae               Bacteroidetes 
-                          1                          57 
+                          1                          62 
     candidate division NC10 Candidatus Saccharibacteria 
                           1                           3 
                 Chloroflexi               Cyanobacteria 
-                          1                           9 
+                          1                          11 
         Deinococcus-Thermus               Euryarchaeota 
-                         11                           1 
+                         12                           1 
                  Firmicutes                Fusobacteria 
-                        172                           5 
+                        181                           5 
            Gemmatimonadetes                 Nitrospirae 
                           1                           1 
              Planctomycetes              Proteobacteria 
-                          5                         299 
+                          6                         321 
                Spirochaetes                 Tenericutes 
-                          6                           8 
+                          6                          14 
             Verrucomicrobia 
-                          4 </code></pre>
+                          5 </code></pre>
 <p>Note that no taxa were labels as <em>NA</em> so none were removed.</p>
 </div>
 <div id="computation-of-total-and-average-prevalence-in-each-phylum" class="section level2">
@@ -982,34 +1230,34 @@ prevdf &lt;- data.frame(Prevalence=prevdf,
 
 totals</code></pre>
 <pre><code>                        Phylum   Average Total
-1                Acidobacteria  1.400000     7
-2               Actinobacteria 16.576642  2271
-3                    Aquificae  1.000000     1
-4                Bacteroidetes 10.368421   591
-5      candidate division NC10  2.000000     2
-6  Candidatus Saccharibacteria 10.333333    31
-7                  Chloroflexi  1.000000     1
-8                Cyanobacteria  2.444444    22
-9          Deinococcus-Thermus  6.272727    69
-10               Euryarchaeota  3.000000     3
-11                  Firmicutes 12.110465  2083
-12                Fusobacteria 13.800000    69
-13            Gemmatimonadetes  2.000000     2
-14                 Nitrospirae  2.000000     2
-15              Planctomycetes  2.800000    14
-16              Proteobacteria 16.053512  4800
-17                Spirochaetes  2.666667    16
-18                 Tenericutes  3.000000    24
-19             Verrucomicrobia  2.500000    10</code></pre>
+1                Acidobacteria  6.600000    33
+2               Actinobacteria 32.415493  4603
+3                    Aquificae  3.000000     3
+4                Bacteroidetes 20.500000  1271
+5      candidate division NC10  4.000000     4
+6  Candidatus Saccharibacteria 27.666667    83
+7                  Chloroflexi  5.000000     5
+8                Cyanobacteria  6.545455    72
+9          Deinococcus-Thermus 23.583333   283
+10               Euryarchaeota  6.000000     6
+11                  Firmicutes 21.364641  3867
+12                Fusobacteria 26.000000   130
+13            Gemmatimonadetes 13.000000    13
+14                 Nitrospirae  6.000000     6
+15              Planctomycetes 10.833333    65
+16              Proteobacteria 32.688474 10493
+17                Spirochaetes  5.333333    32
+18                 Tenericutes  3.214286    45
+19             Verrucomicrobia 12.600000    63</code></pre>
 <p>Any of the taxa under a total of 100 may be suspect. First, we will remove the taxa that are clearly too low in abundance (&lt;=3).</p>
 <pre class="r"><code>filterPhyla &lt;- totals$Phylum[totals$Total &lt;= 3, drop=T] # drop allows some of the attributes to be removed
 
 phylo.data1 &lt;- phyloseq::subset_taxa(phylo.data.tcga, !Phylum %in% filterPhyla)
 phylo.data1</code></pre>
 <pre><code>phyloseq-class experiment-level object
-otu_table()   OTU Table:         [ 721 taxa and 66 samples ]
-sample_data() Sample Data:       [ 66 samples by 43 sample variables ]
-tax_table()   Taxonomy Table:    [ 721 taxa by 6 taxonomic ranks ]</code></pre>
+otu_table()   OTU Table:         [ 778 taxa and 173 samples ]
+sample_data() Sample Data:       [ 173 samples by 43 sample variables ]
+tax_table()   Taxonomy Table:    [ 778 taxa by 6 taxonomic ranks ]</code></pre>
 <p>Next, we explore the taxa in more detail next as we move to remove some of these low abundance taxa.</p>
 </div>
 <div id="removal-phyla-with-0.1-or-less-of-all-samples-prevalence-filtering" class="section level2">
@@ -1031,10 +1279,10 @@ tax_table()   Taxonomy Table:    [ 721 taxa by 6 taxonomic ranks ]</code></pre>
   facet_wrap(.~Phylum) + theme(legend.position = &quot;none&quot;)</code></pre>
 <p><img src="figure/data_processing_tcga.Rmd/5-thresh-1%20-1.png" width="100%" height="100%" style="display: block; margin: auto;" /></p>
 <p>Note: for plotting purposes, a <span class="math inline">\(+1\)</span> was added to all TotalAbundances to avoid a taking the log of 0.</p>
-<p>Next, we define a prevalence threshold, that way the taxa can be pruned to a prespecified level. In this study, we used 0.001 (0.1%) of total samples.</p>
-<pre class="r"><code>prevalenceThreshold &lt;- 0.001*(phyloseq::nsamples(phylo.data.tcga))
+<p>Next, we define a prevalence threshold, that way the taxa can be pruned to a prespecified level. In this study, we used 0.0001 (0.01%) of total samples.</p>
+<pre class="r"><code>prevalenceThreshold &lt;- 0.0001*(phyloseq::nsamples(phylo.data.tcga))
 prevalenceThreshold</code></pre>
-<pre><code>[1] 0.066</code></pre>
+<pre><code>[1] 0.0173</code></pre>
 <pre class="r"><code># execute the filtering to this level
 keepTaxa &lt;- rownames(prevdf1)[(prevdf1$Prevalence &gt;= prevalenceThreshold)]
 phylo.data2 &lt;- phyloseq::prune_taxa(keepTaxa, phylo.data1)</code></pre>
@@ -1047,7 +1295,7 @@ phylo.data2 &lt;- phyloseq::prune_taxa(keepTaxa, phylo.data1)</code></pre>
 
 # How many genera would be present after filtering?
 length(phyloseq::get_taxa_unique(phylo.data2, taxonomic.rank = &quot;Genus&quot;))</code></pre>
-<pre><code>[1] 354</code></pre>
+<pre><code>[1] 380</code></pre>
 <pre class="r"><code>phylo.data3 = phyloseq::tax_glom(phylo.data2, &quot;Genus&quot;, NArm = TRUE)</code></pre>
 </div>
 <div id="removal-of-genera-contaminants" class="section level2">
@@ -1136,18 +1384,6 @@ plotAfter = plot_abundance(phylo.data3ra,
                            ylab=&quot;Relative Abundance&quot;)
 
 plotBefore + plotAfter + plot_layout(nrow=2)</code></pre>
-<pre><code>Warning in max(data$density): no non-missing arguments to max; returning -Inf</code></pre>
-<pre><code>Warning: Computation failed in `stat_ydensity()`:
-replacement has 1 row, data has 0</code></pre>
-<pre><code>Warning in max(data$density): no non-missing arguments to max; returning -Inf</code></pre>
-<pre><code>Warning: Computation failed in `stat_ydensity()`:
-replacement has 1 row, data has 0</code></pre>
-<pre><code>Warning in max(data$density): no non-missing arguments to max; returning -Inf</code></pre>
-<pre><code>Warning: Computation failed in `stat_ydensity()`:
-replacement has 1 row, data has 0</code></pre>
-<pre><code>Warning in max(data$density): no non-missing arguments to max; returning -Inf</code></pre>
-<pre><code>Warning: Computation failed in `stat_ydensity()`:
-replacement has 1 row, data has 0</code></pre>
 <p><img src="figure/data_processing_tcga.Rmd/4-rel-abund-4-1.png" width="100%" height="100%" style="display: block; margin: auto;" /></p>
 </div>
 </div>
@@ -1164,7 +1400,7 @@ sum(sampleReads)</code></pre>
 <pre><code>[1] 3817495</code></pre>
 <pre class="r"><code># Average reads
 mean(sampleReads)</code></pre>
-<pre><code>[1] 31036.54</code></pre>
+<pre><code>[1] 27463.99</code></pre>
 <pre class="r"><code># max sequencing depth
 max(sampleReads)</code></pre>
 <pre><code>[1] 559963</code></pre>
@@ -1199,24 +1435,26 @@ TCGA.IG.A5B8.Normal.WGS.bbd  TCGA.IG.A5B8.Tumor.WGS.948
                        6999                        7698 
 TCGA.IG.A5S3.Normal.WGS.035  TCGA.IG.A5S3.Tumor.WGS.736 
                         214                         290 
-TCGA.IG.A97I.Normal.WGS.900  TCGA.JY.A93C.Tumor.WGS.f40 
-                      33031                       35048 
-TCGA.L5.A43C.Normal.WGS.311  TCGA.L5.A43C.Tumor.WGS.f5b 
-                      21546                       12862 
-TCGA.L5.A43E.Normal.WGS.280 TCGA.L5.A43E.Normal.WGS.56f 
-                      40554                       47251 
- TCGA.L5.A43E.Tumor.WGS.70d TCGA.L5.A43H.Normal.WGS.d67 
-                      11531                       49147 
- TCGA.L5.A43H.Tumor.WGS.f8c TCGA.L5.A43I.Normal.WGS.293 
-                      28611                       40707 
- TCGA.L5.A43I.Tumor.WGS.dee TCGA.L5.A43J.Normal.WGS.e99 
-                       8126                       26652 
- TCGA.L5.A43J.Tumor.WGS.ed6 TCGA.L5.A43M.Normal.WGS.ec5 
-                       6627                         369 
- TCGA.L5.A43M.Tumor.WGS.4e3 TCGA.L5.A4OE.Normal.WGS.a69 
-                       1478                       12714 
- TCGA.L5.A4OE.Tumor.WGS.498 TCGA.L5.A4OF.Normal.WGS.948 
-                       2948                       18579 
+TCGA.IG.A97I.Normal.WGS.900  TCGA.IG.A97I.Tumor.WGS.9b8 
+                      33031                           0 
+ TCGA.JY.A93C.Tumor.WGS.f40 TCGA.L5.A43C.Normal.WGS.311 
+                      35048                       21546 
+ TCGA.L5.A43C.Tumor.WGS.f5b TCGA.L5.A43E.Normal.WGS.280 
+                      12862                       40554 
+TCGA.L5.A43E.Normal.WGS.56f  TCGA.L5.A43E.Tumor.WGS.70d 
+                      47251                       11531 
+TCGA.L5.A43H.Normal.WGS.d67  TCGA.L5.A43H.Tumor.WGS.f8c 
+                      49147                       28611 
+TCGA.L5.A43I.Normal.WGS.293  TCGA.L5.A43I.Tumor.WGS.dee 
+                      40707                        8126 
+TCGA.L5.A43J.Normal.WGS.e99  TCGA.L5.A43J.Tumor.WGS.ed6 
+                      26652                        6627 
+TCGA.L5.A43M.Normal.WGS.ec5  TCGA.L5.A43M.Tumor.WGS.4e3 
+                        369                        1478 
+TCGA.L5.A4OE.Normal.WGS.a69  TCGA.L5.A4OE.Tumor.WGS.498 
+                      12714                        2948 
+TCGA.L5.A4OF.Normal.WGS.798 TCGA.L5.A4OF.Normal.WGS.948 
+                          0                       18579 
  TCGA.L5.A4OF.Tumor.WGS.0b3  TCGA.L5.A4OF.Tumor.WGS.3ee 
                        4369                       79921 
 TCGA.L5.A4OG.Normal.WGS.963  TCGA.L5.A4OG.Tumor.WGS.cef 
@@ -1233,70 +1471,84 @@ TCGA.L5.A4OJ.Normal.WGS.3de TCGA.L5.A4OJ.Normal.WGS.9dc
                         184                        1378 
  TCGA.L5.A4ON.Tumor.WGS.9bb TCGA.L5.A4OP.Normal.WGS.6e4 
                         316                         169 
- TCGA.L5.A4OP.Tumor.WGS.940 TCGA.L5.A4OS.Normal.WGS.643 
-                         96                       14416 
+ TCGA.L5.A4OP.Tumor.WGS.940 TCGA.L5.A4OR.Normal.WGS.440 
+                         96                           0 
+ TCGA.L5.A4OR.Tumor.WGS.8a6 TCGA.L5.A4OS.Normal.WGS.643 
+                          0                       14416 
  TCGA.L5.A4OS.Tumor.WGS.5c0 TCGA.L5.A4OT.Normal.WGS.2a1 
                      112066                        8373 
  TCGA.L5.A4OT.Tumor.WGS.7d4 TCGA.L5.A891.Normal.WGS.9fa 
                       42262                      269777 
  TCGA.L5.A891.Tumor.WGS.6a8 TCGA.L5.A8NE.Normal.WGS.da6 
                      559963                       25856 
-TCGA.L7.A56G.Normal.WGS.706  TCGA.L7.A56G.Tumor.WGS.8e8 
-                       2946                      173707 
-TCGA.LN.A49K.Normal.WGS.46d  TCGA.LN.A49K.Tumor.WGS.acf 
-                      28461                       15830 
-TCGA.LN.A49L.Normal.WGS.99b TCGA.LN.A49L.Normal.WGS.c79 
-                       1793                       37639 
- TCGA.LN.A49L.Tumor.WGS.a95  TCGA.LN.A49L.Tumor.WGS.a9a 
-                      30608                        8660 
-TCGA.LN.A49M.Normal.WGS.86f  TCGA.LN.A49M.Tumor.WGS.821 
-                       6224                        5518 
-TCGA.LN.A49N.Normal.WGS.aa8  TCGA.LN.A49N.Tumor.WGS.cc2 
-                      69332                       39430 
-TCGA.LN.A49O.Normal.WGS.0e9  TCGA.LN.A49O.Tumor.WGS.e46 
-                      78468                       33726 
-TCGA.LN.A49P.Normal.WGS.09a  TCGA.LN.A49P.Tumor.WGS.bc9 
-                      57063                       21648 
-TCGA.LN.A49R.Normal.WGS.427  TCGA.LN.A49R.Tumor.WGS.94a 
-                        898                       14897 
-TCGA.LN.A49S.Normal.WGS.a7e  TCGA.LN.A49S.Tumor.WGS.f17 
-                      12081                        8885 
-TCGA.LN.A49U.Normal.WGS.bc2  TCGA.LN.A49U.Tumor.WGS.c07 
-                       5318                       51386 
-TCGA.LN.A49V.Normal.WGS.693  TCGA.LN.A49V.Tumor.WGS.331 
-                      22949                       34529 
-TCGA.LN.A49W.Normal.WGS.cfd  TCGA.LN.A49W.Tumor.WGS.30b 
-                       3514                        2374 
-TCGA.LN.A49X.Normal.WGS.36d  TCGA.LN.A49X.Tumor.WGS.e3d 
-                       5414                        3022 
-TCGA.LN.A49Y.Normal.WGS.859 TCGA.LN.A49Y.Normal.WGS.902 
-                       7802                        2661 
- TCGA.LN.A49Y.Tumor.WGS.61d TCGA.LN.A4A1.Normal.WGS.774 
-                        526                       13062 
+ TCGA.L5.A8NE.Tumor.WGS.d6f TCGA.L5.A8NN.Normal.WGS.5ef 
+                          0                           0 
+ TCGA.L5.A8NN.Tumor.WGS.d94 TCGA.L7.A56G.Normal.WGS.706 
+                          0                        2946 
+ TCGA.L7.A56G.Tumor.WGS.8e8 TCGA.L7.A6VZ.Normal.WGS.58c 
+                     173707                           0 
+ TCGA.L7.A6VZ.Tumor.WGS.8fa TCGA.LN.A49K.Normal.WGS.46d 
+                          0                       28461 
+ TCGA.LN.A49K.Tumor.WGS.acf TCGA.LN.A49L.Normal.WGS.99b 
+                      15830                        1793 
+TCGA.LN.A49L.Normal.WGS.c79  TCGA.LN.A49L.Tumor.WGS.a95 
+                      37639                       30608 
+ TCGA.LN.A49L.Tumor.WGS.a9a TCGA.LN.A49M.Normal.WGS.86f 
+                       8660                        6224 
+TCGA.LN.A49M.Normal.WGS.d6f  TCGA.LN.A49M.Tumor.WGS.821 
+                          0                        5518 
+ TCGA.LN.A49M.Tumor.WGS.dae TCGA.LN.A49N.Normal.WGS.aa8 
+                          0                       69332 
+ TCGA.LN.A49N.Tumor.WGS.cc2 TCGA.LN.A49O.Normal.WGS.0e9 
+                      39430                       78468 
+ TCGA.LN.A49O.Tumor.WGS.e46 TCGA.LN.A49P.Normal.WGS.09a 
+                      33726                       57063 
+ TCGA.LN.A49P.Tumor.WGS.bc9 TCGA.LN.A49R.Normal.WGS.427 
+                      21648                         898 
+ TCGA.LN.A49R.Tumor.WGS.94a TCGA.LN.A49S.Normal.WGS.a7e 
+                      14897                       12081 
+ TCGA.LN.A49S.Tumor.WGS.f17 TCGA.LN.A49U.Normal.WGS.bc2 
+                       8885                        5318 
+ TCGA.LN.A49U.Tumor.WGS.c07 TCGA.LN.A49V.Normal.WGS.693 
+                      51386                       22949 
+ TCGA.LN.A49V.Tumor.WGS.331 TCGA.LN.A49W.Normal.WGS.cfd 
+                      34529                        3514 
+ TCGA.LN.A49W.Tumor.WGS.30b TCGA.LN.A49X.Normal.WGS.36d 
+                       2374                        5414 
+ TCGA.LN.A49X.Tumor.WGS.e3d TCGA.LN.A49Y.Normal.WGS.859 
+                       3022                        7802 
+TCGA.LN.A49Y.Normal.WGS.902  TCGA.LN.A49Y.Tumor.WGS.61d 
+                       2661                         526 
+TCGA.LN.A4A1.Normal.WGS.774  TCGA.LN.A4A1.Tumor.WGS.de6 
+                      13062                           0 
 TCGA.LN.A4A2.Normal.WGS.851  TCGA.LN.A4A2.Tumor.WGS.2f7 
                       16038                       14355 
 TCGA.LN.A4A3.Normal.WGS.bee  TCGA.LN.A4A3.Tumor.WGS.e04 
                        3899                      172865 
 TCGA.LN.A4A4.Normal.WGS.200 TCGA.LN.A4A4.Normal.WGS.c72 
                        6580                       33938 
- TCGA.LN.A4A4.Tumor.WGS.8f2 TCGA.LN.A4A6.Normal.WGS.298 
-                       1302                        2142 
- TCGA.LN.A4A6.Tumor.WGS.113 TCGA.LN.A4A8.Normal.WGS.3df 
-                       1280                        3468 
- TCGA.LN.A4A8.Tumor.WGS.fd3 TCGA.LN.A4MQ.Normal.WGS.51c 
-                       1688                        9082 
- TCGA.LN.A4MQ.Tumor.WGS.beb TCGA.LN.A4MR.Normal.WGS.a1b 
-                       3647                        1810 
- TCGA.LN.A4MR.Tumor.WGS.6c3 TCGA.LN.A5U5.Normal.WGS.25f 
-                       2753                        3029 
-TCGA.LN.A5U5.Normal.WGS.e87  TCGA.LN.A5U5.Tumor.WGS.d38 
-                      21262                        2427 
- TCGA.LN.A5U5.Tumor.WGS.ee1 TCGA.LN.A8I1.Normal.WGS.e4b 
-                     181294                       16143 
- TCGA.LN.A8I1.Tumor.WGS.70b TCGA.LN.A9FQ.Normal.WGS.432 
-                      23999                       25536 
-TCGA.V5.A7RC.Normal.WGS.a0c 
-                      35844 </code></pre>
+ TCGA.LN.A4A4.Tumor.WGS.330  TCGA.LN.A4A4.Tumor.WGS.8f2 
+                          0                        1302 
+TCGA.LN.A4A6.Normal.WGS.298  TCGA.LN.A4A6.Tumor.WGS.113 
+                       2142                        1280 
+TCGA.LN.A4A8.Normal.WGS.3df  TCGA.LN.A4A8.Tumor.WGS.fd3 
+                       3468                        1688 
+TCGA.LN.A4MQ.Normal.WGS.51c  TCGA.LN.A4MQ.Tumor.WGS.beb 
+                       9082                        3647 
+TCGA.LN.A4MR.Normal.WGS.a1b  TCGA.LN.A4MR.Tumor.WGS.6c3 
+                       1810                        2753 
+TCGA.LN.A5U5.Normal.WGS.25f TCGA.LN.A5U5.Normal.WGS.e87 
+                       3029                       21262 
+ TCGA.LN.A5U5.Tumor.WGS.d38  TCGA.LN.A5U5.Tumor.WGS.ee1 
+                       2427                      181294 
+TCGA.LN.A8I1.Normal.WGS.e4b  TCGA.LN.A8I1.Tumor.WGS.70b 
+                      16143                       23999 
+TCGA.LN.A9FQ.Normal.WGS.432  TCGA.LN.A9FQ.Tumor.WGS.a06 
+                      25536                           0 
+TCGA.V5.A7RC.Normal.WGS.a0c  TCGA.V5.A7RC.Tumor.WGS.050 
+                      35844                           0 
+ TCGA.V5.A7RC.Tumor.WGS.3ce 
+                          0 </code></pre>
 </div>
 <div id="removal-of-phylum-na-features-1" class="section level2">
 <h2>1. Removal of Phylum NA features</h2>
@@ -1374,8 +1626,8 @@ totals</code></pre>
 phylo.data1 &lt;- subset_taxa(phylo.data.tcga, !Phylum %in% filterPhyla)
 phylo.data1</code></pre>
 <pre><code>phyloseq-class experiment-level object
-otu_table()   OTU Table:         [ 775 taxa and 123 samples ]
-sample_data() Sample Data:       [ 123 samples by 43 sample variables ]
+otu_table()   OTU Table:         [ 775 taxa and 139 samples ]
+sample_data() Sample Data:       [ 139 samples by 43 sample variables ]
 tax_table()   Taxonomy Table:    [ 775 taxa by 6 taxonomic ranks ]</code></pre>
 <p>Next, we explore the taxa in more detail next as we move to remove some of these low abundance taxa.</p>
 </div>
@@ -1398,10 +1650,10 @@ tax_table()   Taxonomy Table:    [ 775 taxa by 6 taxonomic ranks ]</code></pre>
   facet_wrap(.~Phylum) + theme(legend.position = &quot;none&quot;)</code></pre>
 <p><img src="figure/data_processing_tcga.Rmd/WGS-5-thresh-1-1.png" width="100%" height="100%" style="display: block; margin: auto;" /></p>
 <p>Note: for plotting purposes, a <span class="math inline">\(+1\)</span> was added to all TotalAbundances to avoid a taking the log of 0.</p>
-<p>Next, we define a prevalence threshold, that way the taxa can be pruned to a prespecified level. In this study, we used 0.001 (0.1%) of total samples.</p>
-<pre class="r"><code>prevalenceThreshold &lt;- 0.001*nsamples(phylo.data.tcga)
+<p>Next, we define a prevalence threshold, that way the taxa can be pruned to a prespecified level. In this study, we used 0.0001 (0.01%) of total samples.</p>
+<pre class="r"><code>prevalenceThreshold &lt;- 0.0001*nsamples(phylo.data.tcga)
 prevalenceThreshold</code></pre>
-<pre><code>[1] 0.123</code></pre>
+<pre><code>[1] 0.0139</code></pre>
 <pre class="r"><code># execute the filtering to this level
 keepTaxa &lt;- rownames(prevdf1)[(prevdf1$Prevalence &gt;= prevalenceThreshold)]
 phylo.data2 &lt;- prune_taxa(keepTaxa, phylo.data1)</code></pre>

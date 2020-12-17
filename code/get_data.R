@@ -21,7 +21,13 @@ source("code/microbiome_statistics_and_functions.R")
 # read in NCI-UMD Data
 # ================================= #
 # meta-data
-meta.data <- read_xlsx("data/NCI-UMD/NCI_UMD_metadata_2020_09_17.xlsx")
+meta.data <- read_excel(
+  "data/NCI-UMD/UMD Esoph dataset from EB_2019_08_06_AV edits.xlsx", 
+  sheet = "FOR STATA"
+)
+# subset to unique "sample ids
+meta.data <- meta.data %>% distinct(`Sample ID`, .keep_all = T)
+meta.data$sampleid <- meta.data$`Sample ID`
   # change "_" in sampleid to "." to match .biome file
   meta.data$ID <- stringr::str_replace_all(meta.data$sampleid, "_", ".")
 
@@ -36,6 +42,7 @@ phylo.data0 <- merge_phyloseq(biom.file, tree.file, meta)
 colnames(phylo.data0@tax_table) <- c("Kingdom", "Phylum", "Class", "Order", "Family", "Genus")
 # phylo_data <- rarefy_even_depth(phylo_data, sample.size = 7004, rngseed=20191210)
 # phylo object ready for phyloseq related analyses (alphea beta, etc..)
+phylo_data <- phylo.data0
 
 # now, extract the information from .biom/phyloseq for other analyses
 otus <- psmelt(biom.file) # uses the .biom file to just get abundance data
@@ -107,20 +114,20 @@ otus <- otus[,-1]
 otus.RNAseq <- otus[, colnames(otus) %like% "RNAseq"]
 otus.WGS <- otus[, colnames(otus) %like% "WGS"]
 
-# next "filter out" 0 columns
-# ncol(otus.RNAseq) = 173
-otus.RNAseq[nrow(otus.RNAseq) + 1,] <- colSums(otus.RNAseq)
-otus.RNAseq[nrow(otus.RNAseq),][otus.RNAseq[nrow(otus.RNAseq),] == 0] <- NA
-otus.RNAseq <- otus.RNAseq %>%  select_if(~ !any(is.na(.)))
-otus.RNAseq <- otus.RNAseq[-780, ]
-# ncol(otus.RNAseq) = 66
-
-# ncol(otus.WGS) = 139
-otus.WGS[nrow(otus.WGS) + 1,] <- colSums(otus.WGS)
-otus.WGS[nrow(otus.WGS),][otus.WGS[nrow(otus.WGS),] == 0] <- NA
-otus.WGS <- otus.WGS %>%  select_if(~ !any(is.na(.)))
-otus.WGS <- otus.WGS[-780, ]
-# ncol(otus.WGS) = 123
+# # next "filter out" 0 columns
+# # ncol(otus.RNAseq) = 173
+# otus.RNAseq[nrow(otus.RNAseq) + 1,] <- colSums(otus.RNAseq)
+# otus.RNAseq[nrow(otus.RNAseq),][otus.RNAseq[nrow(otus.RNAseq),] == 0] <- NA
+# otus.RNAseq <- otus.RNAseq %>%  select_if(~ !any(is.na(.)))
+# otus.RNAseq <- otus.RNAseq[-780, ]
+# # ncol(otus.RNAseq) = 66
+# 
+# # ncol(otus.WGS) = 139
+# otus.WGS[nrow(otus.WGS) + 1,] <- colSums(otus.WGS)
+# otus.WGS[nrow(otus.WGS),][otus.WGS[nrow(otus.WGS),] == 0] <- NA
+# otus.WGS <- otus.WGS %>%  select_if(~ !any(is.na(.)))
+# otus.WGS <- otus.WGS[-780, ]
+# # ncol(otus.WGS) = 123
 
 # rename columns
 colnames(otus.RNAseq) <- stringr::str_replace_all(colnames(otus.RNAseq), "-", ".")

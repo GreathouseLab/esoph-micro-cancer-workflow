@@ -64,9 +64,12 @@ mean(sampleReads)
 # max sequencing depth
 max(sampleReads)
 
-# rarified to an even depth of
-phylo.data.tcga <- phyloseq::rarefy_even_depth(phylo.data.tcga.RNAseq, replace = T, rngseed = 20200923)
+# min sequencing depth
+min(sampleReads)
 
+# rarified to an even depth of
+#phylo.data.tcga <- phyloseq::rarefy_even_depth(phylo.data.tcga.RNAseq, replace = T, rngseed = 20200923)
+phylo.data.tcga <- phylo.data.tcga.RNAseq
 # even depth of:
 phyloseq::sample_sums(phylo.data.tcga)
 
@@ -168,11 +171,11 @@ Note: for plotting purposes, a $+1$ was added to all TotalAbundances to avoid a 
 
 
 Next, we define a prevalence threshold, that way the taxa can be pruned to a prespecified level. 
-In this study, we used 0.001 (0.1\%) of total samples.
+In this study, we used 0.0001 (0.01\%) of total samples.
 
 ```{r 3-prev-threshold }
 
-prevalenceThreshold <- 0.001*(phyloseq::nsamples(phylo.data.tcga))
+prevalenceThreshold <- 0.0001*(phyloseq::nsamples(phylo.data.tcga))
 prevalenceThreshold
 
 # execute the filtering to this level
@@ -420,11 +423,11 @@ Note: for plotting purposes, a $+1$ was added to all TotalAbundances to avoid a 
 
 
 Next, we define a prevalence threshold, that way the taxa can be pruned to a prespecified level. 
-In this study, we used 0.001 (0.1\%) of total samples.
+In this study, we used 0.0001 (0.01\%) of total samples.
 
 ```{r WGS-3-prev-threshold }
 
-prevalenceThreshold <- 0.001*nsamples(phylo.data.tcga)
+prevalenceThreshold <- 0.0001*nsamples(phylo.data.tcga)
 prevalenceThreshold
 
 # execute the filtering to this level

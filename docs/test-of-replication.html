@@ -412,7 +412,7 @@ div.tocify {
 <div class="tab-content">
 <div id="summary" class="tab-pane fade in active">
 <p>
-<strong>Last updated:</strong> 2020-12-02
+<strong>Last updated:</strong> 2020-12-17
 </p>
 <p>
 <strong>Checks:</strong> <span class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span> 6 <span class="glyphicon glyphicon-exclamation-sign text-danger" aria-hidden="true"></span> 1
@@ -436,7 +436,7 @@ This reproducible <a href="http://rmarkdown.rstudio.com">R Markdown</a> analysis
 </div>
 <div id="strongRMarkdownfilestronguncommittedchanges" class="panel-collapse collapse">
 <div class="panel-body">
-<p>The R Markdown is untracked by Git. To know which version of the R Markdown file created these results, you’ll want to first commit it to the Git repo. If you’re still working on the analysis, you can ignore this warning. When you’re finished, you can run <code>wflow_publish</code> to commit the R Markdown file and build the HTML.</p>
+<p>The R Markdown file has unstaged changes. To know which version of the R Markdown file created these results, you’ll want to first commit it to the Git repo. If you’re still working on the analysis, you can ignore this warning. When you’re finished, you can run <code>wflow_publish</code> to commit the R Markdown file and build the HTML.</p>
 </div>
 </div>
 </div>
@@ -503,16 +503,16 @@ This reproducible <a href="http://rmarkdown.rstudio.com">R Markdown</a> analysis
 <div class="panel panel-default">
 <div class="panel-heading">
 <p class="panel-title">
-<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongRepositoryversionstrongahrefhttpsgithubcomGreathouseLabesophmicrocancerworkflowtree9937a7e527e584ba62d2b3496d62ba6aa4e04dfbtargetblank9937a7ea"> <span class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span> <strong>Repository version:</strong> <a href="https://github.com/GreathouseLab/esoph-micro-cancer-workflow/tree/9937a7e527e584ba62d2b3496d62ba6aa4e04dfb" target="_blank">9937a7e</a> </a>
+<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongRepositoryversionstrongahrefhttpsgithubcomGreathouseLabesophmicrocancerworkflowtreecf91029edb7253f0b4c6ea60d979ff38f446b111targetblankcf91029a"> <span class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span> <strong>Repository version:</strong> <a href="https://github.com/GreathouseLab/esoph-micro-cancer-workflow/tree/cf91029edb7253f0b4c6ea60d979ff38f446b111" target="_blank">cf91029</a> </a>
 </p>
 </div>
-<div id="strongRepositoryversionstrongahrefhttpsgithubcomGreathouseLabesophmicrocancerworkflowtree9937a7e527e584ba62d2b3496d62ba6aa4e04dfbtargetblank9937a7ea" class="panel-collapse collapse">
+<div id="strongRepositoryversionstrongahrefhttpsgithubcomGreathouseLabesophmicrocancerworkflowtreecf91029edb7253f0b4c6ea60d979ff38f446b111targetblankcf91029a" class="panel-collapse collapse">
 <div class="panel-body">
 <p>
 Great! You are using Git for version control. Tracking code development and connecting the code version to the results is critical for reproducibility.
 </p>
 <p>
-The results in this page were generated with repository version <a href="https://github.com/GreathouseLab/esoph-micro-cancer-workflow/tree/9937a7e527e584ba62d2b3496d62ba6aa4e04dfb" target="_blank">9937a7e</a>. See the <em>Past versions</em> tab to see a history of the changes made to the R Markdown and HTML files.
+The results in this page were generated with repository version <a href="https://github.com/GreathouseLab/esoph-micro-cancer-workflow/tree/cf91029edb7253f0b4c6ea60d979ff38f446b111" target="_blank">cf91029</a>. See the <em>Past versions</em> tab to see a history of the changes made to the R Markdown and HTML files.
 </p>
 <p>
 Note that you need to be careful to ensure that all relevant files for the analysis have been committed to Git prior to generating the results (you can use <code>wflow_publish</code> or <code>wflow_git_commit</code>). workflowr only checks the R Markdown file, but you know if there are other scripts or data files that it depends on. Below is the status of the Git repository when the results were generated:
@@ -521,17 +521,17 @@ Note that you need to be careful to ensure that all relevant files for the analy
 Ignored files:
     Ignored:    .Rhistory
     Ignored:    .Rproj.user/
-    Ignored:    analysis/figure/
     Ignored:    data/
 
 Untracked files:
-    Untracked:  analysis/test-of-replication.Rmd
+    Untracked:  analysis/waterfall-plot.Rmd
+    Untracked:  waterfall-plots.Rmd
 
 Unstaged changes:
-    Modified:   analysis/data_processing_nci_umd.Rmd
     Modified:   analysis/data_processing_tcga.Rmd
-    Modified:   analysis/index.Rmd
+    Modified:   analysis/test-of-replication.Rmd
     Modified:   code/get_cleaned_data.R
+    Modified:   code/get_data.R
 
 </code></pre>
 <p>
@@ -544,9 +544,69 @@ Note that any generated files, e.g. HTML, png, CSS, etc., are not included in t
 <hr>
 </div>
 <div id="versions" class="tab-pane fade">
+
 <p>
-There are no past versions. Publish this analysis with <code>wflow_publish()</code> to start tracking its development.
+These are the previous versions of the repository in which changes were made to the R Markdown (<code>analysis/test-of-replication.Rmd</code>) and HTML (<code>docs/test-of-replication.html</code>) files. If you’ve configured a remote Git repository (see <code>?wflow_git_remote</code>), click on the hyperlinks in the table below to view the files as they were in that past version.
 </p>
+<div class="table-responsive">
+<table class="table table-condensed table-hover">
+<thead>
+<tr>
+<th>
+File
+</th>
+<th>
+Version
+</th>
+<th>
+Author
+</th>
+<th>
+Date
+</th>
+<th>
+Message
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>
+Rmd
+</td>
+<td>
+<a href="https://github.com/GreathouseLab/esoph-micro-cancer-workflow/blob/cf91029edb7253f0b4c6ea60d979ff38f446b111/analysis/test-of-replication.Rmd" target="_blank">cf91029</a>
+</td>
+<td>
+noah-padgett
+</td>
+<td>
+2020-12-02
+</td>
+<td>
+updated analyses
+</td>
+</tr>
+<tr>
+<td>
+html
+</td>
+<td>
+<a href="https://rawcdn.githack.com/GreathouseLab/esoph-micro-cancer-workflow/cf91029edb7253f0b4c6ea60d979ff38f446b111/docs/test-of-replication.html" target="_blank">cf91029</a>
+</td>
+<td>
+noah-padgett
+</td>
+<td>
+2020-12-02
+</td>
+<td>
+updated analyses
+</td>
+</tr>
+</tbody>
+</table>
+</div>
 <hr>
 </div>
 </div>
@@ -580,14 +640,159 @@ for(i in 1:nrow(dat.wgs)){
 
 
 # subset to fuso. nuc. only
-dat.16s &lt;- filter(dat.16s, OTU == &quot;Fusobacterium_nucleatum&quot;)
-dat.rna &lt;- filter(dat.rna, otu2 == &quot;Fusobacterium nucleatum&quot;)
-dat.wgs &lt;- filter(dat.wgs, otu2 == &quot;Fusobacterium nucleatum&quot;)
+# Streptococcus sanguinis 
+# Campylobacter concisus
+# Prevotella spp.
+
+dat.16s &lt;- filter(
+  dat.16s,
+  OTU %in% c(
+    &quot;Fusobacterium_nucleatum&quot;,
+    unique(dat.16s$OTU[dat.16s$OTU %like% &quot;Streptococcus_&quot;]),
+    unique(dat.16s$OTU[dat.16s$OTU %like% &quot;Campylobacter_&quot;]),
+    &quot;Prevotella_melaninogenica&quot;)
+)
+dat.rna &lt;- filter(
+  dat.rna,
+  otu2 %in% c(
+    &quot;Fusobacterium nucleatum&quot;,
+    &quot;Streptococcus sanguinis&quot;,
+      &quot;Streptococcus oralis&quot;,
+      &quot;Streptococcus mitis&quot;, 
+      &quot;Streptococcus pneumoniae&quot;, 
+      &quot;Streptococcus parasanguinis&quot;, 
+      &quot;Streptococcus salivarius&quot;,
+    &quot;Campylobacter concisus&quot;,
+    &quot;Prevotella melaninogenica&quot;)
+)
+dat.wgs &lt;- filter(
+  dat.wgs,
+  otu2 %in% c(
+    &quot;Fusobacterium nucleatum&quot;,
+    &quot;Streptococcus sanguinis&quot;,
+      &quot;Streptococcus oralis&quot;,
+      &quot;Streptococcus mitis&quot;, 
+      &quot;Streptococcus pneumoniae&quot;, 
+      &quot;Streptococcus parasanguinis&quot;, 
+      &quot;Streptococcus salivarius&quot;,
+    &quot;Campylobacter concisus&quot;,
+    &quot;Prevotella melaninogenica&quot;)
+)
+
+# new names
+dat.16s$OTU1 &lt;- factor(
+  dat.16s$OTU,
+  levels = c(
+    &quot;Fusobacterium_nucleatum&quot;,
+    &quot;Streptococcus_dentisani:Streptococcus_infantis:Streptococcus_mitis:Streptococcus_oligofermentans:Streptococcus_oralis:Streptococcus_pneumoniae:Streptococcus_pseudopneumoniae:Streptococcus_sanguinis&quot;,
+    &quot;Campylobacter_rectus:Campylobacter_showae&quot;,
+    &quot;Prevotella_melaninogenica&quot;
+  ),
+  labels = c(
+    &quot;Fusobacterium nucleatum&quot;,
+    &quot;Streptococcus sanguinis&quot;,
+    &quot;Campylobacter concisus&quot;,
+    &quot;Prevotella melaninogenica&quot;
+  )
+)
+dat.rna$OTU1 &lt;- factor(
+  dat.rna$otu2,
+  levels = c(
+    &quot;Fusobacterium nucleatum&quot;,
+    &quot;Streptococcus sanguinis&quot;,
+    &quot;Campylobacter concisus&quot;,
+    &quot;Prevotella melaninogenica&quot;),
+  labels = c(
+    &quot;Fusobacterium nucleatum&quot;,
+    &quot;Streptococcus sanguinis&quot;,
+    &quot;Campylobacter concisus&quot;,
+    &quot;Prevotella melaninogenica&quot;)
+)
+
+dat.wgs$OTU1 &lt;- factor(
+  dat.wgs$otu2,
+  levels = c(
+    &quot;Fusobacterium nucleatum&quot;,
+    &quot;Streptococcus sanguinis&quot;,
+    &quot;Campylobacter concisus&quot;,
+    &quot;Prevotella melaninogenica&quot;),
+  labels = c(
+    &quot;Fusobacterium nucleatum&quot;,
+    &quot;Streptococcus sanguinis&quot;,
+    &quot;Campylobacter concisus&quot;,
+    &quot;Prevotella melaninogenica&quot;)
+)
+
+# rename bacteria
+dat.16s$OTU &lt;- factor(
+  dat.16s$OTU,
+  levels = c(
+    &quot;Fusobacterium_nucleatum&quot;,
+    &quot;Streptococcus_dentisani:Streptococcus_infantis:Streptococcus_mitis:Streptococcus_oligofermentans:Streptococcus_oralis:Streptococcus_pneumoniae:Streptococcus_pseudopneumoniae:Streptococcus_sanguinis&quot;,
+    &quot;Campylobacter_rectus:Campylobacter_showae&quot;,
+    &quot;Prevotella_melaninogenica&quot;
+  ),
+  labels = c(
+    &quot;Fusobacterium nucleatum&quot;,
+    &quot;Streptococcus spp.&quot;,
+    &quot;Campylobacter concisus&quot;,
+    &quot;Prevotella melaninogenica&quot;
+  )
+)
+dat.rna$OTU &lt;- factor(
+  dat.rna$otu2,
+  levels = c(
+    &quot;Fusobacterium nucleatum&quot;,
+    &quot;Streptococcus sanguinis&quot;,
+      &quot;Streptococcus oralis&quot;,
+      &quot;Streptococcus mitis&quot;, 
+      &quot;Streptococcus pneumoniae&quot;, 
+      &quot;Streptococcus parasanguinis&quot;, 
+      &quot;Streptococcus salivarius&quot;,
+    &quot;Campylobacter concisus&quot;,
+    &quot;Prevotella melaninogenica&quot;),
+  labels = c(
+    &quot;Fusobacterium nucleatum&quot;,
+    &quot;Streptococcus spp.&quot;,
+      &quot;Streptococcus spp.&quot;,
+      &quot;Streptococcus spp.&quot;, 
+      &quot;Streptococcus spp.&quot;, 
+      &quot;Streptococcus spp.&quot;, 
+      &quot;Streptococcus spp.&quot;,
+    &quot;Campylobacter concisus&quot;,
+    &quot;Prevotella melaninogenica&quot;)
+)
+
+dat.wgs$OTU &lt;- factor(
+  dat.wgs$otu2,
+  levels = c(
+    &quot;Fusobacterium nucleatum&quot;,
+    &quot;Streptococcus sanguinis&quot;,
+      &quot;Streptococcus oralis&quot;,
+      &quot;Streptococcus mitis&quot;, 
+      &quot;Streptococcus pneumoniae&quot;, 
+      &quot;Streptococcus parasanguinis&quot;, 
+      &quot;Streptococcus salivarius&quot;,
+    &quot;Campylobacter concisus&quot;,
+    &quot;Prevotella melaninogenica&quot;),
+  labels = c(
+    &quot;Fusobacterium nucleatum&quot;,
+    &quot;Streptococcus spp.&quot;,
+      &quot;Streptococcus spp.&quot;,
+      &quot;Streptococcus spp.&quot;, 
+      &quot;Streptococcus spp.&quot;, 
+      &quot;Streptococcus spp.&quot;, 
+      &quot;Streptococcus spp.&quot;,
+    &quot;Campylobacter concisus&quot;,
+    &quot;Prevotella melaninogenica&quot;)
+)
+
+
 
 # make tumor vs normal variable
-dat.16s$tumor &lt;- factor(dat.16s$tissue, levels=c(&quot;BO&quot;, &quot;N&quot;, &quot;T&quot;), labels = c(&quot;Non-Tumor&quot;, &quot;Non-Tumor&quot;, &quot;Tumor&quot;))
-dat.rna$tumor &lt;- factor(dat.rna$SampleType_Level2, levels=c(&quot;Normal&quot;, &quot;Tumor&quot;), labels = c(&quot;Non-Tumor&quot;, &quot;Tumor&quot;))
-dat.wgs$tumor &lt;- factor(dat.wgs$SampleType_Level2, levels=c(&quot;Normal&quot;, &quot;Tumor&quot;), labels = c(&quot;Non-Tumor&quot;, &quot;Tumor&quot;))
+dat.16s$tumor.cat &lt;- factor(dat.16s$tissue, levels=c(&quot;BO&quot;, &quot;N&quot;, &quot;T&quot;), labels = c(&quot;Non-Tumor&quot;, &quot;Non-Tumor&quot;, &quot;Tumor&quot;))
+dat.rna$tumor.cat &lt;- factor(dat.rna$SampleType_Level2, levels=c(&quot;Normal&quot;, &quot;Tumor&quot;), labels = c(&quot;Non-Tumor&quot;, &quot;Tumor&quot;))
+dat.wgs$tumor.cat &lt;- factor(dat.wgs$SampleType_Level2, levels=c(&quot;Normal&quot;, &quot;Tumor&quot;), labels = c(&quot;Non-Tumor&quot;, &quot;Tumor&quot;))
 
 # dataset id
 dat.16s$source &lt;- &quot;16s&quot;
@@ -595,16 +800,34 @@ dat.rna$source &lt;- &quot;rna&quot;
 dat.wgs$source &lt;- &quot;wgs&quot;
 
 # plotting ids
-dat.16s$X &lt;- paste0(dat.16s$source, &quot;-&quot;, dat.16s$tumor)
-dat.rna$X &lt;- paste0(dat.rna$source, &quot;-&quot;, dat.rna$tumor)
-dat.wgs$X &lt;- paste0(dat.wgs$source, &quot;-&quot;, dat.wgs$tumor)
+dat.16s$X &lt;- paste0(dat.16s$source, &quot;-&quot;, dat.16s$tumor.cat)
+dat.rna$X &lt;- paste0(dat.rna$source, &quot;-&quot;, dat.rna$tumor.cat)
+dat.wgs$X &lt;- paste0(dat.wgs$source, &quot;-&quot;, dat.wgs$tumor.cat)
+
+# relabel as (0/1) for analysis
+dat.16s$tumor &lt;- as.numeric(factor(dat.16s$tissue, levels=c(&quot;BO&quot;, &quot;N&quot;, &quot;T&quot;), labels = c(&quot;Non-Tumor&quot;, &quot;Non-Tumor&quot;, &quot;Tumor&quot;))) - 1
+dat.rna$tumor &lt;- as.numeric(factor(dat.rna$SampleType_Level2, levels=c(&quot;Normal&quot;, &quot;Tumor&quot;), labels = c(&quot;Non-Tumor&quot;, &quot;Tumor&quot;))) - 1
+dat.wgs$tumor &lt;- as.numeric(factor(dat.wgs$SampleType_Level2, levels=c(&quot;Normal&quot;, &quot;Tumor&quot;), labels = c(&quot;Non-Tumor&quot;, &quot;Tumor&quot;))) - 1
+
+# presence- absence
+dat.16s$pres &lt;- ifelse(dat.16s$Abundance &gt; 0, 1, 0)
+dat.16s$pres[is.na(dat.16s$pres)] &lt;- 0
+dat.rna$pres &lt;- ifelse(dat.rna$Abundance &gt; 0, 1, 0)
+dat.rna$pres[is.na(dat.rna$pres)] &lt;- 0
+dat.wgs$pres &lt;- ifelse(dat.wgs$Abundance &gt; 0, 1, 0)
+dat.wgs$pres[is.na(dat.wgs$pres)] &lt;- 0
+
+# blood exclusions
+dat.16s$bloodWGS &lt;- 0
+dat.rna$bloodWGS &lt;- dat.rna$WGS_Blood_Normal
+dat.wgs$bloodWGS &lt;- dat.wgs$WGS_Blood_Normal
 
 # merge data
-cls &lt;- c(&quot;OTU&quot;, &quot;Sample&quot;, &quot;Abundance&quot;, &quot;tumor&quot;, &quot;source&quot;, &quot;X&quot;)
+cls &lt;- c(&quot;OTU&quot;, &quot;OTU1&quot;, &quot;Sample&quot;, &quot;Abundance&quot;, &quot;tumor.cat&quot;, &quot;tumor&quot;, &quot;source&quot;, &quot;X&quot;, &quot;pres&quot;, &quot;bloodWGS&quot;)
 mydata &lt;- full_join(dat.16s[,cls], dat.rna[,cls])</code></pre>
-<pre><code>Joining, by = c(&quot;OTU&quot;, &quot;Sample&quot;, &quot;Abundance&quot;, &quot;tumor&quot;, &quot;source&quot;, &quot;X&quot;)</code></pre>
+<pre><code>Joining, by = c(&quot;OTU&quot;, &quot;OTU1&quot;, &quot;Sample&quot;, &quot;Abundance&quot;, &quot;tumor.cat&quot;, &quot;tumor&quot;, &quot;source&quot;, &quot;X&quot;, &quot;pres&quot;, &quot;bloodWGS&quot;)</code></pre>
 <pre class="r"><code>mydata &lt;- full_join(mydata, dat.wgs[,cls])</code></pre>
-<pre><code>Joining, by = c(&quot;OTU&quot;, &quot;Sample&quot;, &quot;Abundance&quot;, &quot;tumor&quot;, &quot;source&quot;, &quot;X&quot;)</code></pre>
+<pre><code>Joining, by = c(&quot;OTU&quot;, &quot;OTU1&quot;, &quot;Sample&quot;, &quot;Abundance&quot;, &quot;tumor.cat&quot;, &quot;tumor&quot;, &quot;source&quot;, &quot;X&quot;, &quot;pres&quot;, &quot;bloodWGS&quot;)</code></pre>
 </div>
 <div id="replicating-the-analysis" class="section level1">
 <h1>Replicating the Analysis</h1>
@@ -613,80 +836,353 @@ mydata &lt;- full_join(dat.16s[,cls], dat.rna[,cls])</code></pre>
 <pre class="r"><code>p &lt;- ggplot(mydata, aes(x=X, y=Abundance)) +
   geom_violin() +
   geom_jitter(alpha=0.5) +
+  facet_wrap(.~OTU)+
   scale_y_continuous(
     trans = &quot;sqrt&quot;,
-    breaks=c(0.002, 0.01, 0.025, 0.05, 0.1, 0.25, 0.5, 0.8)) +
-  theme_classic()
+    breaks=c(0.002, 0.01, 0.05, 0.1, 0.25, 0.5, 0.8)) +
+  labs(x=NULL, y=&quot;Relative Abundance&quot;)+
+  theme_classic() +
+  theme(
+    axis.text.x = element_text(angle = 30,vjust=0.95, hjust=0.95)
+  )
 p</code></pre>
-<p><img src="figure/test-of-replication.Rmd/unnamed-chunk-2-1.png" width="225%" height="10" style="display: block; margin: auto;" /></p>
+<pre><code>Warning: Removed 1107 rows containing non-finite values (stat_ydensity).</code></pre>
+<pre><code>Warning: Removed 1107 rows containing missing values (geom_point).</code></pre>
+<p><img src="figure/test-of-replication.Rmd/unnamed-chunk-2-1.png" width="100%" height="200%" style="display: block; margin: auto;" /></p>
 </div>
-<div id="fisher-exact-test" class="section level2">
-<h2>Fisher Exact Test</h2>
-<pre><code>Joining, by = c(&quot;OTU&quot;, &quot;Sample&quot;, &quot;Abundance&quot;, &quot;tumor&quot;, &quot;source&quot;, &quot;X&quot;)
-Joining, by = c(&quot;OTU&quot;, &quot;Sample&quot;, &quot;Abundance&quot;, &quot;tumor&quot;, &quot;source&quot;, &quot;X&quot;)</code></pre>
-<p>Mann-Whitney U-Test</p>
-<pre class="r"><code>#
-wilcox.test(dat.16s$Abundance ~ dat.16s$tumor)</code></pre>
-<pre><code>
-    Wilcoxon rank sum test with continuity correction
-
-data:  dat.16s$Abundance by dat.16s$tumor
-W = 2330, p-value = 0.006126
-alternative hypothesis: true location shift is not equal to 0</code></pre>
-<pre class="r"><code>wilcox.test(dat.rna$Abundance ~ dat.rna$tumor)</code></pre>
-<pre><code>
-    Wilcoxon rank sum test with continuity correction
-
-data:  dat.rna$Abundance by dat.rna$tumor
-W = 237, p-value = 0.5319
-alternative hypothesis: true location shift is not equal to 0</code></pre>
-<pre class="r"><code>wilcox.test(dat.wgs$Abundance ~ dat.wgs$tumor)</code></pre>
-<pre><code>
-    Wilcoxon rank sum test with continuity correction
-
-data:  dat.wgs$Abundance by dat.wgs$tumor
-W = 1267.5, p-value = 0.0006748
-alternative hypothesis: true location shift is not equal to 0</code></pre>
-<p>Fisher Exact Test.</p>
-<pre class="r"><code>a &lt;- na.omit(dat.16s[, c(&quot;barrett&quot;, &quot;tumor&quot;)])
-fisher.test(a$barrett, a$tumor)</code></pre>
+<div id="statistical-tests" class="section level2">
+<h2>Statistical Tests</h2>
+<div id="fusobacterium-nucleatum" class="section level3">
+<h3>Fusobacterium nucleatum</h3>
+<pre class="r"><code># No additional subsetting/exclusions
+d &lt;- mydata %&gt;%
+  filter(OTU == &quot;Fusobacterium nucleatum&quot;,
+         source == &quot;16s&quot;)
+fisher.test(d$pres, d$tumor)</code></pre>
 <pre><code>
     Fisher&#39;s Exact Test for Count Data
 
-data:  a$barrett and a$tumor
+data:  d$pres and d$tumor
+p-value = 0.1487
+alternative hypothesis: true odds ratio is not equal to 1
+95 percent confidence interval:
+ 0.8126368 3.2144776
+sample estimates:
+odds ratio 
+  1.610386 </code></pre>
+<pre class="r"><code>d &lt;- mydata %&gt;%
+  filter(OTU == &quot;Fusobacterium nucleatum&quot;,
+         source == &quot;wgs&quot;)
+fisher.test(d$pres, d$tumor)</code></pre>
+<pre><code>
+    Fisher&#39;s Exact Test for Count Data
+
+data:  d$pres and d$tumor
+p-value = 0.02533
+alternative hypothesis: true odds ratio is not equal to 1
+95 percent confidence interval:
+ 1.065529 4.759083
+sample estimates:
+odds ratio 
+  2.232631 </code></pre>
+<pre class="r"><code>d &lt;- mydata %&gt;%
+  filter(OTU == &quot;Fusobacterium nucleatum&quot;,
+         source == &quot;rna&quot;)
+fisher.test(d$pres, d$tumor)</code></pre>
+<pre><code>
+    Fisher&#39;s Exact Test for Count Data
+
+data:  d$pres and d$tumor
+p-value = 0.04707
+alternative hypothesis: true odds ratio is not equal to 1
+95 percent confidence interval:
+ 0.05593801 1.12690374
+sample estimates:
+odds ratio 
+ 0.2723903 </code></pre>
+<pre class="r"><code># Excluding blood != 0
+d &lt;- mydata %&gt;%
+  filter(OTU == &quot;Fusobacterium nucleatum&quot;,
+         source == &quot;wgs&quot;,
+         bloodWGS==0)
+fisher.test(d$pres, d$tumor)</code></pre>
+<pre><code>
+    Fisher&#39;s Exact Test for Count Data
+
+data:  d$pres and d$tumor
+p-value = 0.7626
+alternative hypothesis: true odds ratio is not equal to 1
+95 percent confidence interval:
+ 0.3753539 5.6058176
+sample estimates:
+odds ratio 
+  1.432327 </code></pre>
+</div>
+<div id="streptococcus-spp." class="section level3">
+<h3>Streptococcus spp.</h3>
+<p><em>difficult to determine which species were used</em></p>
+<pre class="r"><code># No additional subsetting/exclusions
+d &lt;- mydata %&gt;%
+  filter(OTU == &quot;Streptococcus spp.&quot;,
+         source == &quot;16s&quot;)
+fisher.test(d$pres, d$tumor)</code></pre>
+<pre><code>
+    Fisher&#39;s Exact Test for Count Data
+
+data:  d$pres and d$tumor
 p-value = 1
 alternative hypothesis: true odds ratio is not equal to 1
 95 percent confidence interval:
- 0.5153007 2.0334489
+ 0.2189448 7.8326544
 sample estimates:
 odds ratio 
-  1.022175 </code></pre>
-<pre class="r"><code>a &lt;- na.omit(dat.rna[, c(&quot;barrett&quot;, &quot;tumor&quot;)])
-fisher.test(a$barrett, a$tumor)</code></pre>
+  1.173049 </code></pre>
+<pre class="r"><code>d &lt;- mydata %&gt;%
+  filter(OTU == &quot;Streptococcus spp.&quot;,
+         source == &quot;wgs&quot;)
+fisher.test(d$pres, d$tumor)</code></pre>
 <pre><code>
     Fisher&#39;s Exact Test for Count Data
 
-data:  a$barrett and a$tumor
-p-value = 0.6188
+data:  d$pres and d$tumor
+p-value = 1.413e-06
 alternative hypothesis: true odds ratio is not equal to 1
 95 percent confidence interval:
- 0.07451302 7.42811003
+ 1.487867 2.643073
 sample estimates:
 odds ratio 
- 0.5913395 </code></pre>
-<pre class="r"><code>a &lt;- na.omit(dat.wgs[, c(&quot;barrett&quot;, &quot;tumor&quot;)])
-fisher.test(a$barrett, a$tumor)</code></pre>
+  1.981098 </code></pre>
+<pre class="r"><code>d &lt;- mydata %&gt;%
+  filter(OTU == &quot;Streptococcus spp.&quot;,
+         source == &quot;rna&quot;)
+fisher.test(d$pres, d$tumor)</code></pre>
 <pre><code>
     Fisher&#39;s Exact Test for Count Data
 
-data:  a$barrett and a$tumor
+data:  d$pres and d$tumor
+p-value = 8.651e-07
+alternative hypothesis: true odds ratio is not equal to 1
+95 percent confidence interval:
+ 0.1589282 0.4818080
+sample estimates:
+odds ratio 
+ 0.2795264 </code></pre>
+<pre class="r"><code># Excluding blood != 0
+d &lt;- mydata %&gt;%
+  filter(OTU == &quot;Streptococcus spp.&quot;,
+         source == &quot;wgs&quot;,
+         bloodWGS==0)
+fisher.test(d$pres, d$tumor)</code></pre>
+<pre><code>
+    Fisher&#39;s Exact Test for Count Data
+
+data:  d$pres and d$tumor
 p-value = 1
 alternative hypothesis: true odds ratio is not equal to 1
 95 percent confidence interval:
- 0.1595714 4.8896940
+ 0.5998557 1.6670677
 sample estimates:
 odds ratio 
- 0.9158179 </code></pre>
+         1 </code></pre>
+</div>
+<div id="streptococcus-sanguinis" class="section level3">
+<h3>Streptococcus sanguinis</h3>
+<p><em>difficult to determine which species were used</em></p>
+<pre class="r"><code># No additional subsetting/exclusions
+d &lt;- mydata %&gt;%
+  filter(OTU1 == &quot;Streptococcus sanguinis&quot;,
+         source == &quot;16s&quot;)
+fisher.test(d$pres, d$tumor)</code></pre>
+<pre><code>
+    Fisher&#39;s Exact Test for Count Data
+
+data:  d$pres and d$tumor
+p-value = 1
+alternative hypothesis: true odds ratio is not equal to 1
+95 percent confidence interval:
+ 0.2189448 7.8326544
+sample estimates:
+odds ratio 
+  1.173049 </code></pre>
+<pre class="r"><code>d &lt;- mydata %&gt;%
+  filter(OTU1 == &quot;Streptococcus sanguinis&quot;,
+         source == &quot;wgs&quot;)
+fisher.test(d$pres, d$tumor)</code></pre>
+<pre><code>
+    Fisher&#39;s Exact Test for Count Data
+
+data:  d$pres and d$tumor
+p-value = 0.4639
+alternative hypothesis: true odds ratio is not equal to 1
+95 percent confidence interval:
+ 0.6098689 2.9683346
+sample estimates:
+odds ratio 
+  1.339246 </code></pre>
+<pre class="r"><code>d &lt;- mydata %&gt;%
+  filter(OTU1 == &quot;Streptococcus sanguinis&quot;,
+         source == &quot;rna&quot;)
+fisher.test(d$pres, d$tumor)</code></pre>
+<pre><code>
+    Fisher&#39;s Exact Test for Count Data
+
+data:  d$pres and d$tumor
+p-value = 0.04205
+alternative hypothesis: true odds ratio is not equal to 1
+95 percent confidence interval:
+ 0.05280152 1.06581611
+sample estimates:
+odds ratio 
+ 0.2573433 </code></pre>
+<pre class="r"><code># Excluding blood != 0
+d &lt;- mydata %&gt;%
+  filter(OTU1 == &quot;Streptococcus sanguinis&quot;,
+         source == &quot;wgs&quot;,
+         bloodWGS==0)
+fisher.test(d$pres, d$tumor)</code></pre>
+<pre><code>
+    Fisher&#39;s Exact Test for Count Data
+
+data:  d$pres and d$tumor
+p-value = 1
+alternative hypothesis: true odds ratio is not equal to 1
+95 percent confidence interval:
+ 0.2622982 6.4033751
+sample estimates:
+odds ratio 
+  1.267969 </code></pre>
+</div>
+<div id="campylobacter-concisus" class="section level3">
+<h3>Campylobacter concisus</h3>
+<pre class="r"><code># No additional subsetting/exclusions
+d &lt;- mydata %&gt;%
+  filter(OTU == &quot;Campylobacter concisus&quot;,
+         source == &quot;16s&quot;)
+fisher.test(d$pres, d$tumor)</code></pre>
+<pre><code>
+    Fisher&#39;s Exact Test for Count Data
+
+data:  d$pres and d$tumor
+p-value = 0.2325
+alternative hypothesis: true odds ratio is not equal to 1
+95 percent confidence interval:
+ 0.7306314 3.9724225
+sample estimates:
+odds ratio 
+  1.698461 </code></pre>
+<pre class="r"><code>d &lt;- mydata %&gt;%
+  filter(OTU == &quot;Campylobacter concisus&quot;,
+         source == &quot;wgs&quot;)
+fisher.test(d$pres, d$tumor)</code></pre>
+<pre><code>
+    Fisher&#39;s Exact Test for Count Data
+
+data:  d$pres and d$tumor
+p-value = 0.008873
+alternative hypothesis: true odds ratio is not equal to 1
+95 percent confidence interval:
+ 1.225362 6.656564
+sample estimates:
+odds ratio 
+  2.797326 </code></pre>
+<pre class="r"><code>d &lt;- mydata %&gt;%
+  filter(OTU == &quot;Campylobacter concisus&quot;,
+         source == &quot;rna&quot;)
+fisher.test(d$pres, d$tumor)</code></pre>
+<pre><code>
+    Fisher&#39;s Exact Test for Count Data
+
+data:  d$pres and d$tumor
+p-value = 0.04188
+alternative hypothesis: true odds ratio is not equal to 1
+95 percent confidence interval:
+ 0.05364598 1.20067358
+sample estimates:
+odds ratio 
+  0.235494 </code></pre>
+<pre class="r"><code># Excluding blood != 0
+d &lt;- mydata %&gt;%
+  filter(OTU == &quot;Campylobacter concisus&quot;,
+         source == &quot;wgs&quot;,
+         bloodWGS==0)
+fisher.test(d$pres, d$tumor)</code></pre>
+<pre><code>
+    Fisher&#39;s Exact Test for Count Data
+
+data:  d$pres and d$tumor
+p-value = 1
+alternative hypothesis: true odds ratio is not equal to 1
+95 percent confidence interval:
+ 0.2461498 4.0625664
+sample estimates:
+odds ratio 
+         1 </code></pre>
+</div>
+<div id="prevotella-melaninogenica" class="section level3">
+<h3>Prevotella melaninogenica</h3>
+<pre class="r"><code># No additional subsetting/exclusions
+d &lt;- mydata %&gt;%
+  filter(OTU == &quot;Prevotella melaninogenica&quot;,
+         source == &quot;16s&quot;)
+fisher.test(d$pres, d$tumor)</code></pre>
+<pre><code>
+    Fisher&#39;s Exact Test for Count Data
+
+data:  d$pres and d$tumor
+p-value = 0.1531
+alternative hypothesis: true odds ratio is not equal to 1
+95 percent confidence interval:
+ 0.790056 3.924226
+sample estimates:
+odds ratio 
+  1.728747 </code></pre>
+<pre class="r"><code>d &lt;- mydata %&gt;%
+  filter(OTU == &quot;Prevotella melaninogenica&quot;,
+         source == &quot;wgs&quot;)
+fisher.test(d$pres, d$tumor)</code></pre>
+<pre><code>
+    Fisher&#39;s Exact Test for Count Data
+
+data:  d$pres and d$tumor
+p-value = 3.232e-06
+alternative hypothesis: true odds ratio is not equal to 1
+95 percent confidence interval:
+  2.492672 12.298866
+sample estimates:
+odds ratio 
+  5.430828 </code></pre>
+<pre class="r"><code>d &lt;- mydata %&gt;%
+  filter(OTU == &quot;Prevotella melaninogenica&quot;,
+         source == &quot;rna&quot;)
+fisher.test(d$pres, d$tumor)</code></pre>
+<pre><code>
+    Fisher&#39;s Exact Test for Count Data
+
+data:  d$pres and d$tumor
+p-value = 0.1884
+alternative hypothesis: true odds ratio is not equal to 1
+95 percent confidence interval:
+ 0.09378767 1.68318325
+sample estimates:
+odds ratio 
+ 0.4075071 </code></pre>
+<pre class="r"><code># Excluding blood != 0
+d &lt;- mydata %&gt;%
+  filter(OTU == &quot;Prevotella melaninogenica&quot;,
+         source == &quot;wgs&quot;,
+         bloodWGS==0)
+fisher.test(d$pres, d$tumor)</code></pre>
+<pre><code>
+    Fisher&#39;s Exact Test for Count Data
+
+data:  d$pres and d$tumor
+p-value = 0.747
+alternative hypothesis: true odds ratio is not equal to 1
+95 percent confidence interval:
+ 0.355727 6.731657
+sample estimates:
+odds ratio 
+  1.509201 </code></pre>
 <br>
 <p>
 <button type="button" class="btn btn-default btn-workflowr btn-workflowr-sessioninfo" data-toggle="collapse" data-target="#workflowr-sessioninfo" style="display: block;">
@@ -747,13 +1243,14 @@ loaded via a namespace (and not attached):
 [67] evaluate_0.14       Rhdf5lib_1.10.1     tidyselect_1.1.0   
 [70] magrittr_1.5        R6_2.4.1            IRanges_2.22.2     
 [73] generics_0.0.2      DBI_1.1.0           foreign_0.8-80     
-[76] pillar_1.4.6        haven_2.3.1         withr_2.2.0        
-[79] mgcv_1.8-31         abind_1.4-5         survival_3.2-3     
-[82] modelr_0.1.8        crayon_1.3.4        rmarkdown_2.5      
-[85] grid_4.0.2          blob_1.2.1          git2r_0.27.1       
-[88] reprex_0.3.0        digest_0.6.25       webshot_0.5.2      
-[91] httpuv_1.5.4        numDeriv_2016.8-1.1 stats4_4.0.2       
-[94] munsell_0.5.0      </code></pre>
+[76] pillar_1.4.6        haven_2.3.1         whisker_0.4        
+[79] withr_2.2.0         mgcv_1.8-31         abind_1.4-5        
+[82] survival_3.2-3      modelr_0.1.8        crayon_1.3.4       
+[85] rmarkdown_2.5       grid_4.0.2          blob_1.2.1         
+[88] git2r_0.27.1        reprex_0.3.0        digest_0.6.25      
+[91] webshot_0.5.2       httpuv_1.5.4        numDeriv_2016.8-1.1
+[94] stats4_4.0.2        munsell_0.5.0      </code></pre>
+</div>
 </div>
 </div>
 </div>

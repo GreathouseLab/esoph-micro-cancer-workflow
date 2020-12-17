@@ -21,3 +21,4 @@ Welcome to our research website.
 
 *[Testing replication](test-of-replication.html)
 
+*[Waterfall Plots](waterfall-plot.html)

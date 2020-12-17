@@ -19,8 +19,15 @@ source("code/microbiome_statistics_and_functions.R")
 # read in NCI-UMD Data
 # ================================= #
 # meta-data
-meta.data <- read_xlsx("data/NCI-UMD/NCI_UMD_metadata_2020_09_17.xlsx")
+meta.data <- read_excel(
+  "data/NCI-UMD/UMD Esoph dataset from EB_2019_08_06_AV edits.xlsx", 
+  sheet = "FOR STATA"
+)
+# subset to unique "sample ids
+meta.data <- meta.data %>% distinct(`Sample ID`, .keep_all = T)
+#read_xlsx("data/NCI-UMD/NCI_UMD_metadata_2020_09_17.xlsx")
 # change "_" in sampleid to "." to match .biome file
+meta.data$sampleid <- meta.data$`Sample ID`
 meta.data$ID <- stringr::str_replace_all(meta.data$sampleid, "_", ".")
 
 # get microbiome data
@@ -30,6 +37,8 @@ tree.file  <- read_tree("data/NCI-UMD/reps_even500.tre")
 # create phyloseq object
 meta <- sample_data(meta.data)
 sample_names(meta) <- meta.data$ID
+
+# update otu table to include "zeros" for non-found samples
 phylo.data0 <- merge_phyloseq(biom.file, tree.file, meta)
 colnames(phylo.data0@tax_table) <- c("Kingdom", "Phylum", "Class", "Order", "Family", "Genus")
 # phylo_data <- rarefy_even_depth(phylo_data, sample.size = 7004, rngseed=20191210)
@@ -38,8 +47,8 @@ colnames(phylo.data0@tax_table) <- c("Kingdom", "Phylum", "Class", "Order", "Fam
 # CLEAN MICROBIOME DATA
 # rarify
 # rarified to an even depth of
-phylo_data0 <- rarefy_even_depth(phylo.data0, replace = T, rngseed = 20200101)
-
+#phylo_data0 <- rarefy_even_depth(phylo.data0, replace = T, rngseed = 20200101)
+phylo_data0 <- phylo.data0
 # compute prevalence of each feature
 prevdf <- apply(X=otu_table(phylo_data0),
                 MARGIN= ifelse(taxa_are_rows(phylo_data0), yes=1, no=2),
@@ -177,17 +186,17 @@ otus.WGS <- otus[, colnames(otus) %like% "WGS"]
 
 # next "filter out" 0 columns
 # ncol(otus.RNAseq) = 173
-otus.RNAseq[nrow(otus.RNAseq) + 1,] <- colSums(otus.RNAseq)
-otus.RNAseq[nrow(otus.RNAseq),][otus.RNAseq[nrow(otus.RNAseq),] == 0] <- NA
-otus.RNAseq <- otus.RNAseq %>%  select_if(~ !any(is.na(.)))
-otus.RNAseq <- otus.RNAseq[-780, ]
+#otus.RNAseq[nrow(otus.RNAseq) + 1,] <- colSums(otus.RNAseq)
+#otus.RNAseq[nrow(otus.RNAseq),][otus.RNAseq[nrow(otus.RNAseq),] == 0] <- NA
+#otus.RNAseq <- otus.RNAseq %>%  select_if(~ !any(is.na(.)))
+#otus.RNAseq <- otus.RNAseq[-780, ]
 # ncol(otus.RNAseq) = 66
 
 # ncol(otus.WGS) = 139
-otus.WGS[nrow(otus.WGS) + 1,] <- colSums(otus.WGS)
-otus.WGS[nrow(otus.WGS),][otus.WGS[nrow(otus.WGS),] == 0] <- NA
-otus.WGS <- otus.WGS %>%  select_if(~ !any(is.na(.)))
-otus.WGS <- otus.WGS[-780, ]
+#otus.WGS[nrow(otus.WGS) + 1,] <- colSums(otus.WGS)
+#otus.WGS[nrow(otus.WGS),][otus.WGS[nrow(otus.WGS),] == 0] <- NA
+#otus.WGS <- otus.WGS %>%  select_if(~ !any(is.na(.)))
+#otus.WGS <- otus.WGS[-780, ]
 # ncol(otus.WGS) = 123
 
 # rename columns
@@ -262,8 +271,8 @@ tax_table(phylo.data) <- otu.name
 # CLEAN MICROBIOME DATA
 # rarify
 # rarified to an even depth of
-phylo_data0 <- rarefy_even_depth(phylo.data, replace = T, rngseed = 20200101)
-
+#phylo_data0 <- rarefy_even_depth(phylo.data, replace = T, rngseed = 20200101)
+phylo_data0 <- phylo.data
 # compute prevalence of each feature
 prevdf <- apply(X=otu_table(phylo_data0),
                 MARGIN= ifelse(taxa_are_rows(phylo_data0), yes=1, no=2),
@@ -290,7 +299,7 @@ phylo_data1 <- subset_taxa(phylo_data0, !Phylum %in% filterPhyla)
 prevdf1 <- subset(prevdf, Phylum %in% get_taxa_unique(phylo_data1, "Phylum"))
 
 # prevalence threshold
-prevalenceThreshold <- 0.001*nsamples(phylo_data1)
+prevalenceThreshold <- 0.0001*nsamples(phylo_data1)
 
 # execute the filtering to this level
 keepTaxa <- rownames(prevdf1)[(prevdf1$Prevalence >= prevalenceThreshold)]
@@ -438,8 +447,8 @@ tax_table(phylo.data) <- otu.name
 # CLEAN MICROBIOME DATA
 # rarify
 # rarified to an even depth of
-phylo_data0 <- rarefy_even_depth(phylo.data, replace = T, rngseed = 20200101)
-
+#phylo_data0 <- rarefy_even_depth(phylo.data, replace = T, rngseed = 20200101)
+phylo_data0 <- phylo.data
 # compute prevalence of each feature
 prevdf <- apply(X=otu_table(phylo_data0),
                 MARGIN= ifelse(taxa_are_rows(phylo_data0), yes=1, no=2),
@@ -466,7 +475,7 @@ phylo_data1 <- subset_taxa(phylo_data0, !Phylum %in% filterPhyla)
 prevdf1 <- subset(prevdf, Phylum %in% get_taxa_unique(phylo_data1, "Phylum"))
 
 # prevalence threshold
-prevalenceThreshold <- 0.001*nsamples(phylo_data1)
+prevalenceThreshold <- 0.0001*nsamples(phylo_data1)
 
 # execute the filtering to this level
 keepTaxa <- rownames(prevdf1)[(prevdf1$Prevalence >= prevalenceThreshold)]
