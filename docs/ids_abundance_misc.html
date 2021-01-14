@@ -25,6 +25,8 @@
 <script src="site_libs/navigation-1.1/tabsets.js"></script>
 <link href="site_libs/highlightjs-9.12.0/textmate.css" rel="stylesheet" />
 <script src="site_libs/highlightjs-9.12.0/highlight.js"></script>
+<link href="site_libs/anchor-sections-1.0/anchor-sections.css" rel="stylesheet" />
+<script src="site_libs/anchor-sections-1.0/anchor-sections.js"></script>
 <script src="site_libs/kePrint-0.0.1/kePrint.js"></script>
 
 <link rel="icon" href="https://github.com/workflowr/workflowr-assets/raw/master/img/reproducible.png">
@@ -34,6 +36,15 @@ div.section {
   padding-top: 12px;
 }
 </style>
+
+<style type="text/css">
+  code{white-space: pre-wrap;}
+  span.smallcaps{font-variant: small-caps;}
+  span.underline{text-decoration: underline;}
+  div.column{display: inline-block; vertical-align: top; width: 50%;}
+  div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+  ul.task-list{list-style: none;}
+    </style>
 
 <style type="text/css">code{white-space: pre;}</style>
 <style type="text/css">
@@ -384,7 +395,7 @@ div.tocify {
 
 <p>
 <button type="button" class="btn btn-default btn-workflowr btn-workflowr-report" data-toggle="collapse" data-target="#workflowr-report">
-<span class="glyphicon glyphicon-list" aria-hidden="true"></span> workflowr <span class="glyphicon glyphicon-exclamation-sign text-danger" aria-hidden="true"></span>
+<span class="glyphicon glyphicon-list" aria-hidden="true"></span> workflowr <span class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span>
 </button>
 </p>
 <div id="workflowr-report" class="collapse">
@@ -393,7 +404,7 @@ div.tocify {
 <a data-toggle="tab" href="#summary">Summary</a>
 </li>
 <li>
-<a data-toggle="tab" href="#checks"> Checks <span class="glyphicon glyphicon-exclamation-sign text-danger" aria-hidden="true"></span> </a>
+<a data-toggle="tab" href="#checks"> Checks <span class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span> </a>
 </li>
 <li>
 <a data-toggle="tab" href="#versions">Past versions</a>
@@ -402,10 +413,10 @@ div.tocify {
 <div class="tab-content">
 <div id="summary" class="tab-pane fade in active">
 <p>
-<strong>Last updated:</strong> 2020-11-05
+<strong>Last updated:</strong> 2021-01-14
 </p>
 <p>
-<strong>Checks:</strong> <span class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span> 6 <span class="glyphicon glyphicon-exclamation-sign text-danger" aria-hidden="true"></span> 1
+<strong>Checks:</strong> <span class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span> 7 <span class="glyphicon glyphicon-exclamation-sign text-danger" aria-hidden="true"></span> 0
 </p>
 <p>
 <strong>Knit directory:</strong> <code>esoph-micro-cancer-workflow/</code> <span class="glyphicon glyphicon-question-sign" aria-hidden="true" title="This is the local directory in which the code in this file was executed."> </span>
@@ -421,12 +432,12 @@ This reproducible <a href="http://rmarkdown.rstudio.com">R Markdown</a> analysis
 <div class="panel panel-default">
 <div class="panel-heading">
 <p class="panel-title">
-<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongRMarkdownfilestronguncommittedchanges"> <span class="glyphicon glyphicon-exclamation-sign text-danger" aria-hidden="true"></span> <strong>R Markdown file:</strong> uncommitted changes </a>
+<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongRMarkdownfilestronguptodate"> <span class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span> <strong>R Markdown file:</strong> up-to-date </a>
 </p>
 </div>
-<div id="strongRMarkdownfilestronguncommittedchanges" class="panel-collapse collapse">
+<div id="strongRMarkdownfilestronguptodate" class="panel-collapse collapse">
 <div class="panel-body">
-<p>The R Markdown file has unstaged changes. To know which version of the R Markdown file created these results, you’ll want to first commit it to the Git repo. If you’re still working on the analysis, you can ignore this warning. When you’re finished, you can run <code>wflow_publish</code> to commit the R Markdown file and build the HTML.</p>
+<p>Great! Since the R Markdown file has been committed to the Git repository, you know the exact version of the code that produced these results.</p>
 </div>
 </div>
 </div>
@@ -493,16 +504,16 @@ This reproducible <a href="http://rmarkdown.rstudio.com">R Markdown</a> analysis
 <div class="panel panel-default">
 <div class="panel-heading">
 <p class="panel-title">
-<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongRepositoryversionstrongahrefhttpsgithubcomGreathouseLabesophmicrocancerworkflowtreeb5c01ed1859751d05afb2312f3356b5d9c7c4fe2targetblankb5c01eda"> <span class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span> <strong>Repository version:</strong> <a href="https://github.com/GreathouseLab/esoph-micro-cancer-workflow/tree/b5c01ed1859751d05afb2312f3356b5d9c7c4fe2" target="_blank">b5c01ed</a> </a>
+<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongRepositoryversionstrongahrefhttpsgithubcomGreathouseLabesophmicrocancerworkflowtreee6b4c7f6c88be3a960c73d2004797f323eb093b4targetblanke6b4c7fa"> <span class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span> <strong>Repository version:</strong> <a href="https://github.com/GreathouseLab/esoph-micro-cancer-workflow/tree/e6b4c7f6c88be3a960c73d2004797f323eb093b4" target="_blank">e6b4c7f</a> </a>
 </p>
 </div>
-<div id="strongRepositoryversionstrongahrefhttpsgithubcomGreathouseLabesophmicrocancerworkflowtreeb5c01ed1859751d05afb2312f3356b5d9c7c4fe2targetblankb5c01eda" class="panel-collapse collapse">
+<div id="strongRepositoryversionstrongahrefhttpsgithubcomGreathouseLabesophmicrocancerworkflowtreee6b4c7f6c88be3a960c73d2004797f323eb093b4targetblanke6b4c7fa" class="panel-collapse collapse">
 <div class="panel-body">
 <p>
 Great! You are using Git for version control. Tracking code development and connecting the code version to the results is critical for reproducibility.
 </p>
 <p>
-The results in this page were generated with repository version <a href="https://github.com/GreathouseLab/esoph-micro-cancer-workflow/tree/b5c01ed1859751d05afb2312f3356b5d9c7c4fe2" target="_blank">b5c01ed</a>. See the <em>Past versions</em> tab to see a history of the changes made to the R Markdown and HTML files.
+The results in this page were generated with repository version <a href="https://github.com/GreathouseLab/esoph-micro-cancer-workflow/tree/e6b4c7f6c88be3a960c73d2004797f323eb093b4" target="_blank">e6b4c7f</a>. See the <em>Past versions</em> tab to see a history of the changes made to the R Markdown and HTML files.
 </p>
 <p>
 Note that you need to be careful to ensure that all relevant files for the analysis have been committed to Git prior to generating the results (you can use <code>wflow_publish</code> or <code>wflow_git_commit</code>). workflowr only checks the R Markdown file, but you know if there are other scripts or data files that it depends on. Below is the status of the Git repository when the results were generated:
@@ -512,10 +523,6 @@ Ignored files:
     Ignored:    .Rhistory
     Ignored:    .Rproj.user/
     Ignored:    data/
-
-Unstaged changes:
-    Modified:   analysis/data_processing_tcga.Rmd
-    Modified:   analysis/ids_abundance_misc.Rmd
 
 </code></pre>
 <p>
@@ -554,6 +561,40 @@ Message
 </tr>
 </thead>
 <tbody>
+<tr>
+<td>
+Rmd
+</td>
+<td>
+<a href="https://github.com/GreathouseLab/esoph-micro-cancer-workflow/blob/9937a7e527e584ba62d2b3496d62ba6aa4e04dfb/analysis/ids_abundance_misc.Rmd" target="_blank">9937a7e</a>
+</td>
+<td>
+noah-padgett
+</td>
+<td>
+2020-11-05
+</td>
+<td>
+new abundance data results
+</td>
+</tr>
+<tr>
+<td>
+html
+</td>
+<td>
+<a href="https://rawcdn.githack.com/GreathouseLab/esoph-micro-cancer-workflow/9937a7e527e584ba62d2b3496d62ba6aa4e04dfb/docs/ids_abundance_misc.html" target="_blank">9937a7e</a>
+</td>
+<td>
+noah-padgett
+</td>
+<td>
+2020-11-05
+</td>
+<td>
+new abundance data results
+</td>
+</tr>
 <tr>
 <td>
 Rmd
@@ -630,7 +671,7 @@ Abundance
 205.S2.Jun172016
 </td>
 <td style="text-align:right;">
-0.776
+0.770
 </td>
 </tr>
 <tr>
@@ -638,7 +679,7 @@ Abundance
 71.H10.S94.Jun232016
 </td>
 <td style="text-align:right;">
-0.651
+0.660
 </td>
 </tr>
 <tr>
@@ -646,7 +687,7 @@ Abundance
 74.H03.S87.Jul202017
 </td>
 <td style="text-align:right;">
-0.498
+0.472
 </td>
 </tr>
 <tr>
@@ -654,7 +695,7 @@ Abundance
 73.H04.S88.Jul202017
 </td>
 <td style="text-align:right;">
-0.471
+0.448
 </td>
 </tr>
 <tr>
@@ -662,15 +703,7 @@ Abundance
 16.S38.Jun172016
 </td>
 <td style="text-align:right;">
-0.381
-</td>
-</tr>
-<tr>
-<td style="text-align:left;">
-204.S1.Jun172016
-</td>
-<td style="text-align:right;">
-0.351
+0.380
 </td>
 </tr>
 <tr>
@@ -678,7 +711,15 @@ Abundance
 156.S42.Jun172016
 </td>
 <td style="text-align:right;">
-0.322
+0.336
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+204.S1.Jun172016
+</td>
+<td style="text-align:right;">
+0.318
 </td>
 </tr>
 <tr>
@@ -686,7 +727,7 @@ Abundance
 173.S66.Jun172016
 </td>
 <td style="text-align:right;">
-0.198
+0.194
 </td>
 </tr>
 <tr>
@@ -694,15 +735,7 @@ Abundance
 135.B06.S18.Jun232016
 </td>
 <td style="text-align:right;">
-0.193
-</td>
-</tr>
-<tr>
-<td style="text-align:left;">
-114.S41.Jun172016
-</td>
-<td style="text-align:right;">
-0.150
+0.184
 </td>
 </tr>
 <tr>
@@ -710,7 +743,23 @@ Abundance
 97.S45.Jun172016
 </td>
 <td style="text-align:right;">
-0.148
+0.160
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+114.S41.Jun172016
+</td>
+<td style="text-align:right;">
+0.144
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+158.D06.S42.Jun232016
+</td>
+<td style="text-align:right;">
+0.140
 </td>
 </tr>
 <tr>
@@ -723,7 +772,7 @@ Abundance
 </tr>
 <tr>
 <td style="text-align:left;">
-158.D06.S42.Jun232016
+174.S76.Jun172016
 </td>
 <td style="text-align:right;">
 0.122
@@ -731,26 +780,18 @@ Abundance
 </tr>
 <tr>
 <td style="text-align:left;">
-174.S76.Jun172016
-</td>
-<td style="text-align:right;">
-0.110
-</td>
-</tr>
-<tr>
-<td style="text-align:left;">
-124.S93.Jun172016
-</td>
-<td style="text-align:right;">
-0.092
-</td>
-</tr>
-<tr>
-<td style="text-align:left;">
 27.F09.S69.Jun232016
 </td>
 <td style="text-align:right;">
-0.092
+0.106
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+55.E03.S51.Jul202017
+</td>
+<td style="text-align:right;">
+0.084
 </td>
 </tr>
 <tr>
@@ -758,12 +799,12 @@ Abundance
 175.S88.Jun172016
 </td>
 <td style="text-align:right;">
-0.086
+0.078
 </td>
 </tr>
 <tr>
 <td style="text-align:left;">
-55.E03.S51.Jul202017
+124.S93.Jun172016
 </td>
 <td style="text-align:right;">
 0.076
@@ -774,7 +815,7 @@ Abundance
 46.C04.S28.Jul202017
 </td>
 <td style="text-align:right;">
-0.068
+0.074
 </td>
 </tr>
 <tr>
@@ -782,36 +823,28 @@ Abundance
 24.S92.Jun172016
 </td>
 <td style="text-align:right;">
-0.066
-</td>
-</tr>
-<tr>
-<td style="text-align:left;">
-87.B01.S13.Jun232016
-</td>
-<td style="text-align:right;">
-0.058
-</td>
-</tr>
-<tr>
-<td style="text-align:left;">
-127.S6.Jun172016
-</td>
-<td style="text-align:right;">
-0.054
-</td>
-</tr>
-<tr>
-<td style="text-align:left;">
-103.S58.Jun172016
-</td>
-<td style="text-align:right;">
-0.049
+0.060
 </td>
 </tr>
 <tr>
 <td style="text-align:left;">
 38.C09.S33.Jun232016
+</td>
+<td style="text-align:right;">
+0.056
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+112.F02.S62.Jun232016
+</td>
+<td style="text-align:right;">
+0.048
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+127.S6.Jun172016
 </td>
 <td style="text-align:right;">
 0.044
@@ -822,15 +855,23 @@ Abundance
 186.S77.Jun172016
 </td>
 <td style="text-align:right;">
-0.038
+0.042
 </td>
 </tr>
 <tr>
 <td style="text-align:left;">
-112.F02.S62.Jun232016
+87.B01.S13.Jun232016
 </td>
 <td style="text-align:right;">
-0.032
+0.042
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+103.S58.Jun172016
+</td>
+<td style="text-align:right;">
+0.038
 </td>
 </tr>
 <tr>
@@ -838,7 +879,7 @@ Abundance
 167.E05.S53.Jun232016
 </td>
 <td style="text-align:right;">
-0.028
+0.038
 </td>
 </tr>
 <tr>
@@ -846,15 +887,23 @@ Abundance
 81.A02.S2.Jun232016
 </td>
 <td style="text-align:right;">
+0.030
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+104.S23.Jun172016
+</td>
+<td style="text-align:right;">
 0.024
 </td>
 </tr>
 <tr>
 <td style="text-align:left;">
-199.A11.S11.Jun232016
+179.F01.S61.Jul202017
 </td>
 <td style="text-align:right;">
-0.022
+0.024
 </td>
 </tr>
 <tr>
@@ -867,26 +916,10 @@ Abundance
 </tr>
 <tr>
 <td style="text-align:left;">
-130.A02.S2.Jul202017
+199.A11.S11.Jun232016
 </td>
 <td style="text-align:right;">
-0.020
-</td>
-</tr>
-<tr>
-<td style="text-align:left;">
-104.S23.Jun172016
-</td>
-<td style="text-align:right;">
-0.017
-</td>
-</tr>
-<tr>
-<td style="text-align:left;">
-113.F01.S61.Jun232016
-</td>
-<td style="text-align:right;">
-0.015
+0.022
 </td>
 </tr>
 <tr>
@@ -894,12 +927,28 @@ Abundance
 128.S5.Jun172016
 </td>
 <td style="text-align:right;">
-0.014
+0.022
 </td>
 </tr>
 <tr>
 <td style="text-align:left;">
-234.C07.S31.Jul202017
+139.F07.S67.Jun232016
+</td>
+<td style="text-align:right;">
+0.020
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+130.A02.S2.Jul202017
+</td>
+<td style="text-align:right;">
+0.018
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+108.E06.S54.Jul202017
 </td>
 <td style="text-align:right;">
 0.012
@@ -907,7 +956,15 @@ Abundance
 </tr>
 <tr>
 <td style="text-align:left;">
-179.F01.S61.Jul202017
+159.B10.S22.Jul202017
+</td>
+<td style="text-align:right;">
+0.012
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+113.F01.S61.Jun232016
 </td>
 <td style="text-align:right;">
 0.012
@@ -916,14 +973,6 @@ Abundance
 <tr>
 <td style="text-align:left;">
 184.S61.Jun172016
-</td>
-<td style="text-align:right;">
-0.012
-</td>
-</tr>
-<tr>
-<td style="text-align:left;">
-139.F07.S67.Jun232016
 </td>
 <td style="text-align:right;">
 0.010
@@ -1196,7 +1245,7 @@ Abundance
 205.S2.Jun172016
 </td>
 <td style="text-align:right;">
-0.776
+0.770
 </td>
 </tr>
 <tr>
@@ -1204,7 +1253,7 @@ Abundance
 71.H10.S94.Jun232016
 </td>
 <td style="text-align:right;">
-0.651
+0.660
 </td>
 </tr>
 <tr>
@@ -1212,7 +1261,7 @@ Abundance
 74.H03.S87.Jul202017
 </td>
 <td style="text-align:right;">
-0.498
+0.472
 </td>
 </tr>
 <tr>
@@ -1220,7 +1269,7 @@ Abundance
 73.H04.S88.Jul202017
 </td>
 <td style="text-align:right;">
-0.471
+0.448
 </td>
 </tr>
 <tr>
@@ -1228,15 +1277,7 @@ Abundance
 16.S38.Jun172016
 </td>
 <td style="text-align:right;">
-0.381
-</td>
-</tr>
-<tr>
-<td style="text-align:left;">
-204.S1.Jun172016
-</td>
-<td style="text-align:right;">
-0.351
+0.380
 </td>
 </tr>
 <tr>
@@ -1244,7 +1285,15 @@ Abundance
 156.S42.Jun172016
 </td>
 <td style="text-align:right;">
-0.322
+0.336
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+204.S1.Jun172016
+</td>
+<td style="text-align:right;">
+0.318
 </td>
 </tr>
 <tr>
@@ -1252,7 +1301,7 @@ Abundance
 173.S66.Jun172016
 </td>
 <td style="text-align:right;">
-0.198
+0.194
 </td>
 </tr>
 <tr>
@@ -1260,15 +1309,7 @@ Abundance
 135.B06.S18.Jun232016
 </td>
 <td style="text-align:right;">
-0.193
-</td>
-</tr>
-<tr>
-<td style="text-align:left;">
-114.S41.Jun172016
-</td>
-<td style="text-align:right;">
-0.150
+0.184
 </td>
 </tr>
 <tr>
@@ -1276,7 +1317,23 @@ Abundance
 97.S45.Jun172016
 </td>
 <td style="text-align:right;">
-0.148
+0.160
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+114.S41.Jun172016
+</td>
+<td style="text-align:right;">
+0.144
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+158.D06.S42.Jun232016
+</td>
+<td style="text-align:right;">
+0.140
 </td>
 </tr>
 <tr>
@@ -1289,7 +1346,7 @@ Abundance
 </tr>
 <tr>
 <td style="text-align:left;">
-158.D06.S42.Jun232016
+174.S76.Jun172016
 </td>
 <td style="text-align:right;">
 0.122
@@ -1297,26 +1354,18 @@ Abundance
 </tr>
 <tr>
 <td style="text-align:left;">
-174.S76.Jun172016
-</td>
-<td style="text-align:right;">
-0.110
-</td>
-</tr>
-<tr>
-<td style="text-align:left;">
-124.S93.Jun172016
-</td>
-<td style="text-align:right;">
-0.092
-</td>
-</tr>
-<tr>
-<td style="text-align:left;">
 27.F09.S69.Jun232016
 </td>
 <td style="text-align:right;">
-0.092
+0.106
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+55.E03.S51.Jul202017
+</td>
+<td style="text-align:right;">
+0.084
 </td>
 </tr>
 <tr>
@@ -1324,12 +1373,12 @@ Abundance
 175.S88.Jun172016
 </td>
 <td style="text-align:right;">
-0.086
+0.078
 </td>
 </tr>
 <tr>
 <td style="text-align:left;">
-55.E03.S51.Jul202017
+124.S93.Jun172016
 </td>
 <td style="text-align:right;">
 0.076
@@ -1340,7 +1389,7 @@ Abundance
 46.C04.S28.Jul202017
 </td>
 <td style="text-align:right;">
-0.068
+0.074
 </td>
 </tr>
 <tr>
@@ -1348,36 +1397,28 @@ Abundance
 24.S92.Jun172016
 </td>
 <td style="text-align:right;">
-0.066
-</td>
-</tr>
-<tr>
-<td style="text-align:left;">
-87.B01.S13.Jun232016
-</td>
-<td style="text-align:right;">
-0.058
-</td>
-</tr>
-<tr>
-<td style="text-align:left;">
-127.S6.Jun172016
-</td>
-<td style="text-align:right;">
-0.054
-</td>
-</tr>
-<tr>
-<td style="text-align:left;">
-103.S58.Jun172016
-</td>
-<td style="text-align:right;">
-0.049
+0.060
 </td>
 </tr>
 <tr>
 <td style="text-align:left;">
 38.C09.S33.Jun232016
+</td>
+<td style="text-align:right;">
+0.056
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+112.F02.S62.Jun232016
+</td>
+<td style="text-align:right;">
+0.048
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+127.S6.Jun172016
 </td>
 <td style="text-align:right;">
 0.044
@@ -1388,15 +1429,23 @@ Abundance
 186.S77.Jun172016
 </td>
 <td style="text-align:right;">
-0.038
+0.042
 </td>
 </tr>
 <tr>
 <td style="text-align:left;">
-112.F02.S62.Jun232016
+87.B01.S13.Jun232016
 </td>
 <td style="text-align:right;">
-0.032
+0.042
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+103.S58.Jun172016
+</td>
+<td style="text-align:right;">
+0.038
 </td>
 </tr>
 <tr>
@@ -1404,7 +1453,7 @@ Abundance
 167.E05.S53.Jun232016
 </td>
 <td style="text-align:right;">
-0.028
+0.038
 </td>
 </tr>
 <tr>
@@ -1412,15 +1461,23 @@ Abundance
 81.A02.S2.Jun232016
 </td>
 <td style="text-align:right;">
+0.030
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+104.S23.Jun172016
+</td>
+<td style="text-align:right;">
 0.024
 </td>
 </tr>
 <tr>
 <td style="text-align:left;">
-199.A11.S11.Jun232016
+179.F01.S61.Jul202017
 </td>
 <td style="text-align:right;">
-0.022
+0.024
 </td>
 </tr>
 <tr>
@@ -1433,26 +1490,10 @@ Abundance
 </tr>
 <tr>
 <td style="text-align:left;">
-130.A02.S2.Jul202017
+199.A11.S11.Jun232016
 </td>
 <td style="text-align:right;">
-0.020
-</td>
-</tr>
-<tr>
-<td style="text-align:left;">
-104.S23.Jun172016
-</td>
-<td style="text-align:right;">
-0.017
-</td>
-</tr>
-<tr>
-<td style="text-align:left;">
-113.F01.S61.Jun232016
-</td>
-<td style="text-align:right;">
-0.015
+0.022
 </td>
 </tr>
 <tr>
@@ -1460,12 +1501,28 @@ Abundance
 128.S5.Jun172016
 </td>
 <td style="text-align:right;">
-0.014
+0.022
 </td>
 </tr>
 <tr>
 <td style="text-align:left;">
-234.C07.S31.Jul202017
+139.F07.S67.Jun232016
+</td>
+<td style="text-align:right;">
+0.020
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+130.A02.S2.Jul202017
+</td>
+<td style="text-align:right;">
+0.018
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+108.E06.S54.Jul202017
 </td>
 <td style="text-align:right;">
 0.012
@@ -1473,7 +1530,15 @@ Abundance
 </tr>
 <tr>
 <td style="text-align:left;">
-179.F01.S61.Jul202017
+159.B10.S22.Jul202017
+</td>
+<td style="text-align:right;">
+0.012
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+113.F01.S61.Jun232016
 </td>
 <td style="text-align:right;">
 0.012
@@ -1484,15 +1549,47 @@ Abundance
 184.S61.Jun172016
 </td>
 <td style="text-align:right;">
-0.012
+0.010
 </td>
 </tr>
 <tr>
 <td style="text-align:left;">
-139.F07.S67.Jun232016
+23.S75.Jun172016
 </td>
 <td style="text-align:right;">
 0.010
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+233.G07.S79.Jun232016
+</td>
+<td style="text-align:right;">
+0.010
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+31.C08.S32.Jun232016
+</td>
+<td style="text-align:right;">
+0.010
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+234.C07.S31.Jul202017
+</td>
+<td style="text-align:right;">
+0.008
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+42.A04.S4.Jul202017
+</td>
+<td style="text-align:right;">
+0.008
 </td>
 </tr>
 <tr>
@@ -1500,15 +1597,7 @@ Abundance
 36.F04.S64.Jul202017
 </td>
 <td style="text-align:right;">
-0.010
-</td>
-</tr>
-<tr>
-<td style="text-align:left;">
-108.E06.S54.Jul202017
-</td>
-<td style="text-align:right;">
-0.010
+0.008
 </td>
 </tr>
 <tr>
@@ -1521,10 +1610,42 @@ Abundance
 </tr>
 <tr>
 <td style="text-align:left;">
-159.B10.S22.Jul202017
+154.C02.S26.Jul202017
 </td>
 <td style="text-align:right;">
 0.008
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+191.G02.S74.Jul202017
+</td>
+<td style="text-align:right;">
+0.008
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+25.C03.S27.Jul202017
+</td>
+<td style="text-align:right;">
+0.008
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+131.S62.Jun172016
+</td>
+<td style="text-align:right;">
+0.007
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+150.C06.S30.Jun232016
+</td>
+<td style="text-align:right;">
+0.006
 </td>
 </tr>
 <tr>
@@ -1537,7 +1658,7 @@ Abundance
 </tr>
 <tr>
 <td style="text-align:left;">
-31.C08.S32.Jun232016
+96.S46.Jun172016
 </td>
 <td style="text-align:right;">
 0.006
@@ -1545,39 +1666,7 @@ Abundance
 </tr>
 <tr>
 <td style="text-align:left;">
-23.S75.Jun172016
-</td>
-<td style="text-align:right;">
-0.006
-</td>
-</tr>
-<tr>
-<td style="text-align:left;">
-25.C03.S27.Jul202017
-</td>
-<td style="text-align:right;">
-0.006
-</td>
-</tr>
-<tr>
-<td style="text-align:left;">
-233.G07.S79.Jun232016
-</td>
-<td style="text-align:right;">
-0.006
-</td>
-</tr>
-<tr>
-<td style="text-align:left;">
-131.S62.Jun172016
-</td>
-<td style="text-align:right;">
-0.005
-</td>
-</tr>
-<tr>
-<td style="text-align:left;">
-109.S70.Jun172016
+58.S67.Jun172016
 </td>
 <td style="text-align:right;">
 0.004
@@ -1585,31 +1674,7 @@ Abundance
 </tr>
 <tr>
 <td style="text-align:left;">
-67.D10.S46.Jul202017
-</td>
-<td style="text-align:right;">
-0.004
-</td>
-</tr>
-<tr>
-<td style="text-align:left;">
-191.G02.S74.Jul202017
-</td>
-<td style="text-align:right;">
-0.004
-</td>
-</tr>
-<tr>
-<td style="text-align:left;">
-157.D05.S41.Jun232016
-</td>
-<td style="text-align:right;">
-0.004
-</td>
-</tr>
-<tr>
-<td style="text-align:left;">
-42.A04.S4.Jul202017
+77.S10.Jun172016
 </td>
 <td style="text-align:right;">
 0.004
@@ -1625,7 +1690,7 @@ Abundance
 </tr>
 <tr>
 <td style="text-align:left;">
-154.C02.S26.Jul202017
+157.D05.S41.Jun232016
 </td>
 <td style="text-align:right;">
 0.004
@@ -1633,7 +1698,7 @@ Abundance
 </tr>
 <tr>
 <td style="text-align:left;">
-96.S46.Jun172016
+19.S25.Jun172016
 </td>
 <td style="text-align:right;">
 0.004
@@ -1641,7 +1706,7 @@ Abundance
 </tr>
 <tr>
 <td style="text-align:left;">
-58.S67.Jun172016
+208.D03.S39.Jun232016
 </td>
 <td style="text-align:right;">
 0.002
@@ -1649,23 +1714,7 @@ Abundance
 </tr>
 <tr>
 <td style="text-align:left;">
-59.S72.Jun172016
-</td>
-<td style="text-align:right;">
-0.002
-</td>
-</tr>
-<tr>
-<td style="text-align:left;">
-140.B02.S14.Jul202017
-</td>
-<td style="text-align:right;">
-0.002
-</td>
-</tr>
-<tr>
-<td style="text-align:left;">
-146.S29.Jun172016
+162.G04.S76.Jun232016
 </td>
 <td style="text-align:right;">
 0.002
@@ -1681,6 +1730,14 @@ Abundance
 </tr>
 <tr>
 <td style="text-align:left;">
+109.S70.Jun172016
+</td>
+<td style="text-align:right;">
+0.002
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
 102.S57.Jun172016
 </td>
 <td style="text-align:right;">
@@ -1689,7 +1746,55 @@ Abundance
 </tr>
 <tr>
 <td style="text-align:left;">
-150.C06.S30.Jun232016
+227.S74.Jun172016
+</td>
+<td style="text-align:right;">
+0.002
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+146.S29.Jun172016
+</td>
+<td style="text-align:right;">
+0.002
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+80.A01.S1.Jun232016
+</td>
+<td style="text-align:right;">
+0.002
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+188.G06.S78.Jun232016
+</td>
+<td style="text-align:right;">
+0.002
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+140.B02.S14.Jul202017
+</td>
+<td style="text-align:right;">
+0.002
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+67.D10.S46.Jul202017
+</td>
+<td style="text-align:right;">
+0.002
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+59.S72.Jun172016
 </td>
 <td style="text-align:right;">
 0.002
@@ -1705,7 +1810,23 @@ Abundance
 </tr>
 <tr>
 <td style="text-align:left;">
+166.E06.S54.Jun232016
+</td>
+<td style="text-align:right;">
+0.002
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
 22.C07.S31.Jun232016
+</td>
+<td style="text-align:right;">
+0.002
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+62.G10.S82.Jun232016
 </td>
 <td style="text-align:right;">
 0.002
@@ -1746,7 +1867,7 @@ Streptococcus_dentisani:Streptococcus_infantis:Streptococcus_mitis:Streptococcus
 102.S57.Jun172016
 </td>
 <td style="text-align:right;">
-0.988
+0.990
 </td>
 </tr>
 <tr>
@@ -1757,7 +1878,7 @@ Streptococcus_dentisani:Streptococcus_infantis:Streptococcus_mitis:Streptococcus
 53.E09.S57.Jun232016
 </td>
 <td style="text-align:right;">
-0.901
+0.894
 </td>
 </tr>
 <tr>
@@ -1768,18 +1889,7 @@ Streptococcus_dentisani:Streptococcus_infantis:Streptococcus_mitis:Streptococcus
 239.D09.S45.Jun232016
 </td>
 <td style="text-align:right;">
-0.900
-</td>
-</tr>
-<tr>
-<td style="text-align:left;">
-Streptococcus_dentisani:Streptococcus_infantis:Streptococcus_mitis:Streptococcus_oligofermentans:Streptococcus_oralis:Streptococcus_pneumoniae:Streptococcus_pseudopneumoniae:Streptococcus_sanguinis
-</td>
-<td style="text-align:left;">
-29.S31.Jun172016
-</td>
-<td style="text-align:right;">
-0.889
+0.882
 </td>
 </tr>
 <tr>
@@ -1790,18 +1900,7 @@ Streptococcus_dentisani:Streptococcus_infantis:Streptococcus_mitis:Streptococcus
 108.E06.S54.Jul202017
 </td>
 <td style="text-align:right;">
-0.860
-</td>
-</tr>
-<tr>
-<td style="text-align:left;">
-Streptococcus_dentisani:Streptococcus_infantis:Streptococcus_mitis:Streptococcus_oligofermentans:Streptococcus_oralis:Streptococcus_pneumoniae:Streptococcus_pseudopneumoniae:Streptococcus_sanguinis
-</td>
-<td style="text-align:left;">
-37.S32.Jun172016
-</td>
-<td style="text-align:right;">
-0.826
+0.864
 </td>
 </tr>
 <tr>
@@ -1812,18 +1911,7 @@ Streptococcus_dentisani:Streptococcus_infantis:Streptococcus_mitis:Streptococcus
 185.G08.S80.Jun232016
 </td>
 <td style="text-align:right;">
-0.822
-</td>
-</tr>
-<tr>
-<td style="text-align:left;">
-Streptococcus_dentisani:Streptococcus_infantis:Streptococcus_mitis:Streptococcus_oligofermentans:Streptococcus_oralis:Streptococcus_pneumoniae:Streptococcus_pseudopneumoniae:Streptococcus_sanguinis
-</td>
-<td style="text-align:left;">
-103.S58.Jun172016
-</td>
-<td style="text-align:right;">
-0.815
+0.840
 </td>
 </tr>
 <tr>
@@ -1834,7 +1922,7 @@ Streptococcus_dentisani:Streptococcus_infantis:Streptococcus_mitis:Streptococcus
 165.S54.Jun172016
 </td>
 <td style="text-align:right;">
-0.808
+0.826
 </td>
 </tr>
 <tr>
@@ -1853,10 +1941,21 @@ Streptococcus_dentisani:Streptococcus_infantis:Streptococcus_mitis:Streptococcus
 Streptococcus_dentisani:Streptococcus_infantis:Streptococcus_mitis:Streptococcus_oligofermentans:Streptococcus_oralis:Streptococcus_pneumoniae:Streptococcus_pseudopneumoniae:Streptococcus_sanguinis
 </td>
 <td style="text-align:left;">
-159.B10.S22.Jul202017
+29.S31.Jun172016
 </td>
 <td style="text-align:right;">
-0.780
+0.805
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Streptococcus_dentisani:Streptococcus_infantis:Streptococcus_mitis:Streptococcus_oligofermentans:Streptococcus_oralis:Streptococcus_pneumoniae:Streptococcus_pseudopneumoniae:Streptococcus_sanguinis
+</td>
+<td style="text-align:left;">
+37.S32.Jun172016
+</td>
+<td style="text-align:right;">
+0.798
 </td>
 </tr>
 <tr>
@@ -1867,7 +1966,7 @@ Streptococcus_dentisani:Streptococcus_infantis:Streptococcus_mitis:Streptococcus
 199.A11.S11.Jun232016
 </td>
 <td style="text-align:right;">
-0.778
+0.788
 </td>
 </tr>
 <tr>
@@ -1878,7 +1977,7 @@ Streptococcus_dentisani:Streptococcus_infantis:Streptococcus_mitis:Streptococcus
 150.C06.S30.Jun232016
 </td>
 <td style="text-align:right;">
-0.758
+0.766
 </td>
 </tr>
 <tr>
@@ -1889,7 +1988,7 @@ Streptococcus_dentisani:Streptococcus_infantis:Streptococcus_mitis:Streptococcus
 137.F09.S69.Jul202017
 </td>
 <td style="text-align:right;">
-0.752
+0.758
 </td>
 </tr>
 <tr>
@@ -1897,10 +1996,10 @@ Streptococcus_dentisani:Streptococcus_infantis:Streptococcus_mitis:Streptococcus
 Streptococcus_dentisani:Streptococcus_infantis:Streptococcus_mitis:Streptococcus_oligofermentans:Streptococcus_oralis:Streptococcus_pneumoniae:Streptococcus_pseudopneumoniae:Streptococcus_sanguinis
 </td>
 <td style="text-align:left;">
-18.S35.Jun172016
+159.B10.S22.Jul202017
 </td>
 <td style="text-align:right;">
-0.736
+0.748
 </td>
 </tr>
 <tr>
@@ -1911,7 +2010,7 @@ Streptococcus_dentisani:Streptococcus_infantis:Streptococcus_mitis:Streptococcus
 83.A06.S6.Jul202017
 </td>
 <td style="text-align:right;">
-0.733
+0.722
 </td>
 </tr>
 <tr>
@@ -1919,10 +2018,10 @@ Streptococcus_dentisani:Streptococcus_infantis:Streptococcus_mitis:Streptococcus
 Streptococcus_dentisani:Streptococcus_infantis:Streptococcus_mitis:Streptococcus_oligofermentans:Streptococcus_oralis:Streptococcus_pneumoniae:Streptococcus_pseudopneumoniae:Streptococcus_sanguinis
 </td>
 <td style="text-align:left;">
-95.C06.S30.Jul202017
+18.S35.Jun172016
 </td>
 <td style="text-align:right;">
-0.714
+0.716
 </td>
 </tr>
 <tr>
@@ -1930,21 +2029,10 @@ Streptococcus_dentisani:Streptococcus_infantis:Streptococcus_mitis:Streptococcus
 Streptococcus_dentisani:Streptococcus_infantis:Streptococcus_mitis:Streptococcus_oligofermentans:Streptococcus_oralis:Streptococcus_pneumoniae:Streptococcus_pseudopneumoniae:Streptococcus_sanguinis
 </td>
 <td style="text-align:left;">
-26.H04.S88.Jun232016
+103.S58.Jun172016
 </td>
 <td style="text-align:right;">
-0.698
-</td>
-</tr>
-<tr>
-<td style="text-align:left;">
-Streptococcus_dentisani:Streptococcus_infantis:Streptococcus_mitis:Streptococcus_oligofermentans:Streptococcus_oralis:Streptococcus_pneumoniae:Streptococcus_pseudopneumoniae:Streptococcus_sanguinis
-</td>
-<td style="text-align:left;">
-84.S22.Jun172016
-</td>
-<td style="text-align:right;">
-0.670
+0.680
 </td>
 </tr>
 <tr>
@@ -1955,7 +2043,7 @@ Streptococcus_dentisani:Streptococcus_infantis:Streptococcus_mitis:Streptococcus
 52.E10.S58.Jun232016
 </td>
 <td style="text-align:right;">
-0.656
+0.665
 </td>
 </tr>
 <tr>
@@ -1966,7 +2054,7 @@ Streptococcus_dentisani:Streptococcus_infantis:Streptococcus_mitis:Streptococcus
 196.D08.S44.Jun232016
 </td>
 <td style="text-align:right;">
-0.648
+0.650
 </td>
 </tr>
 <tr>
@@ -1977,7 +2065,29 @@ Streptococcus_dentisani:Streptococcus_infantis:Streptococcus_mitis:Streptococcus
 145.D09.S45.Jul202017
 </td>
 <td style="text-align:right;">
-0.644
+0.650
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Streptococcus_dentisani:Streptococcus_infantis:Streptococcus_mitis:Streptococcus_oligofermentans:Streptococcus_oralis:Streptococcus_pneumoniae:Streptococcus_pseudopneumoniae:Streptococcus_sanguinis
+</td>
+<td style="text-align:left;">
+95.C06.S30.Jul202017
+</td>
+<td style="text-align:right;">
+0.646
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Streptococcus_dentisani:Streptococcus_infantis:Streptococcus_mitis:Streptococcus_oligofermentans:Streptococcus_oralis:Streptococcus_pneumoniae:Streptococcus_pseudopneumoniae:Streptococcus_sanguinis
+</td>
+<td style="text-align:left;">
+84.S22.Jun172016
+</td>
+<td style="text-align:right;">
+0.642
 </td>
 </tr>
 <tr>
@@ -1988,18 +2098,7 @@ Streptococcus_dentisani:Streptococcus_infantis:Streptococcus_mitis:Streptococcus
 176.H07.S91.Jul202017
 </td>
 <td style="text-align:right;">
-0.638
-</td>
-</tr>
-<tr>
-<td style="text-align:left;">
-Streptococcus_dentisani:Streptococcus_infantis:Streptococcus_mitis:Streptococcus_oligofermentans:Streptococcus_oralis:Streptococcus_pneumoniae:Streptococcus_pseudopneumoniae:Streptococcus_sanguinis
-</td>
-<td style="text-align:left;">
-194.H05.S89.Jun232016
-</td>
-<td style="text-align:right;">
-0.636
+0.626
 </td>
 </tr>
 <tr>
@@ -2010,7 +2109,7 @@ Streptococcus_dentisani:Streptococcus_infantis:Streptococcus_mitis:Streptococcus
 229.S79.Jun172016
 </td>
 <td style="text-align:right;">
-0.632
+0.612
 </td>
 </tr>
 <tr>
@@ -2018,10 +2117,10 @@ Streptococcus_dentisani:Streptococcus_infantis:Streptococcus_mitis:Streptococcus
 Streptococcus_dentisani:Streptococcus_infantis:Streptococcus_mitis:Streptococcus_oligofermentans:Streptococcus_oralis:Streptococcus_pneumoniae:Streptococcus_pseudopneumoniae:Streptococcus_sanguinis
 </td>
 <td style="text-align:left;">
-201.H02.S86.Jun242016
+194.H05.S89.Jun232016
 </td>
 <td style="text-align:right;">
-0.582
+0.608
 </td>
 </tr>
 <tr>
@@ -2029,32 +2128,10 @@ Streptococcus_dentisani:Streptococcus_infantis:Streptococcus_mitis:Streptococcus
 Streptococcus_dentisani:Streptococcus_infantis:Streptococcus_mitis:Streptococcus_oligofermentans:Streptococcus_oralis:Streptococcus_pneumoniae:Streptococcus_pseudopneumoniae:Streptococcus_sanguinis
 </td>
 <td style="text-align:left;">
-139.F07.S67.Jun232016
+26.H04.S88.Jun232016
 </td>
 <td style="text-align:right;">
-0.581
-</td>
-</tr>
-<tr>
-<td style="text-align:left;">
-Streptococcus_dentisani:Streptococcus_infantis:Streptococcus_mitis:Streptococcus_oligofermentans:Streptococcus_oralis:Streptococcus_pneumoniae:Streptococcus_pseudopneumoniae:Streptococcus_sanguinis
-</td>
-<td style="text-align:left;">
-200.S96.Jun172016
-</td>
-<td style="text-align:right;">
-0.572
-</td>
-</tr>
-<tr>
-<td style="text-align:left;">
-Streptococcus_dentisani:Streptococcus_infantis:Streptococcus_mitis:Streptococcus_oligofermentans:Streptococcus_oralis:Streptococcus_pneumoniae:Streptococcus_pseudopneumoniae:Streptococcus_sanguinis
-</td>
-<td style="text-align:left;">
-206.S51.Jun172016
-</td>
-<td style="text-align:right;">
-0.572
+0.604
 </td>
 </tr>
 <tr>
@@ -2065,7 +2142,7 @@ Streptococcus_dentisani:Streptococcus_infantis:Streptococcus_mitis:Streptococcus
 125.H06.S90.Jul202017
 </td>
 <td style="text-align:right;">
-0.564
+0.586
 </td>
 </tr>
 <tr>
@@ -2073,10 +2150,10 @@ Streptococcus_dentisani:Streptococcus_infantis:Streptococcus_mitis:Streptococcus
 Streptococcus_dentisani:Streptococcus_infantis:Streptococcus_mitis:Streptococcus_oligofermentans:Streptococcus_oralis:Streptococcus_pneumoniae:Streptococcus_pseudopneumoniae:Streptococcus_sanguinis
 </td>
 <td style="text-align:left;">
-60.C10.S34.Jul202017
+206.S51.Jun172016
 </td>
 <td style="text-align:right;">
-0.553
+0.578
 </td>
 </tr>
 <tr>
@@ -2084,10 +2161,10 @@ Streptococcus_dentisani:Streptococcus_infantis:Streptococcus_mitis:Streptococcus
 Streptococcus_dentisani:Streptococcus_infantis:Streptococcus_mitis:Streptococcus_oligofermentans:Streptococcus_oralis:Streptococcus_pneumoniae:Streptococcus_pseudopneumoniae:Streptococcus_sanguinis
 </td>
 <td style="text-align:left;">
-211.A07.S7.Jun232016
+200.S96.Jun172016
 </td>
 <td style="text-align:right;">
-0.542
+0.566
 </td>
 </tr>
 <tr>
@@ -2095,10 +2172,10 @@ Streptococcus_dentisani:Streptococcus_infantis:Streptococcus_mitis:Streptococcus
 Streptococcus_dentisani:Streptococcus_infantis:Streptococcus_mitis:Streptococcus_oligofermentans:Streptococcus_oralis:Streptococcus_pneumoniae:Streptococcus_pseudopneumoniae:Streptococcus_sanguinis
 </td>
 <td style="text-align:left;">
-59.S72.Jun172016
+201.H02.S86.Jun242016
 </td>
 <td style="text-align:right;">
-0.538
+0.566
 </td>
 </tr>
 <tr>
@@ -2106,10 +2183,10 @@ Streptococcus_dentisani:Streptococcus_infantis:Streptococcus_mitis:Streptococcus
 Streptococcus_dentisani:Streptococcus_infantis:Streptococcus_mitis:Streptococcus_oligofermentans:Streptococcus_oralis:Streptococcus_pneumoniae:Streptococcus_pseudopneumoniae:Streptococcus_sanguinis
 </td>
 <td style="text-align:left;">
-149.C05.S29.Jun232016
+139.F07.S67.Jun232016
 </td>
 <td style="text-align:right;">
-0.526
+0.544
 </td>
 </tr>
 <tr>
@@ -2120,7 +2197,29 @@ Streptococcus_dentisani:Streptococcus_infantis:Streptococcus_mitis:Streptococcus
 168.S59.Jun172016
 </td>
 <td style="text-align:right;">
-0.525
+0.534
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Streptococcus_dentisani:Streptococcus_infantis:Streptococcus_mitis:Streptococcus_oligofermentans:Streptococcus_oralis:Streptococcus_pneumoniae:Streptococcus_pseudopneumoniae:Streptococcus_sanguinis
+</td>
+<td style="text-align:left;">
+60.C10.S34.Jul202017
+</td>
+<td style="text-align:right;">
+0.533
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Streptococcus_dentisani:Streptococcus_infantis:Streptococcus_mitis:Streptococcus_oligofermentans:Streptococcus_oralis:Streptococcus_pneumoniae:Streptococcus_pseudopneumoniae:Streptococcus_sanguinis
+</td>
+<td style="text-align:left;">
+211.A07.S7.Jun232016
+</td>
+<td style="text-align:right;">
+0.524
 </td>
 </tr>
 <tr>
@@ -2131,7 +2230,7 @@ Streptococcus_dentisani:Streptococcus_infantis:Streptococcus_mitis:Streptococcus
 66.G04.S76.Jul202017
 </td>
 <td style="text-align:right;">
-0.516
+0.524
 </td>
 </tr>
 <tr>
@@ -2142,7 +2241,18 @@ Streptococcus_dentisani:Streptococcus_infantis:Streptococcus_mitis:Streptococcus
 128.S5.Jun172016
 </td>
 <td style="text-align:right;">
-0.516
+0.522
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Streptococcus_dentisani:Streptococcus_infantis:Streptococcus_mitis:Streptococcus_oligofermentans:Streptococcus_oralis:Streptococcus_pneumoniae:Streptococcus_pseudopneumoniae:Streptococcus_sanguinis
+</td>
+<td style="text-align:left;">
+149.C05.S29.Jun232016
+</td>
+<td style="text-align:right;">
+0.520
 </td>
 </tr>
 <tr>
@@ -2153,84 +2263,7 @@ Streptococcus_dentisani:Streptococcus_infantis:Streptococcus_mitis:Streptococcus
 11.B08.S20.Jun232016
 </td>
 <td style="text-align:right;">
-0.510
-</td>
-</tr>
-<tr>
-<td style="text-align:left;">
-Streptococcus_dentisani:Streptococcus_infantis:Streptococcus_mitis:Streptococcus_oligofermentans:Streptococcus_oralis:Streptococcus_pneumoniae:Streptococcus_pseudopneumoniae:Streptococcus_sanguinis
-</td>
-<td style="text-align:left;">
-81.A02.S2.Jun232016
-</td>
-<td style="text-align:right;">
-0.499
-</td>
-</tr>
-<tr>
-<td style="text-align:left;">
-Streptococcus_dentisani:Streptococcus_infantis:Streptococcus_mitis:Streptococcus_oligofermentans:Streptococcus_oralis:Streptococcus_pneumoniae:Streptococcus_pseudopneumoniae:Streptococcus_sanguinis
-</td>
-<td style="text-align:left;">
-202.D07.S43.Jul202017
-</td>
-<td style="text-align:right;">
-0.480
-</td>
-</tr>
-<tr>
-<td style="text-align:left;">
-Streptococcus_dentisani:Streptococcus_infantis:Streptococcus_mitis:Streptococcus_oligofermentans:Streptococcus_oralis:Streptococcus_pneumoniae:Streptococcus_pseudopneumoniae:Streptococcus_sanguinis
-</td>
-<td style="text-align:left;">
-155.C09.S33.Jul202017
-</td>
-<td style="text-align:right;">
-0.478
-</td>
-</tr>
-<tr>
-<td style="text-align:left;">
-Streptococcus_dentisani:Streptococcus_infantis:Streptococcus_mitis:Streptococcus_oligofermentans:Streptococcus_oralis:Streptococcus_pneumoniae:Streptococcus_pseudopneumoniae:Streptococcus_sanguinis
-</td>
-<td style="text-align:left;">
-106.E02.S50.Jun232016
-</td>
-<td style="text-align:right;">
-0.469
-</td>
-</tr>
-<tr>
-<td style="text-align:left;">
-Streptococcus_dentisani:Streptococcus_infantis:Streptococcus_mitis:Streptococcus_oligofermentans:Streptococcus_oralis:Streptococcus_pneumoniae:Streptococcus_pseudopneumoniae:Streptococcus_sanguinis
-</td>
-<td style="text-align:left;">
-5.S4.Jun172016
-</td>
-<td style="text-align:right;">
-0.469
-</td>
-</tr>
-<tr>
-<td style="text-align:left;">
-Streptococcus_dentisani:Streptococcus_infantis:Streptococcus_mitis:Streptococcus_oligofermentans:Streptococcus_oralis:Streptococcus_pneumoniae:Streptococcus_pseudopneumoniae:Streptococcus_sanguinis
-</td>
-<td style="text-align:left;">
-113.F01.S61.Jun232016
-</td>
-<td style="text-align:right;">
-0.459
-</td>
-</tr>
-<tr>
-<td style="text-align:left;">
-Streptococcus_dentisani:Streptococcus_infantis:Streptococcus_mitis:Streptococcus_oligofermentans:Streptococcus_oralis:Streptococcus_pneumoniae:Streptococcus_pseudopneumoniae:Streptococcus_sanguinis
-</td>
-<td style="text-align:left;">
-112.F02.S62.Jun232016
-</td>
-<td style="text-align:right;">
-0.456
+0.494
 </td>
 </tr>
 <tr>
@@ -2241,7 +2274,29 @@ Streptococcus_dentisani:Streptococcus_infantis:Streptococcus_mitis:Streptococcus
 154.C02.S26.Jul202017
 </td>
 <td style="text-align:right;">
-0.456
+0.482
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Streptococcus_dentisani:Streptococcus_infantis:Streptococcus_mitis:Streptococcus_oligofermentans:Streptococcus_oralis:Streptococcus_pneumoniae:Streptococcus_pseudopneumoniae:Streptococcus_sanguinis
+</td>
+<td style="text-align:left;">
+106.E02.S50.Jun232016
+</td>
+<td style="text-align:right;">
+0.470
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Streptococcus_dentisani:Streptococcus_infantis:Streptococcus_mitis:Streptococcus_oligofermentans:Streptococcus_oralis:Streptococcus_pneumoniae:Streptococcus_pseudopneumoniae:Streptococcus_sanguinis
+</td>
+<td style="text-align:left;">
+81.A02.S2.Jun232016
+</td>
+<td style="text-align:right;">
+0.462
 </td>
 </tr>
 <tr>
@@ -2260,10 +2315,10 @@ Streptococcus_dentisani:Streptococcus_infantis:Streptococcus_mitis:Streptococcus
 Streptococcus_dentisani:Streptococcus_infantis:Streptococcus_mitis:Streptococcus_oligofermentans:Streptococcus_oralis:Streptococcus_pneumoniae:Streptococcus_pseudopneumoniae:Streptococcus_sanguinis
 </td>
 <td style="text-align:left;">
-191.G02.S74.Jul202017
+155.C09.S33.Jul202017
 </td>
 <td style="text-align:right;">
-0.433
+0.452
 </td>
 </tr>
 <tr>
@@ -2274,7 +2329,7 @@ Streptococcus_dentisani:Streptococcus_infantis:Streptococcus_mitis:Streptococcus
 50.S56.Jun172016
 </td>
 <td style="text-align:right;">
-0.428
+0.450
 </td>
 </tr>
 <tr>
@@ -2282,7 +2337,51 @@ Streptococcus_dentisani:Streptococcus_infantis:Streptococcus_mitis:Streptococcus
 Streptococcus_dentisani:Streptococcus_infantis:Streptococcus_mitis:Streptococcus_oligofermentans:Streptococcus_oralis:Streptococcus_pneumoniae:Streptococcus_pseudopneumoniae:Streptococcus_sanguinis
 </td>
 <td style="text-align:left;">
-22.C07.S31.Jun232016
+59.S72.Jun172016
+</td>
+<td style="text-align:right;">
+0.450
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Streptococcus_dentisani:Streptococcus_infantis:Streptococcus_mitis:Streptococcus_oligofermentans:Streptococcus_oralis:Streptococcus_pneumoniae:Streptococcus_pseudopneumoniae:Streptococcus_sanguinis
+</td>
+<td style="text-align:left;">
+202.D07.S43.Jul202017
+</td>
+<td style="text-align:right;">
+0.446
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Streptococcus_dentisani:Streptococcus_infantis:Streptococcus_mitis:Streptococcus_oligofermentans:Streptococcus_oralis:Streptococcus_pneumoniae:Streptococcus_pseudopneumoniae:Streptococcus_sanguinis
+</td>
+<td style="text-align:left;">
+112.F02.S62.Jun232016
+</td>
+<td style="text-align:right;">
+0.438
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Streptococcus_dentisani:Streptococcus_infantis:Streptococcus_mitis:Streptococcus_oligofermentans:Streptococcus_oralis:Streptococcus_pneumoniae:Streptococcus_pseudopneumoniae:Streptococcus_sanguinis
+</td>
+<td style="text-align:left;">
+5.S4.Jun172016
+</td>
+<td style="text-align:right;">
+0.436
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Streptococcus_dentisani:Streptococcus_infantis:Streptococcus_mitis:Streptococcus_oligofermentans:Streptococcus_oralis:Streptococcus_pneumoniae:Streptococcus_pseudopneumoniae:Streptococcus_sanguinis
+</td>
+<td style="text-align:left;">
+191.G02.S74.Jul202017
 </td>
 <td style="text-align:right;">
 0.416
@@ -2293,21 +2392,10 @@ Streptococcus_dentisani:Streptococcus_infantis:Streptococcus_mitis:Streptococcus
 Streptococcus_dentisani:Streptococcus_infantis:Streptococcus_mitis:Streptococcus_oligofermentans:Streptococcus_oralis:Streptococcus_pneumoniae:Streptococcus_pseudopneumoniae:Streptococcus_sanguinis
 </td>
 <td style="text-align:left;">
-31.C08.S32.Jun232016
+113.F01.S61.Jun232016
 </td>
 <td style="text-align:right;">
-0.406
-</td>
-</tr>
-<tr>
-<td style="text-align:left;">
-Streptococcus_dentisani:Streptococcus_infantis:Streptococcus_mitis:Streptococcus_oligofermentans:Streptococcus_oralis:Streptococcus_pneumoniae:Streptococcus_pseudopneumoniae:Streptococcus_sanguinis
-</td>
-<td style="text-align:left;">
-46.C04.S28.Jul202017
-</td>
-<td style="text-align:right;">
-0.405
+0.414
 </td>
 </tr>
 <tr>
@@ -2318,7 +2406,7 @@ Streptococcus_dentisani:Streptococcus_infantis:Streptococcus_mitis:Streptococcus
 142.E08.S56.Jul202017
 </td>
 <td style="text-align:right;">
-0.400
+0.398
 </td>
 </tr>
 <tr>
@@ -2326,54 +2414,10 @@ Streptococcus_dentisani:Streptococcus_infantis:Streptococcus_mitis:Streptococcus
 Streptococcus_dentisani:Streptococcus_infantis:Streptococcus_mitis:Streptococcus_oligofermentans:Streptococcus_oralis:Streptococcus_pneumoniae:Streptococcus_pseudopneumoniae:Streptococcus_sanguinis
 </td>
 <td style="text-align:left;">
-167.E05.S53.Jun232016
+22.C07.S31.Jun232016
 </td>
 <td style="text-align:right;">
-0.396
-</td>
-</tr>
-<tr>
-<td style="text-align:left;">
-Streptococcus_dentisani:Streptococcus_infantis:Streptococcus_mitis:Streptococcus_oligofermentans:Streptococcus_oralis:Streptococcus_pneumoniae:Streptococcus_pseudopneumoniae:Streptococcus_sanguinis
-</td>
-<td style="text-align:left;">
-129.A01.S1.Jul202017
-</td>
-<td style="text-align:right;">
-0.391
-</td>
-</tr>
-<tr>
-<td style="text-align:left;">
-Streptococcus_dentisani:Streptococcus_infantis:Streptococcus_mitis:Streptococcus_oligofermentans:Streptococcus_oralis:Streptococcus_pneumoniae:Streptococcus_pseudopneumoniae:Streptococcus_sanguinis
-</td>
-<td style="text-align:left;">
-80.A01.S1.Jun232016
-</td>
-<td style="text-align:right;">
-0.386
-</td>
-</tr>
-<tr>
-<td style="text-align:left;">
-Streptococcus_dentisani:Streptococcus_infantis:Streptococcus_mitis:Streptococcus_oligofermentans:Streptococcus_oralis:Streptococcus_pneumoniae:Streptococcus_pseudopneumoniae:Streptococcus_sanguinis
-</td>
-<td style="text-align:left;">
-48.S43.Jun172016
-</td>
-<td style="text-align:right;">
-0.384
-</td>
-</tr>
-<tr>
-<td style="text-align:left;">
-Streptococcus_dentisani:Streptococcus_infantis:Streptococcus_mitis:Streptococcus_oligofermentans:Streptococcus_oralis:Streptococcus_pneumoniae:Streptococcus_pseudopneumoniae:Streptococcus_sanguinis
-</td>
-<td style="text-align:left;">
-104.S23.Jun172016
-</td>
-<td style="text-align:right;">
-0.362
+0.394
 </td>
 </tr>
 <tr>
@@ -2384,7 +2428,7 @@ Streptococcus_dentisani:Streptococcus_infantis:Streptococcus_mitis:Streptococcus
 24.S92.Jun172016
 </td>
 <td style="text-align:right;">
-0.361
+0.392
 </td>
 </tr>
 <tr>
@@ -2392,10 +2436,10 @@ Streptococcus_dentisani:Streptococcus_infantis:Streptococcus_mitis:Streptococcus
 Streptococcus_dentisani:Streptococcus_infantis:Streptococcus_mitis:Streptococcus_oligofermentans:Streptococcus_oralis:Streptococcus_pneumoniae:Streptococcus_pseudopneumoniae:Streptococcus_sanguinis
 </td>
 <td style="text-align:left;">
-190.G01.S73.Jul202017
+31.C08.S32.Jun232016
 </td>
 <td style="text-align:right;">
-0.340
+0.382
 </td>
 </tr>
 <tr>
@@ -2403,10 +2447,10 @@ Streptococcus_dentisani:Streptococcus_infantis:Streptococcus_mitis:Streptococcus
 Streptococcus_dentisani:Streptococcus_infantis:Streptococcus_mitis:Streptococcus_oligofermentans:Streptococcus_oralis:Streptococcus_pneumoniae:Streptococcus_pseudopneumoniae:Streptococcus_sanguinis
 </td>
 <td style="text-align:left;">
-110.S69.Jun172016
+48.S43.Jun172016
 </td>
 <td style="text-align:right;">
-0.338
+0.380
 </td>
 </tr>
 <tr>
@@ -2414,10 +2458,10 @@ Streptococcus_dentisani:Streptococcus_infantis:Streptococcus_mitis:Streptococcus
 Streptococcus_dentisani:Streptococcus_infantis:Streptococcus_mitis:Streptococcus_oligofermentans:Streptococcus_oralis:Streptococcus_pneumoniae:Streptococcus_pseudopneumoniae:Streptococcus_sanguinis
 </td>
 <td style="text-align:left;">
-233.G07.S79.Jun232016
+46.C04.S28.Jul202017
 </td>
 <td style="text-align:right;">
-0.338
+0.378
 </td>
 </tr>
 <tr>
@@ -2428,7 +2472,62 @@ Streptococcus_dentisani:Streptococcus_infantis:Streptococcus_mitis:Streptococcus
 130.A02.S2.Jul202017
 </td>
 <td style="text-align:right;">
-0.338
+0.362
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Streptococcus_dentisani:Streptococcus_infantis:Streptococcus_mitis:Streptococcus_oligofermentans:Streptococcus_oralis:Streptococcus_pneumoniae:Streptococcus_pseudopneumoniae:Streptococcus_sanguinis
+</td>
+<td style="text-align:left;">
+129.A01.S1.Jul202017
+</td>
+<td style="text-align:right;">
+0.360
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Streptococcus_dentisani:Streptococcus_infantis:Streptococcus_mitis:Streptococcus_oligofermentans:Streptococcus_oralis:Streptococcus_pneumoniae:Streptococcus_pseudopneumoniae:Streptococcus_sanguinis
+</td>
+<td style="text-align:left;">
+167.E05.S53.Jun232016
+</td>
+<td style="text-align:right;">
+0.350
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Streptococcus_dentisani:Streptococcus_infantis:Streptococcus_mitis:Streptococcus_oligofermentans:Streptococcus_oralis:Streptococcus_pneumoniae:Streptococcus_pseudopneumoniae:Streptococcus_sanguinis
+</td>
+<td style="text-align:left;">
+110.S69.Jun172016
+</td>
+<td style="text-align:right;">
+0.335
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Streptococcus_dentisani:Streptococcus_infantis:Streptococcus_mitis:Streptococcus_oligofermentans:Streptococcus_oralis:Streptococcus_pneumoniae:Streptococcus_pseudopneumoniae:Streptococcus_sanguinis
+</td>
+<td style="text-align:left;">
+190.G01.S73.Jul202017
+</td>
+<td style="text-align:right;">
+0.334
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Streptococcus_dentisani:Streptococcus_infantis:Streptococcus_mitis:Streptococcus_oligofermentans:Streptococcus_oralis:Streptococcus_pneumoniae:Streptococcus_pseudopneumoniae:Streptococcus_sanguinis
+</td>
+<td style="text-align:left;">
+80.A01.S1.Jun232016
+</td>
+<td style="text-align:right;">
+0.332
 </td>
 </tr>
 <tr>
@@ -2439,7 +2538,7 @@ Streptococcus_dentisani:Streptococcus_infantis:Streptococcus_mitis:Streptococcus
 82.A05.S5.Jul202017
 </td>
 <td style="text-align:right;">
-0.337
+0.326
 </td>
 </tr>
 <tr>
@@ -2447,7 +2546,7 @@ Streptococcus_dentisani:Streptococcus_infantis:Streptococcus_mitis:Streptococcus
 Streptococcus_dentisani:Streptococcus_infantis:Streptococcus_mitis:Streptococcus_oligofermentans:Streptococcus_oralis:Streptococcus_pneumoniae:Streptococcus_pseudopneumoniae:Streptococcus_sanguinis
 </td>
 <td style="text-align:left;">
-152.H07.S91.Jun232016
+233.G07.S79.Jun232016
 </td>
 <td style="text-align:right;">
 0.326
@@ -2458,10 +2557,10 @@ Streptococcus_dentisani:Streptococcus_infantis:Streptococcus_mitis:Streptococcus
 Streptococcus_dentisani:Streptococcus_infantis:Streptococcus_mitis:Streptococcus_oligofermentans:Streptococcus_oralis:Streptococcus_pneumoniae:Streptococcus_pseudopneumoniae:Streptococcus_sanguinis
 </td>
 <td style="text-align:left;">
-38.C09.S33.Jun232016
+121.G05.S77.Jul202017
 </td>
 <td style="text-align:right;">
-0.319
+0.324
 </td>
 </tr>
 <tr>
@@ -2469,10 +2568,21 @@ Streptococcus_dentisani:Streptococcus_infantis:Streptococcus_mitis:Streptococcus
 Streptococcus_dentisani:Streptococcus_infantis:Streptococcus_mitis:Streptococcus_oligofermentans:Streptococcus_oralis:Streptococcus_pneumoniae:Streptococcus_pseudopneumoniae:Streptococcus_sanguinis
 </td>
 <td style="text-align:left;">
-77.S10.Jun172016
+152.H07.S91.Jun232016
 </td>
 <td style="text-align:right;">
-0.307
+0.320
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Streptococcus_dentisani:Streptococcus_infantis:Streptococcus_mitis:Streptococcus_oligofermentans:Streptococcus_oralis:Streptococcus_pneumoniae:Streptococcus_pseudopneumoniae:Streptococcus_sanguinis
+</td>
+<td style="text-align:left;">
+38.C09.S33.Jun232016
+</td>
+<td style="text-align:right;">
+0.316
 </td>
 </tr>
 <tr>
@@ -2483,7 +2593,18 @@ Streptococcus_dentisani:Streptococcus_infantis:Streptococcus_mitis:Streptococcus
 23.S75.Jun172016
 </td>
 <td style="text-align:right;">
-0.305
+0.312
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Streptococcus_dentisani:Streptococcus_infantis:Streptococcus_mitis:Streptococcus_oligofermentans:Streptococcus_oralis:Streptococcus_pneumoniae:Streptococcus_pseudopneumoniae:Streptococcus_sanguinis
+</td>
+<td style="text-align:left;">
+77.S10.Jun172016
+</td>
+<td style="text-align:right;">
+0.288
 </td>
 </tr>
 <tr>
@@ -2494,7 +2615,7 @@ Streptococcus_dentisani:Streptococcus_infantis:Streptococcus_mitis:Streptococcus
 62.G10.S82.Jun232016
 </td>
 <td style="text-align:right;">
-0.300
+0.288
 </td>
 </tr>
 <tr>
@@ -2502,10 +2623,10 @@ Streptococcus_dentisani:Streptococcus_infantis:Streptococcus_mitis:Streptococcus
 Streptococcus_dentisani:Streptococcus_infantis:Streptococcus_mitis:Streptococcus_oligofermentans:Streptococcus_oralis:Streptococcus_pneumoniae:Streptococcus_pseudopneumoniae:Streptococcus_sanguinis
 </td>
 <td style="text-align:left;">
-121.G05.S77.Jul202017
+104.S23.Jun172016
 </td>
 <td style="text-align:right;">
-0.290
+0.282
 </td>
 </tr>
 <tr>
@@ -2516,7 +2637,7 @@ Streptococcus_dentisani:Streptococcus_infantis:Streptococcus_mitis:Streptococcus
 90.S33.Jun172016
 </td>
 <td style="text-align:right;">
-0.285
+0.276
 </td>
 </tr>
 <tr>
@@ -2524,10 +2645,10 @@ Streptococcus_dentisani:Streptococcus_infantis:Streptococcus_mitis:Streptococcus
 Streptococcus_dentisani:Streptococcus_infantis:Streptococcus_mitis:Streptococcus_oligofermentans:Streptococcus_oralis:Streptococcus_pneumoniae:Streptococcus_pseudopneumoniae:Streptococcus_sanguinis
 </td>
 <td style="text-align:left;">
-58.S67.Jun172016
+173.S66.Jun172016
 </td>
 <td style="text-align:right;">
-0.255
+0.238
 </td>
 </tr>
 <tr>
@@ -2536,17 +2657,6 @@ Streptococcus_dentisani:Streptococcus_infantis:Streptococcus_mitis:Streptococcus
 </td>
 <td style="text-align:left;">
 195.H06.S90.Jun232016
-</td>
-<td style="text-align:right;">
-0.251
-</td>
-</tr>
-<tr>
-<td style="text-align:left;">
-Streptococcus_dentisani:Streptococcus_infantis:Streptococcus_mitis:Streptococcus_oligofermentans:Streptococcus_oralis:Streptococcus_pneumoniae:Streptococcus_pseudopneumoniae:Streptococcus_sanguinis
-</td>
-<td style="text-align:left;">
-179.F01.S61.Jul202017
 </td>
 <td style="text-align:right;">
 0.236
@@ -2571,7 +2681,7 @@ Streptococcus_dentisani:Streptococcus_infantis:Streptococcus_mitis:Streptococcus
 7.A08.S8.Jul202017
 </td>
 <td style="text-align:right;">
-0.229
+0.231
 </td>
 </tr>
 <tr>
@@ -2579,7 +2689,7 @@ Streptococcus_dentisani:Streptococcus_infantis:Streptococcus_mitis:Streptococcus
 Streptococcus_dentisani:Streptococcus_infantis:Streptococcus_mitis:Streptococcus_oligofermentans:Streptococcus_oralis:Streptococcus_pneumoniae:Streptococcus_pseudopneumoniae:Streptococcus_sanguinis
 </td>
 <td style="text-align:left;">
-97.S45.Jun172016
+175.S88.Jun172016
 </td>
 <td style="text-align:right;">
 0.228
@@ -2590,10 +2700,10 @@ Streptococcus_dentisani:Streptococcus_infantis:Streptococcus_mitis:Streptococcus
 Streptococcus_dentisani:Streptococcus_infantis:Streptococcus_mitis:Streptococcus_oligofermentans:Streptococcus_oralis:Streptococcus_pneumoniae:Streptococcus_pseudopneumoniae:Streptococcus_sanguinis
 </td>
 <td style="text-align:left;">
-173.S66.Jun172016
+58.S67.Jun172016
 </td>
 <td style="text-align:right;">
-0.218
+0.226
 </td>
 </tr>
 <tr>
@@ -2601,10 +2711,21 @@ Streptococcus_dentisani:Streptococcus_infantis:Streptococcus_mitis:Streptococcus
 Streptococcus_dentisani:Streptococcus_infantis:Streptococcus_mitis:Streptococcus_oligofermentans:Streptococcus_oralis:Streptococcus_pneumoniae:Streptococcus_pseudopneumoniae:Streptococcus_sanguinis
 </td>
 <td style="text-align:left;">
-234.C07.S31.Jul202017
+179.F01.S61.Jul202017
 </td>
 <td style="text-align:right;">
-0.217
+0.224
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Streptococcus_dentisani:Streptococcus_infantis:Streptococcus_mitis:Streptococcus_oligofermentans:Streptococcus_oralis:Streptococcus_pneumoniae:Streptococcus_pseudopneumoniae:Streptococcus_sanguinis
+</td>
+<td style="text-align:left;">
+97.S45.Jun172016
+</td>
+<td style="text-align:right;">
+0.220
 </td>
 </tr>
 <tr>
@@ -2615,18 +2736,7 @@ Streptococcus_dentisani:Streptococcus_infantis:Streptococcus_mitis:Streptococcus
 174.S76.Jun172016
 </td>
 <td style="text-align:right;">
-0.210
-</td>
-</tr>
-<tr>
-<td style="text-align:left;">
-Streptococcus_dentisani:Streptococcus_infantis:Streptococcus_mitis:Streptococcus_oligofermentans:Streptococcus_oralis:Streptococcus_pneumoniae:Streptococcus_pseudopneumoniae:Streptococcus_sanguinis
-</td>
-<td style="text-align:left;">
-135.B06.S18.Jun232016
-</td>
-<td style="text-align:right;">
-0.208
+0.212
 </td>
 </tr>
 <tr>
@@ -2645,32 +2755,10 @@ Streptococcus_dentisani:Streptococcus_infantis:Streptococcus_mitis:Streptococcus
 Streptococcus_dentisani:Streptococcus_infantis:Streptococcus_mitis:Streptococcus_oligofermentans:Streptococcus_oralis:Streptococcus_pneumoniae:Streptococcus_pseudopneumoniae:Streptococcus_sanguinis
 </td>
 <td style="text-align:left;">
-87.B01.S13.Jun232016
+135.B06.S18.Jun232016
 </td>
 <td style="text-align:right;">
-0.205
-</td>
-</tr>
-<tr>
-<td style="text-align:left;">
-Streptococcus_dentisani:Streptococcus_infantis:Streptococcus_mitis:Streptococcus_oligofermentans:Streptococcus_oralis:Streptococcus_pneumoniae:Streptococcus_pseudopneumoniae:Streptococcus_sanguinis
-</td>
-<td style="text-align:left;">
-175.S88.Jun172016
-</td>
-<td style="text-align:right;">
-0.202
-</td>
-</tr>
-<tr>
-<td style="text-align:left;">
-Streptococcus_dentisani:Streptococcus_infantis:Streptococcus_mitis:Streptococcus_oligofermentans:Streptococcus_oralis:Streptococcus_pneumoniae:Streptococcus_pseudopneumoniae:Streptococcus_sanguinis
-</td>
-<td style="text-align:left;">
-28.S87.Jun172016
-</td>
-<td style="text-align:right;">
-0.199
+0.200
 </td>
 </tr>
 <tr>
@@ -2681,7 +2769,7 @@ Streptococcus_dentisani:Streptococcus_infantis:Streptococcus_mitis:Streptococcus
 186.S77.Jun172016
 </td>
 <td style="text-align:right;">
-0.196
+0.198
 </td>
 </tr>
 <tr>
@@ -2689,10 +2777,10 @@ Streptococcus_dentisani:Streptococcus_infantis:Streptococcus_mitis:Streptococcus
 Streptococcus_dentisani:Streptococcus_infantis:Streptococcus_mitis:Streptococcus_oligofermentans:Streptococcus_oralis:Streptococcus_pneumoniae:Streptococcus_pseudopneumoniae:Streptococcus_sanguinis
 </td>
 <td style="text-align:left;">
-55.E03.S51.Jul202017
+87.B01.S13.Jun232016
 </td>
 <td style="text-align:right;">
-0.184
+0.192
 </td>
 </tr>
 <tr>
@@ -2700,7 +2788,7 @@ Streptococcus_dentisani:Streptococcus_infantis:Streptococcus_mitis:Streptococcus
 Streptococcus_dentisani:Streptococcus_infantis:Streptococcus_mitis:Streptococcus_oligofermentans:Streptococcus_oralis:Streptococcus_pneumoniae:Streptococcus_pseudopneumoniae:Streptococcus_sanguinis
 </td>
 <td style="text-align:left;">
-134.F11.S71.Jun172016
+234.C07.S31.Jul202017
 </td>
 <td style="text-align:right;">
 0.180
@@ -2711,10 +2799,10 @@ Streptococcus_dentisani:Streptococcus_infantis:Streptococcus_mitis:Streptococcus
 Streptococcus_dentisani:Streptococcus_infantis:Streptococcus_mitis:Streptococcus_oligofermentans:Streptococcus_oralis:Streptococcus_pneumoniae:Streptococcus_pseudopneumoniae:Streptococcus_sanguinis
 </td>
 <td style="text-align:left;">
-124.S93.Jun172016
+28.S87.Jun172016
 </td>
 <td style="text-align:right;">
-0.168
+0.172
 </td>
 </tr>
 <tr>
@@ -2722,7 +2810,18 @@ Streptococcus_dentisani:Streptococcus_infantis:Streptococcus_mitis:Streptococcus
 Streptococcus_dentisani:Streptococcus_infantis:Streptococcus_mitis:Streptococcus_oligofermentans:Streptococcus_oralis:Streptococcus_pneumoniae:Streptococcus_pseudopneumoniae:Streptococcus_sanguinis
 </td>
 <td style="text-align:left;">
-172.S65.Jun172016
+134.F11.S71.Jun172016
+</td>
+<td style="text-align:right;">
+0.170
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Streptococcus_dentisani:Streptococcus_infantis:Streptococcus_mitis:Streptococcus_oligofermentans:Streptococcus_oralis:Streptococcus_pneumoniae:Streptococcus_pseudopneumoniae:Streptococcus_sanguinis
+</td>
+<td style="text-align:left;">
+55.E03.S51.Jul202017
 </td>
 <td style="text-align:right;">
 0.164
@@ -2733,10 +2832,21 @@ Streptococcus_dentisani:Streptococcus_infantis:Streptococcus_mitis:Streptococcus
 Streptococcus_dentisani:Streptococcus_infantis:Streptococcus_mitis:Streptococcus_oligofermentans:Streptococcus_oralis:Streptococcus_pneumoniae:Streptococcus_pseudopneumoniae:Streptococcus_sanguinis
 </td>
 <td style="text-align:left;">
-73.H04.S88.Jul202017
+74.H03.S87.Jul202017
 </td>
 <td style="text-align:right;">
-0.162
+0.160
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Streptococcus_dentisani:Streptococcus_infantis:Streptococcus_mitis:Streptococcus_oligofermentans:Streptococcus_oralis:Streptococcus_pneumoniae:Streptococcus_pseudopneumoniae:Streptococcus_sanguinis
+</td>
+<td style="text-align:left;">
+172.S65.Jun172016
+</td>
+<td style="text-align:right;">
+0.154
 </td>
 </tr>
 <tr>
@@ -2747,7 +2857,7 @@ Streptococcus_dentisani:Streptococcus_infantis:Streptococcus_mitis:Streptococcus
 208.D03.S39.Jun232016
 </td>
 <td style="text-align:right;">
-0.143
+0.146
 </td>
 </tr>
 <tr>
@@ -2755,10 +2865,10 @@ Streptococcus_dentisani:Streptococcus_infantis:Streptococcus_mitis:Streptococcus
 Streptococcus_dentisani:Streptococcus_infantis:Streptococcus_mitis:Streptococcus_oligofermentans:Streptococcus_oralis:Streptococcus_pneumoniae:Streptococcus_pseudopneumoniae:Streptococcus_sanguinis
 </td>
 <td style="text-align:left;">
-74.H03.S87.Jul202017
+73.H04.S88.Jul202017
 </td>
 <td style="text-align:right;">
-0.141
+0.144
 </td>
 </tr>
 <tr>
@@ -2766,10 +2876,10 @@ Streptococcus_dentisani:Streptococcus_infantis:Streptococcus_mitis:Streptococcus
 Streptococcus_dentisani:Streptococcus_infantis:Streptococcus_mitis:Streptococcus_oligofermentans:Streptococcus_oralis:Streptococcus_pneumoniae:Streptococcus_pseudopneumoniae:Streptococcus_sanguinis
 </td>
 <td style="text-align:left;">
-54.G11.S83.Jul202017
+124.S93.Jun172016
 </td>
 <td style="text-align:right;">
-0.126
+0.138
 </td>
 </tr>
 <tr>
@@ -2780,84 +2890,7 @@ Streptococcus_dentisani:Streptococcus_infantis:Streptococcus_mitis:Streptococcus
 2.S16.Jun172016
 </td>
 <td style="text-align:right;">
-0.120
-</td>
-</tr>
-<tr>
-<td style="text-align:left;">
-Streptococcus_dentisani:Streptococcus_infantis:Streptococcus_mitis:Streptococcus_oligofermentans:Streptococcus_oralis:Streptococcus_pneumoniae:Streptococcus_pseudopneumoniae:Streptococcus_sanguinis
-</td>
-<td style="text-align:left;">
-86.B02.S14.Jun232016
-</td>
-<td style="text-align:right;">
-0.120
-</td>
-</tr>
-<tr>
-<td style="text-align:left;">
-Streptococcus_dentisani:Streptococcus_infantis:Streptococcus_mitis:Streptococcus_oligofermentans:Streptococcus_oralis:Streptococcus_pneumoniae:Streptococcus_pseudopneumoniae:Streptococcus_sanguinis
-</td>
-<td style="text-align:left;">
-118.S82.Jun172016
-</td>
-<td style="text-align:right;">
-0.117
-</td>
-</tr>
-<tr>
-<td style="text-align:left;">
-Streptococcus_dentisani:Streptococcus_infantis:Streptococcus_mitis:Streptococcus_oligofermentans:Streptococcus_oralis:Streptococcus_pneumoniae:Streptococcus_pseudopneumoniae:Streptococcus_sanguinis
-</td>
-<td style="text-align:left;">
-162.G04.S76.Jun232016
-</td>
-<td style="text-align:right;">
-0.116
-</td>
-</tr>
-<tr>
-<td style="text-align:left;">
-Streptococcus_dentisani:Streptococcus_infantis:Streptococcus_mitis:Streptococcus_oligofermentans:Streptococcus_oralis:Streptococcus_pneumoniae:Streptococcus_pseudopneumoniae:Streptococcus_sanguinis
-</td>
-<td style="text-align:left;">
-19.S25.Jun172016
-</td>
-<td style="text-align:right;">
-0.114
-</td>
-</tr>
-<tr>
-<td style="text-align:left;">
-Streptococcus_dentisani:Streptococcus_infantis:Streptococcus_mitis:Streptococcus_oligofermentans:Streptococcus_oralis:Streptococcus_pneumoniae:Streptococcus_pseudopneumoniae:Streptococcus_sanguinis
-</td>
-<td style="text-align:left;">
-79.S3.Jun172016
-</td>
-<td style="text-align:right;">
-0.108
-</td>
-</tr>
-<tr>
-<td style="text-align:left;">
-Streptococcus_dentisani:Streptococcus_infantis:Streptococcus_mitis:Streptococcus_oligofermentans:Streptococcus_oralis:Streptococcus_pneumoniae:Streptococcus_pseudopneumoniae:Streptococcus_sanguinis
-</td>
-<td style="text-align:left;">
-42.A04.S4.Jul202017
-</td>
-<td style="text-align:right;">
-0.102
-</td>
-</tr>
-<tr>
-<td style="text-align:left;">
-Streptococcus_dentisani:Streptococcus_infantis:Streptococcus_mitis:Streptococcus_oligofermentans:Streptococcus_oralis:Streptococcus_pneumoniae:Streptococcus_pseudopneumoniae:Streptococcus_sanguinis
-</td>
-<td style="text-align:left;">
-43.S49.Jun172016
-</td>
-<td style="text-align:right;">
-0.100
+0.132
 </td>
 </tr>
 <tr>
@@ -2868,7 +2901,7 @@ Streptococcus_dentisani:Streptococcus_infantis:Streptococcus_mitis:Streptococcus
 88.B05.S17.Jul202017
 </td>
 <td style="text-align:right;">
-0.098
+0.124
 </td>
 </tr>
 <tr>
@@ -2876,10 +2909,10 @@ Streptococcus_dentisani:Streptococcus_infantis:Streptococcus_mitis:Streptococcus
 Streptococcus_dentisani:Streptococcus_infantis:Streptococcus_mitis:Streptococcus_oligofermentans:Streptococcus_oralis:Streptococcus_pneumoniae:Streptococcus_pseudopneumoniae:Streptococcus_sanguinis
 </td>
 <td style="text-align:left;">
-51.S55.Jun172016
+54.G11.S83.Jul202017
 </td>
 <td style="text-align:right;">
-0.080
+0.124
 </td>
 </tr>
 <tr>
@@ -2887,10 +2920,10 @@ Streptococcus_dentisani:Streptococcus_infantis:Streptococcus_mitis:Streptococcus
 Streptococcus_dentisani:Streptococcus_infantis:Streptococcus_mitis:Streptococcus_oligofermentans:Streptococcus_oralis:Streptococcus_pneumoniae:Streptococcus_pseudopneumoniae:Streptococcus_sanguinis
 </td>
 <td style="text-align:left;">
-127.S6.Jun172016
+19.S25.Jun172016
 </td>
 <td style="text-align:right;">
-0.076
+0.116
 </td>
 </tr>
 <tr>
@@ -2898,10 +2931,10 @@ Streptococcus_dentisani:Streptococcus_infantis:Streptococcus_mitis:Streptococcus
 Streptococcus_dentisani:Streptococcus_infantis:Streptococcus_mitis:Streptococcus_oligofermentans:Streptococcus_oralis:Streptococcus_pneumoniae:Streptococcus_pseudopneumoniae:Streptococcus_sanguinis
 </td>
 <td style="text-align:left;">
-20.A09.S9.Jun232016
+86.B02.S14.Jun232016
 </td>
 <td style="text-align:right;">
-0.075
+0.108
 </td>
 </tr>
 <tr>
@@ -2909,10 +2942,10 @@ Streptococcus_dentisani:Streptococcus_infantis:Streptococcus_mitis:Streptococcus
 Streptococcus_dentisani:Streptococcus_infantis:Streptococcus_mitis:Streptococcus_oligofermentans:Streptococcus_oralis:Streptococcus_pneumoniae:Streptococcus_pseudopneumoniae:Streptococcus_sanguinis
 </td>
 <td style="text-align:left;">
-8.S8.Jun172016
+79.S3.Jun172016
 </td>
 <td style="text-align:right;">
-0.072
+0.092
 </td>
 </tr>
 <tr>
@@ -2920,21 +2953,10 @@ Streptococcus_dentisani:Streptococcus_infantis:Streptococcus_mitis:Streptococcus
 Streptococcus_dentisani:Streptococcus_infantis:Streptococcus_mitis:Streptococcus_oligofermentans:Streptococcus_oralis:Streptococcus_pneumoniae:Streptococcus_pseudopneumoniae:Streptococcus_sanguinis
 </td>
 <td style="text-align:left;">
-89.B06.S18.Jul202017
+42.A04.S4.Jul202017
 </td>
 <td style="text-align:right;">
-0.072
-</td>
-</tr>
-<tr>
-<td style="text-align:left;">
-Streptococcus_dentisani:Streptococcus_infantis:Streptococcus_mitis:Streptococcus_oligofermentans:Streptococcus_oralis:Streptococcus_pneumoniae:Streptococcus_pseudopneumoniae:Streptococcus_sanguinis
-</td>
-<td style="text-align:left;">
-166.E06.S54.Jun232016
-</td>
-<td style="text-align:right;">
-0.072
+0.090
 </td>
 </tr>
 <tr>
@@ -2945,7 +2967,7 @@ Streptococcus_dentisani:Streptococcus_infantis:Streptococcus_mitis:Streptococcus
 178.F02.S62.Jul202017
 </td>
 <td style="text-align:right;">
-0.071
+0.088
 </td>
 </tr>
 <tr>
@@ -2953,10 +2975,10 @@ Streptococcus_dentisani:Streptococcus_infantis:Streptococcus_mitis:Streptococcus
 Streptococcus_dentisani:Streptococcus_infantis:Streptococcus_mitis:Streptococcus_oligofermentans:Streptococcus_oralis:Streptococcus_pneumoniae:Streptococcus_pseudopneumoniae:Streptococcus_sanguinis
 </td>
 <td style="text-align:left;">
-189.G05.S77.Jun232016
+89.B06.S18.Jul202017
 </td>
 <td style="text-align:right;">
-0.070
+0.088
 </td>
 </tr>
 <tr>
@@ -2964,10 +2986,10 @@ Streptococcus_dentisani:Streptococcus_infantis:Streptococcus_mitis:Streptococcus
 Streptococcus_dentisani:Streptococcus_infantis:Streptococcus_mitis:Streptococcus_oligofermentans:Streptococcus_oralis:Streptococcus_pneumoniae:Streptococcus_pseudopneumoniae:Streptococcus_sanguinis
 </td>
 <td style="text-align:left;">
-187.S78.Jun172016
+118.S82.Jun172016
 </td>
 <td style="text-align:right;">
-0.065
+0.086
 </td>
 </tr>
 <tr>
@@ -2975,10 +2997,10 @@ Streptococcus_dentisani:Streptococcus_infantis:Streptococcus_mitis:Streptococcus
 Streptococcus_dentisani:Streptococcus_infantis:Streptococcus_mitis:Streptococcus_oligofermentans:Streptococcus_oralis:Streptococcus_pneumoniae:Streptococcus_pseudopneumoniae:Streptococcus_sanguinis
 </td>
 <td style="text-align:left;">
-68.S91.Jun172016
+162.G04.S76.Jun232016
 </td>
 <td style="text-align:right;">
-0.064
+0.085
 </td>
 </tr>
 <tr>
@@ -2986,10 +3008,10 @@ Streptococcus_dentisani:Streptococcus_infantis:Streptococcus_mitis:Streptococcus
 Streptococcus_dentisani:Streptococcus_infantis:Streptococcus_mitis:Streptococcus_oligofermentans:Streptococcus_oralis:Streptococcus_pneumoniae:Streptococcus_pseudopneumoniae:Streptococcus_sanguinis
 </td>
 <td style="text-align:left;">
-100.D06.S42.Jul202017
+43.S49.Jun172016
 </td>
 <td style="text-align:right;">
-0.063
+0.084
 </td>
 </tr>
 <tr>
@@ -2997,21 +3019,10 @@ Streptococcus_dentisani:Streptococcus_infantis:Streptococcus_mitis:Streptococcus
 Streptococcus_dentisani:Streptococcus_infantis:Streptococcus_mitis:Streptococcus_oligofermentans:Streptococcus_oralis:Streptococcus_pneumoniae:Streptococcus_pseudopneumoniae:Streptococcus_sanguinis
 </td>
 <td style="text-align:left;">
-184.S61.Jun172016
+127.S6.Jun172016
 </td>
 <td style="text-align:right;">
-0.060
-</td>
-</tr>
-<tr>
-<td style="text-align:left;">
-Streptococcus_dentisani:Streptococcus_infantis:Streptococcus_mitis:Streptococcus_oligofermentans:Streptococcus_oralis:Streptococcus_pneumoniae:Streptococcus_pseudopneumoniae:Streptococcus_sanguinis
-</td>
-<td style="text-align:left;">
-212.A08.S8.Jun232016
-</td>
-<td style="text-align:right;">
-0.058
+0.084
 </td>
 </tr>
 <tr>
@@ -3022,7 +3033,84 @@ Streptococcus_dentisani:Streptococcus_infantis:Streptococcus_mitis:Streptococcus
 35.A03.S3.Jul202017
 </td>
 <td style="text-align:right;">
-0.058
+0.080
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Streptococcus_dentisani:Streptococcus_infantis:Streptococcus_mitis:Streptococcus_oligofermentans:Streptococcus_oralis:Streptococcus_pneumoniae:Streptococcus_pseudopneumoniae:Streptococcus_sanguinis
+</td>
+<td style="text-align:left;">
+8.S8.Jun172016
+</td>
+<td style="text-align:right;">
+0.076
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Streptococcus_dentisani:Streptococcus_infantis:Streptococcus_mitis:Streptococcus_oligofermentans:Streptococcus_oralis:Streptococcus_pneumoniae:Streptococcus_pseudopneumoniae:Streptococcus_sanguinis
+</td>
+<td style="text-align:left;">
+100.D06.S42.Jul202017
+</td>
+<td style="text-align:right;">
+0.070
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Streptococcus_dentisani:Streptococcus_infantis:Streptococcus_mitis:Streptococcus_oligofermentans:Streptococcus_oralis:Streptococcus_pneumoniae:Streptococcus_pseudopneumoniae:Streptococcus_sanguinis
+</td>
+<td style="text-align:left;">
+166.E06.S54.Jun232016
+</td>
+<td style="text-align:right;">
+0.070
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Streptococcus_dentisani:Streptococcus_infantis:Streptococcus_mitis:Streptococcus_oligofermentans:Streptococcus_oralis:Streptococcus_pneumoniae:Streptococcus_pseudopneumoniae:Streptococcus_sanguinis
+</td>
+<td style="text-align:left;">
+20.A09.S9.Jun232016
+</td>
+<td style="text-align:right;">
+0.070
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Streptococcus_dentisani:Streptococcus_infantis:Streptococcus_mitis:Streptococcus_oligofermentans:Streptococcus_oralis:Streptococcus_pneumoniae:Streptococcus_pseudopneumoniae:Streptococcus_sanguinis
+</td>
+<td style="text-align:left;">
+51.S55.Jun172016
+</td>
+<td style="text-align:right;">
+0.068
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Streptococcus_dentisani:Streptococcus_infantis:Streptococcus_mitis:Streptococcus_oligofermentans:Streptococcus_oralis:Streptococcus_pneumoniae:Streptococcus_pseudopneumoniae:Streptococcus_sanguinis
+</td>
+<td style="text-align:left;">
+187.S78.Jun172016
+</td>
+<td style="text-align:right;">
+0.068
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Streptococcus_dentisani:Streptococcus_infantis:Streptococcus_mitis:Streptococcus_oligofermentans:Streptococcus_oralis:Streptococcus_pneumoniae:Streptococcus_pseudopneumoniae:Streptococcus_sanguinis
+</td>
+<td style="text-align:left;">
+189.G05.S77.Jun232016
+</td>
+<td style="text-align:right;">
+0.064
 </td>
 </tr>
 <tr>
@@ -3033,7 +3121,7 @@ Streptococcus_dentisani:Streptococcus_infantis:Streptococcus_mitis:Streptococcus
 1.S37.Jun172016
 </td>
 <td style="text-align:right;">
-0.057
+0.056
 </td>
 </tr>
 <tr>
@@ -3041,10 +3129,10 @@ Streptococcus_dentisani:Streptococcus_infantis:Streptococcus_mitis:Streptococcus
 Streptococcus_dentisani:Streptococcus_infantis:Streptococcus_mitis:Streptococcus_oligofermentans:Streptococcus_oralis:Streptococcus_pneumoniae:Streptococcus_pseudopneumoniae:Streptococcus_sanguinis
 </td>
 <td style="text-align:left;">
-198.F03.S63.Jun232016
+68.S91.Jun172016
 </td>
 <td style="text-align:right;">
-0.056
+0.054
 </td>
 </tr>
 <tr>
@@ -3055,7 +3143,40 @@ Streptococcus_dentisani:Streptococcus_infantis:Streptococcus_mitis:Streptococcus
 188.G06.S78.Jun232016
 </td>
 <td style="text-align:right;">
+0.052
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Streptococcus_dentisani:Streptococcus_infantis:Streptococcus_mitis:Streptococcus_oligofermentans:Streptococcus_oralis:Streptococcus_pneumoniae:Streptococcus_pseudopneumoniae:Streptococcus_sanguinis
+</td>
+<td style="text-align:left;">
+212.A08.S8.Jun232016
+</td>
+<td style="text-align:right;">
 0.050
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Streptococcus_dentisani:Streptococcus_infantis:Streptococcus_mitis:Streptococcus_oligofermentans:Streptococcus_oralis:Streptococcus_pneumoniae:Streptococcus_pseudopneumoniae:Streptococcus_sanguinis
+</td>
+<td style="text-align:left;">
+198.F03.S63.Jun232016
+</td>
+<td style="text-align:right;">
+0.050
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Streptococcus_dentisani:Streptococcus_infantis:Streptococcus_mitis:Streptococcus_oligofermentans:Streptococcus_oralis:Streptococcus_pneumoniae:Streptococcus_pseudopneumoniae:Streptococcus_sanguinis
+</td>
+<td style="text-align:left;">
+184.S61.Jun172016
+</td>
+<td style="text-align:right;">
+0.048
 </td>
 </tr>
 <tr>
@@ -3066,7 +3187,7 @@ Streptococcus_dentisani:Streptococcus_infantis:Streptococcus_mitis:Streptococcus
 181.D02.S38.Jul202017
 </td>
 <td style="text-align:right;">
-0.042
+0.038
 </td>
 </tr>
 <tr>
@@ -3077,29 +3198,7 @@ Streptococcus_dentisani:Streptococcus_infantis:Streptococcus_mitis:Streptococcus
 109.S70.Jun172016
 </td>
 <td style="text-align:right;">
-0.040
-</td>
-</tr>
-<tr>
-<td style="text-align:left;">
-Streptococcus_dentisani:Streptococcus_infantis:Streptococcus_mitis:Streptococcus_oligofermentans:Streptococcus_oralis:Streptococcus_pneumoniae:Streptococcus_pseudopneumoniae:Streptococcus_sanguinis
-</td>
-<td style="text-align:left;">
-13.S20.Jun172016
-</td>
-<td style="text-align:right;">
 0.038
-</td>
-</tr>
-<tr>
-<td style="text-align:left;">
-Streptococcus_dentisani:Streptococcus_infantis:Streptococcus_mitis:Streptococcus_oligofermentans:Streptococcus_oralis:Streptococcus_pneumoniae:Streptococcus_pseudopneumoniae:Streptococcus_sanguinis
-</td>
-<td style="text-align:left;">
-140.B02.S14.Jul202017
-</td>
-<td style="text-align:right;">
-0.036
 </td>
 </tr>
 <tr>
@@ -3121,7 +3220,51 @@ Streptococcus_dentisani:Streptococcus_infantis:Streptococcus_mitis:Streptococcus
 226.S50.Jun172016
 </td>
 <td style="text-align:right;">
-0.035
+0.034
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Streptococcus_dentisani:Streptococcus_infantis:Streptococcus_mitis:Streptococcus_oligofermentans:Streptococcus_oralis:Streptococcus_pneumoniae:Streptococcus_pseudopneumoniae:Streptococcus_sanguinis
+</td>
+<td style="text-align:left;">
+148.S30.Jun172016
+</td>
+<td style="text-align:right;">
+0.030
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Streptococcus_dentisani:Streptococcus_infantis:Streptococcus_mitis:Streptococcus_oligofermentans:Streptococcus_oralis:Streptococcus_pneumoniae:Streptococcus_pseudopneumoniae:Streptococcus_sanguinis
+</td>
+<td style="text-align:left;">
+13.S20.Jun172016
+</td>
+<td style="text-align:right;">
+0.028
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Streptococcus_dentisani:Streptococcus_infantis:Streptococcus_mitis:Streptococcus_oligofermentans:Streptococcus_oralis:Streptococcus_pneumoniae:Streptococcus_pseudopneumoniae:Streptococcus_sanguinis
+</td>
+<td style="text-align:left;">
+140.B02.S14.Jul202017
+</td>
+<td style="text-align:right;">
+0.028
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Streptococcus_dentisani:Streptococcus_infantis:Streptococcus_mitis:Streptococcus_oligofermentans:Streptococcus_oralis:Streptococcus_pneumoniae:Streptococcus_pseudopneumoniae:Streptococcus_sanguinis
+</td>
+<td style="text-align:left;">
+204.S1.Jun172016
+</td>
+<td style="text-align:right;">
+0.028
 </td>
 </tr>
 <tr>
@@ -3140,7 +3283,7 @@ Streptococcus_dentisani:Streptococcus_infantis:Streptococcus_mitis:Streptococcus
 Streptococcus_dentisani:Streptococcus_infantis:Streptococcus_mitis:Streptococcus_oligofermentans:Streptococcus_oralis:Streptococcus_pneumoniae:Streptococcus_pseudopneumoniae:Streptococcus_sanguinis
 </td>
 <td style="text-align:left;">
-148.S30.Jun172016
+49.S47.Jun172016
 </td>
 <td style="text-align:right;">
 0.026
@@ -3151,7 +3294,7 @@ Streptococcus_dentisani:Streptococcus_infantis:Streptococcus_mitis:Streptococcus
 Streptococcus_dentisani:Streptococcus_infantis:Streptococcus_mitis:Streptococcus_oligofermentans:Streptococcus_oralis:Streptococcus_pneumoniae:Streptococcus_pseudopneumoniae:Streptococcus_sanguinis
 </td>
 <td style="text-align:left;">
-32.S52.Jun172016
+47.S44.Jun172016
 </td>
 <td style="text-align:right;">
 0.024
@@ -3162,10 +3305,10 @@ Streptococcus_dentisani:Streptococcus_infantis:Streptococcus_mitis:Streptococcus
 Streptococcus_dentisani:Streptococcus_infantis:Streptococcus_mitis:Streptococcus_oligofermentans:Streptococcus_oralis:Streptococcus_pneumoniae:Streptococcus_pseudopneumoniae:Streptococcus_sanguinis
 </td>
 <td style="text-align:left;">
-204.S1.Jun172016
+6.A10.S10.Jun232016
 </td>
 <td style="text-align:right;">
-0.019
+0.022
 </td>
 </tr>
 <tr>
@@ -3173,7 +3316,29 @@ Streptococcus_dentisani:Streptococcus_infantis:Streptococcus_mitis:Streptococcus
 Streptococcus_dentisani:Streptococcus_infantis:Streptococcus_mitis:Streptococcus_oligofermentans:Streptococcus_oralis:Streptococcus_pneumoniae:Streptococcus_pseudopneumoniae:Streptococcus_sanguinis
 </td>
 <td style="text-align:left;">
-25.C03.S27.Jul202017
+32.S52.Jun172016
+</td>
+<td style="text-align:right;">
+0.022
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Streptococcus_dentisani:Streptococcus_infantis:Streptococcus_mitis:Streptococcus_oligofermentans:Streptococcus_oralis:Streptococcus_pneumoniae:Streptococcus_pseudopneumoniae:Streptococcus_sanguinis
+</td>
+<td style="text-align:left;">
+227.S74.Jun172016
+</td>
+<td style="text-align:right;">
+0.020
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Streptococcus_dentisani:Streptococcus_infantis:Streptococcus_mitis:Streptococcus_oligofermentans:Streptococcus_oralis:Streptococcus_pneumoniae:Streptococcus_pseudopneumoniae:Streptococcus_sanguinis
+</td>
+<td style="text-align:left;">
+114.S41.Jun172016
 </td>
 <td style="text-align:right;">
 0.018
@@ -3184,29 +3349,7 @@ Streptococcus_dentisani:Streptococcus_infantis:Streptococcus_mitis:Streptococcus
 Streptococcus_dentisani:Streptococcus_infantis:Streptococcus_mitis:Streptococcus_oligofermentans:Streptococcus_oralis:Streptococcus_pneumoniae:Streptococcus_pseudopneumoniae:Streptococcus_sanguinis
 </td>
 <td style="text-align:left;">
-6.A10.S10.Jun232016
-</td>
-<td style="text-align:right;">
-0.017
-</td>
-</tr>
-<tr>
-<td style="text-align:left;">
-Streptococcus_dentisani:Streptococcus_infantis:Streptococcus_mitis:Streptococcus_oligofermentans:Streptococcus_oralis:Streptococcus_pneumoniae:Streptococcus_pseudopneumoniae:Streptococcus_sanguinis
-</td>
-<td style="text-align:left;">
-47.S44.Jun172016
-</td>
-<td style="text-align:right;">
-0.016
-</td>
-</tr>
-<tr>
-<td style="text-align:left;">
-Streptococcus_dentisani:Streptococcus_infantis:Streptococcus_mitis:Streptococcus_oligofermentans:Streptococcus_oralis:Streptococcus_pneumoniae:Streptococcus_pseudopneumoniae:Streptococcus_sanguinis
-</td>
-<td style="text-align:left;">
-114.S41.Jun172016
+27.F09.S69.Jun232016
 </td>
 <td style="text-align:right;">
 0.016
@@ -3228,28 +3371,6 @@ Streptococcus_dentisani:Streptococcus_infantis:Streptococcus_mitis:Streptococcus
 Streptococcus_dentisani:Streptococcus_infantis:Streptococcus_mitis:Streptococcus_oligofermentans:Streptococcus_oralis:Streptococcus_pneumoniae:Streptococcus_pseudopneumoniae:Streptococcus_sanguinis
 </td>
 <td style="text-align:left;">
-49.S47.Jun172016
-</td>
-<td style="text-align:right;">
-0.014
-</td>
-</tr>
-<tr>
-<td style="text-align:left;">
-Streptococcus_dentisani:Streptococcus_infantis:Streptococcus_mitis:Streptococcus_oligofermentans:Streptococcus_oralis:Streptococcus_pneumoniae:Streptococcus_pseudopneumoniae:Streptococcus_sanguinis
-</td>
-<td style="text-align:left;">
-27.F09.S69.Jun232016
-</td>
-<td style="text-align:right;">
-0.014
-</td>
-</tr>
-<tr>
-<td style="text-align:left;">
-Streptococcus_dentisani:Streptococcus_infantis:Streptococcus_mitis:Streptococcus_oligofermentans:Streptococcus_oralis:Streptococcus_pneumoniae:Streptococcus_pseudopneumoniae:Streptococcus_sanguinis
-</td>
-<td style="text-align:left;">
 71.H10.S94.Jun232016
 </td>
 <td style="text-align:right;">
@@ -3261,7 +3382,29 @@ Streptococcus_dentisani:Streptococcus_infantis:Streptococcus_mitis:Streptococcus
 Streptococcus_dentisani:Streptococcus_infantis:Streptococcus_mitis:Streptococcus_oligofermentans:Streptococcus_oralis:Streptococcus_pneumoniae:Streptococcus_pseudopneumoniae:Streptococcus_sanguinis
 </td>
 <td style="text-align:left;">
-227.S74.Jun172016
+25.C03.S27.Jul202017
+</td>
+<td style="text-align:right;">
+0.012
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Streptococcus_dentisani:Streptococcus_infantis:Streptococcus_mitis:Streptococcus_oligofermentans:Streptococcus_oralis:Streptococcus_pneumoniae:Streptococcus_pseudopneumoniae:Streptococcus_sanguinis
+</td>
+<td style="text-align:left;">
+156.S42.Jun172016
+</td>
+<td style="text-align:right;">
+0.010
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Streptococcus_dentisani:Streptococcus_infantis:Streptococcus_mitis:Streptococcus_oligofermentans:Streptococcus_oralis:Streptococcus_pneumoniae:Streptococcus_pseudopneumoniae:Streptococcus_sanguinis
+</td>
+<td style="text-align:left;">
+157.D05.S41.Jun232016
 </td>
 <td style="text-align:right;">
 0.010
@@ -3275,7 +3418,7 @@ Streptococcus_dentisani:Streptococcus_infantis:Streptococcus_mitis:Streptococcus
 98.D02.S38.Jun232016
 </td>
 <td style="text-align:right;">
-0.008
+0.004
 </td>
 </tr>
 <tr>
@@ -3286,17 +3429,6 @@ Streptococcus_dentisani:Streptococcus_infantis:Streptococcus_mitis:Streptococcus
 61.G09.S81.Jun232016
 </td>
 <td style="text-align:right;">
-0.007
-</td>
-</tr>
-<tr>
-<td style="text-align:left;">
-Streptococcus_dentisani:Streptococcus_infantis:Streptococcus_mitis:Streptococcus_oligofermentans:Streptococcus_oralis:Streptococcus_pneumoniae:Streptococcus_pseudopneumoniae:Streptococcus_sanguinis
-</td>
-<td style="text-align:left;">
-157.D05.S41.Jun232016
-</td>
-<td style="text-align:right;">
 0.004
 </td>
 </tr>
@@ -3305,7 +3437,7 @@ Streptococcus_dentisani:Streptococcus_infantis:Streptococcus_mitis:Streptococcus
 Streptococcus_dentisani:Streptococcus_infantis:Streptococcus_mitis:Streptococcus_oligofermentans:Streptococcus_oralis:Streptococcus_pneumoniae:Streptococcus_pseudopneumoniae:Streptococcus_sanguinis
 </td>
 <td style="text-align:left;">
-99.D01.S37.Jun232016
+151.E03.S51.Jun232016
 </td>
 <td style="text-align:right;">
 0.003
@@ -3316,7 +3448,7 @@ Streptococcus_dentisani:Streptococcus_infantis:Streptococcus_mitis:Streptococcus
 Streptococcus_dentisani:Streptococcus_infantis:Streptococcus_mitis:Streptococcus_oligofermentans:Streptococcus_oralis:Streptococcus_pneumoniae:Streptococcus_pseudopneumoniae:Streptococcus_sanguinis
 </td>
 <td style="text-align:left;">
-170.E02.S50.Jul202017
+143.G08.S80.Jul202017
 </td>
 <td style="text-align:right;">
 0.002
@@ -3327,7 +3459,51 @@ Streptococcus_dentisani:Streptococcus_infantis:Streptococcus_mitis:Streptococcus
 Streptococcus_dentisani:Streptococcus_infantis:Streptococcus_mitis:Streptococcus_oligofermentans:Streptococcus_oralis:Streptococcus_pneumoniae:Streptococcus_pseudopneumoniae:Streptococcus_sanguinis
 </td>
 <td style="text-align:left;">
-156.S42.Jun172016
+158.D06.S42.Jun232016
+</td>
+<td style="text-align:right;">
+0.002
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Streptococcus_dentisani:Streptococcus_infantis:Streptococcus_mitis:Streptococcus_oligofermentans:Streptococcus_oralis:Streptococcus_pneumoniae:Streptococcus_pseudopneumoniae:Streptococcus_sanguinis
+</td>
+<td style="text-align:left;">
+197.G07.S79.Jul202017
+</td>
+<td style="text-align:right;">
+0.002
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Streptococcus_dentisani:Streptococcus_infantis:Streptococcus_mitis:Streptococcus_oligofermentans:Streptococcus_oralis:Streptococcus_pneumoniae:Streptococcus_pseudopneumoniae:Streptococcus_sanguinis
+</td>
+<td style="text-align:left;">
+36.F04.S64.Jul202017
+</td>
+<td style="text-align:right;">
+0.002
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Streptococcus_dentisani:Streptococcus_infantis:Streptococcus_mitis:Streptococcus_oligofermentans:Streptococcus_oralis:Streptococcus_pneumoniae:Streptococcus_pseudopneumoniae:Streptococcus_sanguinis
+</td>
+<td style="text-align:left;">
+99.D01.S37.Jun232016
+</td>
+<td style="text-align:right;">
+0.002
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Streptococcus_dentisani:Streptococcus_infantis:Streptococcus_mitis:Streptococcus_oligofermentans:Streptococcus_oralis:Streptococcus_pneumoniae:Streptococcus_pseudopneumoniae:Streptococcus_sanguinis
+</td>
+<td style="text-align:left;">
+170.E02.S50.Jul202017
 </td>
 <td style="text-align:right;">
 0.002
@@ -3359,10 +3535,18 @@ Abundance
 <tbody>
 <tr>
 <td style="text-align:left;">
+99.D01.S37.Jun232016
+</td>
+<td style="text-align:right;">
+0.202
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
 175.S88.Jun172016
 </td>
 <td style="text-align:right;">
-0.120
+0.104
 </td>
 </tr>
 <tr>
@@ -3370,7 +3554,7 @@ Abundance
 135.B06.S18.Jun232016
 </td>
 <td style="text-align:right;">
-0.102
+0.094
 </td>
 </tr>
 <tr>
@@ -3378,7 +3562,7 @@ Abundance
 174.S76.Jun172016
 </td>
 <td style="text-align:right;">
-0.072
+0.078
 </td>
 </tr>
 <tr>
@@ -3386,7 +3570,7 @@ Abundance
 68.S91.Jun172016
 </td>
 <td style="text-align:right;">
-0.036
+0.034
 </td>
 </tr>
 <tr>
@@ -3394,23 +3578,15 @@ Abundance
 158.D06.S42.Jun232016
 </td>
 <td style="text-align:right;">
-0.030
+0.026
 </td>
 </tr>
 <tr>
 <td style="text-align:left;">
-186.S77.Jun172016
+199.A11.S11.Jun232016
 </td>
 <td style="text-align:right;">
-0.022
-</td>
-</tr>
-<tr>
-<td style="text-align:left;">
-234.C07.S31.Jul202017
-</td>
-<td style="text-align:right;">
-0.015
+0.016
 </td>
 </tr>
 <tr>
@@ -3423,7 +3599,7 @@ Abundance
 </tr>
 <tr>
 <td style="text-align:left;">
-89.B06.S18.Jul202017
+46.C04.S28.Jul202017
 </td>
 <td style="text-align:right;">
 0.014
@@ -3431,15 +3607,7 @@ Abundance
 </tr>
 <tr>
 <td style="text-align:left;">
-199.A11.S11.Jun232016
-</td>
-<td style="text-align:right;">
-0.014
-</td>
-</tr>
-<tr>
-<td style="text-align:left;">
-2.S16.Jun172016
+186.S77.Jun172016
 </td>
 <td style="text-align:right;">
 0.012
@@ -3447,18 +3615,26 @@ Abundance
 </tr>
 <tr>
 <td style="text-align:left;">
-168.S59.Jun172016
+172.S65.Jun172016
 </td>
 <td style="text-align:right;">
-0.008
+0.010
 </td>
 </tr>
 <tr>
 <td style="text-align:left;">
-191.G02.S74.Jul202017
+88.B05.S17.Jul202017
 </td>
 <td style="text-align:right;">
-0.008
+0.010
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+234.C07.S31.Jul202017
+</td>
+<td style="text-align:right;">
+0.010
 </td>
 </tr>
 <tr>
@@ -3466,7 +3642,7 @@ Abundance
 38.C09.S33.Jun232016
 </td>
 <td style="text-align:right;">
-0.008
+0.010
 </td>
 </tr>
 <tr>
@@ -3479,22 +3655,6 @@ Abundance
 </tr>
 <tr>
 <td style="text-align:left;">
-88.B05.S17.Jul202017
-</td>
-<td style="text-align:right;">
-0.008
-</td>
-</tr>
-<tr>
-<td style="text-align:left;">
-46.C04.S28.Jul202017
-</td>
-<td style="text-align:right;">
-0.006
-</td>
-</tr>
-<tr>
-<td style="text-align:left;">
 202.D07.S43.Jul202017
 </td>
 <td style="text-align:right;">
@@ -3503,7 +3663,47 @@ Abundance
 </tr>
 <tr>
 <td style="text-align:left;">
+2.S16.Jun172016
+</td>
+<td style="text-align:right;">
+0.006
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+89.B06.S18.Jul202017
+</td>
+<td style="text-align:right;">
+0.006
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+168.S59.Jun172016
+</td>
+<td style="text-align:right;">
+0.006
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+128.S5.Jun172016
+</td>
+<td style="text-align:right;">
+0.004
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
 5.S4.Jun172016
+</td>
+<td style="text-align:right;">
+0.004
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+201.H02.S86.Jun242016
 </td>
 <td style="text-align:right;">
 0.004
@@ -3519,15 +3719,47 @@ Abundance
 </tr>
 <tr>
 <td style="text-align:left;">
-79.S3.Jun172016
+191.G02.S74.Jul202017
 </td>
 <td style="text-align:right;">
-0.003
+0.004
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+146.S29.Jun172016
+</td>
+<td style="text-align:right;">
+0.002
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+31.C08.S32.Jun232016
+</td>
+<td style="text-align:right;">
+0.002
 </td>
 </tr>
 <tr>
 <td style="text-align:left;">
 179.F01.S61.Jul202017
+</td>
+<td style="text-align:right;">
+0.002
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+79.S3.Jun172016
+</td>
+<td style="text-align:right;">
+0.002
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+59.S72.Jun172016
 </td>
 <td style="text-align:right;">
 0.002
@@ -3543,7 +3775,7 @@ Abundance
 </tr>
 <tr>
 <td style="text-align:left;">
-128.S5.Jun172016
+22.C07.S31.Jun232016
 </td>
 <td style="text-align:right;">
 0.002
@@ -3551,15 +3783,7 @@ Abundance
 </tr>
 <tr>
 <td style="text-align:left;">
-172.S65.Jun172016
-</td>
-<td style="text-align:right;">
-0.002
-</td>
-</tr>
-<tr>
-<td style="text-align:left;">
-201.H02.S86.Jun242016
+97.S45.Jun172016
 </td>
 <td style="text-align:right;">
 0.002
@@ -4653,7 +4877,7 @@ TCGA.L5.A4OH.Normal.WGS.418
 <pre class="r"><code>sessionInfo()</code></pre>
 <pre><code>R version 4.0.2 (2020-06-22)
 Platform: x86_64-w64-mingw32/x64 (64-bit)
-Running under: Windows 10 x64 (build 18362)
+Running under: Windows 10 x64 (build 18363)
 
 Matrix products: default
 
@@ -4692,7 +4916,7 @@ loaded via a namespace (and not attached):
 [34] reshape2_1.4.4      Rcpp_1.0.5          Biobase_2.48.0     
 [37] cellranger_1.1.0    vctrs_0.3.2         Biostrings_2.56.0  
 [40] multtest_2.44.0     ape_5.4             nlme_3.1-148       
-[43] iterators_1.0.12    xfun_0.16           openxlsx_4.1.5     
+[43] iterators_1.0.12    xfun_0.19           openxlsx_4.1.5     
 [46] rvest_0.3.6         lifecycle_0.2.0     statmod_1.4.34     
 [49] zlibbioc_1.34.0     MASS_7.3-51.6       scales_1.1.1       
 [52] hms_0.5.3           promises_1.1.1      parallel_4.0.2     
@@ -4706,7 +4930,7 @@ loaded via a namespace (and not attached):
 [76] DBI_1.1.0           foreign_0.8-80      pillar_1.4.6       
 [79] haven_2.3.1         whisker_0.4         withr_2.2.0        
 [82] mgcv_1.8-31         abind_1.4-5         survival_3.2-3     
-[85] modelr_0.1.8        crayon_1.3.4        rmarkdown_2.3      
+[85] modelr_0.1.8        crayon_1.3.4        rmarkdown_2.5      
 [88] grid_4.0.2          blob_1.2.1          git2r_0.27.1       
 [91] reprex_0.3.0        digest_0.6.25       webshot_0.5.2      
 [94] httpuv_1.5.4        numDeriv_2016.8-1.1 stats4_4.0.2       
@@ -4739,7 +4963,7 @@ footer is added to webpages before the MathJax javascript. -->
 
 // add bootstrap table styles to pandoc tables
 function bootstrapStylePandocTables() {
-  $('tr.header').parent('thead').parent('table').addClass('table table-condensed');
+  $('tr.odd').parent('tbody').parent('table').addClass('table table-condensed');
 }
 $(document).ready(function () {
   bootstrapStylePandocTables();
