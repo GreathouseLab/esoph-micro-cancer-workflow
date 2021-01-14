@@ -1,0 +1,1001 @@
+---
+title: "Results Output for Question 1"
+output:
+  workflowr::wflow_html:
+    toc: true
+editor_options:
+  chunk_output_type: console
+---
+
+# Question 1
+
+```
+Q1: is there a taxonomic signature shared between the barrett's samples?
+```
+
+* Heatmap of relative abundance supervised by sample type: Barrett's (BO), tumor-adjacent EAC-w/history of barrett's, EAC-w/ history of barrett's
+* Stacked bar chart of phylum and genus abundance by sample type, same as above
+* Additional comparison in TCGA; EAC w/history of Barrett's vs EAC w/ no history of Barrett's; same analyses as above
+
+```{r data, include=FALSE, echo=FALSE, warning=F, error=F, message=F}
+# load packages
+source("code/load_packages.R")
+
+# get data
+source("code/get_cleaned_data.R")
+
+theme_set(theme_bw())
+# pal = "Sequential"
+# scale_colour_discrete <-  function(palname=pal, ...){
+#   scale_colour_brewer(palette=palname, ...)
+# }
+# scale_fill_discrete <-  function(palname=pal, ...){
+#   scale_fill_brewer(palette=palname, ...)
+# }
+
+knitr::opts_chunk$set(out.width = "225%", out.height = 10)
+
+
+# transform to relative abundances
+phylo.data.nci.umd <- transform_sample_counts(phylo.data.nci.umd, function(x){x / sum(x)})
+phylo.data.tcga.RNAseq <- transform_sample_counts(phylo.data.tcga.RNAseq, function(x){x / sum(x)})
+phylo.data.tcga.WGS <- transform_sample_counts(phylo.data.tcga.WGS, function(x){x / sum(x)})
+
+# melt data down for use
+dat.16s <- psmelt(phylo.data.nci.umd)
+dat.rna <- psmelt(phylo.data.tcga.RNAseq)
+dat.wgs <- psmelt(phylo.data.tcga.WGS)
+
+# fix otu formatting
+dat.rna$otu2 <- "a"
+dat.wgs$otu2 <- "a"
+i <- 1
+for(i in 1:nrow(dat.rna)){
+  dat.rna$otu2[i] <- str_split(dat.rna$OTU[i], ";")[[1]][7]
+}
+for(i in 1:nrow(dat.wgs)){
+  dat.wgs$otu2[i] <- str_split(dat.wgs$OTU[i], ";")[[1]][7]
+}
+
+# set up variables
+dat.16s$sample_type <- 0
+dat.16s$sample_type[dat.16s$tissue=="T" &
+                      dat.16s$Histology=="ADC" &
+                      dat.16s$Barretts. == "Y"] <- "EAC tissues w/ Barretts History"
+dat.16s$sample_type[dat.16s$tissue=="N" &
+                      dat.16s$Histology=="ADC" &
+                      dat.16s$Barretts. == "Y"] <- "EAC-adjacent tissue w/ Barretts History"
+dat.16s$sample_type[dat.16s$tissue=="BO" &
+                      dat.16s$Histology=="Barrets only"&
+                      dat.16s$Barretts. == "Y"] <-"Barretts Only"
+
+
+dat.rna$sample_type <- 0
+dat.rna$sample_type[(dat.rna$morphology=="8140/3" |
+                       dat.rna$morphology=="8480/3") &
+                       dat.rna$SampleType_Level2=="Tumor" &
+                       dat.rna$Barrett.s.Esophagus.Reported=="Yes"] <- "EAC tissues w/ Barretts History"
+dat.rna$sample_type[(dat.rna$morphology=="8140/3" | 
+                       dat.rna$morphology=="8480/3") &
+                       dat.rna$SampleType_Level2=="Normal"&
+                       dat.rna$Barrett.s.Esophagus.Reported=="Yes"] <- "EAC-adjacent tissue w/ Barretts History"
+
+dat.rna$EACcomp <- 0
+dat.rna$EACcomp[(dat.rna$morphology=="8140/3" |
+                       dat.rna$morphology=="8480/3") &
+                       dat.rna$SampleType_Level2=="Tumor" &
+                       dat.rna$Barrett.s.Esophagus.Reported=="Yes"] <- "EAC tissues w/ Barretts History"
+dat.rna$EACcomp[(dat.rna$morphology=="8140/3" |
+                       dat.rna$morphology=="8480/3") &
+                       dat.rna$SampleType_Level2=="Tumor" &
+                       dat.rna$Barrett.s.Esophagus.Reported=="No"] <- "EAC tissues w/o Barretts History"
+
+
+dat.wgs$sample_type <- 0
+dat.wgs$sample_type[(dat.wgs$morphology=="8140/3" |
+                       dat.wgs$morphology=="8480/3") &
+                       dat.wgs$SampleType_Level2=="Tumor" &
+                       dat.wgs$Barrett.s.Esophagus.Reported=="Yes"] <- "EAC tissues w/ Barretts History"
+dat.wgs$sample_type[(dat.wgs$morphology=="8140/3" | 
+                       dat.wgs$morphology=="8480/3") &
+                       dat.wgs$SampleType_Level2=="Normal"&
+                       dat.wgs$Barrett.s.Esophagus.Reported=="Yes"] <- "EAC-adjacent tissue w/ Barretts History"
+
+dat.wgs$EACcomp <- 0
+dat.wgs$EACcomp[(dat.wgs$morphology=="8140/3" |
+                       dat.wgs$morphology=="8480/3") &
+                       dat.wgs$SampleType_Level2=="Tumor" &
+                       dat.wgs$Barrett.s.Esophagus.Reported=="Yes"] <- "EAC tissues w/ Barretts History"
+dat.wgs$EACcomp[(dat.wgs$morphology=="8140/3" |
+                       dat.wgs$morphology=="8480/3") &
+                       dat.wgs$SampleType_Level2=="Tumor" &
+                       dat.wgs$Barrett.s.Esophagus.Reported=="No"] <- "EAC tissues w/o Barretts History"
+
+
+# make tumor vs normal variable
+dat.16s$tumor.cat <- factor(dat.16s$tissue, levels=c("BO", "N", "T"), labels = c("Non-Tumor", "Non-Tumor", "Tumor"))
+dat.rna$tumor.cat <- factor(dat.rna$SampleType_Level2, levels=c("Normal", "Tumor"), labels = c("Non-Tumor", "Tumor"))
+dat.wgs$tumor.cat <- factor(dat.wgs$SampleType_Level2, levels=c("Normal", "Tumor"), labels = c("Non-Tumor", "Tumor"))
+
+# dataset id
+dat.16s$source <- "16s"
+dat.rna$source <- "rna"
+dat.wgs$source <- "wgs"
+
+# plotting ids
+dat.16s$X <- paste0(dat.16s$source, "-", dat.16s$tumor.cat)
+dat.rna$X <- paste0(dat.rna$source, "-", dat.rna$tumor.cat)
+dat.wgs$X <- paste0(dat.wgs$source, "-", dat.wgs$tumor.cat)
+
+# relabel as (0/1) for analysis
+dat.16s$tumor <- as.numeric(factor(dat.16s$tissue, levels=c("BO", "N", "T"), labels = c("Non-Tumor", "Non-Tumor", "Tumor"))) - 1
+dat.rna$tumor <- as.numeric(factor(dat.rna$SampleType_Level2, levels=c("Normal", "Tumor"), labels = c("Non-Tumor", "Tumor"))) - 1
+dat.wgs$tumor <- as.numeric(factor(dat.wgs$SampleType_Level2, levels=c("Normal", "Tumor"), labels = c("Non-Tumor", "Tumor"))) - 1
+
+# presence- absence
+dat.16s$pres <- ifelse(dat.16s$Abundance > 0, 1, 0)
+dat.16s$pres[is.na(dat.16s$pres)] <- 0
+dat.rna$pres <- ifelse(dat.rna$Abundance > 0, 1, 0)
+dat.rna$pres[is.na(dat.rna$pres)] <- 0
+dat.wgs$pres <- ifelse(dat.wgs$Abundance > 0, 1, 0)
+dat.wgs$pres[is.na(dat.wgs$pres)] <- 0
+
+
+# subset to fuso. nuc. only
+# Streptococcus sanguinis 
+# Campylobacter concisus
+# Prevotella spp.
+
+dat.16s.s <- filter(
+  dat.16s,
+  OTU %in% c(
+    "Fusobacterium_nucleatum",
+    unique(dat.16s$OTU[dat.16s$OTU %like% "Streptococcus_"]),
+    unique(dat.16s$OTU[dat.16s$OTU %like% "Campylobacter_"]),
+    "Prevotella_melaninogenica")
+)
+dat.rna.s <- filter(
+  dat.rna,
+  otu2 %in% c(
+    "Fusobacterium nucleatum",
+    "Streptococcus sanguinis",
+      "Streptococcus oralis",
+      "Streptococcus mitis", 
+      "Streptococcus pneumoniae", 
+      "Streptococcus parasanguinis", 
+      "Streptococcus salivarius",
+    "Campylobacter concisus",
+    "Prevotella melaninogenica")
+)
+dat.wgs.s <- filter(
+  dat.wgs,
+  otu2 %in% c(
+    "Fusobacterium nucleatum",
+    "Streptococcus sanguinis",
+      "Streptococcus oralis",
+      "Streptococcus mitis", 
+      "Streptococcus pneumoniae", 
+      "Streptococcus parasanguinis", 
+      "Streptococcus salivarius",
+    "Campylobacter concisus",
+    "Prevotella melaninogenica")
+)
+
+# new names
+dat.16s.s$OTU1 <- factor(
+  dat.16s.s$OTU,
+  levels = c(
+    "Fusobacterium_nucleatum",
+    "Streptococcus_dentisani:Streptococcus_infantis:Streptococcus_mitis:Streptococcus_oligofermentans:Streptococcus_oralis:Streptococcus_pneumoniae:Streptococcus_pseudopneumoniae:Streptococcus_sanguinis",
+    "Campylobacter_rectus:Campylobacter_showae",
+    "Prevotella_melaninogenica"
+  ),
+  labels = c(
+    "Fusobacterium nucleatum",
+    "Streptococcus sanguinis",
+    "Campylobacter concisus",
+    "Prevotella melaninogenica"
+  )
+)
+dat.rna.s$OTU1 <- factor(
+  dat.rna.s$otu2,
+  levels = c(
+    "Fusobacterium nucleatum",
+    "Streptococcus sanguinis",
+    "Campylobacter concisus",
+    "Prevotella melaninogenica"),
+  labels = c(
+    "Fusobacterium nucleatum",
+    "Streptococcus sanguinis",
+    "Campylobacter concisus",
+    "Prevotella melaninogenica")
+)
+
+dat.wgs.s$OTU1 <- factor(
+  dat.wgs.s$otu2,
+  levels = c(
+    "Fusobacterium nucleatum",
+    "Streptococcus sanguinis",
+    "Campylobacter concisus",
+    "Prevotella melaninogenica"),
+  labels = c(
+    "Fusobacterium nucleatum",
+    "Streptococcus sanguinis",
+    "Campylobacter concisus",
+    "Prevotella melaninogenica")
+)
+
+# rename bacteria
+dat.16s.s$OTU <- factor(
+  dat.16s.s$OTU,
+  levels = c(
+    "Fusobacterium_nucleatum",
+    "Streptococcus_dentisani:Streptococcus_infantis:Streptococcus_mitis:Streptococcus_oligofermentans:Streptococcus_oralis:Streptococcus_pneumoniae:Streptococcus_pseudopneumoniae:Streptococcus_sanguinis",
+    "Campylobacter_rectus:Campylobacter_showae",
+    "Prevotella_melaninogenica"
+  ),
+  labels = c(
+    "Fusobacterium nucleatum",
+    "Streptococcus spp.",
+    "Campylobacter concisus",
+    "Prevotella melaninogenica"
+  )
+)
+dat.rna.s$OTU <- factor(
+  dat.rna.s$otu2,
+  levels = c(
+    "Fusobacterium nucleatum",
+    "Streptococcus sanguinis",
+      "Streptococcus oralis",
+      "Streptococcus mitis", 
+      "Streptococcus pneumoniae", 
+      "Streptococcus parasanguinis", 
+      "Streptococcus salivarius",
+    "Campylobacter concisus",
+    "Prevotella melaninogenica"),
+  labels = c(
+    "Fusobacterium nucleatum",
+    "Streptococcus spp.",
+      "Streptococcus spp.",
+      "Streptococcus spp.", 
+      "Streptococcus spp.", 
+      "Streptococcus spp.", 
+      "Streptococcus spp.",
+    "Campylobacter concisus",
+    "Prevotella melaninogenica")
+)
+
+dat.wgs.s$OTU <- factor(
+  dat.wgs.s$otu2,
+  levels = c(
+    "Fusobacterium nucleatum",
+    "Streptococcus sanguinis",
+      "Streptococcus oralis",
+      "Streptococcus mitis", 
+      "Streptococcus pneumoniae", 
+      "Streptococcus parasanguinis", 
+      "Streptococcus salivarius",
+    "Campylobacter concisus",
+    "Prevotella melaninogenica"),
+  labels = c(
+    "Fusobacterium nucleatum",
+    "Streptococcus spp.",
+      "Streptococcus spp.",
+      "Streptococcus spp.", 
+      "Streptococcus spp.", 
+      "Streptococcus spp.", 
+      "Streptococcus spp.",
+    "Campylobacter concisus",
+    "Prevotella melaninogenica")
+)
+
+
+```
+
+
+# Summary of observations
+
+## NCI 16s data
+
+```{r}
+
+# in long format
+table(dat.16s$sample_type)
+
+dat <- dat.16s %>% filter(OTU == "Fusobacterium_nucleatum")
+table(dat$sample_type)
+
+table(dat$Barretts.)
+
+```
+
+
+5 Barretts samples that were non-EAC tissue related.
+
+
+## TCGA RNAseq data
+
+```{r}
+
+# in long format
+table(dat.rna$sample_type)
+
+dat <- dat.rna %>% filter(otu2 == "Fusobacterium nucleatum")
+table(dat$sample_type)
+
+table(dat$Barrett.s.Esophagus.Reported)
+
+```
+
+## TCGA WGS data
+
+```{r}
+
+# in long format
+table(dat.wgs$sample_type)
+
+dat <- dat.wgs %>% filter(otu2 == "Fusobacterium nucleatum")
+table(dat$sample_type)
+
+table(dat$Barrett.s.Esophagus.Reported)
+
+```
+
+# Heatmaps
+
+## All OTUs (RA > 0.001)
+
+```{r heatmap-nci-genus, out.height="300%", out.width="300%"}
+
+plot.dat <- dat.16s %>% filter(sample_type != "0", Abundance > 0.001) %>%
+  mutate(ID = as.factor(accession.number),
+         Genus = substr(Genus, 4, 1000),
+         Phylum = substr(Phylum, 4, 1000)) %>%
+  select(sample_type, Phylum, Genus, ID, Abundance)
+plot.dat <- na.omit(plot.dat) 
+  
+p1 <- ggplot(plot.dat, aes(x = ID, y = Genus, fill = Abundance)) +
+  geom_tile()+
+  labs(title="NCI 16s Data", subtitle = "Genus Level Data",
+       x = "ID/Accession Number") +
+  facet_grid(.~sample_type, scales="free")+
+  scale_fill_gradient(low="white", high="black", trans="sqrt", limits=c(0, 0.5)) +
+  theme_classic()+
+  theme(
+    axis.text.x = element_text(angle = 90, hjust = 1, vjust=0.5),
+    strip.text.y = element_text(angle = 0)
+  )
+p1
+#ggsave("data/heatmap_nci16s_genus.pdf", p1, units="in", height=23, width=16)
+
+```
+
+```{r heatmap-nci-phylum, out.height="1000%", out.width="400%"}
+
+plot.dat <- dat.16s %>% filter(sample_type != "0") %>%
+  mutate(ID = as.factor(accession.number),
+         Genus = substr(Genus, 4, 1000),
+         Phylum = substr(Phylum, 4, 1000)) %>%
+  select(sample_type, Phylum, Genus, ID, Abundance)
+plot.dat <- na.omit(plot.dat) 
+  
+p1 <- ggplot(plot.dat, aes(x = ID, y = Phylum, fill = Abundance)) +
+  geom_tile()+
+  labs(title="NCI 16s Data", subtitle = "Phylum Level Data",
+       x = "ID/Accession Number") +
+  facet_grid(.~sample_type, scales="free")+
+  scale_fill_gradient(low="white", high="black", trans="sqrt", limits=c(0, 0.5)) +
+  theme_classic()+
+  theme(
+    axis.text.x = element_text(angle = 90, hjust = 1, vjust=0.5),
+    strip.text.y = element_text(angle = 0)
+  )
+p1
+
+#ggsave("data/heatmap_nci16s_phylum.pdf", p1, units="in", height=10, width=16)
+
+```
+
+
+```{r heatmap-tcga-rna-genus, out.height="300%", out.width="300%"}
+
+plot.dat <- dat.rna %>% filter(sample_type != "0", Abundance > 0.001) %>%
+  select(sample_type, Phylum, Genus, Patient_ID, Abundance)
+plot.dat <- na.omit(plot.dat) 
+
+p1 <- ggplot(plot.dat, aes(x = Patient_ID, y = Genus, fill = Abundance)) +
+  geom_tile()+
+  labs(title="TCGA RNAseq Data", subtitle = "Genus Level Data",
+       x = "ID/Accession Number") +
+  facet_grid(.~sample_type, scales="free")+
+  scale_fill_gradient(low="white", high="black", trans="sqrt", limits=c(0, 0.5)) +
+  theme_classic()+
+  theme(
+    axis.text.x = element_text(angle = 90, hjust = 1, vjust=0.5),
+    strip.text.y = element_text(angle = 0)
+  )
+p1
+#ggsave("data/heatmap_tcgarna_genus.pdf", p1, units="in", height=23, width=16)
+
+```
+
+```{r heatmap-tcga-rna-phylum, out.height="1000%", out.width="400%"}
+
+plot.dat <- dat.rna %>% filter(sample_type != "0") %>%
+  select(sample_type, Phylum, Genus, Patient_ID, Abundance)
+plot.dat <- na.omit(plot.dat) 
+  
+p1 <- ggplot(plot.dat, aes(x = Patient_ID, y = Phylum, fill = Abundance)) +
+  geom_tile()+
+  labs(title="NCI 16s Data", subtitle = "Phylum Level Data",
+       x = "ID/Accession Number") +
+  facet_grid(.~sample_type, scales="free")+
+  scale_fill_gradient(low="white", high="black", trans="sqrt", limits=c(0, 0.5)) +
+  theme_classic()+
+  theme(
+    axis.text.x = element_text(angle = 90, hjust = 1, vjust=0.5),
+    strip.text.y = element_text(angle = 0)
+  )
+p1
+```
+
+
+```{r heatmap-tcga-wgs-genus, out.height="300%", out.width="300%"}
+
+plot.dat <- dat.wgs %>% filter(sample_type != "0", Abundance > 0.001) %>%
+  select(sample_type, Phylum, Genus, Patient_ID, Abundance)
+plot.dat <- na.omit(plot.dat) 
+
+p1 <- ggplot(plot.dat, aes(x = Patient_ID, y = Genus, fill = Abundance)) +
+  geom_tile()+
+  labs(title="NCI 16s Data", subtitle = "Genus Level Data",
+       x = "ID/Accession Number") +
+  facet_grid(.~sample_type, scales="free")+
+  scale_fill_gradient(low="white", high="black", trans="sqrt", limits=c(0, 0.5)) +
+  theme_classic()+
+  theme(
+    axis.text.x = element_text(angle = 90, hjust = 1, vjust=0.5),
+    strip.text.y = element_text(angle = 0)
+  )
+p1
+#ggsave("data/heatmap_nci16s_genus.pdf", p1, units="in", height=23, width=16)
+
+```
+
+```{r heatmap-tcga-wgs-phylum, out.height="1000%", out.width="400%"}
+
+plot.dat <- dat.wgs %>% filter(sample_type != "0") %>%
+  select(sample_type, Phylum, Genus, Patient_ID, Abundance)
+plot.dat <- na.omit(plot.dat) 
+  
+p1 <- ggplot(plot.dat, aes(x = Patient_ID, y = Phylum, fill = Abundance)) +
+  geom_tile()+
+  labs(title="NCI 16s Data", subtitle = "Phylum Level Data",
+       x = "ID/Accession Number") +
+  facet_grid(.~sample_type, scales="free")+
+  scale_fill_gradient(low="white", high="black", trans="sqrt", limits=c(0, 0.5)) +
+  theme_classic()+
+  theme(
+    axis.text.x = element_text(angle = 90, hjust = 1, vjust=0.5),
+    strip.text.y = element_text(angle = 0)
+  )
+p1
+```
+
+
+## Specific OTUs
+
+```{r heatmap-nci-otu, out.height="300%", out.width="300%"}
+
+plot.dat <- dat.16s.s %>% filter(sample_type != "0") %>%
+  mutate(ID = as.factor(accession.number),
+         Genus = substr(Genus, 4, 1000),
+         Phylum = substr(Phylum, 4, 1000)) %>%
+  select(sample_type, Phylum, Genus, OTU, ID, Abundance)
+plot.dat <- na.omit(plot.dat) 
+  
+p1 <- ggplot(plot.dat, aes(x = ID, y = OTU, fill = Abundance)) +
+  geom_tile()+
+  labs(title="NCI 16s Data", y=NULL,
+       x = "ID/Accession Number") +
+  facet_grid(.~sample_type, scales="free")+
+  scale_fill_gradient(low="white", high="black", trans="sqrt", limits=c(0, 0.5)) +
+  theme_classic()+
+  theme(
+    axis.text.x = element_text(angle = 90, hjust = 1, vjust=0.5),
+    strip.text.y = element_text(angle = 0)
+  )
+p1
+
+```
+
+
+```{r heatmap-tcgarna, out.height="300%", out.width="300%"}
+
+plot.dat <- dat.rna.s %>% filter(sample_type != "0", is.na(OTU1) == F) %>%
+  select(sample_type, Phylum, Genus, OTU, Patient_ID, Abundance)
+plot.dat <- na.omit(plot.dat) 
+  
+p1 <- ggplot(plot.dat, aes(x = Patient_ID, y = OTU, fill = Abundance)) +
+  geom_tile()+
+  labs(title="TCGA RNAseq Data", y=NULL,
+       x = "ID/Accession Number") +
+  facet_grid(.~sample_type, scales="free")+
+  scale_fill_gradient(low="white", high="black", trans="sqrt", limits=c(0, 0.5)) +
+  theme_classic()+
+  theme(
+    axis.text.x = element_text(angle = 90, hjust = 1, vjust=0.5),
+    strip.text.y = element_text(angle = 0)
+  )
+p1
+```
+
+
+```{r heatmap-tcgawgs, out.height="100%", out.width="400%"}
+
+plot.dat <- dat.wgs.s %>% filter(sample_type != "0", is.na(OTU1) == F) %>%
+  select(sample_type, Phylum, Genus, OTU, Patient_ID, Abundance)
+plot.dat <- na.omit(plot.dat) 
+  
+p1 <- ggplot(plot.dat, aes(x = Patient_ID, y = OTU, fill = Abundance)) +
+  geom_tile()+
+  labs(title="TCGA WGS Data", y=NULL,
+       x = "ID/Accession Number") +
+  facet_grid(.~sample_type, scales="free")+
+  scale_fill_gradient(low="white", high="black", trans="sqrt", limits=c(0, 0.5)) +
+  theme_classic()+
+  theme(
+    axis.text.x = element_text(angle = 90, hjust = 1, vjust=0.5),
+    strip.text.y = element_text(angle = 0)
+  )
+p1
+```
+
+
+# Stacked Bar Charts
+
+
+## All OTUs (RA > 0.001)
+
+```{r bar-nci-genus, out.height="300%", out.width="300%"}
+
+plot.dat <- dat.16s %>% filter(sample_type != "0", Abundance > 0.01 ) %>%
+  mutate(ID = as.factor(accession.number),
+         Genus = substr(Genus, 4, 1000),
+         Phylum = substr(Phylum, 4, 1000))%>%
+  dplyr::group_by(sample_type, Genus)%>%
+  dplyr::summarise(
+    Abundance = mean(Abundance, na.rm=T)
+  )
+  
+p1 <- ggplot(plot.dat, aes(x=sample_type, y = Abundance, fill=Genus)) +
+  geom_bar(stat="identity")+
+  labs(title="NCI 16s Data",
+       subtitle = "Genus Level Data",
+       x = "Tissue Group",
+       y="Average Relative Abundance") +
+  theme_classic()+
+  theme(legend.position = "none")
+p1
+
+```
+
+TOO MANY LEVELS FOR IT TO MAKE SENSE
+
+
+```{r bar-nci-phylum, out.height="1000%", out.width="400%"}
+
+plot.dat <- dat.16s %>% filter(sample_type != "0") %>%
+  mutate(ID = as.factor(accession.number),
+         Genus = substr(Genus, 4, 1000),
+         Phylum = substr(Phylum, 4, 1000))%>%
+  dplyr::group_by(sample_type, Phylum)%>%
+  dplyr::summarise(
+    Abundance = mean(Abundance, na.rm=T)
+  )
+  
+p1 <- ggplot(plot.dat, aes(x=sample_type, y = Abundance, fill=Phylum)) +
+  geom_bar(stat="identity")+
+  labs(title="NCI 16s Data",
+       subtitle = "Phylum Level Data",
+       x = "Tissue Group",
+       y="Average Relative Abundance") +
+  theme_classic()
+
+p1 
+
+```
+
+
+```{r bar-tcga-rna-genus, out.height="300%", out.width="300%"}
+
+plot.dat <- dat.rna %>% filter(sample_type != "0", Abundance > 0.001)%>%
+  dplyr::group_by(sample_type, Genus)%>%
+  dplyr::summarise(
+    Abundance = mean(Abundance, na.rm=T)
+  )
+
+p1 <- ggplot(plot.dat, aes(x=sample_type, y = Abundance, fill=Genus)) +
+  geom_bar(stat="identity")+
+  labs(title="TCGA RNAseq Data",
+       subtitle = "Genus Level Data",
+       x = "Tissue Group",
+       y="Average Relative Abundance") +
+  theme_classic()
+p1
+#ggsave("data/bar_tcgarna_genus.pdf", p1, units="in", height=23, width=16)
+
+```
+
+```{r bar-tcga-rna-phylum, out.height="1000%", out.width="400%"}
+
+plot.dat <- dat.rna %>% filter(sample_type != "0")%>%
+  dplyr::group_by(sample_type, Phylum)%>%
+  dplyr::summarise(
+    Abundance = mean(Abundance, na.rm=T)
+  )
+  
+p1 <- ggplot(plot.dat, aes(x=sample_type, y = Abundance, fill=Phylum)) +
+  geom_bar(stat="identity")+
+  labs(title="TCGA RNAseq Data",
+       subtitle = "Phylum Level Data",
+       x = "Tissue Group",
+       y="Average Relative Abundance") +
+  theme_classic()
+p1
+```
+
+
+```{r bar-tcga-wgs-genus, out.height="300%", out.width="300%"}
+
+plot.dat <- dat.wgs %>% filter(sample_type != "0", Abundance > 0.001)%>%
+  dplyr::group_by(sample_type, Genus)%>%
+  dplyr::summarise(
+    Abundance = mean(Abundance, na.rm=T)
+  )
+
+p1 <- ggplot(plot.dat, aes(x=sample_type, y = Abundance, fill=Genus)) +
+  geom_bar(stat="identity")+
+  labs(title="TCGA WGS Data",
+       subtitle = "Genus Level Data",
+       x = "Tissue Group",
+       y="Average Relative Abundance") +
+  theme_classic()
+p1
+
+```
+
+```{r bar-tcga-wgs-phylum, out.height="1000%", out.width="400%"}
+
+plot.dat <- dat.wgs %>% filter(sample_type != "0")%>%
+  dplyr::group_by(sample_type, Phylum)%>%
+  dplyr::summarise(
+    Abundance = mean(Abundance, na.rm=T)
+  )
+  
+p1 <- ggplot(plot.dat, aes(x=sample_type, y = Abundance, fill=Phylum)) +
+  geom_bar(stat="identity")+
+  labs(title="TCGA WGS Data",
+       subtitle = "Phylum Level Data",
+       x = "Tissue Group",
+       y="Average Relative Abundance") +
+  theme_classic()
+p1
+```
+
+
+## Specific OTUs
+
+```{r bar-nci-otu, out.height="300%", out.width="300%"}
+
+plot.dat <- dat.16s.s %>% filter(sample_type != "0") %>%
+  mutate(ID = as.factor(accession.number),
+         Genus = substr(Genus, 4, 1000),
+         Phylum = substr(Phylum, 4, 1000))%>%
+  dplyr::group_by(sample_type, OTU1)%>%
+  dplyr::summarise(
+    Abundance = mean(Abundance, na.rm=T)
+  )
+  
+p1 <- ggplot(plot.dat, aes(x=sample_type, y = Abundance, fill=OTU1)) +
+  geom_bar(stat="identity")+
+  labs(title="NCI 16s Data",
+       x = "Tissue Group",
+       y="Average Relative Abundance") +
+  theme_classic()
+p1
+
+```
+
+
+```{r bar-tcgarna, out.height="300%", out.width="300%"}
+
+plot.dat <- dat.rna.s %>% filter(sample_type != "0", is.na(OTU1) == F)%>%
+  dplyr::group_by(sample_type, OTU1)%>%
+  dplyr::summarise(
+    Abundance = mean(Abundance, na.rm=T)
+  )
+  
+p1 <- ggplot(plot.dat, aes(x=sample_type, y = Abundance, fill=OTU1)) +
+  geom_bar(stat="identity")+
+  labs(title="NCI 16s Data",
+       x = "Tissue Group",
+       y="Average Relative Abundance") +
+  theme_classic()
+p1
+```
+
+
+```{r bar-tcgawgs, out.height="100%", out.width="400%"}
+
+plot.dat <- dat.wgs.s %>% filter(sample_type != "0", is.na(OTU1) == F)%>%
+  dplyr::group_by(sample_type, OTU1)%>%
+  dplyr::summarise(
+    Abundance = mean(Abundance, na.rm=T)
+  )
+  
+p1 <- ggplot(plot.dat, aes(x=sample_type, y = Abundance, fill=OTU1)) +
+  geom_bar(stat="identity")+
+  labs(title="TCGA WGS Data",
+       x = "Tissue Group",
+       y="Average Relative Abundance") +
+  theme_classic()
+p1
+```
+
+
+# EAC Barretts to No Barretts Comparison
+
+## Heatmaps
+
+### All OTUs (RA > 0.001)
+
+
+```{r EACB-heatmap-tcga-rna-genus, out.height="300%", out.width="300%"}
+
+plot.dat <- dat.rna %>% filter(EACcomp != "0", Abundance > 0.001)
+
+p1 <- ggplot(plot.dat, aes(x = Patient_ID, y = Genus, fill = Abundance)) +
+  geom_tile()+
+  labs(title="TCGA RNAseq Data", subtitle = "Genus Level Data",
+       x = "ID/Accession Number") +
+  facet_grid(.~EACcomp, scales="free")+
+  scale_fill_gradient(low="white", high="black", trans="sqrt", limits=c(0, 0.5)) +
+  theme_classic()+
+  theme(
+    axis.text.x = element_text(angle = 90, hjust = 1, vjust=0.5),
+    strip.text.y = element_text(angle = 0)
+  )
+p1
+#ggsave("data/heatmap_tcgarna_genus.pdf", p1, units="in", height=23, width=16)
+
+```
+
+```{r EACB-heatmap-tcga-rna-phylum, out.height="1000%", out.width="400%"}
+
+plot.dat <- dat.rna %>% filter(EACcomp != "0") %>%
+  select(EACcomp, Phylum, Genus, Patient_ID, Abundance)
+plot.dat <- na.omit(plot.dat) 
+  
+p1 <- ggplot(plot.dat, aes(x = Patient_ID, y = Phylum, fill = Abundance)) +
+  geom_tile()+
+  labs(title="TCGA RNAseq Data", subtitle = "Phylum Level Data",
+       x = "ID/Accession Number") +
+  facet_grid(.~EACcomp, scales="free")+
+  scale_fill_gradient(low="white", high="black", trans="sqrt", limits=c(0, 0.001)) +
+  theme_classic()+
+  theme(
+    axis.text.x = element_text(angle = 90, hjust = 1, vjust=0.5),
+    strip.text.y = element_text(angle = 0)
+  )
+p1
+```
+
+
+```{r EACB-heatmap-tcga-wgs-genus, out.height="300%", out.width="300%"}
+
+plot.dat <- dat.wgs %>% filter(EACcomp != "0", Abundance > 0.001) %>%
+  select(EACcomp, Phylum, Genus, Patient_ID, Abundance)
+plot.dat <- na.omit(plot.dat) 
+
+p1 <- ggplot(plot.dat, aes(x = Patient_ID, y = Genus, fill = Abundance)) +
+  geom_tile()+
+  labs(title="TCGA WGS Data", subtitle = "Genus Level Data",
+       x = "ID/Accession Number") +
+  facet_grid(.~EACcomp, scales="free")+
+  scale_fill_gradient(low="white", high="black", trans="sqrt", limits=c(0, 0.5)) +
+  theme_classic()+
+  theme(
+    axis.text.x = element_text(angle = 90, hjust = 1, vjust=0.5),
+    strip.text.y = element_text(angle = 0)
+  )
+p1
+
+```
+
+```{r EACB-heatmap-tcga-wgs-phylum, out.height="1000%", out.width="400%"}
+
+plot.dat <- dat.wgs %>% filter(EACcomp != "0") %>%
+  select(EACcomp, Phylum, Genus, Patient_ID, Abundance)
+plot.dat <- na.omit(plot.dat) 
+  
+p1 <- ggplot(plot.dat, aes(x = Patient_ID, y = Phylum, fill = Abundance)) +
+  geom_tile()+
+  labs(title="TCGA WGS Data", subtitle = "Phylum Level Data",
+       x = "ID/Accession Number") +
+  facet_grid(.~EACcomp, scales="free")+
+  scale_fill_gradient(low="white", high="black", trans="sqrt", limits=c(0, 0.001)) +
+  theme_classic()+
+  theme(
+    axis.text.x = element_text(angle = 90, hjust = 1, vjust=0.5),
+    strip.text.y = element_text(angle = 0)
+  )
+p1
+```
+
+
+### Specific OTUs
+
+
+```{r EACB-heatmap-tcgarna, out.height="300%", out.width="300%"}
+
+plot.dat <- dat.rna.s %>% filter(EACcomp != "0", is.na(OTU1) == F) %>%
+  select(EACcomp, OTU1, Patient_ID, Abundance)
+plot.dat <- na.omit(plot.dat) 
+  
+p1 <- ggplot(plot.dat, aes(x = Patient_ID, y = OTU1, fill = Abundance)) +
+  geom_tile()+
+  labs(title="TCGA RNAseq Data", y=NULL,
+       x = "ID/Accession Number") +
+  facet_grid(.~EACcomp, scales="free")+
+  scale_fill_gradient(low="white", high="black", trans="sqrt", limits=c(0, 0.1)) +
+  theme_classic()+
+  theme(
+    axis.text.x = element_text(angle = 90, hjust = 1, vjust=0.5),
+    strip.text.y = element_text(angle = 0)
+  )
+p1
+```
+
+
+```{r EACB-heatmap-tcgawgs, out.height="100%", out.width="400%"}
+
+plot.dat <- dat.wgs.s %>% filter(EACcomp != "0", is.na(OTU1) == F) %>%
+  select(EACcomp, OTU1, Patient_ID, Abundance)
+plot.dat <- na.omit(plot.dat)  
+
+
+p1 <- ggplot(plot.dat, aes(x =Patient_ID, y = OTU1, fill = Abundance)) +
+  geom_tile()+
+  labs(title="TCGA WGS Data", y=NULL,
+       x = "ID/Accession Number") +
+  facet_grid(.~EACcomp, scales="free")+
+  scale_fill_gradient(low="white", high="black", trans="sqrt", limits=c(0, 0.5)) +
+  theme_classic()+
+  theme(
+    axis.text.x = element_text(angle = 90, hjust = 1, vjust=0.5),
+    strip.text.y = element_text(angle = 0)
+  )
+p1
+```
+
+
+## Stacked Bar Charts
+
+
+### All OTUs (RA > 0.001)
+
+```{r EACB-bar-tcga-rna-genus, out.height="300%", out.width="300%"}
+
+plot.dat <- dat.rna %>% filter(EACcomp != "0", Abundance > 0.001)%>%
+  dplyr::group_by(EACcomp, Genus)%>%
+  dplyr::summarise(
+    Abundance = mean(Abundance, na.rm=T)
+  )
+
+p1 <- ggplot(plot.dat, aes(x=EACcomp, y = Abundance, fill=Genus)) +
+  geom_bar(stat="identity")+
+  labs(title="TCGA RNAseq Data",
+       subtitle = "Genus Level Data",
+       x = "Tissue Group",
+       y="Average Relative Abundance") +
+  theme_classic()
+p1
+#ggsave("data/bar_tcgarna_genus.pdf", p1, units="in", height=23, width=16)
+
+```
+
+```{r EACB-bar-tcga-rna-phylum, out.height="1000%", out.width="400%"}
+
+plot.dat <- dat.rna %>% filter(EACcomp != "0")%>%
+  dplyr::group_by(EACcomp, Phylum)%>%
+  dplyr::summarise(
+    Abundance = mean(Abundance, na.rm=T)
+  )
+  
+p1 <- ggplot(plot.dat, aes(x=EACcomp, y = Abundance, fill=Phylum)) +
+  geom_bar(stat="identity")+
+  labs(title="TCGA RNAseq Data",
+       subtitle = "Phylum Level Data",
+       x = "Tissue Group",
+       y="Average Relative Abundance") +
+  theme_classic()
+p1
+```
+
+
+```{r EACB-bar-tcga-wgs-genus, out.height="300%", out.width="300%"}
+
+plot.dat <- dat.wgs %>% filter(EACcomp != "0", Abundance > 0.001)%>%
+  dplyr::group_by(EACcomp, Genus)%>%
+  dplyr::summarise(
+    Abundance = mean(Abundance, na.rm=T)
+  )
+
+p1 <- ggplot(plot.dat, aes(x=EACcomp, y = Abundance, fill=Genus)) +
+  geom_bar(stat="identity")+
+  labs(title="TCGA WGS Data",
+       subtitle = "Genus Level Data",
+       x = "Tissue Group",
+       y="Average Relative Abundance") +
+  theme_classic()
+p1
+
+```
+
+```{r EACB-bar-tcga-wgs-phylum, out.height="1000%", out.width="400%"}
+
+plot.dat <- dat.wgs %>% filter(EACcomp != "0")%>%
+  dplyr::group_by(EACcomp, Phylum)%>%
+  dplyr::summarise(
+    Abundance = mean(Abundance, na.rm=T)
+  )
+  
+p1 <- ggplot(plot.dat, aes(x=EACcomp, y = Abundance, fill=Phylum)) +
+  geom_bar(stat="identity")+
+  labs(title="TCGA WGS Data",
+       subtitle = "Phylum Level Data",
+       x = "Tissue Group",
+       y="Average Relative Abundance") +
+  theme_classic()
+p1
+```
+
+
+### Specific OTUs
+
+```{r EACB-bar-tcgarna, out.height="300%", out.width="300%"}
+
+plot.dat <- dat.rna.s %>% filter(EACcomp != "0", is.na(OTU1) == F)%>%
+  dplyr::group_by(EACcomp, OTU1)%>%
+  dplyr::summarise(
+    Abundance = mean(Abundance, na.rm=T)
+  )
+  
+p1 <- ggplot(plot.dat, aes(x=EACcomp, y = Abundance, fill=OTU1)) +
+  geom_bar(stat="identity")+
+  labs(title="TCGA RNA seq Data",
+       x = "Tissue Group",
+       y="Average Relative Abundance") +
+  theme_classic()
+p1
+```
+
+
+```{r EACB-bar-tcgawgs, out.height="100%", out.width="400%"}
+
+plot.dat <- dat.wgs.s %>% filter(EACcomp != "0", is.na(OTU1) == F)%>%
+  dplyr::group_by(EACcomp, OTU1)%>%
+  dplyr::summarise(
+    Abundance = mean(Abundance, na.rm=T)
+  )
+  
+p1 <- ggplot(plot.dat, aes(x=EACcomp, y = Abundance, fill=OTU1)) +
+  geom_bar(stat="identity")+
+  labs(title="TCGA WGS Data",
+       x = "Tissue Group",
+       y="Average Relative Abundance") +
+  theme_classic()
+p1
+```
+

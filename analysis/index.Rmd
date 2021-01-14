@@ -22,3 +22,29 @@ Welcome to our research website.
 *[Testing replication](test-of-replication.html)
 
 *[Waterfall Plots](waterfall-plot.html)
+
+*[RNAscope test](data-check-for-RNAscope.html)
+
+# Specific Questions for Update
+
+## Q1: is there a taxonomic signature shared between the barrett's samples?
+
+*[Results Question 1](results-question-1.html)
+
+
+## Q2: What is the abundance of F. nucleatum and/or Fusobacterium between these samples? - same samples as above
+
+*[Results Question 2](results-question-2.html)
+ 
+
+## Q3: Is fuso associated with tumor stage in either data set? Does X bacteria predict stage? Multivariable w/ age, sex, BMI, history of Barrett's
+Add to this analysis:
+Fusobacterium nucleatum
+
+Streptococcus sanguinis
+
+Campylobacter concisus 
+
+Prevotella spp. 
+
+Same questions but using PICRUSt and HUMAnN data - Alison

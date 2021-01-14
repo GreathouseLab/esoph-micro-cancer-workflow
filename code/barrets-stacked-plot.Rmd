@@ -1,5 +1,5 @@
 ---
-title: "Sample IDs and Relative Abundance Misc."
+title: "Waterfall Plots"
 output:
   workflowr::wflow_html:
     toc: true
@@ -27,15 +27,8 @@ theme_set(theme_bw())
 # }
 
 knitr::opts_chunk$set(out.width = "225%", out.height = 10)
-```
 
 
-# Data mung
-
-First, we need to format the data for the analyses.
-
-
-```{r}
 # transform to relative abundances
 phylo.data.nci.umd <- transform_sample_counts(phylo.data.nci.umd, function(x){x / sum(x)})
 phylo.data.tcga.RNAseq <- transform_sample_counts(phylo.data.tcga.RNAseq, function(x){x / sum(x)})
@@ -236,229 +229,88 @@ dat.rna$pres[is.na(dat.rna$pres)] <- 0
 dat.wgs$pres <- ifelse(dat.wgs$Abundance > 0, 1, 0)
 dat.wgs$pres[is.na(dat.wgs$pres)] <- 0
 
-# blood exclusions
-dat.16s$bloodWGS <- NA
-dat.rna$bloodWGS <- ifelse(dat.rna$SampleType_Level1 %in% c("Blood.Normal"),1,0)
-dat.wgs$bloodWGS <- ifelse(dat.wgs$SampleType_Level1 %in% c("Blood.Normal"),1,0)
-
 # merge data
-cls <- c("OTU", "OTU1", "Sample", "Abundance", "tumor.cat", "tumor", "source", "X", "pres", "bloodWGS")
+cls <- c("OTU", "OTU1", "Sample", "Abundance", "tumor.cat", "tumor", "source", "X", "pres")
 mydata <- full_join(dat.16s[,cls], dat.rna[,cls])
 mydata <- full_join(mydata, dat.wgs[,cls])
 
 ```
 
 
-# Replicating the Analysis
+# Barrets Esophogus Stacked Bar Chart
 
-## Plot
+## Fusobacterium nucleatum
 
-```{r, out.width="100%", out.height="200%" }
+```{r fuso, out.width="100%", out.height="200%"}
 
-p <- ggplot(mydata, aes(x=X, y=Abundance)) +
+p <-  plot.dat %>%
+  filter(OTU == "Fusobacterium nucleatum")%>%
+  ggplot(aes(x = type, y = Abundance, group = type))+
   geom_violin() +
-  geom_jitter(alpha=0.5) +
-  facet_wrap(.~OTU)+
-  scale_y_continuous(
-    trans = "sqrt",
-    breaks=c(0.002, 0.01, 0.05, 0.1, 0.25, 0.5, 0.8)) +
-  labs(x=NULL, y="Relative Abundance")+
-  theme_classic() +
-  theme(
-    axis.text.x = element_text(angle = 30,vjust=0.95, hjust=0.95)
-  )
+  geom_point(alpha = 0.5)
 p
 
 ```
 
+## Streptococcus spp.
 
-## Statistical Tests
+```{r stre, out.width="100%", out.height="200%"}
 
-### Fusobacterium nucleatum
-
-```{r}
-
-# No additional subsetting/exclusions
-d <- mydata %>%
-  filter(OTU == "Fusobacterium nucleatum",
-         source == "16s")
-fisher.test(d$pres, d$tumor)
-
-
-d <- mydata %>%
-  filter(OTU == "Fusobacterium nucleatum",
-         source == "wgs")
-fisher.test(d$pres, d$tumor)
-
-
-d <- mydata %>%
-  filter(OTU == "Fusobacterium nucleatum",
-         source == "rna")
-fisher.test(d$pres, d$tumor)
-
-# Excluding blood != 0
-d <- mydata %>%
-  filter(OTU == "Fusobacterium nucleatum",
-         source == "wgs",
-         bloodWGS != 1)
-fisher.test(d$pres, d$tumor)
-
-d <- mydata %>%
-  filter(OTU == "Fusobacterium nucleatum",
-         source == "rna",
-         bloodWGS != 1)
-fisher.test(d$pres, d$tumor)
-```
-
-
-### Streptococcus spp.
-
-*difficult to determine which species were used*
-
-
-```{r}
-# No additional subsetting/exclusions
-d <- mydata %>%
-  filter(OTU == "Streptococcus spp.",
-         source == "16s")
-fisher.test(d$pres, d$tumor)
-
-d <- mydata %>%
-  filter(OTU == "Streptococcus spp.",
-         source == "wgs")
-fisher.test(d$pres, d$tumor)
-
-
-d <- mydata %>%
-  filter(OTU == "Streptococcus spp.",
-         source == "rna")
-fisher.test(d$pres, d$tumor)
-
-# Excluding blood != 0
-d <- mydata %>%
-  filter(OTU == "Streptococcus spp.",
-         source == "wgs",
-         bloodWGS==0)
-fisher.test(d$pres, d$tumor)
-
-d <- mydata %>%
-  filter(OTU == "Streptococcus spp.",
-         source == "rna",
-         bloodWGS==0)
-fisher.test(d$pres, d$tumor)
-```
-
-
-
-### Streptococcus sanguinis
-
-*difficult to determine which species were used*
-
-
-```{r}
-
-# No additional subsetting/exclusions
-d <- mydata %>%
-  filter(OTU1 == "Streptococcus sanguinis",
-         source == "16s")
-fisher.test(d$pres, d$tumor)
-
-d <- mydata %>%
-  filter(OTU1 == "Streptococcus sanguinis",
-         source == "wgs")
-fisher.test(d$pres, d$tumor)
-
-d <- mydata %>%
-  filter(OTU1 == "Streptococcus sanguinis",
-         source == "rna")
-fisher.test(d$pres, d$tumor)
-
-# Excluding blood != 0
-d <- mydata %>%
-  filter(OTU1 == "Streptococcus sanguinis",
-         source == "wgs",
-         bloodWGS==0)
-fisher.test(d$pres, d$tumor)
-
-d <- mydata %>%
-  filter(OTU1 == "Streptococcus sanguinis",
-         source == "rna",
-         bloodWGS==0)
-fisher.test(d$pres, d$tumor)
-```
-
-
-
-### Campylobacter concisus
-
-```{r}
-# No additional subsetting/exclusions
-d <- mydata %>%
-  filter(OTU == "Campylobacter concisus",
-         source == "16s")
-fisher.test(d$pres, d$tumor)
-
-d <- mydata %>%
-  filter(OTU == "Campylobacter concisus",
-         source == "wgs")
-fisher.test(d$pres, d$tumor)
-
-d <- mydata %>%
-  filter(OTU == "Campylobacter concisus",
-         source == "rna")
-fisher.test(d$pres, d$tumor)
-
-# Excluding blood != 0
-d <- mydata %>%
-  filter(OTU == "Campylobacter concisus",
-         source == "wgs",
-         bloodWGS==0)
-fisher.test(d$pres, d$tumor)
-
-d <- mydata %>%
-  filter(OTU == "Campylobacter concisus",
-         source == "rna",
-         bloodWGS==0)
-fisher.test(d$pres, d$tumor)
-```
-
-
-### Prevotella melaninogenica
-
-
-```{r}
-# No additional subsetting/exclusions
-d <- mydata %>%
-  filter(OTU == "Prevotella melaninogenica",
-         source == "16s")
-fisher.test(d$pres, d$tumor)
-
-
-d <- mydata %>%
-  filter(OTU == "Prevotella melaninogenica",
-         source == "wgs")
-fisher.test(d$pres, d$tumor)
-
-
-d <- mydata %>%
-  filter(OTU == "Prevotella melaninogenica",
-         source == "rna")
-fisher.test(d$pres, d$tumor)
-
-
-# Excluding blood != 0
-d <- mydata %>%
-  filter(OTU == "Prevotella melaninogenica",
-         source == "wgs",
-         bloodWGS==0)
-fisher.test(d$pres, d$tumor)
-
-d <- mydata %>%
-  filter(OTU == "Prevotella melaninogenica",
-         source == "rna",
-         bloodWGS==0)
-fisher.test(d$pres, d$tumor)
+p <-  plot.dat %>%
+  filter(OTU == "Streptococcus spp.")%>%
+  ggplot(aes(x = ordered.x,
+                 y = Abundance,
+                 group = tumor.cat,
+                 color = tumor.cat))+
+  geom_point() + 
+  geom_segment(aes(x=ordered.x,
+                   y=0,
+                   xend=ordered.x,
+                   yend=Abundance))+
+  scale_color_manual(values = c("Non-Tumor"="black", "Tumor"="blue"), name = NULL) +
+  facet_wrap(.~source, scales="free_x")
+p
 
 ```
 
+## Campylobacter concisus
 
+```{r camp, out.width="100%", out.height="200%"}
+
+p <-  plot.dat %>%
+  filter(OTU == "Campylobacter concisus")%>%
+  ggplot(aes(x = ordered.x,
+                 y = Abundance,
+                 group = tumor.cat,
+                 color = tumor.cat))+
+  geom_point() + 
+  geom_segment(aes(x=ordered.x,
+                   y=0,
+                   xend=ordered.x,
+                   yend=Abundance))+
+  scale_color_manual(values = c("Non-Tumor"="black", "Tumor"="blue"), name = NULL) +
+  facet_wrap(.~source, scales="free_x")
+p
+
+```
+
+## Prevotella melaninogenica
+
+```{r prev, out.width="100%", out.height="200%"}
+
+p <-  plot.dat %>%
+  filter(OTU == "Prevotella melaninogenica")%>%
+  ggplot(aes(x = ordered.x,
+                 y = Abundance,
+                 group = tumor.cat,
+                 color = tumor.cat))+
+  geom_point() + 
+  geom_segment(aes(x=ordered.x,
+                   y=0,
+                   xend=ordered.x,
+                   yend=Abundance))+
+  scale_color_manual(values = c("Non-Tumor"="black", "Tumor"="blue"), name = NULL) +
+  facet_wrap(.~source, scales="free_x")
+p
+
+```

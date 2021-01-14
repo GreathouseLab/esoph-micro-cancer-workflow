@@ -336,7 +336,7 @@ $(document).ready(function () {
 <div class="tab-content">
 <div id="summary" class="tab-pane fade in active">
 <p>
-<strong>Last updated:</strong> 2020-12-17
+<strong>Last updated:</strong> 2021-01-14
 </p>
 <p>
 <strong>Checks:</strong> <span class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span> 1 <span class="glyphicon glyphicon-exclamation-sign text-danger" aria-hidden="true"></span> 1
@@ -367,16 +367,16 @@ This reproducible <a href="http://rmarkdown.rstudio.com">R Markdown</a> analysis
 <div class="panel panel-default">
 <div class="panel-heading">
 <p class="panel-title">
-<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongRepositoryversionstrongahrefhttpsgithubcomGreathouseLabesophmicrocancerworkflowtreecf91029edb7253f0b4c6ea60d979ff38f446b111targetblankcf91029a"> <span class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span> <strong>Repository version:</strong> <a href="https://github.com/GreathouseLab/esoph-micro-cancer-workflow/tree/cf91029edb7253f0b4c6ea60d979ff38f446b111" target="_blank">cf91029</a> </a>
+<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongRepositoryversionstrongahrefhttpsgithubcomGreathouseLabesophmicrocancerworkflowtree1d24c1f1a6476527dba4c5e158304b114bd2fcddtargetblank1d24c1fa"> <span class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span> <strong>Repository version:</strong> <a href="https://github.com/GreathouseLab/esoph-micro-cancer-workflow/tree/1d24c1f1a6476527dba4c5e158304b114bd2fcdd" target="_blank">1d24c1f</a> </a>
 </p>
 </div>
-<div id="strongRepositoryversionstrongahrefhttpsgithubcomGreathouseLabesophmicrocancerworkflowtreecf91029edb7253f0b4c6ea60d979ff38f446b111targetblankcf91029a" class="panel-collapse collapse">
+<div id="strongRepositoryversionstrongahrefhttpsgithubcomGreathouseLabesophmicrocancerworkflowtree1d24c1f1a6476527dba4c5e158304b114bd2fcddtargetblank1d24c1fa" class="panel-collapse collapse">
 <div class="panel-body">
 <p>
 Great! You are using Git for version control. Tracking code development and connecting the code version to the results is critical for reproducibility.
 </p>
 <p>
-The results in this page were generated with repository version <a href="https://github.com/GreathouseLab/esoph-micro-cancer-workflow/tree/cf91029edb7253f0b4c6ea60d979ff38f446b111" target="_blank">cf91029</a>. See the <em>Past versions</em> tab to see a history of the changes made to the R Markdown and HTML files.
+The results in this page were generated with repository version <a href="https://github.com/GreathouseLab/esoph-micro-cancer-workflow/tree/1d24c1f1a6476527dba4c5e158304b114bd2fcdd" target="_blank">1d24c1f</a>. See the <em>Past versions</em> tab to see a history of the changes made to the R Markdown and HTML files.
 </p>
 <p>
 Note that you need to be careful to ensure that all relevant files for the analysis have been committed to Git prior to generating the results (you can use <code>wflow_publish</code> or <code>wflow_git_commit</code>). workflowr only checks the R Markdown file, but you know if there are other scripts or data files that it depends on. Below is the status of the Git repository when the results were generated:
@@ -388,15 +388,14 @@ Ignored files:
     Ignored:    data/
 
 Untracked files:
-    Untracked:  analysis/waterfall-plot.Rmd
-    Untracked:  waterfall-plots.Rmd
+    Untracked:  analysis/data-check-for-RNAscope.Rmd
+    Untracked:  analysis/results-question-1.Rmd
+    Untracked:  analysis/results-question-2.Rmd
+    Untracked:  code/barrets-stacked-plot.Rmd
 
 Unstaged changes:
-    Modified:   analysis/data_processing_tcga.Rmd
     Modified:   analysis/index.Rmd
     Modified:   analysis/test-of-replication.Rmd
-    Modified:   code/get_cleaned_data.R
-    Modified:   code/get_data.R
 
 </code></pre>
 <p>
@@ -435,6 +434,40 @@ Message
 </tr>
 </thead>
 <tbody>
+<tr>
+<td>
+Rmd
+</td>
+<td>
+<a href="https://github.com/GreathouseLab/esoph-micro-cancer-workflow/blob/1d24c1f1a6476527dba4c5e158304b114bd2fcdd/analysis/index.Rmd" target="_blank">1d24c1f</a>
+</td>
+<td>
+noah-padgett
+</td>
+<td>
+2020-12-17
+</td>
+<td>
+make waterfall-plots
+</td>
+</tr>
+<tr>
+<td>
+html
+</td>
+<td>
+<a href="https://rawcdn.githack.com/GreathouseLab/esoph-micro-cancer-workflow/1d24c1f1a6476527dba4c5e158304b114bd2fcdd/docs/index.html" target="_blank">1d24c1f</a>
+</td>
+<td>
+noah-padgett
+</td>
+<td>
+2020-12-17
+</td>
+<td>
+make waterfall-plots
+</td>
+</tr>
 <tr>
 <td>
 Rmd
@@ -620,6 +653,26 @@ initial commit
 <p>*<a href="ids_abundance_misc.html">Sample IDs with Abundances</a></p>
 <p>*<a href="test-of-replication.html">Testing replication</a></p>
 <p>*<a href="waterfall-plot.html">Waterfall Plots</a></p>
+<p>*<a href="data-check-for-RNAscope.html">RNAscope test</a></p>
+</div>
+<div id="specific-questions-for-update" class="section level1">
+<h1>Specific Questions for Update</h1>
+<div id="q1-is-there-a-taxonomic-signature-shared-between-the-barretts-samples" class="section level2">
+<h2>Q1: is there a taxonomic signature shared between the barrett’s samples?</h2>
+<p>*<a href="results-question-1.html">Results Question 1</a></p>
+</div>
+<div id="q2-what-is-the-abundance-of-f.-nucleatum-andor-fusobacterium-between-these-samples---same-samples-as-above" class="section level2">
+<h2>Q2: What is the abundance of F. nucleatum and/or Fusobacterium between these samples? - same samples as above</h2>
+<p>*<a href="results-question-2.html">Results Question 2</a></p>
+</div>
+<div id="q3-is-fuso-associated-with-tumor-stage-in-either-data-set-does-x-bacteria-predict-stage-multivariable-w-age-sex-bmi-history-of-barretts" class="section level2">
+<h2>Q3: Is fuso associated with tumor stage in either data set? Does X bacteria predict stage? Multivariable w/ age, sex, BMI, history of Barrett’s</h2>
+<p>Add to this analysis: Fusobacterium nucleatum</p>
+<p>Streptococcus sanguinis</p>
+<p>Campylobacter concisus</p>
+<p>Prevotella spp.</p>
+<p>Same questions but using PICRUSt and HUMAnN data - Alison</p>
+</div>
 </div>
 
 

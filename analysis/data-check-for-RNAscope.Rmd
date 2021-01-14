@@ -1,0 +1,165 @@
+---
+title: "Data check for RNAscope for 16S data"
+output:
+  workflowr::wflow_html:
+    toc: true
+editor_options:
+  chunk_output_type: console
+---
+
+
+The goal here is to double check that there is indeed no microbiome data for those samples that say ` N/A`.
+To help with this, I recoded the ` N/A` values from the excel sheet to ` -999` so that ` R`'s internal NA system doesn't confuse us.
+
+```{r data, include=FALSE, echo=FALSE}
+# load packages
+source("code/load_packages.R")
+
+# get data
+source("code/get_cleaned_data.R")
+
+theme_set(theme_bw())
+# pal = "Sequential"
+# scale_colour_discrete <-  function(palname=pal, ...){
+#   scale_colour_brewer(palette=palname, ...)
+# }
+# scale_fill_discrete <-  function(palname=pal, ...){
+#   scale_fill_brewer(palette=palname, ...)
+# }
+
+knitr::opts_chunk$set(out.width = "225%", out.height = 10)
+```
+
+
+# Cleaned data
+
+```{r}
+
+# melt data down for use
+dat.16s <- psmelt(phylo.data.nci.umd)
+
+# subset to fuso. nuc. only
+# Streptococcus sanguinis 
+# Campylobacter concisus
+# Prevotella spp.
+
+dat.16s <- filter(
+  dat.16s,
+  OTU %in% c(
+    "Fusobacterium_nucleatum",
+    unique(dat.16s$OTU[dat.16s$OTU %like% "Streptococcus_"]),
+    unique(dat.16s$OTU[dat.16s$OTU %like% "Campylobacter_"]),
+    "Prevotella_melaninogenica")
+)
+# rename bacteria
+dat.16s$OTU <- factor(
+  dat.16s$OTU,
+  levels = c(
+    "Fusobacterium_nucleatum",
+    "Streptococcus_dentisani:Streptococcus_infantis:Streptococcus_mitis:Streptococcus_oligofermentans:Streptococcus_oralis:Streptococcus_pneumoniae:Streptococcus_pseudopneumoniae:Streptococcus_sanguinis",
+    "Campylobacter_rectus:Campylobacter_showae",
+    "Prevotella_melaninogenica"
+  ),
+  labels = c(
+    "Fusobacterium_nucleatum",
+    "Streptococcus_spp.",
+    "Campylobacter_concisus",
+    "Prevotella_melaninogenica"
+  )
+)
+
+# make tumor vs normal variable
+dat.16s$tumor.cat <- factor(dat.16s$tissue, levels=c("BO", "N", "T"), labels = c("Non-Tumor", "Non-Tumor", "Tumor"))
+
+# relabel as (0/1) for analysis
+dat.16s$tumor <- as.numeric(factor(dat.16s$tissue, levels=c("BO", "N", "T"), labels = c("Non-Tumor", "Non-Tumor", "Tumor"))) - 1
+
+# presence- absence
+dat.16s$pres <- ifelse(dat.16s$Abundance > 0, 1, 0)
+dat.16s$pres[is.na(dat.16s$pres)] <- 0
+
+# make wide 
+dat.16s2 <- dat.16s %>%
+  pivot_wider(
+    id_cols = c(Sample, accession.number, tissue, tumor.cat),
+    names_from = OTU,
+    values_from = Abundance
+  ) %>%
+  mutate(
+    Accession = accession.number
+  )
+
+dat.16s2 <- dat.16s2[, c(1,2,3,6)]
+colnames(dat.16s2) <- c("Sample", "Accession", "Tissue", "Fusobacterium_nucleatum_biomfile")
+
+# data from scope
+dat.scope <- readxl::read_xlsx("data/EAC tumors for RNAscope.xlsx", sheet = 2)
+dat.scope$Fusobacterium_nucleatum[is.na(dat.scope$Fusobacterium_nucleatum)] <- -999
+dat.scope <- dat.scope[, c(1,2,16, 19)]
+colnames(dat.scope) <- c("Accession", "Tissue", "Fusobacterium_nucleatum_RNAscopefile", "BLACKLINE")
+
+# merge the two files together to see (non)overlap of -999 to NA
+dat.16s3 <- full_join(dat.16s2, dat.scope, keep=T)
+
+dat.16s3 %>%
+  arrange(-desc(Accession.x)) %>%
+  kable(format="html", digits=2)%>%
+  kable_styling(full_width = T)%>%
+  scroll_box(width = "100%", height = "500px")
+
+```
+
+
+
+# Look at RAW data 
+
+This is to double check how the .biom file was in read.
+It appears as nearly all NA values from the 
+
+```{r}
+meta.data <- read_excel(
+  "data/NCI-UMD/UMD Esoph dataset from EB_2019_08_06_AV edits.xlsx", 
+  sheet = "FOR STATA"
+)
+# subset to unique "sample ids
+meta.data <- meta.data %>% distinct(`Sample ID`, .keep_all = T)
+#read_xlsx("data/NCI-UMD/NCI_UMD_metadata_2020_09_17.xlsx")
+# change "_" in sampleid to "." to match .biome file
+meta.data$sampleid <- meta.data$`Sample ID`
+meta.data$ID <- stringr::str_replace_all(meta.data$sampleid, "_", ".")
+
+# get microbiome data
+biom.file  <- import_biom("data/NCI-UMD/otu_table_even500.biom")
+tree.file  <- read_tree("data/NCI-UMD/reps_even500.tre")
+
+# create phyloseq object
+meta <- sample_data(meta.data)
+sample_names(meta) <- meta.data$ID
+
+# update otu table to include "zeros" for non-found samples
+phylo.data0 <- merge_phyloseq(biom.file, tree.file, meta)
+dat.16s.raw <- psmelt(phylo.data0)
+dat.16s.raw <- filter(dat.16s.raw, OTU == "Fusobacterium_nucleatum")
+dat.16s.raw <- dat.16s.raw %>% select(Sample, accession.number, tissue,  Abundance)
+colnames(dat.16s.raw) <- c("Sample", "Accession", "Tissue", "Fusobacterium_nucleatum_biomfile")
+
+# scope data
+dat.scope <- readxl::read_xlsx("data/EAC tumors for RNAscope.xlsx", sheet = 2)
+dat.scope$Fusobacterium_nucleatum[is.na(dat.scope$Fusobacterium_nucleatum)] <- -999
+dat.scope <- dat.scope[, c(1,2,16, 19)]
+colnames(dat.scope) <- c("Accession", "Tissue", "Fusobacterium_nucleatum_RNAscopefile", "BLACKLINE")
+
+# merge with the "scope data"
+
+dat.16s.raw2 <- full_join(dat.16s.raw, dat.scope, keep = T)
+
+
+dat.16s.raw2 %>%
+  arrange(-desc(Accession.x)) %>%
+  kable(format="html", digits=2)%>%
+  kable_styling(full_width = T)%>%
+  scroll_box(width = "100%", height = "500px")
+
+```
+
+
