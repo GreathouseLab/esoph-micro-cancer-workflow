@@ -1,0 +1,9 @@
+OTU,sample_type,NCI 16S,TCGA RNAseq,TCGA WGS
+Fusobacterium nucleatum,EAC tissues w/ Barretts History,4.9179,0.0499,0.0561
+Fusobacterium nucleatum,EAC tissues w/o Barretts History,5.3226,0.0438,5.6090
+Streptococcus spp.,EAC tissues w/ Barretts History,26.4170,0.0151,0.0683
+Streptococcus spp.,EAC tissues w/o Barretts History,37.4004,0.0229,0.8652
+Campylobacter concisus,EAC tissues w/ Barretts History,0.9771,0.0022,0.0030
+Campylobacter concisus,EAC tissues w/o Barretts History,0.1000,0.0049,4.5867
+Prevotella melaninogenica,EAC tissues w/ Barretts History,4.8529,0.0090,0.0922
+Prevotella melaninogenica,EAC tissues w/o Barretts History,3.9337,0.0791,11.9012

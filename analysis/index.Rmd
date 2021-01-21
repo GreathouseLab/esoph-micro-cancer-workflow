@@ -38,13 +38,6 @@ Welcome to our research website.
  
 
 ## Q3: Is fuso associated with tumor stage in either data set? Does X bacteria predict stage? Multivariable w/ age, sex, BMI, history of Barrett's
-Add to this analysis:
-Fusobacterium nucleatum
 
-Streptococcus sanguinis
 
-Campylobacter concisus 
-
-Prevotella spp. 
-
-Same questions but using PICRUSt and HUMAnN data - Alison
+*[Results Question 3](results-question-3.html)

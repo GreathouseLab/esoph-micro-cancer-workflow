@@ -1,0 +1,17 @@
+"OTU","sample_type","MA_16s"
+"Fusobacterium nucleatum","Barretts Only",0.006
+"Fusobacterium nucleatum","EAC-adjacent tissue w/ Barretts History",0.0197693501788443
+"Fusobacterium nucleatum","EAC tissues w/ Barretts History",0.0491789692148046
+"Fusobacterium nucleatum","EAC tissues w/o Barretts History",0.0532262955419778
+"Streptococcus spp.","Barretts Only",0.4572
+"Streptococcus spp.","EAC-adjacent tissue w/ Barretts History",0.214710043203365
+"Streptococcus spp.","EAC tissues w/ Barretts History",0.264169843191514
+"Streptococcus spp.","EAC tissues w/o Barretts History",0.374003847024214
+"Campylobacter concisus","Barretts Only",0.0036
+"Campylobacter concisus","EAC-adjacent tissue w/ Barretts History",0.00274418604651163
+"Campylobacter concisus","EAC tissues w/ Barretts History",0.00977142857142857
+"Campylobacter concisus","EAC tissues w/o Barretts History",0.001
+"Prevotella melaninogenica","Barretts Only",0.0652
+"Prevotella melaninogenica","EAC-adjacent tissue w/ Barretts History",0.0641214749173079
+"Prevotella melaninogenica","EAC tissues w/ Barretts History",0.0485287040239825
+"Prevotella melaninogenica","EAC tissues w/o Barretts History",0.0393374066530889

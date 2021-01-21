@@ -1,5 +1,5 @@
 ---
-title: "Results Output for Question 1"
+title: "Results Output for Question 2"
 output:
   workflowr::wflow_html:
     toc: true
@@ -7,15 +7,13 @@ editor_options:
   chunk_output_type: console
 ---
 
-# Question 1
+# Question 2
 
 ```
-Q1: is there a taxonomic signature shared between the barrett's samples?
+Q2: What is the abundance of F. nucleatum and/or Fusobacterium between these samples? - same samples as above
 ```
 
-* Heatmap of relative abundance supervised by sample type: Barrett's (BO), tumor-adjacent EAC-w/history of barrett's, EAC-w/ history of barrett's
-* Stacked bar chart of phylum and genus abundance by sample type, same as above
-* Additional comparison in TCGA; EAC w/history of Barrett's vs EAC w/ no history of Barrett's; same analyses as above
+
 
 ```{r data, include=FALSE, echo=FALSE, warning=F, error=F, message=F}
 # load packages
