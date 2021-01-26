@@ -1,0 +1,402 @@
+---
+title: "NCI-UMD Cohort"
+date: "9/24/2020"
+output:
+  word_document: default
+  html_document: default
+---
+
+```{r message=FALSE}
+source("code/load_packages.R")
+source("code/get_data.R")
+
+```
+
+# NCI
+```{r}
+ncidata <- microbiome.data.nci.umd$meta.dat
+
+# nrow(ncidata)
+# table(ncidata$tissue)
+# table(ncidata$gender)
+# table(ncidata$race)
+# summary(ncidata$age)
+# table(ncidata$bmi)
+# table(ncidata$smoke)
+
+ncidata=ncidata %>%
+  mutate(sample_type=0,
+         sample_type=ifelse(tissue=="T" & histology=="ADC", 
+                            "Esophageal adeno-carcinoma tissues", 
+                            sample_type),
+         sample_type=ifelse(tissue=="T" & histology=="SCC", 
+                            "Esophageal squamous cell carcinoma tissue", 
+                            sample_type),
+         sample_type=ifelse(tissue=="N" & histology=="ADC", 
+                            "Esophageal adeno-carcinoma-adjacent tissues", 
+                            sample_type),
+         sample_type=ifelse(tissue=="N" & histology=="SCC", 
+                            "Esophageal squamous cell carcinoma-adjacent tissue", sample_type),
+         sample_type=ifelse(tissue=="BO" & histology=="Barrets only", 
+                            "Barrett's Esophagus tissue", 
+                            sample_type)
+  )
+table(ncidata$sample_type)
+
+# ncidata %>%
+# 	group_by(diagnosis) %>%
+# 	summarize(mean_shannon = mean(shannon), sd_shannon = sd(shannon))
+```
+
+```{r}
+N=table(ncidata$sample_type)
+
+sex1=ncidata %>%
+  group_by(sample_type, gender)%>%
+  summarize(N=n())%>%
+  ungroup(gender)%>%
+  mutate(p=N/sum(N))%>%
+  ungroup(sample_type)%>%
+  group_by(gender)%>%
+  mutate(t=sum(N))%>%
+  ungroup(gender)%>%
+  mutate(pt=t/sum(N))
+sex1
+
+race1=ncidata %>%
+  group_by(sample_type, race)%>%
+  summarize(N=n())%>%
+  ungroup(race)%>%
+  mutate(p=N/sum(N))%>%
+  ungroup(sample_type)%>%
+  group_by(race)%>%
+  mutate(t=sum(N))%>%
+  ungroup(race)%>%
+  mutate(pt=t/sum(N))
+race1
+
+age1=ncidata %>%
+  group_by(sample_type)%>%
+  summarize(mean=mean(age),
+            sd=sd(age))
+age1
+mean(ncidata$age)
+sd(ncidata$age)
+
+bmi1=ncidata %>%
+  group_by(sample_type, bmicat)%>%
+  summarize(N=n())%>%
+  ungroup(bmicat)%>%
+  mutate(p=N/sum(N))
+bmi1
+
+barretts1=ncidata %>%
+  group_by(sample_type, barretts)%>%
+  summarize(N=n())%>%
+  ungroup(barretts)%>%
+  mutate(p=N/sum(N))
+barretts1
+
+smoke1=ncidata %>%
+  group_by(sample_type, smoke)%>%
+  summarize(N=n())%>%
+  ungroup(smoke)%>%
+  mutate(p=N/sum(N))
+smoke1
+
+stage1=ncidata %>%
+  group_by(sample_type, stage)%>%
+  summarize(N=n())%>%
+  ungroup(stage)%>%
+  mutate(p=N/sum(N))
+stage1
+
+neoadj=ncidata %>%
+  group_by(sample_type, neoadj_treatment)%>%
+  summarize(N=n())%>%
+  ungroup(neoadj_treatment)%>%
+  mutate(p=N/sum(N)) %>%
+  filter(neoadj_treatment=="Y")
+neoadj
+
+survival=ncidata %>%
+  group_by(sample_type)%>%
+  summarize(mean=mean(days_from_surg_to_event),
+            sd=sd(days_from_surg_to_event))
+survival
+
+```
+# TCGA RNA seq
+```{r}
+tcga_rna_seq <- microbiome.data.tcga.RNAseq$meta.dat
+
+tcga_rna_seq=tcga_rna_seq %>%
+  mutate(sample_type=0,
+         sample_type=ifelse((morphology=="8140/3" |
+                                   morphology=="8480/3") &
+                                  SampleType_Level2=="Tumor",
+                            "Esophageal adeno-carcinoma tissues",
+                            sample_type),
+         sample_type=ifelse((morphology=="8140/3" | 
+                                   morphology=="8480/3") &
+                                  SampleType_Level2=="Normal",
+                            "Esophageal adeno-carcinoma-adjacent tissues", 
+                            sample_type),
+         sample_type=ifelse((morphology=="8070/3" | 
+                                   morphology=="8071/3" | 
+                                   morphology=="8083/3") &
+                                  SampleType_Level2=="Tumor",
+                            "Esophageal squamous cell carcinoma tissue", 
+                            sample_type),
+         sample_type=ifelse((morphology=="8070/3" |
+                                   morphology=="8071/3" |
+                                   morphology=="8083/3") &
+                                  SampleType_Level2=="Normal",
+                            "Esophageal squamous cell carcinoma-adjacent tissue", 
+                            sample_type),
+         sample_type=ifelse((morphology=="8070/3" |
+                                   morphology=="8071/3" |
+                                   morphology=="8083/3") &
+                                  SampleType_Level2=="Normal",
+                            "Esophageal squamous cell carcinoma-adjacent tissue", 
+                            sample_type)
+  )
+table(tcga_rna_seq$sample_type)
+
+
+```
+
+```{r}
+N2=table(tcga_rna_seq$sample_type)
+N2
+
+sex2=tcga_rna_seq %>%
+  group_by(sample_type, Gender)%>%
+  summarize(N2=n())%>%
+  ungroup(Gender)%>%
+  mutate(p=N2/sum(N2))%>%
+  ungroup(sample_type)%>%
+  group_by(Gender)%>%
+  mutate(t=sum(N2))%>%
+  ungroup(Gender)%>%
+  mutate(pt=t/sum(N2))
+sex2
+
+race2=tcga_rna_seq %>%
+  group_by(sample_type, race)%>%
+  summarize(N2=n())%>%
+  ungroup(race)%>%
+  mutate(p=N2/sum(N2))%>%
+  ungroup(sample_type)%>%
+  group_by(race)%>%
+  mutate(t=sum(N2))%>%
+  ungroup(race)%>%
+  mutate(pt=t/sum(N2))
+race2
+
+age2=tcga_rna_seq %>%
+  group_by(sample_type)%>%
+  summarize(mean=mean(days_to_birth/(-365)),
+            sd=sd(days_to_birth/(-365)))
+age2
+mean(tcga_rna_seq$age2)
+sd(tcga_rna_seq$age2)
+
+tcga_rna_seq=tcga_rna_seq %>%
+  mutate(smoke=0,
+         smoke=ifelse(cigarettes_per_day>0, 
+                            "Yes", "No")
+  )
+
+tcga_rna_seq$barrettsid<-tcga_rna_seq$`Barrett's Esophagus Reported`
+
+barrettsid=tcga_rna_seq %>%
+  group_by(sample_type, barrettsid)%>%
+  summarize(N=n())%>%
+  ungroup(barrettsid)%>%
+  mutate(p=N/sum(N))
+barrettsid
+
+smoke2=tcga_rna_seq %>%
+  group_by(sample_type, smoke)%>%
+  summarize(N=n())%>%
+  ungroup(smoke)%>%
+  mutate(p=N/sum(N))
+smoke2
+
+stage2=tcga_rna_seq %>%
+  group_by(sample_type, tumor_stage)%>%
+  summarize(N=n())%>%
+  ungroup(tumor_stage)%>%
+  mutate(p=N/sum(N))
+stage2
+
+survival2=tcga_rna_seq %>%
+  group_by(sample_type)%>%
+  filter(days_to_death!="NA")%>%
+  summarize(mean=mean(days_to_death),
+            sd=sd(days_to_death))
+survival2
+
+tcga_rna_seq=tcga_rna_seq %>%
+  mutate(bmicat2=0,
+         bmicat2=ifelse(bmi="NA",
+                            "unknown",
+                            bmicat2),
+         bmicat2=ifelse(bmi<18.5,
+                            "underweight",
+                            bmicat2),
+         bmicat2=ifelse(bmi>=18.5 & bmi<=24.9,
+                            "normal", 
+                            bmicat2),
+         bmicat2=ifelse(bmi>=25.0 & bmi<=29.9,
+                            "overweight", 
+                            bmicat2),
+         bmicat2=ifelse(bmi>=30.0,
+                            "obese", 
+                            bmicat2)
+  )
+table(tcga_rna_seq$bmicat2)
+```
+
+# TCGA RNA WGS
+```{r}
+tcga_rna_wgs <- microbiome.data.tcga.WGS$meta.dat
+
+tcga_rna_wgs=tcga_rna_wgs %>%
+  mutate(sample_type=0,
+         sample_type=ifelse((morphology=="8140/3" |
+                                   morphology=="8480/3") &
+                                  SampleType_Level2=="Tumor",
+                            "Esophageal adeno-carcinoma tissues",
+                            sample_type),
+         sample_type=ifelse((morphology=="8140/3" | 
+                                   morphology=="8480/3") &
+                                  SampleType_Level2=="Normal",
+                            "Esophageal adeno-carcinoma-adjacent tissues", 
+                            sample_type),
+         sample_type=ifelse((morphology=="8070/3" | 
+                                   morphology=="8071/3" | 
+                                   morphology=="8083/3") &
+                                  SampleType_Level2=="Tumor",
+                            "Esophageal squamous cell carcinoma tissue", 
+                            sample_type),
+         sample_type=ifelse((morphology=="8070/3" |
+                                   morphology=="8071/3" |
+                                   morphology=="8083/3") &
+                                  SampleType_Level2=="Normal",
+                            "Esophageal squamous cell carcinoma-adjacent tissue", 
+                            sample_type),
+         sample_type=ifelse((morphology=="8070/3" |
+                                   morphology=="8071/3" |
+                                   morphology=="8083/3") &
+                                  SampleType_Level2=="Normal",
+                            "Esophageal squamous cell carcinoma-adjacent tissue", 
+                            sample_type)
+  )
+table(tcga_rna_wgs$sample_type)
+```
+
+```{r}
+N2=table(tcga_rna_wgs$sample_type)
+
+sex2=tcga_rna_wgs %>%
+  group_by(sample_type, Gender)%>%
+  summarize(N2=n())%>%
+  ungroup(Gender)%>%
+  mutate(p=N2/sum(N2))%>%
+  ungroup(sample_type)%>%
+  group_by(Gender)%>%
+  mutate(t=sum(N2))%>%
+  ungroup(Gender)%>%
+  mutate(pt=t/sum(N2))
+sex2
+
+race2=tcga_rna_wgs %>%
+  group_by(sample_type, race)%>%
+  summarize(N2=n())%>%
+  ungroup(race)%>%
+  mutate(p=N2/sum(N2))%>%
+  ungroup(sample_type)%>%
+  group_by(race)%>%
+  mutate(t=sum(N2))%>%
+  ungroup(race)%>%
+  mutate(pt=t/sum(N2))
+race2
+
+age2=tcga_rna_wgs %>%
+  group_by(sample_type)%>%
+  summarize(mean=mean(days_to_birth/(-365)),
+            sd=sd(days_to_birth/(-365)))
+age2
+mean(tcga_rna_wgs$age2)
+sd(tcga_rna_wgs$age2)
+
+# sex2=tcga_rna_wgs %>%
+#   group_by(sample_type, Gender)%>%
+#   summarize(N2=n())%>%
+#   ungroup(Gender)%>%
+#   mutate(p=N2/sum(N2))%>%
+#   ungroup(sample_type)%>%
+#   group_by(Gender)%>%
+#   mutate(t=sum(N2))%>%
+#   ungroup(Gender)%>%
+#   mutate(pt=t/sum(N2))
+# sex2
+
+tcga_rna_wgs=tcga_rna_wgs %>%
+  mutate(smoke=0,
+         smoke=ifelse(cigarettes_per_day>0, 
+                            "Yes", "No")
+  )
+
+tcga_rna_wgs$barrettsid<-tcga_rna_wgs$`Barrett's Esophagus Reported`
+
+barrettsid=tcga_rna_wgs %>%
+  group_by(sample_type, barrettsid)%>%
+  summarize(N=n())%>%
+  ungroup(barrettsid)%>%
+  mutate(p=N/sum(N))
+barrettsid
+
+smoke2=tcga_rna_wgs %>%
+  group_by(sample_type, smoke)%>%
+  summarize(N=n())%>%
+  ungroup(smoke)%>%
+  mutate(p=N/sum(N))
+smoke2
+
+stage2=tcga_rna_wgs %>%
+  group_by(sample_type, tumor_stage)%>%
+  summarize(N=n())%>%
+  ungroup(tumor_stage)%>%
+  mutate(p=N/sum(N))
+stage2
+
+survival2=tcga_rna_wgs %>%
+  group_by(sample_type)%>%
+  filter(days_to_death!="NA")%>%
+  summarize(mean=mean(days_to_death),
+            sd=sd(days_to_death))
+survival2
+
+tcga_rna_wgs=tcga_rna_wgs %>%
+  mutate(bmicat2=0,
+         bmicat2=ifelse(bmi="NA",
+                            "unknown",
+                            bmicat2),
+         bmicat2=ifelse(bmi<18.5,
+                            "underweight",
+                            bmicat2),
+         bmicat2=ifelse(bmi>=18.5 & bmi<=24.9,
+                            "normal",
+                            bmicat2),
+         bmicat2=ifelse(bmi>=25.0 & bmi<=29.9,
+                            "overweight",
+                            bmicat2),
+         bmicat2=ifelse(bmi>=30.0,
+                            "obese",
+                            bmicat2)
+  )
+table(tcga_rna_wgs$bmicat2)
+```
