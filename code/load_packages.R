@@ -27,13 +27,13 @@ if(!requireNamespace("phyloseq", quietly=T)){
   BiocManager::install("phyloseq")
 }
 
-
 # list of packages
 packages <- c("phyloseq","vegan", "lme4", "lmerTest",
               "tidyverse", "readr", "readxl", "forcats",
               "data.table", "ggplot2",
               "kableExtra", "xtable", "gridExtra", "viridis",
-              "patchwork", "gvlma", "car", "dplyr", "stringr")
+              "patchwork", "gvlma", "car", "dplyr", "stringr",
+              "reshape2", "ggdendro", "dendextend", "cowplot")
 new.packages <- packages[!(packages %in% installed.packages()[,"Package"])]
 if(length(new.packages)) install.packages(new.packages, quiet = T, dependencies = T)
 # Load packages

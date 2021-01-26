@@ -25,7 +25,13 @@ Welcome to our research website.
 
 *[RNAscope test](data-check-for-RNAscope.html)
 
+
 # Specific Questions for Update
+
+## Slide Figures 
+
+*[Slides for Updates with Figures Heatmaps with Dendrograms](slide-figures-heatmaps-dendrograms-updates.html)
+
 
 ## Q1: is there a taxonomic signature shared between the barrett's samples?
 

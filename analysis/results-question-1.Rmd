@@ -17,6 +17,9 @@ Q1: is there a taxonomic signature shared between the barrett's samples?
 * Stacked bar chart of phylum and genus abundance by sample type, same as above
 * Additional comparison in TCGA; EAC w/history of Barrett's vs EAC w/ no history of Barrett's; same analyses as above
 
+**FILE HAS BEEN DEPRICATED**
+
+
 ```{r data, include=FALSE, echo=FALSE, warning=F, error=F, message=F}
 # load packages
 source("code/load_packages.R")
@@ -341,592 +344,591 @@ table(dat$Barrett.s.Esophagus.Reported)
 
 ```
 
-# Heatmaps
-
-5% RA >= per individual
-
-## All OTUs (RA > X)
-
-```{r heatmap-nci-genus, out.height="300%", out.width="300%"}
-
-plot.dat <- dat.16s %>% filter(sample_type != "0", Abundance > 0.01) %>%
-  mutate(ID = as.factor(accession.number),
-         Genus = substr(Genus, 4, 1000),
-         Phylum = substr(Phylum, 4, 1000)) %>%
-  select(sample_type, Phylum, Genus, ID, Abundance)
-plot.dat <- na.omit(plot.dat) 
-
-a <- plot.dat %>%
-  expand(ID, sample_type, Genus)
-
-a$Abundance <- 0
-
-plot.dat <- full_join(plot.dat, a)
-
-# For the full dendrogram
-library(plyr)
-library(reshape2)
-library(dplyr)
-library(ggplot2)
-library(ggdendro)
-library(gridExtra)
-library(dendextend)
-
-set.seed(10)
-
-# The source data
-mat <- matrix(rnorm(24 * 10, mean = 1, sd = 2), 
-              nrow = 24, ncol = 10, 
-              dimnames = list(paste("g", 1:24, sep = ""), 
-                              paste("sample", 1:10, sep = "")))
-
-sample_names <- colnames(mat)
-
-# Obtain the dendrogram
-dend <- as.dendrogram(hclust(dist(mat)))
-dend_data <- dendro_data(dend)
-
-# Setup the data, so that the layout is inverted (this is more 
-# "clear" than simply using coord_flip())
-segment_data <- with(
-    segment(dend_data), 
-    data.frame(x = y, y = x, xend = yend, yend = xend))
-# Use the dendrogram label data to position the gene labels
-gene_pos_table <- with(
-    dend_data$labels, 
-    data.frame(y_center = x, gene = as.character(label), height = 1))
-
-# Table to position the samples
-sample_pos_table <- data.frame(sample = sample_names) %>%
-    mutate(x_center = (1:n()), 
-           width = 1)
-
-# Neglecting the gap parameters
-heatmap_data <- mat %>% 
-    reshape2::melt(value.name = "expr", varnames = c("gene", "sample")) %>%
-    left_join(gene_pos_table) %>%
-    left_join(sample_pos_table)
-
-# Limits for the vertical axes
-gene_axis_limits <- with(
-    gene_pos_table, 
-    c(min(y_center - 0.5 * height), max(y_center + 0.5 * height))
-) + 
-    0.1 * c(-1, 1) # extra spacing: 0.1
-
-# Heatmap plot
-plt_hmap <- ggplot(heatmap_data, 
-                   aes(x = x_center, y = y_center, fill = expr, 
-                       height = height, width = width)) + 
-    geom_tile() +
-    scale_fill_gradient2("expr", high = "darkred", low = "darkblue") +
-    scale_x_continuous(breaks = sample_pos_table$x_center, 
-                       labels = sample_pos_table$sample, 
-                       expand = c(0, 0)) + 
-    # For the y axis, alternatively set the labels as: gene_position_table$gene
-    scale_y_continuous(breaks = gene_pos_table[, "y_center"], 
-                       labels = rep("", nrow(gene_pos_table)),
-                       limits = gene_axis_limits, 
-                       expand = c(0, 0)) + 
-    labs(x = "Sample", y = "") +
-    theme_bw() +
-    theme(axis.text.x = element_text(size = rel(1), hjust = 1, angle = 45), 
-          # margin: top, right, bottom, and left
-          plot.margin = unit(c(1, 0.2, 0.2, -0.7), "cm"), 
-          panel.grid.minor = element_blank())
-
-# Dendrogram plot
-plt_dendr <- ggplot(segment_data) + 
-    geom_segment(aes(x = x, y = y, xend = xend, yend = yend)) + 
-    scale_x_reverse(expand = c(0, 0.5)) + 
-    scale_y_continuous(breaks = gene_pos_table$y_center, 
-                       labels = gene_pos_table$gene, 
-                       limits = gene_axis_limits, 
-                       expand = c(0, 0)) + 
-    labs(x = "Distance", y = "", colour = "", size = "") +
-    theme_bw() + 
-    theme(panel.grid.minor = element_blank())
-
-library(cowplot)
-plot_grid(plt_dendr, plt_hmap, align = 'h', rel_widths = c(1, 1))
-
-# dendrogram
-library("ggdendro")
-
-# widen plot.dat for dendro
-dat.wide <- plot.dat %>%
-  mutate(
-    ID = paste0(ID, "_",sample_type)
-  ) %>%
-  select(ID, Genus, Abundance) %>%
-  pivot_wider(
-    id_cols = Genus,
-    names_from = ID,
-    values_from = Abundance,
-    values_fill = 0
-  )
-rn <- dat.wide$Genus
-dat.wide <- as.matrix(dat.wide[,-1])
-rownames(dat.wide) <- rn
-
-hc <- hclust(dist(dat.wide), "ave")
-
-
-heatmaply(dat.wide,)
-
-p <- ggdendrogram(hc, rotate = TRUE)
-p <- p + theme(axis.text.x = element_blank(),
-               axis.text.y = element_blank())
-p
-# extract genus order
-bugorder <- hc$labels[hc$order]
-
-plot.dat$Genus <- factor(
-  plot.dat$Genus,
-  levels=bugorder,
-  ordered=T)
-
-p1 <- ggplot(plot.dat, aes(x = ID, y = Genus, fill = Abundance)) +
-  geom_tile()+
-  labs(title="NCI 16s Data", subtitle = "Genus Level Data",
-       x = "ID/Accession Number") +
-  facet_grid(.~sample_type, scales="free")+
-  scale_fill_gradient(low="white", high="black", trans="sqrt", limits=c(0, 0.5)) +
-  theme_classic()+
-  theme(
-    axis.text.x = element_text(angle = 90, hjust = 1, vjust=0.5),
-    strip.text.y = element_text(angle = 0),
-    legend.position = "bottom"
-  )
-p1 + p + plot_layout(guides='collect') &
-  theme(legend.position='bottom')
-ggsave("data/heatmap_nci16s_genus_slide5.pdf", p1, units="in", height=23, width=16)
-
-```
-
-```{r heatmap-nci-genus, out.height="300%", out.width="300%"}
-
-plot.dat <- dat.16s %>% filter(sample_type != "0", Abundance > 0.05) %>%
-  mutate(ID = as.factor(accession.number),
-         Genus = substr(Genus, 4, 1000),
-         Phylum = substr(Phylum, 4, 1000)) %>%
-  select(sample_type, Phylum, Genus, ID, Abundance)
-plot.dat <- na.omit(plot.dat) 
-  
-p1 <- ggplot(plot.dat, aes(x = ID, y = Genus, fill = Abundance)) +
-  geom_tile()+
-  labs(title="NCI 16s Data",
-       subtitle = "Genus Level Data",
-       x = "ID/Accession Number") +
-  facet_grid(.~sample_type, scales="free")+
-  scale_fill_gradient(low="white", high="black", trans="sqrt", limits=c(0, 0.5)) +
-  theme_classic()+
-  theme(
-    axis.text.x = element_text(angle = 90, hjust = 1, vjust=0.5),
-    strip.text.y = element_text(angle = 0)
-  )
-p1
-ggsave("data/heatmap_nci16s_genus_slide6.pdf", p1, units="in", height=23, width=16)
-
-```
-
-```{r heatmap-nci-phylum, out.height="1000%", out.width="400%"}
-
-plot.dat <- dat.16s %>% filter(sample_type != "0") %>%
-  mutate(ID = as.factor(accession.number),
-         Genus = substr(Genus, 4, 1000),
-         Phylum = substr(Phylum, 4, 1000)) %>%
-  select(sample_type, Phylum, Genus, ID, Abundance)
-plot.dat <- na.omit(plot.dat) 
-  
-p1 <- ggplot(plot.dat, aes(x = ID, y = Phylum, fill = Abundance)) +
-  geom_tile()+
-  labs(title="NCI 16s Data", subtitle = "Phylum Level Data",
-       x = "ID/Accession Number") +
-  facet_grid(.~sample_type, scales="free")+
-  scale_fill_gradient(low="white", high="black", trans="sqrt", limits=c(0, 0.5)) +
-  theme_classic()+
-  theme(
-    axis.text.x = element_text(angle = 90, hjust = 1, vjust=0.5),
-    strip.text.y = element_text(angle = 0)
-  )
-p1
-
-#ggsave("data/heatmap_nci16s_phylum.pdf", p1, units="in", height=10, width=16)
-
-```
-
-
-```{r heatmap-tcga-rna-genus, out.height="300%", out.width="300%"}
-
-plot.dat <- dat.rna %>% filter(sample_type != "0", Abundance > 0.05) %>%
-  select(sample_type, Phylum, Genus, Patient_ID, Abundance)
-plot.dat <- na.omit(plot.dat) 
-
-p1 <- ggplot(plot.dat, aes(x = Patient_ID, y = Genus, fill = Abundance)) +
-  geom_tile()+
-  labs(title="TCGA RNAseq Data", subtitle = "Genus Level Data",
-       x = "ID/Accession Number") +
-  facet_grid(.~sample_type, scales="free")+
-  scale_fill_gradient(low="white", high="black", trans="sqrt", limits=c(0, 0.5)) +
-  theme_classic()+
-  theme(
-    axis.text.x = element_text(angle = 90, hjust = 1, vjust=0.5),
-    strip.text.y = element_text(angle = 0)
-  )
-p1
-#ggsave("data/heatmap_tcgarna_genus.pdf", p1, units="in", height=23, width=16)
-
-```
-
-```{r heatmap-tcga-rna-phylum, out.height="1000%", out.width="400%"}
-
-plot.dat <- dat.rna %>% filter(sample_type != "0") %>%
-  select(sample_type, Phylum, Genus, Patient_ID, Abundance)
-plot.dat <- na.omit(plot.dat) 
-  
-p1 <- ggplot(plot.dat, aes(x = Patient_ID, y = Phylum, fill = Abundance)) +
-  geom_tile()+
-  labs(title="NCI 16s Data", subtitle = "Phylum Level Data",
-       x = "ID/Accession Number") +
-  facet_grid(.~sample_type, scales="free")+
-  scale_fill_gradient(low="white", high="black", trans="sqrt", limits=c(0, 0.5)) +
-  theme_classic()+
-  theme(
-    axis.text.x = element_text(angle = 90, hjust = 1, vjust=0.5),
-    strip.text.y = element_text(angle = 0)
-  )
-p1
-```
-
-
-```{r heatmap-tcga-wgs-genus, out.height="300%", out.width="300%"}
-
-plot.dat <- dat.wgs %>% filter(sample_type != "0", Abundance > 0.001) %>%
-  select(sample_type, Phylum, Genus, Patient_ID, Abundance)
-plot.dat <- na.omit(plot.dat) 
-
-p1 <- ggplot(plot.dat, aes(x = Patient_ID, y = Genus, fill = Abundance)) +
-  geom_tile()+
-  labs(title="NCI 16s Data", subtitle = "Genus Level Data",
-       x = "ID/Accession Number") +
-  facet_grid(.~sample_type, scales="free")+
-  scale_fill_gradient(low="white", high="black", trans="sqrt", limits=c(0, 0.5)) +
-  theme_classic()+
-  theme(
-    axis.text.x = element_text(angle = 90, hjust = 1, vjust=0.5),
-    strip.text.y = element_text(angle = 0)
-  )
-p1
-#ggsave("data/heatmap_nci16s_genus.pdf", p1, units="in", height=23, width=16)
-
-```
-
-```{r heatmap-tcga-wgs-phylum, out.height="1000%", out.width="400%"}
-
-plot.dat <- dat.wgs %>% filter(sample_type != "0") %>%
-  select(sample_type, Phylum, Genus, Patient_ID, Abundance)
-plot.dat <- na.omit(plot.dat) 
-  
-p1 <- ggplot(plot.dat, aes(x = Patient_ID, y = Phylum, fill = Abundance)) +
-  geom_tile()+
-  labs(title="NCI 16s Data", subtitle = "Phylum Level Data",
-       x = "ID/Accession Number") +
-  facet_grid(.~sample_type, scales="free")+
-  scale_fill_gradient(low="white", high="black", trans="sqrt", limits=c(0, 0.5)) +
-  theme_classic()+
-  theme(
-    axis.text.x = element_text(angle = 90, hjust = 1, vjust=0.5),
-    strip.text.y = element_text(angle = 0)
-  )
-p1
-```
-
-
-## Specific OTUs
-
-```{r heatmap-nci-otu, out.height="300%", out.width="300%"}
-
-plot.dat <- dat.16s.s %>% filter(sample_type != "0") %>%
-  mutate(ID = as.factor(accession.number),
-         Genus = substr(Genus, 4, 1000),
-         Phylum = substr(Phylum, 4, 1000)) %>%
-  select(sample_type, Phylum, Genus, OTU, ID, Abundance)
-plot.dat <- na.omit(plot.dat) 
-  
-p1 <- ggplot(plot.dat, aes(x = ID, y = OTU, fill = Abundance)) +
-  geom_tile()+
-  labs(title="NCI 16s Data", y=NULL,
-       x = "ID/Accession Number") +
-  facet_grid(.~sample_type, scales="free")+
-  scale_fill_gradient(low="white", high="black", trans="sqrt", limits=c(0, 0.5)) +
-  theme_classic()+
-  theme(
-    axis.text.x = element_text(angle = 90, hjust = 1, vjust=0.5),
-    strip.text.y = element_text(angle = 0)
-  )
-p1
-
-```
-
-
-```{r heatmap-tcgarna, out.height="300%", out.width="300%"}
-
-plot.dat <- dat.rna.s %>% filter(sample_type != "0", is.na(OTU1) == F) %>%
-  select(sample_type, Phylum, Genus, OTU, Patient_ID, Abundance)
-plot.dat <- na.omit(plot.dat) 
-  
-p1 <- ggplot(plot.dat, aes(x = Patient_ID, y = OTU, fill = Abundance)) +
-  geom_tile()+
-  labs(title="TCGA RNAseq Data", y=NULL,
-       x = "ID/Accession Number") +
-  facet_grid(.~sample_type, scales="free")+
-  scale_fill_gradient(low="white", high="black", trans="sqrt", limits=c(0, 0.5)) +
-  theme_classic()+
-  theme(
-    axis.text.x = element_text(angle = 90, hjust = 1, vjust=0.5),
-    strip.text.y = element_text(angle = 0)
-  )
-p1
-```
-
-
-```{r heatmap-tcgawgs, out.height="100%", out.width="400%"}
-
-plot.dat <- dat.wgs.s %>% filter(sample_type != "0", is.na(OTU1) == F) %>%
-  select(sample_type, Phylum, Genus, OTU, Patient_ID, Abundance)
-plot.dat <- na.omit(plot.dat) 
-  
-p1 <- ggplot(plot.dat, aes(x = Patient_ID, y = OTU, fill = Abundance)) +
-  geom_tile()+
-  labs(title="TCGA WGS Data", y=NULL,
-       x = "ID/Accession Number") +
-  facet_grid(.~sample_type, scales="free")+
-  scale_fill_gradient(low="white", high="black", trans="sqrt", limits=c(0, 0.5)) +
-  theme_classic()+
-  theme(
-    axis.text.x = element_text(angle = 90, hjust = 1, vjust=0.5),
-    strip.text.y = element_text(angle = 0)
-  )
-p1
-```
-
-
-# Stacked Bar Charts
-
-
-## All OTUs (RA > 0.001)
-
-```{r bar-nci-genus, out.height="300%", out.width="300%"}
-
-plot.dat <- dat.16s %>% filter(sample_type != "0", Abundance > 0.01 ) %>%
-  mutate(ID = as.factor(accession.number),
-         Genus = substr(Genus, 4, 1000),
-         Phylum = substr(Phylum, 4, 1000))%>%
-  dplyr::group_by(sample_type, Genus)%>%
-  dplyr::summarise(
-    Abundance = mean(Abundance, na.rm=T)
-  )
-  
-p1 <- ggplot(plot.dat, aes(x=sample_type, y = Abundance, fill=Genus)) +
-  geom_bar(stat="identity")+
-  labs(title="NCI 16s Data",
-       subtitle = "Genus Level Data",
-       x = "Tissue Group",
-       y="Average Relative Abundance") +
-  theme_classic()+
-  theme(legend.position = "none")
-p1
-
-```
-
-TOO MANY LEVELS FOR IT TO MAKE SENSE
-
-
-```{r bar-nci-phylum, out.height="1000%", out.width="400%"}
-
-plot.dat <- dat.16s %>% filter(sample_type != "0") %>%
-  mutate(ID = as.factor(accession.number),
-         Genus = substr(Genus, 4, 1000),
-         Phylum = substr(Phylum, 4, 1000))%>%
-  dplyr::group_by(sample_type, Phylum)%>%
-  dplyr::summarise(
-    Abundance = mean(Abundance, na.rm=T)
-  )
-  
-p1 <- ggplot(plot.dat, aes(x=sample_type, y = Abundance, fill=Phylum)) +
-  geom_bar(stat="identity")+
-  labs(title="NCI 16s Data",
-       subtitle = "Phylum Level Data",
-       x = "Tissue Group",
-       y="Average Relative Abundance") +
-  theme_classic()
-
-p1 
-
-```
-
-
-```{r bar-tcga-rna-genus, out.height="300%", out.width="300%"}
-
-plot.dat <- dat.rna %>% filter(sample_type != "0", Abundance > 0.001)%>%
-  dplyr::group_by(sample_type, Genus)%>%
-  dplyr::summarise(
-    Abundance = mean(Abundance, na.rm=T)
-  )
-
-p1 <- ggplot(plot.dat, aes(x=sample_type, y = Abundance, fill=Genus)) +
-  geom_bar(stat="identity")+
-  labs(title="TCGA RNAseq Data",
-       subtitle = "Genus Level Data",
-       x = "Tissue Group",
-       y="Average Relative Abundance") +
-  theme_classic()
-p1
-#ggsave("data/bar_tcgarna_genus.pdf", p1, units="in", height=23, width=16)
-
-```
-
-```{r bar-tcga-rna-phylum, out.height="1000%", out.width="400%"}
-
-plot.dat <- dat.rna %>% filter(sample_type != "0")%>%
-  dplyr::group_by(sample_type, Phylum)%>%
-  dplyr::summarise(
-    Abundance = mean(Abundance, na.rm=T)
-  )
-  
-p1 <- ggplot(plot.dat, aes(x=sample_type, y = Abundance, fill=Phylum)) +
-  geom_bar(stat="identity")+
-  labs(title="TCGA RNAseq Data",
-       subtitle = "Phylum Level Data",
-       x = "Tissue Group",
-       y="Average Relative Abundance") +
-  theme_classic()
-p1
-```
-
-
-```{r bar-tcga-wgs-genus, out.height="300%", out.width="300%"}
-
-plot.dat <- dat.wgs %>% filter(sample_type != "0", Abundance > 0.001)%>%
-  dplyr::group_by(sample_type, Genus)%>%
-  dplyr::summarise(
-    Abundance = mean(Abundance, na.rm=T)
-  )
-
-p1 <- ggplot(plot.dat, aes(x=sample_type, y = Abundance, fill=Genus)) +
-  geom_bar(stat="identity")+
-  labs(title="TCGA WGS Data",
-       subtitle = "Genus Level Data",
-       x = "Tissue Group",
-       y="Average Relative Abundance") +
-  theme_classic()
-p1
-
-```
-
-```{r bar-tcga-wgs-phylum, out.height="1000%", out.width="400%"}
-
-plot.dat <- dat.wgs %>% filter(sample_type != "0")%>%
-  dplyr::group_by(sample_type, Phylum)%>%
-  dplyr::summarise(
-    Abundance = mean(Abundance, na.rm=T)
-  )
-  
-p1 <- ggplot(plot.dat, aes(x=sample_type, y = Abundance, fill=Phylum)) +
-  geom_bar(stat="identity")+
-  labs(title="TCGA WGS Data",
-       subtitle = "Phylum Level Data",
-       x = "Tissue Group",
-       y="Average Relative Abundance") +
-  theme_classic()
-p1
-```
-
-
-## Specific OTUs
-
-```{r bar-nci-otu, out.height="300%", out.width="300%"}
-
-plot.dat <- dat.16s.s %>% filter(sample_type != "0") %>%
-  mutate(ID = as.factor(accession.number),
-         Genus = substr(Genus, 4, 1000),
-         Phylum = substr(Phylum, 4, 1000))%>%
-  dplyr::group_by(sample_type, OTU1)%>%
-  dplyr::summarise(
-    Abundance = mean(Abundance, na.rm=T)
-  )
-  
-p1 <- ggplot(plot.dat, aes(x=sample_type, y = Abundance, fill=OTU1)) +
-  geom_bar(stat="identity")+
-  labs(title="NCI 16s Data",
-       x = "Tissue Group",
-       y="Average Relative Abundance") +
-  theme_classic()+
-  theme(
-    axis.text.x = element_text(angle=30, vjust=0.95, hjust=0.9),
-    legend.title = element_blank()
-  )
-p1
-
-#ggsave("output/slide-11-bar.pdf", plot=p1, units="in", width=8, height=5)
-#ggsave("output/slide-11-bar.png", plot=p1, units="in", width=8, height=5)
-
-
-```
-
-
-```{r bar-tcgarna, out.height="300%", out.width="300%"}
-
-plot.dat <- dat.rna.s %>% filter(sample_type != "0", is.na(OTU1) == F)%>%
-  dplyr::group_by(sample_type, OTU1)%>%
-  dplyr::summarise(
-    Abundance = mean(Abundance, na.rm=T)
-  )
-  
-p1 <- ggplot(plot.dat, aes(x=sample_type, y = Abundance, fill=OTU1)) +
-  geom_bar(stat="identity")+
-  labs(title="TCGA RNAseq Data",
-       x = "Tissue Group",
-       y="Average Relative Abundance") +
-  theme_classic() +
-  theme(
-    axis.text.x = element_text(angle=30, vjust=0.95, hjust=0.9),
-    legend.title = element_blank()
-  )
-p1
-
-#ggsave("output/slide-12-bar.pdf", plot=p1, units="in", width=8, height=5)
-#ggsave("output/slide-12-bar.png", plot=p1, units="in", width=8, height=5)
-
-```
-
-
-```{r bar-tcgawgs, out.height="100%", out.width="400%"}
-
-plot.dat <- dat.wgs.s %>% filter(sample_type != "0", is.na(OTU1) == F)%>%
-  dplyr::group_by(sample_type, OTU1)%>%
-  dplyr::summarise(
-    Abundance = mean(Abundance, na.rm=T)
-  )
-  
-p1 <- ggplot(plot.dat, aes(x=sample_type, y = Abundance, fill=OTU1)) +
-  geom_bar(stat="identity")+
-  labs(title="TCGA WGS Data",
-       x = "Tissue Group",
-       y="Average Relative Abundance") +
-  scale_y_continuous(trans="sqrt", breaks=c(0,0.01, 0.1, 0.2, 0.4, 0.6))+
-  theme_classic() +
-  theme(
-    axis.text.x = element_text(angle=30, vjust=0.95, hjust=0.9),
-    legend.title = element_blank()
-  )
-p1
-
-ggsave("output/slide-13-bar.pdf", plot=p1, units="in", width=8, height=5)
-ggsave("output/slide-13-bar.png", plot=p1, units="in", width=8, height=5)
-
-```
+<!-- # Heatmaps -->
+
+<!-- 5% RA >= per individual -->
+
+<!-- ## All OTUs (RA > X) -->
+
+<!-- ```{r heatmap-nci-genus-1, out.height="300%", out.width="300%"} -->
+
+<!-- plot.dat <- dat.16s %>% filter(sample_type != "0", Abundance > 0.01) %>% -->
+<!--   mutate(ID = as.factor(accession.number), -->
+<!--          Genus = substr(Genus, 4, 1000), -->
+<!--          Phylum = substr(Phylum, 4, 1000)) %>% -->
+<!--   select(sample_type, Phylum, Genus, ID, Abundance) -->
+<!-- plot.dat <- na.omit(plot.dat)  -->
+
+<!-- a <- plot.dat %>% -->
+<!--   expand(ID, sample_type, Genus) -->
+
+<!-- a$Abundance <- 0 -->
+
+<!-- plot.dat <- full_join(plot.dat, a) -->
+
+<!-- # For the full dendrogram -->
+<!-- library(plyr) -->
+<!-- library(reshape2) -->
+<!-- library(dplyr) -->
+<!-- library(ggplot2) -->
+<!-- library(ggdendro) -->
+<!-- library(gridExtra) -->
+<!-- library(dendextend) -->
+
+<!-- set.seed(10) -->
+
+<!-- # The source data -->
+<!-- mat <- matrix(rnorm(24 * 10, mean = 1, sd = 2),  -->
+<!--               nrow = 24, ncol = 10,  -->
+<!--               dimnames = list(paste("g", 1:24, sep = ""),  -->
+<!--                               paste("sample", 1:10, sep = ""))) -->
+
+<!-- sample_names <- colnames(mat) -->
+
+<!-- # Obtain the dendrogram -->
+<!-- dend <- as.dendrogram(hclust(dist(mat))) -->
+<!-- dend_data <- dendro_data(dend) -->
+
+<!-- # Setup the data, so that the layout is inverted (this is more  -->
+<!-- # "clear" than simply using coord_flip()) -->
+<!-- segment_data <- with( -->
+<!--     segment(dend_data),  -->
+<!--     data.frame(x = y, y = x, xend = yend, yend = xend)) -->
+<!-- # Use the dendrogram label data to position the gene labels -->
+<!-- gene_pos_table <- with( -->
+<!--     dend_data$labels,  -->
+<!--     data.frame(y_center = x, gene = as.character(label), height = 1)) -->
+
+<!-- # Table to position the samples -->
+<!-- sample_pos_table <- data.frame(sample = sample_names) %>% -->
+<!--     dplyr::mutate(x_center = (1:n()), width = 1) -->
+
+<!-- # Neglecting the gap parameters -->
+<!-- heatmap_data <- mat %>%  -->
+<!--     reshape2::melt(value.name = "expr", varnames = c("gene", "sample")) %>% -->
+<!--     left_join(gene_pos_table) %>% -->
+<!--     left_join(sample_pos_table) -->
+
+<!-- # Limits for the vertical axes -->
+<!-- gene_axis_limits <- with( -->
+<!--     gene_pos_table,  -->
+<!--     c(min(y_center - 0.5 * height), max(y_center + 0.5 * height)) -->
+<!-- ) +  -->
+<!--     0.1 * c(-1, 1) # extra spacing: 0.1 -->
+
+<!-- # Heatmap plot -->
+<!-- plt_hmap <- ggplot(heatmap_data,  -->
+<!--                    aes(x = x_center, y = y_center, fill = expr,  -->
+<!--                        height = height, width = width)) +  -->
+<!--     geom_tile() + -->
+<!--     scale_fill_gradient2("expr", high = "darkred", low = "darkblue") + -->
+<!--     scale_x_continuous(breaks = sample_pos_table$x_center,  -->
+<!--                        labels = sample_pos_table$sample,  -->
+<!--                        expand = c(0, 0)) +  -->
+<!--     # For the y axis, alternatively set the labels as: gene_position_table$gene -->
+<!--     scale_y_continuous(breaks = gene_pos_table[, "y_center"],  -->
+<!--                        labels = rep("", nrow(gene_pos_table)), -->
+<!--                        limits = gene_axis_limits,  -->
+<!--                        expand = c(0, 0)) +  -->
+<!--     labs(x = "Sample", y = "") + -->
+<!--     theme_bw() + -->
+<!--     theme(axis.text.x = element_text(size = rel(1), hjust = 1, angle = 45),  -->
+<!--           # margin: top, right, bottom, and left -->
+<!--           plot.margin = unit(c(1, 0.2, 0.2, -0.7), "cm"),  -->
+<!--           panel.grid.minor = element_blank()) -->
+
+<!-- # Dendrogram plot -->
+<!-- plt_dendr <- ggplot(segment_data) +  -->
+<!--     geom_segment(aes(x = x, y = y, xend = xend, yend = yend)) +  -->
+<!--     scale_x_reverse(expand = c(0, 0.5)) +  -->
+<!--     scale_y_continuous(breaks = gene_pos_table$y_center,  -->
+<!--                        labels = gene_pos_table$gene,  -->
+<!--                        limits = gene_axis_limits,  -->
+<!--                        expand = c(0, 0)) +  -->
+<!--     labs(x = "Distance", y = "", colour = "", size = "") + -->
+<!--     theme_bw() +  -->
+<!--     theme(panel.grid.minor = element_blank()) -->
+
+<!-- library(cowplot) -->
+<!-- plot_grid(plt_dendr, plt_hmap, align = 'h', rel_widths = c(1, 1)) -->
+
+<!-- # dendrogram -->
+<!-- library("ggdendro") -->
+
+<!-- # widen plot.dat for dendro -->
+<!-- dat.wide <- plot.dat %>% -->
+<!--   mutate( -->
+<!--     ID = paste0(ID, "_",sample_type) -->
+<!--   ) %>% -->
+<!--   select(ID, Genus, Abundance) %>% -->
+<!--   pivot_wider( -->
+<!--     id_cols = Genus, -->
+<!--     names_from = ID, -->
+<!--     values_from = Abundance, -->
+<!--     values_fill = 0 -->
+<!--   ) -->
+<!-- rn <- dat.wide$Genus -->
+<!-- dat.wide <- as.matrix(dat.wide[,-1]) -->
+<!-- rownames(dat.wide) <- rn -->
+
+<!-- hc <- hclust(dist(dat.wide), "ave") -->
+
+
+<!-- heatmaply(dat.wide,) -->
+
+<!-- p <- ggdendrogram(hc, rotate = TRUE) -->
+<!-- p <- p + theme(axis.text.x = element_blank(), -->
+<!--                axis.text.y = element_blank()) -->
+<!-- p -->
+<!-- # extract genus order -->
+<!-- bugorder <- hc$labels[hc$order] -->
+
+<!-- plot.dat$Genus <- factor( -->
+<!--   plot.dat$Genus, -->
+<!--   levels=bugorder, -->
+<!--   ordered=T) -->
+
+<!-- p1 <- ggplot(plot.dat, aes(x = ID, y = Genus, fill = Abundance)) + -->
+<!--   geom_tile()+ -->
+<!--   labs(title="NCI 16s Data", subtitle = "Genus Level Data", -->
+<!--        x = "ID/Accession Number") + -->
+<!--   facet_grid(.~sample_type, scales="free")+ -->
+<!--   scale_fill_gradient(low="white", high="black", trans="sqrt", limits=c(0, 0.5)) + -->
+<!--   theme_classic()+ -->
+<!--   theme( -->
+<!--     axis.text.x = element_text(angle = 90, hjust = 1, vjust=0.5), -->
+<!--     strip.text.y = element_text(angle = 0), -->
+<!--     legend.position = "bottom" -->
+<!--   ) -->
+<!-- p1 + p + plot_layout(guides='collect') & -->
+<!--   theme(legend.position='bottom') -->
+<!-- #ggsave("data/heatmap_nci16s_genus_slide5.pdf", p1, units="in", height=23, width=16) -->
+
+<!-- ``` -->
+
+<!-- ```{r heatmap-nci-genus-2, out.height="300%", out.width="300%"} -->
+
+<!-- plot.dat <- dat.16s %>% filter(sample_type != "0", Abundance > 0.05) %>% -->
+<!--   mutate(ID = as.factor(accession.number), -->
+<!--          Genus = substr(Genus, 4, 1000), -->
+<!--          Phylum = substr(Phylum, 4, 1000)) %>% -->
+<!--   select(sample_type, Phylum, Genus, ID, Abundance) -->
+<!-- plot.dat <- na.omit(plot.dat)  -->
+
+<!-- p1 <- ggplot(plot.dat, aes(x = ID, y = Genus, fill = Abundance)) + -->
+<!--   geom_tile()+ -->
+<!--   labs(title="NCI 16s Data", -->
+<!--        subtitle = "Genus Level Data", -->
+<!--        x = "ID/Accession Number") + -->
+<!--   facet_grid(.~sample_type, scales="free")+ -->
+<!--   scale_fill_gradient(low="white", high="black", trans="sqrt", limits=c(0, 0.5)) + -->
+<!--   theme_classic()+ -->
+<!--   theme( -->
+<!--     axis.text.x = element_text(angle = 90, hjust = 1, vjust=0.5), -->
+<!--     strip.text.y = element_text(angle = 0) -->
+<!--   ) -->
+<!-- p1 -->
+<!-- ggsave("data/heatmap_nci16s_genus_slide6.pdf", p1, units="in", height=23, width=16) -->
+
+<!-- ``` -->
+
+<!-- ```{r heatmap-nci-phylum, out.height="1000%", out.width="400%"} -->
+
+<!-- plot.dat <- dat.16s %>% filter(sample_type != "0") %>% -->
+<!--   mutate(ID = as.factor(accession.number), -->
+<!--          Genus = substr(Genus, 4, 1000), -->
+<!--          Phylum = substr(Phylum, 4, 1000)) %>% -->
+<!--   select(sample_type, Phylum, Genus, ID, Abundance) -->
+<!-- plot.dat <- na.omit(plot.dat)  -->
+
+<!-- p1 <- ggplot(plot.dat, aes(x = ID, y = Phylum, fill = Abundance)) + -->
+<!--   geom_tile()+ -->
+<!--   labs(title="NCI 16s Data", subtitle = "Phylum Level Data", -->
+<!--        x = "ID/Accession Number") + -->
+<!--   facet_grid(.~sample_type, scales="free")+ -->
+<!--   scale_fill_gradient(low="white", high="black", trans="sqrt", limits=c(0, 0.5)) + -->
+<!--   theme_classic()+ -->
+<!--   theme( -->
+<!--     axis.text.x = element_text(angle = 90, hjust = 1, vjust=0.5), -->
+<!--     strip.text.y = element_text(angle = 0) -->
+<!--   ) -->
+<!-- p1 -->
+
+<!-- #ggsave("data/heatmap_nci16s_phylum.pdf", p1, units="in", height=10, width=16) -->
+
+<!-- ``` -->
+
+
+<!-- ```{r heatmap-tcga-rna-genus, out.height="300%", out.width="300%"} -->
+
+<!-- plot.dat <- dat.rna %>% filter(sample_type != "0", Abundance > 0.05) %>% -->
+<!--   select(sample_type, Phylum, Genus, Patient_ID, Abundance) -->
+<!-- plot.dat <- na.omit(plot.dat)  -->
+
+<!-- p1 <- ggplot(plot.dat, aes(x = Patient_ID, y = Genus, fill = Abundance)) + -->
+<!--   geom_tile()+ -->
+<!--   labs(title="TCGA RNAseq Data", subtitle = "Genus Level Data", -->
+<!--        x = "ID/Accession Number") + -->
+<!--   facet_grid(.~sample_type, scales="free")+ -->
+<!--   scale_fill_gradient(low="white", high="black", trans="sqrt", limits=c(0, 0.5)) + -->
+<!--   theme_classic()+ -->
+<!--   theme( -->
+<!--     axis.text.x = element_text(angle = 90, hjust = 1, vjust=0.5), -->
+<!--     strip.text.y = element_text(angle = 0) -->
+<!--   ) -->
+<!-- p1 -->
+<!-- #ggsave("data/heatmap_tcgarna_genus.pdf", p1, units="in", height=23, width=16) -->
+
+<!-- ``` -->
+
+<!-- ```{r heatmap-tcga-rna-phylum, out.height="1000%", out.width="400%"} -->
+
+<!-- plot.dat <- dat.rna %>% filter(sample_type != "0") %>% -->
+<!--   select(sample_type, Phylum, Genus, Patient_ID, Abundance) -->
+<!-- plot.dat <- na.omit(plot.dat)  -->
+
+<!-- p1 <- ggplot(plot.dat, aes(x = Patient_ID, y = Phylum, fill = Abundance)) + -->
+<!--   geom_tile()+ -->
+<!--   labs(title="NCI 16s Data", subtitle = "Phylum Level Data", -->
+<!--        x = "ID/Accession Number") + -->
+<!--   facet_grid(.~sample_type, scales="free")+ -->
+<!--   scale_fill_gradient(low="white", high="black", trans="sqrt", limits=c(0, 0.5)) + -->
+<!--   theme_classic()+ -->
+<!--   theme( -->
+<!--     axis.text.x = element_text(angle = 90, hjust = 1, vjust=0.5), -->
+<!--     strip.text.y = element_text(angle = 0) -->
+<!--   ) -->
+<!-- p1 -->
+<!-- ``` -->
+
+
+<!-- ```{r heatmap-tcga-wgs-genus, out.height="300%", out.width="300%"} -->
+
+<!-- plot.dat <- dat.wgs %>% filter(sample_type != "0", Abundance > 0.001) %>% -->
+<!--   select(sample_type, Phylum, Genus, Patient_ID, Abundance) -->
+<!-- plot.dat <- na.omit(plot.dat)  -->
+
+<!-- p1 <- ggplot(plot.dat, aes(x = Patient_ID, y = Genus, fill = Abundance)) + -->
+<!--   geom_tile()+ -->
+<!--   labs(title="NCI 16s Data", subtitle = "Genus Level Data", -->
+<!--        x = "ID/Accession Number") + -->
+<!--   facet_grid(.~sample_type, scales="free")+ -->
+<!--   scale_fill_gradient(low="white", high="black", trans="sqrt", limits=c(0, 0.5)) + -->
+<!--   theme_classic()+ -->
+<!--   theme( -->
+<!--     axis.text.x = element_text(angle = 90, hjust = 1, vjust=0.5), -->
+<!--     strip.text.y = element_text(angle = 0) -->
+<!--   ) -->
+<!-- p1 -->
+<!-- #ggsave("data/heatmap_nci16s_genus.pdf", p1, units="in", height=23, width=16) -->
+
+<!-- ``` -->
+
+<!-- ```{r heatmap-tcga-wgs-phylum, out.height="1000%", out.width="400%"} -->
+
+<!-- plot.dat <- dat.wgs %>% filter(sample_type != "0") %>% -->
+<!--   select(sample_type, Phylum, Genus, Patient_ID, Abundance) -->
+<!-- plot.dat <- na.omit(plot.dat)  -->
+
+<!-- p1 <- ggplot(plot.dat, aes(x = Patient_ID, y = Phylum, fill = Abundance)) + -->
+<!--   geom_tile()+ -->
+<!--   labs(title="NCI 16s Data", subtitle = "Phylum Level Data", -->
+<!--        x = "ID/Accession Number") + -->
+<!--   facet_grid(.~sample_type, scales="free")+ -->
+<!--   scale_fill_gradient(low="white", high="black", trans="sqrt", limits=c(0, 0.5)) + -->
+<!--   theme_classic()+ -->
+<!--   theme( -->
+<!--     axis.text.x = element_text(angle = 90, hjust = 1, vjust=0.5), -->
+<!--     strip.text.y = element_text(angle = 0) -->
+<!--   ) -->
+<!-- p1 -->
+<!-- ``` -->
+
+
+<!-- ## Specific OTUs -->
+
+<!-- ```{r heatmap-nci-otu, out.height="300%", out.width="300%"} -->
+
+<!-- plot.dat <- dat.16s.s %>% filter(sample_type != "0") %>% -->
+<!--   mutate(ID = as.factor(accession.number), -->
+<!--          Genus = substr(Genus, 4, 1000), -->
+<!--          Phylum = substr(Phylum, 4, 1000)) %>% -->
+<!--   select(sample_type, Phylum, Genus, OTU, ID, Abundance) -->
+<!-- plot.dat <- na.omit(plot.dat)  -->
+
+<!-- p1 <- ggplot(plot.dat, aes(x = ID, y = OTU, fill = Abundance)) + -->
+<!--   geom_tile()+ -->
+<!--   labs(title="NCI 16s Data", y=NULL, -->
+<!--        x = "ID/Accession Number") + -->
+<!--   facet_grid(.~sample_type, scales="free")+ -->
+<!--   scale_fill_gradient(low="white", high="black", trans="sqrt", limits=c(0, 0.5)) + -->
+<!--   theme_classic()+ -->
+<!--   theme( -->
+<!--     axis.text.x = element_text(angle = 90, hjust = 1, vjust=0.5), -->
+<!--     strip.text.y = element_text(angle = 0) -->
+<!--   ) -->
+<!-- p1 -->
+
+<!-- ``` -->
+
+
+<!-- ```{r heatmap-tcgarna, out.height="300%", out.width="300%"} -->
+
+<!-- plot.dat <- dat.rna.s %>% filter(sample_type != "0", is.na(OTU1) == F) %>% -->
+<!--   select(sample_type, Phylum, Genus, OTU, Patient_ID, Abundance) -->
+<!-- plot.dat <- na.omit(plot.dat)  -->
+
+<!-- p1 <- ggplot(plot.dat, aes(x = Patient_ID, y = OTU, fill = Abundance)) + -->
+<!--   geom_tile()+ -->
+<!--   labs(title="TCGA RNAseq Data", y=NULL, -->
+<!--        x = "ID/Accession Number") + -->
+<!--   facet_grid(.~sample_type, scales="free")+ -->
+<!--   scale_fill_gradient(low="white", high="black", trans="sqrt", limits=c(0, 0.5)) + -->
+<!--   theme_classic()+ -->
+<!--   theme( -->
+<!--     axis.text.x = element_text(angle = 90, hjust = 1, vjust=0.5), -->
+<!--     strip.text.y = element_text(angle = 0) -->
+<!--   ) -->
+<!-- p1 -->
+<!-- ``` -->
+
+
+<!-- ```{r heatmap-tcgawgs, out.height="100%", out.width="400%"} -->
+
+<!-- plot.dat <- dat.wgs.s %>% filter(sample_type != "0", is.na(OTU1) == F) %>% -->
+<!--   select(sample_type, Phylum, Genus, OTU, Patient_ID, Abundance) -->
+<!-- plot.dat <- na.omit(plot.dat)  -->
+
+<!-- p1 <- ggplot(plot.dat, aes(x = Patient_ID, y = OTU, fill = Abundance)) + -->
+<!--   geom_tile()+ -->
+<!--   labs(title="TCGA WGS Data", y=NULL, -->
+<!--        x = "ID/Accession Number") + -->
+<!--   facet_grid(.~sample_type, scales="free")+ -->
+<!--   scale_fill_gradient(low="white", high="black", trans="sqrt", limits=c(0, 0.5)) + -->
+<!--   theme_classic()+ -->
+<!--   theme( -->
+<!--     axis.text.x = element_text(angle = 90, hjust = 1, vjust=0.5), -->
+<!--     strip.text.y = element_text(angle = 0) -->
+<!--   ) -->
+<!-- p1 -->
+<!-- ``` -->
+
+
+<!-- # Stacked Bar Charts -->
+
+
+<!-- ## All OTUs (RA > 0.001) -->
+
+<!-- ```{r bar-nci-genus, out.height="300%", out.width="300%"} -->
+
+<!-- plot.dat <- dat.16s %>% filter(sample_type != "0", Abundance > 0.01 ) %>% -->
+<!--   mutate(ID = as.factor(accession.number), -->
+<!--          Genus = substr(Genus, 4, 1000), -->
+<!--          Phylum = substr(Phylum, 4, 1000))%>% -->
+<!--   dplyr::group_by(sample_type, Genus)%>% -->
+<!--   dplyr::summarise( -->
+<!--     Abundance = mean(Abundance, na.rm=T) -->
+<!--   ) -->
+
+<!-- p1 <- ggplot(plot.dat, aes(x=sample_type, y = Abundance, fill=Genus)) + -->
+<!--   geom_bar(stat="identity")+ -->
+<!--   labs(title="NCI 16s Data", -->
+<!--        subtitle = "Genus Level Data", -->
+<!--        x = "Tissue Group", -->
+<!--        y="Average Relative Abundance") + -->
+<!--   theme_classic()+ -->
+<!--   theme(legend.position = "none") -->
+<!-- p1 -->
+
+<!-- ``` -->
+
+<!-- TOO MANY LEVELS FOR IT TO MAKE SENSE -->
+
+
+<!-- ```{r bar-nci-phylum, out.height="1000%", out.width="400%"} -->
+
+<!-- plot.dat <- dat.16s %>% filter(sample_type != "0") %>% -->
+<!--   mutate(ID = as.factor(accession.number), -->
+<!--          Genus = substr(Genus, 4, 1000), -->
+<!--          Phylum = substr(Phylum, 4, 1000))%>% -->
+<!--   dplyr::group_by(sample_type, Phylum)%>% -->
+<!--   dplyr::summarise( -->
+<!--     Abundance = mean(Abundance, na.rm=T) -->
+<!--   ) -->
+
+<!-- p1 <- ggplot(plot.dat, aes(x=sample_type, y = Abundance, fill=Phylum)) + -->
+<!--   geom_bar(stat="identity")+ -->
+<!--   labs(title="NCI 16s Data", -->
+<!--        subtitle = "Phylum Level Data", -->
+<!--        x = "Tissue Group", -->
+<!--        y="Average Relative Abundance") + -->
+<!--   theme_classic() -->
+
+<!-- p1  -->
+
+<!-- ``` -->
+
+
+<!-- ```{r bar-tcga-rna-genus, out.height="300%", out.width="300%"} -->
+
+<!-- plot.dat <- dat.rna %>% filter(sample_type != "0", Abundance > 0.001)%>% -->
+<!--   dplyr::group_by(sample_type, Genus)%>% -->
+<!--   dplyr::summarise( -->
+<!--     Abundance = mean(Abundance, na.rm=T) -->
+<!--   ) -->
+
+<!-- p1 <- ggplot(plot.dat, aes(x=sample_type, y = Abundance, fill=Genus)) + -->
+<!--   geom_bar(stat="identity")+ -->
+<!--   labs(title="TCGA RNAseq Data", -->
+<!--        subtitle = "Genus Level Data", -->
+<!--        x = "Tissue Group", -->
+<!--        y="Average Relative Abundance") + -->
+<!--   theme_classic() -->
+<!-- p1 -->
+<!-- #ggsave("data/bar_tcgarna_genus.pdf", p1, units="in", height=23, width=16) -->
+
+<!-- ``` -->
+
+<!-- ```{r bar-tcga-rna-phylum, out.height="1000%", out.width="400%"} -->
+
+<!-- plot.dat <- dat.rna %>% filter(sample_type != "0")%>% -->
+<!--   dplyr::group_by(sample_type, Phylum)%>% -->
+<!--   dplyr::summarise( -->
+<!--     Abundance = mean(Abundance, na.rm=T) -->
+<!--   ) -->
+
+<!-- p1 <- ggplot(plot.dat, aes(x=sample_type, y = Abundance, fill=Phylum)) + -->
+<!--   geom_bar(stat="identity")+ -->
+<!--   labs(title="TCGA RNAseq Data", -->
+<!--        subtitle = "Phylum Level Data", -->
+<!--        x = "Tissue Group", -->
+<!--        y="Average Relative Abundance") + -->
+<!--   theme_classic() -->
+<!-- p1 -->
+<!-- ``` -->
+
+
+<!-- ```{r bar-tcga-wgs-genus, out.height="300%", out.width="300%"} -->
+
+<!-- plot.dat <- dat.wgs %>% filter(sample_type != "0", Abundance > 0.001)%>% -->
+<!--   dplyr::group_by(sample_type, Genus)%>% -->
+<!--   dplyr::summarise( -->
+<!--     Abundance = mean(Abundance, na.rm=T) -->
+<!--   ) -->
+
+<!-- p1 <- ggplot(plot.dat, aes(x=sample_type, y = Abundance, fill=Genus)) + -->
+<!--   geom_bar(stat="identity")+ -->
+<!--   labs(title="TCGA WGS Data", -->
+<!--        subtitle = "Genus Level Data", -->
+<!--        x = "Tissue Group", -->
+<!--        y="Average Relative Abundance") + -->
+<!--   theme_classic() -->
+<!-- p1 -->
+
+<!-- ``` -->
+
+<!-- ```{r bar-tcga-wgs-phylum, out.height="1000%", out.width="400%"} -->
+
+<!-- plot.dat <- dat.wgs %>% filter(sample_type != "0")%>% -->
+<!--   dplyr::group_by(sample_type, Phylum)%>% -->
+<!--   dplyr::summarise( -->
+<!--     Abundance = mean(Abundance, na.rm=T) -->
+<!--   ) -->
+
+<!-- p1 <- ggplot(plot.dat, aes(x=sample_type, y = Abundance, fill=Phylum)) + -->
+<!--   geom_bar(stat="identity")+ -->
+<!--   labs(title="TCGA WGS Data", -->
+<!--        subtitle = "Phylum Level Data", -->
+<!--        x = "Tissue Group", -->
+<!--        y="Average Relative Abundance") + -->
+<!--   theme_classic() -->
+<!-- p1 -->
+<!-- ``` -->
+
+
+<!-- ## Specific OTUs -->
+
+<!-- ```{r bar-nci-otu, out.height="300%", out.width="300%"} -->
+
+<!-- plot.dat <- dat.16s.s %>% filter(sample_type != "0") %>% -->
+<!--   mutate(ID = as.factor(accession.number), -->
+<!--          Genus = substr(Genus, 4, 1000), -->
+<!--          Phylum = substr(Phylum, 4, 1000))%>% -->
+<!--   dplyr::group_by(sample_type, OTU1)%>% -->
+<!--   dplyr::summarise( -->
+<!--     Abundance = mean(Abundance, na.rm=T) -->
+<!--   ) -->
+
+<!-- p1 <- ggplot(plot.dat, aes(x=sample_type, y = Abundance, fill=OTU1)) + -->
+<!--   geom_bar(stat="identity")+ -->
+<!--   labs(title="NCI 16s Data", -->
+<!--        x = "Tissue Group", -->
+<!--        y="Average Relative Abundance") + -->
+<!--   theme_classic()+ -->
+<!--   theme( -->
+<!--     axis.text.x = element_text(angle=30, vjust=0.95, hjust=0.9), -->
+<!--     legend.title = element_blank() -->
+<!--   ) -->
+<!-- p1 -->
+
+<!-- #ggsave("output/slide-11-bar.pdf", plot=p1, units="in", width=8, height=5) -->
+<!-- #ggsave("output/slide-11-bar.png", plot=p1, units="in", width=8, height=5) -->
+
+
+<!-- ``` -->
+
+
+<!-- ```{r bar-tcgarna, out.height="300%", out.width="300%"} -->
+
+<!-- plot.dat <- dat.rna.s %>% filter(sample_type != "0", is.na(OTU1) == F)%>% -->
+<!--   dplyr::group_by(sample_type, OTU1)%>% -->
+<!--   dplyr::summarise( -->
+<!--     Abundance = mean(Abundance, na.rm=T) -->
+<!--   ) -->
+
+<!-- p1 <- ggplot(plot.dat, aes(x=sample_type, y = Abundance, fill=OTU1)) + -->
+<!--   geom_bar(stat="identity")+ -->
+<!--   labs(title="TCGA RNAseq Data", -->
+<!--        x = "Tissue Group", -->
+<!--        y="Average Relative Abundance") + -->
+<!--   theme_classic() + -->
+<!--   theme( -->
+<!--     axis.text.x = element_text(angle=30, vjust=0.95, hjust=0.9), -->
+<!--     legend.title = element_blank() -->
+<!--   ) -->
+<!-- p1 -->
+
+<!-- #ggsave("output/slide-12-bar.pdf", plot=p1, units="in", width=8, height=5) -->
+<!-- #ggsave("output/slide-12-bar.png", plot=p1, units="in", width=8, height=5) -->
+
+<!-- ``` -->
+
+
+<!-- ```{r bar-tcgawgs, out.height="100%", out.width="400%"} -->
+
+<!-- plot.dat <- dat.wgs.s %>% filter(sample_type != "0", is.na(OTU1) == F)%>% -->
+<!--   dplyr::group_by(sample_type, OTU1)%>% -->
+<!--   dplyr::summarise( -->
+<!--     Abundance = mean(Abundance, na.rm=T) -->
+<!--   ) -->
+
+<!-- p1 <- ggplot(plot.dat, aes(x=sample_type, y = Abundance, fill=OTU1)) + -->
+<!--   geom_bar(stat="identity")+ -->
+<!--   labs(title="TCGA WGS Data", -->
+<!--        x = "Tissue Group", -->
+<!--        y="Average Relative Abundance") + -->
+<!--   scale_y_continuous(trans="sqrt", breaks=c(0,0.01, 0.1, 0.2, 0.4, 0.6))+ -->
+<!--   theme_classic() + -->
+<!--   theme( -->
+<!--     axis.text.x = element_text(angle=30, vjust=0.95, hjust=0.9), -->
+<!--     legend.title = element_blank() -->
+<!--   ) -->
+<!-- p1 -->
+
+<!-- #ggsave("output/slide-13-bar.pdf", plot=p1, units="in", width=8, height=5) -->
+<!-- #ggsave("output/slide-13-bar.png", plot=p1, units="in", width=8, height=5) -->
+
+<!-- ``` -->
 
 
 # EAC Barretts to No Barretts Comparison

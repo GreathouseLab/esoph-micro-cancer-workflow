@@ -95,35 +95,22 @@ dat.16s.s$OTU <- factor(
     "Prevotella melaninogenica"
   )
 )
-# For the full dendrogram
-library(plyr)
-library(reshape2)
-library(dplyr)
-library(ggplot2)
-library(ggdendro)
-library(gridExtra)
-library(dendextend)
-library(cowplot)
 
-plot.dat <- dat.16s %>% filter(sample_type != "0") %>%
+# ==================================================== #
+# reshape data for making plot
+
+analysis.dat <- dat.16s # insert dataset to be used in analysis
+avgRelAbundCutoff <- 0.05 # minimum average relative abundance for OTUs
+
+plot.dat <- analysis.dat %>% filter(sample_type != "0") %>%
   dplyr::group_by(OTU) %>%
-  dplyr::mutate(averageabundance=mean(Abundance)) %>%
+  dplyr::mutate(aveAbund=mean(Abundance)) %>%
   dplyr::ungroup() %>%
-  dplyr::filter(averageabundance>=.05) %>%
-  mutate(ID = as.factor(accession.number),
-         Genus = substr(Genus, 4, 1000),
-         Phylum = substr(Phylum, 4, 1000)) %>%
-  select(sample_type, Phylum, Genus, ID, Abundance, averageabundance)
-plot.dat <- na.omit(plot.dat) 
-
-a <- plot.dat %>%
-  expand(ID, Genus)
-
-a$Abundance <- 0
-
-plot.dat <- full_join(plot.dat, a)
-
-
+  dplyr::filter(aveAbund>=avgRelAbundCutoff) %>%
+  dplyr::mutate(ID = as.factor(accession.number),
+                Genus = substr(Genus, 4, 1000),
+                Phylum = substr(Phylum, 4, 1000)) %>%
+  dplyr::select(sample_type, Phylum, Genus, ID, Abundance, aveAbund)
 
 # widen plot.dat for dendro
 dat.wide <- plot.dat %>%
@@ -172,24 +159,21 @@ heatmap_data <- mat %>%
   left_join(gene_pos_table) %>%
   left_join(sample_pos_table)
 
+# extract and rejoin sample IDs and sample_type names for plotting
+# first for the heatmap data.frame
 A <- str_split(heatmap_data$sample, "_")
-
 heatmap_data$ID <- heatmap_data$sample_type <- "0"
-
 for(i in 1:nrow(heatmap_data)){
   heatmap_data$ID[i] <- A[[i]][1]
   heatmap_data$sample_type[i] <- A[[i]][2]
 }
-
+# second for the sample position dataframe (dendo)
 A <- str_split(sample_pos_table$sample, "_")
-
 sample_pos_table$ID <- sample_pos_table$sample_type <- "0"
-
 for(i in 1:nrow(sample_pos_table)){
   sample_pos_table$ID[i] <- A[[i]][1]
   sample_pos_table$sample_type[i] <- A[[i]][2]
 }
-
 
 # Limits for the vertical axes
 gene_axis_limits <- with(
@@ -198,11 +182,9 @@ gene_axis_limits <- with(
 ) + 
   0.1 * c(-1, 1) # extra spacing: 0.1
 
-# Heatmap plot
-idlen <- numeric(3)
+## Build Heatmap Pieces
 # by parts
 hmd <- filter(heatmap_data, sample_type == "Barretts Only")
-idlen[1] <- length(unique(hmd$ID))
 hmd$x_center <- as.numeric(as.factor(hmd$x_center))
 spd <- filter(sample_pos_table, sample_type == "Barretts Only")
 spd$x_center <- as.numeric(as.factor(spd$x_center))
@@ -212,7 +194,7 @@ plt_hmap1 <- ggplot(hmd,
                        height = height, width = width)) + 
   geom_tile() +
   #facet_wrap(.~sample_type)+
-  scale_fill_gradient2("Abundance",trans="sqrt", high = "darkred", low = "darkblue", breaks=c(0, 0.1, 0.25, 0.5, 0.75)) +
+  scale_fill_gradient2("Abundance",trans="sqrt", high = "darkred", low = "darkblue", breaks=c(0, 0.10, 0.30, 0.50, 0.80)) +
   scale_x_continuous(breaks = spd$x_center, 
                      labels = spd$ID, 
                      expand = c(0, 0)) + 
@@ -221,18 +203,17 @@ plt_hmap1 <- ggplot(hmd,
                      labels = rep("", nrow(gene_pos_table)),
                      limits = gene_axis_limits, 
                      expand = c(0, 0)) + 
-  labs(x = "Barretts Only", y = "") +
+  labs(x = "Barretts Only", y = NULL) +
   theme_classic() +
   theme(axis.text.x = element_text(size = rel(1), hjust = 0.5,vjust=0.5, angle = 90), 
         # margin: top, right, bottom, and left
         #axis.ticks.y = element_blank(),
-        plot.margin = unit(c(1, 0.2, 0.2, -0.7), "cm"), 
+        plot.margin = unit(c(1, 0.01, 0.01, -0.7), "cm"), 
         panel.grid = element_blank(),
         legend.position = "none")
 
 # Part 2: "EAC-adjacent tissue w/ Barretts History"
 hmd <- filter(heatmap_data, sample_type == "EAC-adjacent tissue w/ Barretts History")
-idlen[2] <- length(unique(hmd$ID))
 hmd$x_center <- as.numeric(as.factor(hmd$x_center))
 spd <- filter(sample_pos_table, sample_type == "EAC-adjacent tissue w/ Barretts History")
 spd$x_center <- as.numeric(as.factor(spd$x_center))
@@ -242,7 +223,7 @@ plt_hmap2 <- ggplot(hmd,
                         height = height, width = width)) + 
   geom_tile() +
   #facet_wrap(.~sample_type)+
-  scale_fill_gradient2("expr",trans="sqrt", high = "darkred", low = "darkblue", breaks=c(0, 0.1, 0.25, 0.5, 0.75)) +
+  scale_fill_gradient2("expr",trans="sqrt", high = "darkred", low = "darkblue", breaks=c(0, 0.1, 0.10, 0.30, 0.50, 0.80)) +
   scale_x_continuous(breaks = spd$x_center, 
                      labels = spd$ID, 
                      expand = c(0, 0)) + 
@@ -251,18 +232,17 @@ plt_hmap2 <- ggplot(hmd,
                      labels = rep("", nrow(gene_pos_table)),
                      limits = gene_axis_limits, 
                      expand = c(0, 0)) + 
-  labs(x = "EAC-adjacent tissue w/ Barretts History", y = "") +
+  labs(x = "EAC-adjacent tissue w/ Barretts History", y = NULL) +
   theme_classic() +
   theme(axis.text.x = element_text(size = rel(1), hjust = 0.5,vjust=0.5, angle = 90), 
         axis.ticks.y = element_blank(),
         # margin: top, right, bottom, and left
-        plot.margin = unit(c(1, 0.2, 0.2, -0.7), "cm"), 
+        plot.margin = unit(c(1, 0.01, 0.01, -0.7), "cm"), 
         panel.grid.minor = element_blank(),
         legend.position = "none")
 
 # Part 3: "EAC tissues w/ Barretts History"
 hmd <- filter(heatmap_data, sample_type == "EAC tissues w/ Barretts History")
-idlen[3] <- length(unique(hmd$ID))
 hmd$x_center <- as.numeric(as.factor(hmd$x_center))
 spd <- filter(sample_pos_table, sample_type == "EAC tissues w/ Barretts History")
 spd$x_center <- as.numeric(as.factor(spd$x_center))
@@ -272,7 +252,7 @@ plt_hmap3 <- ggplot(hmd,
                         height = height, width = width)) + 
   geom_tile() +
   #facet_wrap(.~sample_type)+
-  scale_fill_gradient2("Abundance",trans="sqrt", high = "darkred", low = "darkblue", breaks=c(0, 0.1, 0.25, 0.5, 0.75)) +
+  scale_fill_gradient2("Abundance",trans="sqrt", high = "darkred", low = "darkblue", breaks=c(0, 0.10, 0.30, 0.50, 0.80)) +
   scale_x_continuous(breaks = spd$x_center, 
                      labels = spd$ID, 
                      expand = c(0, 0)) + 
@@ -281,12 +261,12 @@ plt_hmap3 <- ggplot(hmd,
                      labels = rep("", nrow(gene_pos_table)),
                      limits = gene_axis_limits, 
                      expand = c(0, 0)) + 
-  labs(x = "EAC tissues w/ Barretts History", y = "") +
+  labs(x = "EAC tissues w/ Barretts History", y = NULL) +
   theme_classic() +
   theme(axis.text.x = element_text(size = rel(1), hjust = 0.75, vjust=0.5, angle = 90), 
         axis.ticks.y = element_blank(),
         # margin: top, right, bottom, and left
-        plot.margin = unit(c(1, 0.2, 0.2, -0.7), "cm"), 
+        plot.margin = unit(c(1, 0.01, 0.01, -0.7), "cm"), 
         panel.grid.minor = element_blank())
 
 
@@ -302,10 +282,19 @@ plt_dendr <- ggplot(segment_data) +
   theme_classic() + 
   theme(panel.grid = element_blank(),
         axis.text.x = element_blank(),
-        axis.ticks.x = element_blank())
+        axis.ticks.x = element_blank(),
+        plot.margin = unit(c(1, 0.01, 0.01, -0.7), "cm"))
 
-
-p <- plot_grid(plt_dendr, plt_hmap1, plt_hmap2,plt_hmap3, align = 'h', rel_widths = c(0.5, 0.2, 1, 1),ncol = 4)
+prntRelAbund <- avgRelAbundCutoff*100
+p <- plt_dendr+plt_hmap1+plt_hmap2+plt_hmap3+ 
+  plot_layout(
+    nrow=1, widths = c(0.5, 0.2, 1, 1),
+    guides="collect"
+  ) +
+  plot_annotation(
+    title="NCI-16s Data showing average relative abundance of genera by individual",
+    subtitle=paste0("Subset to OTU average relative abundance > ",prntRelAbund,"%")
+  )
 p
 ggsave("output/slide-5-heatmap-05.pdf", plot=p, units="in", width=25, height=12)
 ggsave("output/slide-5-heatmap-05.png", plot=p, units="in", width=25, height=12)

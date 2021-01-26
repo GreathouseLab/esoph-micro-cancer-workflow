@@ -44,9 +44,9 @@ knitr::opts_chunk$set(out.width = "225%", out.height = 10)
 
 
 # transform to relative abundances
-phylo.data.nci.umd <- transform_sample_counts(phylo.data.nci.umd, function(x){x / sum(x)})
-phylo.data.tcga.RNAseq <- transform_sample_counts(phylo.data.tcga.RNAseq, function(x){x / sum(x)})
-phylo.data.tcga.WGS <- transform_sample_counts(phylo.data.tcga.WGS, function(x){x / sum(x)})
+# phylo.data.nci.umd <- transform_sample_counts(phylo.data.nci.umd, function(x){x / sum(x)})
+# phylo.data.tcga.RNAseq <- transform_sample_counts(phylo.data.tcga.RNAseq, function(x){x / sum(x)})
+# phylo.data.tcga.WGS <- transform_sample_counts(phylo.data.tcga.WGS, function(x){x / sum(x)})
 
 # melt data down for use
 dat.16s <- psmelt(phylo.data.nci.umd)
@@ -147,7 +147,29 @@ dat.rna$pres[is.na(dat.rna$pres)] <- 0
 dat.wgs$pres <- ifelse(dat.wgs$Abundance > 0, 1, 0)
 dat.wgs$pres[is.na(dat.wgs$pres)] <- 0
 
+# tumor stage variable
+dat.16s$tumor.stage <- dat.16s$pTNM
+dat.16s$tumor.stage[dat.16s$pTNM == "IIA"] <- "II"
+dat.16s$tumor.stage[dat.16s$pTNM == "IIB"] <- "II"
+dat.16s$tumor.stage <- factor(dat.16s$tumor.stage, c("0", "1", "I", "II", "III", "IV"), ordered = T)
 
+dat.rna$tumor.stage <- "0"
+# dat.rna$tumor.stage <- recode(
+#   dat.rna$tumor_stage,
+#   `stage i` = "I", "stage ia" = "I", "stage ib" = "I",
+#   "stage iia" = "II", "stage iib" = "II", "stageiib"= "II",
+#   "stage iii" = "III", "stage iiia"= "III","stage iiib"= "III", "stage iiic"= "III",
+#   "stage iv"="IV", "stage iva"="IV"
+# )
+# dat.16s$tumor.stage <- factor(
+#   dat.16s$pTNM,
+#   levels = rev(c("0", "1", "I", "IIA", "IIB", "III", "IV")),
+#   lables = rev(c("0", "1", "I", "II", "II", "III", "IV")), ordered=T
+# )
+# 
+
+dat.rna$tumor_stage <- -99
+dat.wgs$tumor_stage <- -99
 # subset to fuso. nuc. only
 # Streptococcus sanguinis 
 # Campylobacter concisus
@@ -319,83 +341,83 @@ table(dat$Barretts.)
 ```
 
 
-```{r}
+<!-- ```{r} -->
 
-fit <- glm(as.factor(sample_type) ~ Abundance*as.factor(OTU), data=dat.16s.s)
-
-
-```
+<!-- fit <- glm(as.factor(sample_type) ~ Abundance*as.factor(OTU), data=dat.16s.s) -->
 
 
-## TCGA RNAseq data
-
-```{r}
-
-# in long format
-table(dat.rna$sample_type)
-
-dat <- dat.rna %>% filter(otu2 == "Fusobacterium nucleatum")
-table(dat$sample_type)
-
-table(dat$Barrett.s.Esophagus.Reported)
+<!-- ``` -->
 
 
-dat.rna.s %>% 
-  filter(sample_type != "0") %>%
-  dplyr::group_by(sample_type, Genus)%>%
-  dplyr::summarise(
-    m = mean(Abundance, na.rm=T)
-  ) %>%
-  kable(format="html") %>%
-  kable_styling(full_width = T) %>%
-  scroll_box()
+<!-- ## TCGA RNAseq data -->
 
-dat.rna.s %>% 
-  filter(sample_type != "0") %>%
-  dplyr::group_by(sample_type, Phylum)%>%
-  dplyr::summarise(
-    m = mean(Abundance, na.rm=T)
-  ) %>%
-  kable(format="html") %>%
-  kable_styling(full_width = T) %>%
-  scroll_box()
+<!-- ```{r} -->
+
+<!-- # in long format -->
+<!-- table(dat.rna$sample_type) -->
+
+<!-- dat <- dat.rna %>% filter(otu2 == "Fusobacterium nucleatum") -->
+<!-- table(dat$sample_type) -->
+
+<!-- table(dat$Barrett.s.Esophagus.Reported) -->
 
 
-```
+<!-- dat.rna.s %>%  -->
+<!--   filter(sample_type != "0") %>% -->
+<!--   dplyr::group_by(sample_type, Genus)%>% -->
+<!--   dplyr::summarise( -->
+<!--     m = mean(Abundance, na.rm=T) -->
+<!--   ) %>% -->
+<!--   kable(format="html") %>% -->
+<!--   kable_styling(full_width = T) %>% -->
+<!--   scroll_box() -->
 
-## TCGA WGS data
-
-```{r}
-
-# in long format
-table(dat.wgs$sample_type)
-
-dat <- dat.wgs %>% filter(otu2 == "Fusobacterium nucleatum")
-table(dat$sample_type)
-
-table(dat$Barrett.s.Esophagus.Reported)
-
-
-dat.wgs.s %>% 
-  filter(sample_type != "0") %>%
-  dplyr::group_by(sample_type, Genus)%>%
-  dplyr::summarise(
-    m = mean(Abundance, na.rm=T)
-  ) %>%
-  kable(format="html") %>%
-  kable_styling(full_width = T) %>%
-  scroll_box()
-
-dat.wgs.s %>% 
-  filter(sample_type != "0") %>%
-  dplyr::group_by(sample_type, Phylum)%>%
-  dplyr::summarise(
-    m = mean(Abundance, na.rm=T)
-  ) %>%
-  kable(format="html") %>%
-  kable_styling(full_width = T) %>%
-  scroll_box()
+<!-- dat.rna.s %>%  -->
+<!--   filter(sample_type != "0") %>% -->
+<!--   dplyr::group_by(sample_type, Phylum)%>% -->
+<!--   dplyr::summarise( -->
+<!--     m = mean(Abundance, na.rm=T) -->
+<!--   ) %>% -->
+<!--   kable(format="html") %>% -->
+<!--   kable_styling(full_width = T) %>% -->
+<!--   scroll_box() -->
 
 
-```
+<!-- ``` -->
+
+<!-- ## TCGA WGS data -->
+
+<!-- ```{r} -->
+
+<!-- # in long format -->
+<!-- table(dat.wgs$sample_type) -->
+
+<!-- dat <- dat.wgs %>% filter(otu2 == "Fusobacterium nucleatum") -->
+<!-- table(dat$sample_type) -->
+
+<!-- table(dat$Barrett.s.Esophagus.Reported) -->
+
+
+<!-- dat.wgs.s %>%  -->
+<!--   filter(sample_type != "0") %>% -->
+<!--   dplyr::group_by(sample_type, Genus)%>% -->
+<!--   dplyr::summarise( -->
+<!--     m = mean(Abundance, na.rm=T) -->
+<!--   ) %>% -->
+<!--   kable(format="html") %>% -->
+<!--   kable_styling(full_width = T) %>% -->
+<!--   scroll_box() -->
+
+<!-- dat.wgs.s %>%  -->
+<!--   filter(sample_type != "0") %>% -->
+<!--   dplyr::group_by(sample_type, Phylum)%>% -->
+<!--   dplyr::summarise( -->
+<!--     m = mean(Abundance, na.rm=T) -->
+<!--   ) %>% -->
+<!--   kable(format="html") %>% -->
+<!--   kable_styling(full_width = T) %>% -->
+<!--   scroll_box() -->
+
+
+<!-- ``` -->
 
