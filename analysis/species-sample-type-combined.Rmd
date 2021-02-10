@@ -1,0 +1,338 @@
+---
+title: "Species Barretts Relationships"
+output:
+  workflowr::wflow_html:
+    toc: true
+    code_folding: hide
+editor_options:
+  chunk_output_type: console
+---
+
+
+```{r data, include=FALSE, echo=FALSE, warning=F, error=F, message=F}
+# load packages
+source("code/load_packages.R")
+
+# get data
+source("code/get_cleaned_data.R")
+
+theme_set(theme_bw())
+# pal = "Sequential"
+# scale_colour_discrete <-  function(palname=pal, ...){
+#   scale_colour_brewer(palette=palname, ...)
+# }
+# scale_fill_discrete <-  function(palname=pal, ...){
+#   scale_fill_brewer(palette=palname, ...)
+# }
+
+knitr::opts_chunk$set(out.width = "225%", out.height = 10)
+
+
+# transform to relative abundances
+phylo.data.nci.umd <- transform_sample_counts(phylo.data.nci.umd, function(x){x / sum(x)})
+phylo.data.tcga.RNAseq <- transform_sample_counts(phylo.data.tcga.RNAseq, function(x){x / sum(x)})
+phylo.data.tcga.WGS <- transform_sample_counts(phylo.data.tcga.WGS, function(x){x / sum(x)})
+
+# melt data down for use
+dat.16s <- psmelt(phylo.data.nci.umd)
+dat.rna <- psmelt(phylo.data.tcga.RNAseq)
+dat.wgs <- psmelt(phylo.data.tcga.WGS)
+
+# fix otu formatting
+dat.rna$otu2 <- "a"
+dat.wgs$otu2 <- "a"
+i <- 1
+for(i in 1:nrow(dat.rna)){
+  dat.rna$otu2[i] <- str_split(dat.rna$OTU[i], ";")[[1]][7]
+}
+for(i in 1:nrow(dat.wgs)){
+  dat.wgs$otu2[i] <- str_split(dat.wgs$OTU[i], ";")[[1]][7]
+}
+
+# set up variables
+dat.16s$sample_type <- NA
+dat.16s$sample_type[dat.16s$tissue=="T" &
+                      dat.16s$Histology=="ADC" &
+                      dat.16s$Barretts. == "Y"] <- "16SrRNA Tumor (w/Barrett's history)"
+dat.16s$sample_type[dat.16s$tissue=="BO" &
+                      dat.16s$Histology=="Barrets only"&
+                      dat.16s$Barretts. == "Y"] <-"16SrRNA Barrett's (BO)"
+dat.16s$sample_type[dat.16s$tissue=="N" &
+                      dat.16s$Histology=="ADC" &
+                      dat.16s$Barretts. == "Y"] <- "16SrRNA Non-tumor (w/ Barrett's history)"
+
+dat.rna$sample_type <- NA
+dat.rna$sample_type[(dat.rna$morphology=="8140/3" |
+                       dat.rna$morphology=="8480/3") &
+                       dat.rna$SampleType_Level2=="Tumor" &
+                       dat.rna$Barrett.s.Esophagus.Reported=="No"] <- "RNA-seq Tumor (w/o Barrett's history)"
+dat.rna$sample_type[(dat.rna$morphology=="8140/3" | 
+                       dat.rna$morphology=="8480/3") &
+                       dat.rna$SampleType_Level2=="Normal"&
+                       dat.rna$Barrett.s.Esophagus.Reported=="No"] <- "RNA-seq Non-tumor (w/o Barrett's history)"
+
+dat.wgs$sample_type <- NA
+dat.wgs$sample_type[(dat.wgs$morphology=="8140/3" |
+                       dat.wgs$morphology=="8480/3") &
+                       dat.wgs$SampleType_Level2=="Tumor" &
+                       dat.wgs$Barrett.s.Esophagus.Reported=="No"] <- "WGS Tumor (w/o Barrett's history) "
+dat.wgs$sample_type[(dat.wgs$morphology=="8140/3" | 
+                       dat.wgs$morphology=="8480/3") &
+                       dat.wgs$SampleType_Level2=="Normal"&
+                       dat.wgs$Barrett.s.Esophagus.Reported=="No"] <- "WGS Non-tumor (w/o Barrett's history)"
+
+
+# make tumor vs normal variable
+dat.16s$tumor.cat <- factor(dat.16s$tissue, levels=c("BO", "N", "T"), labels = c("Non-Tumor", "Non-Tumor", "Tumor"))
+dat.rna$tumor.cat <- factor(dat.rna$SampleType_Level2, levels=c("Normal", "Tumor"), labels = c("Non-Tumor", "Tumor"))
+dat.wgs$tumor.cat <- factor(dat.wgs$SampleType_Level2, levels=c("Normal", "Tumor"), labels = c("Non-Tumor", "Tumor"))
+
+# dataset id
+dat.16s$source <- "16s"
+dat.rna$source <- "rna"
+dat.wgs$source <- "wgs"
+
+# plotting ids
+dat.16s$X <- paste0(dat.16s$source, "-", dat.16s$tumor.cat)
+dat.rna$X <- paste0(dat.rna$source, "-", dat.rna$tumor.cat)
+dat.wgs$X <- paste0(dat.wgs$source, "-", dat.wgs$tumor.cat)
+
+# relabel as (0/1) for analysis
+dat.16s$tumor <- as.numeric(factor(dat.16s$tissue, levels=c("BO", "N", "T"), labels = c("Non-Tumor", "Non-Tumor", "Tumor"))) - 1
+dat.rna$tumor <- as.numeric(factor(dat.rna$SampleType_Level2, levels=c("Normal", "Tumor"), labels = c("Non-Tumor", "Tumor"))) - 1
+dat.wgs$tumor <- as.numeric(factor(dat.wgs$SampleType_Level2, levels=c("Normal", "Tumor"), labels = c("Non-Tumor", "Tumor"))) - 1
+
+# presence- absence
+dat.16s$pres <- ifelse(dat.16s$Abundance > 0, 1, 0)
+dat.16s$pres[is.na(dat.16s$pres)] <- 0
+dat.rna$pres <- ifelse(dat.rna$Abundance > 0, 1, 0)
+dat.rna$pres[is.na(dat.rna$pres)] <- 0
+dat.wgs$pres <- ifelse(dat.wgs$Abundance > 0, 1, 0)
+dat.wgs$pres[is.na(dat.wgs$pres)] <- 0
+
+# tumor stage variable
+dat.16s$tumor.stage <- factor(
+  dat.16s$pTNM,
+  levels = c("0", "1", "I", "IIA", "IIB", "III", "IV"),
+  labels = c("0", "1", "I", "II", "II", "III", "IV")
+)
+
+dat.rna[dat.rna == "not reported"] <- NA
+dat.rna$tumor.stage <- factor(
+  dat.rna$tumor_stage,
+  levels = c("stage i", "stage ia", "stage ib", "stage iib", "stage iia", "stage iii", "stage iiia", "stage iiib", "stage iiic", "stage iv", "stage iva"),
+  labels = c("I", "I", "I", "II", "II", "III", "III", "III", "III", "IV", "IV")
+)
+
+dat.wgs[dat.wgs == "not reported"] <- NA
+dat.wgs$tumor.stage <- factor(
+  dat.wgs$tumor_stage,
+  levels = c("stage i", "stage ia", "stage ib", "stage iib", "stage iia", "stage iii", "stage iiia", "stage iiib", "stage iiic", "stage iv", "stage iva"),
+  labels = c("I", "I", "I", "II", "II", "III", "III", "III", "III", "IV", "IV")
+)
+
+
+# subset to fuso. nuc. only
+# Streptococcus sanguinis 
+# Campylobacter concisus
+# Prevotella spp.
+
+dat.16s.s <- filter(
+  dat.16s,
+  OTU %in% c(
+    "Fusobacterium_nucleatum",
+    unique(dat.16s$OTU[dat.16s$OTU %like% "Streptococcus_"]),
+    unique(dat.16s$OTU[dat.16s$OTU %like% "Campylobacter_"]),
+    "Prevotella_melaninogenica")
+)
+dat.rna.s <- filter(
+  dat.rna,
+  otu2 %in% c(
+    "Fusobacterium nucleatum",
+    "Streptococcus sanguinis",
+      "Streptococcus oralis",
+      "Streptococcus mitis", 
+      "Streptococcus pneumoniae", 
+      "Streptococcus parasanguinis", 
+      "Streptococcus salivarius",
+    "Campylobacter concisus",
+    "Prevotella melaninogenica")
+)
+dat.wgs.s <- filter(
+  dat.wgs,
+  otu2 %in% c(
+    "Fusobacterium nucleatum",
+    "Streptococcus sanguinis",
+      "Streptococcus oralis",
+      "Streptococcus mitis", 
+      "Streptococcus pneumoniae", 
+      "Streptococcus parasanguinis", 
+      "Streptococcus salivarius",
+    "Campylobacter concisus",
+    "Prevotella melaninogenica")
+)
+
+# new names
+dat.16s.s$OTU1 <- factor(
+  dat.16s.s$OTU,
+  levels = c(
+    "Fusobacterium_nucleatum",
+    "Streptococcus_dentisani:Streptococcus_infantis:Streptococcus_mitis:Streptococcus_oligofermentans:Streptococcus_oralis:Streptococcus_pneumoniae:Streptococcus_pseudopneumoniae:Streptococcus_sanguinis",
+    "Campylobacter_rectus:Campylobacter_showae",
+    "Prevotella_melaninogenica"
+  ),
+  labels = c(
+    "Fusobacterium nucleatum",
+    "Streptococcus sanguinis",
+    "Campylobacter concisus",
+    "Prevotella melaninogenica"
+  )
+)
+dat.rna.s$OTU1 <- factor(
+  dat.rna.s$otu2,
+  levels = c(
+    "Fusobacterium nucleatum",
+    "Streptococcus sanguinis",
+    "Campylobacter concisus",
+    "Prevotella melaninogenica"),
+  labels = c(
+    "Fusobacterium nucleatum",
+    "Streptococcus sanguinis",
+    "Campylobacter concisus",
+    "Prevotella melaninogenica")
+)
+
+dat.wgs.s$OTU1 <- factor(
+  dat.wgs.s$otu2,
+  levels = c(
+    "Fusobacterium nucleatum",
+    "Streptococcus sanguinis",
+    "Campylobacter concisus",
+    "Prevotella melaninogenica"),
+  labels = c(
+    "Fusobacterium nucleatum",
+    "Streptococcus sanguinis",
+    "Campylobacter concisus",
+    "Prevotella melaninogenica")
+)
+
+# rename bacteria
+dat.16s.s$OTU <- factor(
+  dat.16s.s$OTU,
+  levels = c(
+    "Fusobacterium_nucleatum",
+    "Streptococcus_dentisani:Streptococcus_infantis:Streptococcus_mitis:Streptococcus_oligofermentans:Streptococcus_oralis:Streptococcus_pneumoniae:Streptococcus_pseudopneumoniae:Streptococcus_sanguinis",
+    "Campylobacter_rectus:Campylobacter_showae",
+    "Prevotella_melaninogenica"
+  ),
+  labels = c(
+    "Fusobacterium nucleatum",
+    "Streptococcus spp.",
+    "Campylobacter concisus",
+    "Prevotella melaninogenica"
+  )
+)
+dat.rna.s$OTU <- factor(
+  dat.rna.s$otu2,
+  levels = c(
+    "Fusobacterium nucleatum",
+    "Streptococcus sanguinis",
+      "Streptococcus oralis",
+      "Streptococcus mitis", 
+      "Streptococcus pneumoniae", 
+      "Streptococcus parasanguinis", 
+      "Streptococcus salivarius",
+    "Campylobacter concisus",
+    "Prevotella melaninogenica"),
+  labels = c(
+    "Fusobacterium nucleatum",
+    "Streptococcus spp.",
+      "Streptococcus spp.",
+      "Streptococcus spp.", 
+      "Streptococcus spp.", 
+      "Streptococcus spp.", 
+      "Streptococcus spp.",
+    "Campylobacter concisus",
+    "Prevotella melaninogenica")
+)
+
+dat.wgs.s$OTU <- factor(
+  dat.wgs.s$otu2,
+  levels = c(
+    "Fusobacterium nucleatum",
+    "Streptococcus sanguinis",
+      "Streptococcus oralis",
+      "Streptococcus mitis", 
+      "Streptococcus pneumoniae", 
+      "Streptococcus parasanguinis", 
+      "Streptococcus salivarius",
+    "Campylobacter concisus",
+    "Prevotella melaninogenica"),
+  labels = c(
+    "Fusobacterium nucleatum",
+    "Streptococcus spp.",
+      "Streptococcus spp.",
+      "Streptococcus spp.", 
+      "Streptococcus spp.", 
+      "Streptococcus spp.", 
+      "Streptococcus spp.",
+    "Campylobacter concisus",
+    "Prevotella melaninogenica")
+)
+
+dat.rna$OTU <- dat.rna$otu2
+dat.wgs$OTU <- dat.wgs$otu2
+
+```
+
+
+
+
+
+```{r ht-slide5-05-plot, warning=F, error=F, message=F}
+
+# merge datasets by subsetting to specific variables then merging
+analysis.dat <- dat.16s.s %>% 
+  mutate(ID = as.factor(accession.number)) %>%
+  select(OTU, sample_type, Abundance, ID, source)
+
+dat <- dat.rna.s %>% 
+  select(OTU, sample_type, Abundance, ID, source)
+analysis.dat <- full_join(analysis.dat, dat)
+
+dat <- dat.wgs.s %>% 
+  select(OTU, sample_type, Abundance, ID, source)
+
+analysis.dat <- full_join(analysis.dat, dat) %>%
+  mutate(pres = ifelse(Abundance > 0, 1, 0)) # create a presence/absences variable
+
+
+tb <- analysis.dat %>%
+  filter(is.na(sample_type)==F)%>%
+  group_by(sample_type, OTU) %>%
+  summarise(
+    N=n(),
+    p = sum(pres, na.rm=T),
+    percent = p/N*100
+  )
+
+kable(tb, format="html")%>%
+  kable_styling(full_width = T)
+
+analysis.dat <- analysis.dat %>%
+  filter(is.na(sample_type)==F)%>%
+  mutate(
+    Abund = Abundance*100
+  )
+p <- ggplot(analysis.dat, aes(sample_type, Abund)) +
+  geom_violin(scale="width", adjust=0.5)+
+  geom_point(alpha=0.75)+
+  scale_y_continuous(trans="sqrt")+
+  annotate("text", x=c(1, 3), y=c(95, 95), label=c(paste0(tb[1,5],"% (",tb[1,4],",",tb[1,3],")"),"round 2"))+
+  theme(
+    axis.text.x = element_text(angle=30, hjust=0.95, vjust=0.95)
+  )
+p
+
+```
+

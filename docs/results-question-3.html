@@ -414,7 +414,7 @@ div.tocify {
 <div class="tab-content">
 <div id="summary" class="tab-pane fade in active">
 <p>
-<strong>Last updated:</strong> 2021-02-04
+<strong>Last updated:</strong> 2021-02-10
 </p>
 <p>
 <strong>Checks:</strong> <span class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span> 6 <span class="glyphicon glyphicon-exclamation-sign text-danger" aria-hidden="true"></span> 1
@@ -505,16 +505,16 @@ This reproducible <a href="http://rmarkdown.rstudio.com">R Markdown</a> analysis
 <div class="panel panel-default">
 <div class="panel-heading">
 <p class="panel-title">
-<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongRepositoryversionstrongahrefhttpsgithubcomGreathouseLabesophmicrocancerworkflowtreeb9a498d47958ed8a600ed466282f02bc89d106a7targetblankb9a498da"> <span class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span> <strong>Repository version:</strong> <a href="https://github.com/GreathouseLab/esoph-micro-cancer-workflow/tree/b9a498d47958ed8a600ed466282f02bc89d106a7" target="_blank">b9a498d</a> </a>
+<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongRepositoryversionstrongahrefhttpsgithubcomGreathouseLabesophmicrocancerworkflowtree1e15f06803a34cd27b680caab83e8407b088ff08targetblank1e15f06a"> <span class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span> <strong>Repository version:</strong> <a href="https://github.com/GreathouseLab/esoph-micro-cancer-workflow/tree/1e15f06803a34cd27b680caab83e8407b088ff08" target="_blank">1e15f06</a> </a>
 </p>
 </div>
-<div id="strongRepositoryversionstrongahrefhttpsgithubcomGreathouseLabesophmicrocancerworkflowtreeb9a498d47958ed8a600ed466282f02bc89d106a7targetblankb9a498da" class="panel-collapse collapse">
+<div id="strongRepositoryversionstrongahrefhttpsgithubcomGreathouseLabesophmicrocancerworkflowtree1e15f06803a34cd27b680caab83e8407b088ff08targetblank1e15f06a" class="panel-collapse collapse">
 <div class="panel-body">
 <p>
 Great! You are using Git for version control. Tracking code development and connecting the code version to the results is critical for reproducibility.
 </p>
 <p>
-The results in this page were generated with repository version <a href="https://github.com/GreathouseLab/esoph-micro-cancer-workflow/tree/b9a498d47958ed8a600ed466282f02bc89d106a7" target="_blank">b9a498d</a>. See the <em>Past versions</em> tab to see a history of the changes made to the R Markdown and HTML files.
+The results in this page were generated with repository version <a href="https://github.com/GreathouseLab/esoph-micro-cancer-workflow/tree/1e15f06803a34cd27b680caab83e8407b088ff08" target="_blank">1e15f06</a>. See the <em>Past versions</em> tab to see a history of the changes made to the R Markdown and HTML files.
 </p>
 <p>
 Note that you need to be careful to ensure that all relevant files for the analysis have been committed to Git prior to generating the results (you can use <code>wflow_publish</code> or <code>wflow_git_commit</code>). workflowr only checks the R Markdown file, but you know if there are other scripts or data files that it depends on. Below is the status of the Git repository when the results were generated:
@@ -523,9 +523,14 @@ Note that you need to be careful to ensure that all relevant files for the analy
 Ignored files:
     Ignored:    .Rhistory
     Ignored:    .Rproj.user/
+    Ignored:    analysis/figure/
     Ignored:    data/
 
+Untracked files:
+    Untracked:  analysis/species-sample-type-combined.Rmd
+
 Unstaged changes:
+    Modified:   analysis/index.Rmd
     Modified:   analysis/results-question-3.Rmd
 
 </code></pre>
@@ -565,6 +570,40 @@ Message
 </tr>
 </thead>
 <tbody>
+<tr>
+<td>
+Rmd
+</td>
+<td>
+<a href="https://github.com/GreathouseLab/esoph-micro-cancer-workflow/blob/1e15f06803a34cd27b680caab83e8407b088ff08/analysis/results-question-3.Rmd" target="_blank">1e15f06</a>
+</td>
+<td>
+noah-padgett
+</td>
+<td>
+2021-02-04
+</td>
+<td>
+updated multinomial regression results
+</td>
+</tr>
+<tr>
+<td>
+html
+</td>
+<td>
+<a href="https://rawcdn.githack.com/GreathouseLab/esoph-micro-cancer-workflow/1e15f06803a34cd27b680caab83e8407b088ff08/docs/results-question-3.html" target="_blank">1e15f06</a>
+</td>
+<td>
+noah-padgett
+</td>
+<td>
+2021-02-04
+</td>
+<td>
+updated multinomial regression results
+</td>
+</tr>
 <tr>
 <td>
 Rmd
@@ -642,259 +681,233 @@ updated figures with dendrogram
 <pre class="r"><code># in long format
 table(dat.16s$tumor.stage)</code></pre>
 <pre><code>
-           0            1            I           II          III           IV 
-       11088          264         6336        13464         6072         2640 
-not reported 
-        1848 </code></pre>
+    0     1     I    II   III    IV 
+11088   264  6336 13464  6072  2640 </code></pre>
 <pre class="r"><code># by subject
 dat &lt;- dat.16s %&gt;% filter(OTU == &quot;Fusobacterium_nucleatum&quot;)
 table(dat$tumor.stage)</code></pre>
 <pre><code>
-           0            1            I           II          III           IV 
-          42            1           24           51           23           10 
-not reported 
-           7 </code></pre>
+  0   1   I  II III  IV 
+ 42   1  24  51  23  10 </code></pre>
 <pre class="r"><code>sum(table(dat$tumor.stage)) # sample size met</code></pre>
-<pre><code>[1] 158</code></pre>
-<pre class="r"><code>dat.16s.s$Abundancej &lt;- dat.16s.s$Abundance+0.01
-mean.dat &lt;- dat.16s.s %&gt;%
+<pre><code>[1] 151</code></pre>
+<pre class="r"><code>mean.dat &lt;- dat.16s.s %&gt;%
   group_by(tumor.stage, OTU) %&gt;%
   summarize(M = mean(Abundance))</code></pre>
 <pre><code>`summarise()` has grouped output by &#39;tumor.stage&#39;. You can override using the `.groups` argument.</code></pre>
-<pre class="r"><code>ggplot(dat.16s.s, aes(x=tumor.stage, y=Abundancej))+
+<pre class="r"><code>ggplot(dat.16s.s, aes(x=tumor.stage, y=Abundance))+
   geom_violin()+
   geom_jitter(alpha=0.25,width = 0.25)+
   geom_point(data=mean.dat, aes(x=tumor.stage, y = M), size=2, alpha =0.9, color=&quot;red&quot;)+
   labs(x=&quot;Tumor Stage&quot;, 
        title=&quot;Distribution of abundance across tumor stage&quot;,
        subtitle=&quot;Red dot is average abundnace&quot;)+
-  scale_y_continuous(
-    breaks=c(0, 10, 100, 200, 300, 400, 500),
-    limits = c(0,500),
-    trans=&quot;sqrt&quot;)+
-  facet_wrap(.~OTU, nrow=1)+
+  scale_y_continuous(trans=&quot;pseudo_log&quot;)+
+  #  breaks=c(0, 10, 100, 200, 300, 400, 500),
+  #  limits = c(0,500),
+  #  
+  facet_wrap(.~OTU, nrow=1, scales=&quot;free&quot;)+
   theme_classic()</code></pre>
 <p><img src="figure/results-question-3.Rmd/nci-fig1-1.png" width="100%" height="100%" style="display: block; margin: auto;" /></p>
-<p>Stage “1” has only 1 unique sample and will be dropped from subsequent analyses.</p>
+<p>Stage “1” has only 1 unique sample and will be dropped from subsequent analyses. And remove NA values.</p>
 <pre class="r"><code>dat.16s.s &lt;- dat.16s.s %&gt;%
   filter(tumor.stage != &quot;1&quot;)%&gt;%
-  mutate(tumor.stage = droplevels(tumor.stage, exclude=&quot;1&quot;))</code></pre>
+  mutate(tumor.stage = droplevels(tumor.stage, exclude=c(&quot;1&quot;,NA)))</code></pre>
 </div>
 <div id="multinomial-logistic-regression" class="section level2">
 <h2>Multinomial Logistic Regression</h2>
 <div id="model-1-ts-abundance" class="section level3">
 <h3>Model 1: TS ~ Abundance</h3>
 <pre class="r"><code>fit &lt;- nnet::multinom(tumor.stage ~ OTU, data=dat.16s.s)</code></pre>
-<pre><code># weights:  30 (20 variable)
-initial  value 1125.224947 
-iter  10 value 1005.376265
-final  value 1005.153918 
+<pre><code># weights:  25 (16 variable)
+initial  value 965.662747 
+iter  10 value 890.715125
+final  value 890.698212 
 converged</code></pre>
 <pre class="r"><code>summary(fit)</code></pre>
 <pre><code>Call:
 nnet::multinom(formula = tumor.stage ~ OTU, data = dat.16s.s)
 
 Coefficients:
-             (Intercept) OTUStreptococcus spp. OTUCampylobacter concisus
-I             -0.5596573          4.026999e-05              5.690943e-05
-II             0.1941426          3.995800e-05             -9.227993e-06
-III           -0.6022530          9.552912e-05              1.105414e-04
-IV            -1.4353505          3.339310e-04              3.376027e-04
-not reported  -1.7915909         -2.164854e-04             -2.141523e-04
-             OTUPrevotella melaninogenica
-I                            3.976448e-05
-II                           4.157416e-05
-III                          9.500459e-05
-IV                           3.338067e-04
-not reported                -2.165636e-04
+    (Intercept) OTUStreptococcus spp. OTUCampylobacter concisus
+I    -0.5596182         -1.939649e-05             -2.975175e-06
+II    0.1941590          3.455919e-05             -9.943881e-06
+III  -0.6021807         -1.686834e-05             -3.080810e-06
+IV   -1.4350638         -4.487214e-05             -4.141397e-05
+    OTUPrevotella melaninogenica
+I                   1.219733e-05
+II                 -5.417214e-05
+III                 1.171972e-05
+IV                 -3.796134e-05
 
 Std. Errors:
-             (Intercept) OTUStreptococcus spp. OTUCampylobacter concisus
-I              0.2558825             0.3618742                 0.3618723
-II             0.2083657             0.2946756                 0.2946764
-III            0.2594013             0.3668473                 0.3668454
-IV             0.3518980             0.4976310                 0.4976292
-not reported   0.4082124             0.5773327                 0.5773309
-             OTUPrevotella melaninogenica
-I                               0.3618743
-II                              0.2946755
-III                             0.3668474
-IV                              0.4976310
-not reported                    0.5773328
+    (Intercept) OTUStreptococcus spp. OTUCampylobacter concisus
+I     0.2558835             0.3618753                 0.3618735
+II    0.2083683             0.2946764                 0.2946771
+III   0.2593995             0.3668476                 0.3668458
+IV    0.3518630             0.4976144                 0.4976128
+    OTUPrevotella melaninogenica
+I                      0.3618717
+II                     0.2946779
+III                    0.3668440
+IV                     0.4976112
 
-Residual Deviance: 2010.308 
-AIC: 2050.308 </code></pre>
+Residual Deviance: 1781.396 
+AIC: 1813.396 </code></pre>
 <pre class="r"><code># obtain significance tests
 z &lt;- summary(fit)$coefficients/summary(fit)$standard.errors
 z</code></pre>
-<pre><code>             (Intercept) OTUStreptococcus spp. OTUCampylobacter concisus
-I             -2.1871652          0.0001112817              1.572638e-04
-II             0.9317397          0.0001356000             -3.131568e-05
-III           -2.3217038          0.0002604057              3.013297e-04
-IV            -4.0788818          0.0006710414              6.784222e-04
-not reported  -4.3888697         -0.0003749750             -3.709351e-04
-             OTUPrevotella melaninogenica
-I                            0.0001098848
-II                           0.0001410845
-III                          0.0002589758
-IV                           0.0006707916
-not reported                -0.0003751106</code></pre>
+<pre><code>    (Intercept) OTUStreptococcus spp. OTUCampylobacter concisus
+I    -2.1870038         -5.359994e-05             -8.221589e-06
+II    0.9318068          1.172784e-04             -3.374500e-05
+III  -2.3214412         -4.598187e-05             -8.398106e-06
+IV   -4.0784727         -9.017453e-05             -8.322530e-05
+    OTUPrevotella melaninogenica
+I                   3.370623e-05
+II                 -1.838351e-04
+III                 3.194742e-05
+IV                 -7.628716e-05</code></pre>
 <pre class="r"><code>p &lt;- (1 - pnorm(abs(z), 0, 1)) * 2
 p</code></pre>
-<pre><code>              (Intercept) OTUStreptococcus spp. OTUCampylobacter concisus
-I            2.873046e-02             0.9999112                 0.9998745
-II           3.514711e-01             0.9998918                 0.9999750
-III          2.024889e-02             0.9997922                 0.9997596
-IV           4.525283e-05             0.9994646                 0.9994587
-not reported 1.139413e-05             0.9997008                 0.9997040
-             OTUPrevotella melaninogenica
-I                               0.9999123
-II                              0.9998874
-III                             0.9997934
-IV                              0.9994648
-not reported                    0.9997007</code></pre>
+<pre><code>     (Intercept) OTUStreptococcus spp. OTUCampylobacter concisus
+I   2.874225e-02             0.9999572                 0.9999934
+II  3.514364e-01             0.9999064                 0.9999731
+III 2.026304e-02             0.9999633                 0.9999933
+IV  4.533253e-05             0.9999281                 0.9999336
+    OTUPrevotella melaninogenica
+I                      0.9999731
+II                     0.9998533
+III                    0.9999745
+IV                     0.9999391</code></pre>
 <pre class="r"><code>## extract the coefficients from the model and exponentiate
 exp(coef(fit)) # interpret as relative risks</code></pre>
-<pre><code>             (Intercept) OTUStreptococcus spp. OTUCampylobacter concisus
-I              0.5714048             1.0000403                 1.0000569
-II             1.2142694             1.0000400                 0.9999908
-III            0.5475766             1.0000955                 1.0001105
-IV             0.2380319             1.0003340                 1.0003377
-not reported   0.1666948             0.9997835                 0.9997859
-             OTUPrevotella melaninogenica
-I                               1.0000398
-II                              1.0000416
-III                             1.0000950
-IV                              1.0003339
-not reported                    0.9997835</code></pre>
+<pre><code>    (Intercept) OTUStreptococcus spp. OTUCampylobacter concisus
+I     0.5714272             0.9999806                 0.9999970
+II    1.2142894             1.0000346                 0.9999901
+III   0.5476162             0.9999831                 0.9999969
+IV    0.2381002             0.9999551                 0.9999586
+    OTUPrevotella melaninogenica
+I                      1.0000122
+II                     0.9999458
+III                    1.0000117
+IV                     0.9999620</code></pre>
 <pre class="r"><code># save fitted logits
 pp &lt;- fitted(fit)
 # preditive data
 dotu &lt;- data.frame(OTU = c(&quot;Fusobacterium nucleatum&quot;, &quot;Streptococcus spp.&quot;, &quot;Campylobacter concisus&quot;, &quot;Prevotella melaninogenica&quot;))
 predict(fit, newdata = dotu, &quot;probs&quot;) # only TINY differences</code></pre>
-<pre><code>          0         I        II       III         IV not reported
-1 0.2675244 0.1528647 0.3248466 0.1464901 0.06367934   0.04459491
-2 0.2675124 0.1528640 0.3248451 0.1464975 0.06369775   0.04458326
-3 0.2675153 0.1528682 0.3248326 0.1465013 0.06369868   0.04458385
-4 0.2675123 0.1528639 0.3248455 0.1464974 0.06369772   0.04458324</code></pre>
+<pre><code>          0         I        II       III         IV
+1 0.2799997 0.1599994 0.3400006 0.1533323 0.06666797
+2 0.2799988 0.1599958 0.3400113 0.1533293 0.06666477
+3 0.2800016 0.1600001 0.3399996 0.1533330 0.06666568
+4 0.2800045 0.1600041 0.3399880 0.1533368 0.06666658</code></pre>
 <pre class="r"><code>## store the predicted probabilities for each value of ses
 pp.otu &lt;-cbind(dotu, predict(fit, newdata = dotu, &quot;probs&quot;, se = TRUE))
 
 ## calculate the mean probabilities within each level of OTU
-by(pp.otu[, 2:7], pp.otu$OTU, colMeans)</code></pre>
+by(pp.otu[, 2:6], pp.otu$OTU, colMeans)</code></pre>
 <pre><code>pp.otu$OTU: Campylobacter concisus
-           0            I           II          III           IV not reported 
-  0.26751530   0.15286823   0.32483264   0.14650130   0.06369868   0.04458385 
+         0          I         II        III         IV 
+0.28000165 0.16000008 0.33999964 0.15333295 0.06666568 
 ------------------------------------------------------------ 
 pp.otu$OTU: Fusobacterium nucleatum
-           0            I           II          III           IV not reported 
-  0.26752435   0.15286471   0.32484663   0.14649006   0.06367934   0.04459491 
+         0          I         II        III         IV 
+0.27999966 0.15999942 0.34000061 0.15333234 0.06666797 
 ------------------------------------------------------------ 
 pp.otu$OTU: Prevotella melaninogenica
-           0            I           II          III           IV not reported 
-  0.26751228   0.15286389   0.32484549   0.14649737   0.06369772   0.04458324 
+         0          I         II        III         IV 
+0.28000448 0.16000412 0.33998804 0.15333677 0.06666658 
 ------------------------------------------------------------ 
 pp.otu$OTU: Streptococcus spp.
-           0            I           II          III           IV not reported 
-  0.26751238   0.15286402   0.32484508   0.14649750   0.06369775   0.04458326 </code></pre>
+         0          I         II        III         IV 
+0.27999880 0.15999583 0.34001132 0.15332928 0.06666477 </code></pre>
 </div>
 <div id="model-2-ts-otu-abundance" class="section level3">
 <h3>Model 2: TS ~ OTU + Abundance</h3>
 <pre class="r"><code>fit &lt;- nnet::multinom(tumor.stage ~ OTU + Abundance, data=dat.16s.s)</code></pre>
-<pre><code># weights:  36 (25 variable)
-initial  value 1125.224947 
-iter  10 value 1036.591057
-iter  20 value 1003.572457
-iter  30 value 1002.703847
-final  value 1002.703282 
+<pre><code># weights:  30 (20 variable)
+initial  value 965.662747 
+iter  10 value 894.405308
+iter  20 value 888.437951
+final  value 888.305310 
 converged</code></pre>
 <pre class="r"><code>summary(fit)</code></pre>
 <pre><code>Call:
 nnet::multinom(formula = tumor.stage ~ OTU + Abundance, data = dat.16s.s)
 
 Coefficients:
-             (Intercept) OTUStreptococcus spp. OTUCampylobacter concisus
-I             -0.6019482           -0.29770929               0.036768981
-II             0.1493511           -0.31416197               0.038932244
-III           -0.6047665           -0.01998832               0.002120648
-IV            -1.4642044           -0.20835878               0.025000279
-not reported  -1.8374350           -0.31744429               0.039621982
-             OTUPrevotella melaninogenica    Abundance
-I                            -0.024130985 0.0025034384
-II                           -0.025266176 0.0026228398
-III                          -0.002131836 0.0001920192
-IV                           -0.018128606 0.0018251074
-not reported                 -0.025219107 0.0026488611
+    (Intercept) OTUStreptococcus spp. OTUCampylobacter concisus
+I    -0.6047834           -0.30035344               0.039373096
+II    0.1463525           -0.31682370               0.041724283
+III  -0.6049882           -0.02017896               0.002330615
+IV   -1.4661115           -0.21051068               0.026960717
+    OTUPrevotella melaninogenica    Abundance
+I                   -0.020932505 0.0025475291
+II                  -0.021835924 0.0026689058
+III                 -0.001713673 0.0001950689
+IV                  -0.015798446 0.0018570425
 
 Std. Errors:
-             (Intercept) OTUStreptococcus spp. OTUCampylobacter concisus
-I              0.2579305             0.4212163                 0.3630178
-II             0.2100176             0.3418866                 0.2956093
-III            0.2608095             0.4170931                 0.3675700
-IV             0.3543782             0.5765068                 0.4989885
-not reported   0.4118364             0.6771845                 0.5793856
-             OTUPrevotella melaninogenica   Abundance
-I                               0.3624989 0.001743779
-II                              0.2953697 0.001461370
-III                             0.3673553 0.001912311
-IV                              0.4982317 0.002392437
-not reported                    0.5780688 0.002659606
+    (Intercept) OTUStreptococcus spp. OTUCampylobacter concisus
+I     0.2581762             0.4212445                 0.3631679
+II    0.2102088             0.3420791                 0.2957261
+III   0.2609537             0.4173638                 0.3676527
+IV    0.3546729             0.5765377                 0.4991427
+    OTUPrevotella melaninogenica   Abundance
+I                      0.3624405 0.001759452
+II                     0.2953331 0.001474358
+III                    0.3672344 0.001927145
+IV                     0.4981078 0.002413791
 
-Residual Deviance: 2005.407 
-AIC: 2055.407 </code></pre>
+Residual Deviance: 1776.611 
+AIC: 1816.611 </code></pre>
 <pre class="r"><code># obtain significance tests
 z &lt;- summary(fit)$coefficients/summary(fit)$standard.errors
 z</code></pre>
-<pre><code>             (Intercept) OTUStreptococcus spp. OTUCampylobacter concisus
-I             -2.3337612           -0.70678481               0.101287006
-II             0.7111362           -0.91890701               0.131701681
-III           -2.3188053           -0.04792294               0.005769373
-IV            -4.1317569           -0.36141601               0.050101911
-not reported  -4.4615648           -0.46877073               0.068386206
-             OTUPrevotella melaninogenica Abundance
-I                            -0.066568429 1.4356399
-II                           -0.085540865 1.7947819
-III                          -0.005803199 0.1004121
-IV                           -0.036385893 0.7628655
-not reported                 -0.043626480 0.9959599</code></pre>
+<pre><code>    (Intercept) OTUStreptococcus spp. OTUCampylobacter concisus
+I    -2.3425216            -0.7130145               0.108415695
+II    0.6962244            -0.9261709               0.141090984
+III  -2.3183736            -0.0483486               0.006339176
+IV   -4.1337000            -0.3651291               0.054014042
+    OTUPrevotella melaninogenica Abundance
+I                   -0.057754322 1.4479109
+II                  -0.073936603 1.8102152
+III                 -0.004666429 0.1012217
+IV                  -0.031716924 0.7693468</code></pre>
 <pre class="r"><code>p &lt;- (1 - pnorm(abs(z), 0, 1)) * 2
 p</code></pre>
-<pre><code>              (Intercept) OTUStreptococcus spp. OTUCampylobacter concisus
-I            1.960823e-02             0.4797002                 0.9193226
-II           4.769998e-01             0.3581442                 0.8952203
-III          2.040560e-02             0.9617777                 0.9953967
-IV           3.600011e-05             0.7177885                 0.9600412
-not reported 8.136333e-06             0.6392335                 0.9454782
-             OTUPrevotella melaninogenica  Abundance
-I                               0.9469253 0.15110484
-II                              0.9318314 0.07268846
-III                             0.9953697 0.92001713
-IV                              0.9709747 0.44554363
-not reported                    0.9652021 0.31926963</code></pre>
+<pre><code>     (Intercept) OTUStreptococcus spp. OTUCampylobacter concisus
+I   1.915392e-02             0.4758368                 0.9136660
+II  4.862883e-01             0.3543572                 0.8877981
+III 2.042903e-02             0.9614384                 0.9949421
+IV  3.569693e-05             0.7150150                 0.9569240
+    OTUPrevotella melaninogenica  Abundance
+I                      0.9539443 0.14764197
+II                     0.9410608 0.07026243
+III                    0.9962767 0.91937448
+IV                     0.9746978 0.44168748</code></pre>
 <pre class="r"><code>## extract the coefficients from the model and exponentiate
 exp(coef(fit)) # interpret as relative risks</code></pre>
-<pre><code>             (Intercept) OTUStreptococcus spp. OTUCampylobacter concisus
-I              0.5477435             0.7425172                  1.037453
-II             1.1610806             0.7304007                  1.039700
-III            0.5462019             0.9802101                  1.002123
-IV             0.2312619             0.8119157                  1.025315
-not reported   0.1592253             0.7280072                  1.040417
-             OTUPrevotella melaninogenica Abundance
-I                               0.9761578  1.002507
-II                              0.9750503  1.002626
-III                             0.9978704  1.000192
-IV                              0.9820347  1.001827
-not reported                    0.9750962  1.002652</code></pre>
+<pre><code>    (Intercept) OTUStreptococcus spp. OTUCampylobacter concisus
+I     0.5461927             0.7405564                  1.040158
+II    1.1576041             0.7284592                  1.042607
+III   0.5460809             0.9800233                  1.002333
+IV    0.2308213             0.8101704                  1.027327
+    OTUPrevotella melaninogenica Abundance
+I                      0.9792851  1.002551
+II                     0.9784008  1.002672
+III                    0.9982878  1.000195
+IV                     0.9843257  1.001859</code></pre>
 <pre class="r"><code># save fitted logits
 pp &lt;- fitted(fit)
 # predit data
 dotu &lt;- data.frame(OTU = c(&quot;Fusobacterium nucleatum&quot;, &quot;Streptococcus spp.&quot;, &quot;Campylobacter concisus&quot;, &quot;Prevotella melaninogenica&quot;), Abundance = mean(dat.16s.s$Abundance))
 predict(fit, newdata = dotu, &quot;probs&quot;) # bigger differences</code></pre>
-<pre><code>          0         I        II       III         IV not reported
-1 0.2555485 0.1574622 0.3356602 0.1408471 0.06439470   0.04608727
-2 0.3036720 0.1389358 0.2913349 0.1640584 0.06212873   0.03987017
-3 0.2497993 0.1596845 0.3411347 0.1379707 0.06453950   0.04687126
-4 0.2593699 0.1560065 0.3321798 0.1426489 0.06418347   0.04561154</code></pre>
+<pre><code>          0         I        II       III         IV
+1 0.2681362 0.1649697 0.3516266 0.1477649 0.06750260
+2 0.3169635 0.1444163 0.3027895 0.1711834 0.06464735
+3 0.2619039 0.1676063 0.3580873 0.1446672 0.06773543
+4 0.2714817 0.1635681 0.3483242 0.1493524 0.06727357</code></pre>
 <pre class="r"><code>## look at the averaged predicted probabilities for different values of the continuous predictor variable Abundnace within each level of OTU
 dabund &lt;- data.frame(
   OTU = rep(c(&quot;Fusobacterium nucleatum&quot;, &quot;Streptococcus spp.&quot;, &quot;Campylobacter concisus&quot;, &quot;Prevotella melaninogenica&quot;), each = 51),
@@ -903,22 +916,22 @@ dabund &lt;- data.frame(
 pp.abund &lt;-cbind(dabund, predict(fit, newdata = dabund, &quot;probs&quot;, se = TRUE))
 
 ## calculate the mean probabilities within each level of OTU
-by(pp.abund[, 3:8], pp.abund$OTU, colMeans)</code></pre>
+by(pp.abund[, 3:7], pp.abund$OTU, colMeans)</code></pre>
 <pre><code>pp.abund$OTU: Campylobacter concisus
-           0            I           II          III           IV not reported 
-  0.18073001   0.18620713   0.40831655   0.10306018   0.06526185   0.05642428 
+         0          I         II        III         IV 
+0.18989671 0.19803248 0.43454900 0.10836285 0.06915896 
 ------------------------------------------------------------ 
 pp.abund$OTU: Fusobacterium nucleatum
-           0            I           II          III           IV not reported 
-  0.18548588   0.18439024   0.40347761   0.10555599   0.06537256   0.05571772 
+         0          I         II        III         IV 
+0.19511229 0.19583452 0.42873939 0.11108923 0.06922457 
 ------------------------------------------------------------ 
 pp.abund$OTU: Prevotella melaninogenica
-           0            I           II          III           IV not reported 
-  0.18865464   0.18318669   0.40040147   0.10713583   0.06532547   0.05529589 
+         0          I         II        III         IV 
+0.19792008 0.19465222 0.42577802 0.11249991 0.06914977 
 ------------------------------------------------------------ 
 pp.abund$OTU: Streptococcus spp.
-           0            I           II          III           IV not reported 
-  0.22655381   0.16863991   0.36313616   0.12645569   0.06522761   0.04998682 </code></pre>
+         0          I         II        III         IV 
+0.23733975 0.17799437 0.38347788 0.13252137 0.06866663 </code></pre>
 <pre class="r"><code>## melt data set to long for ggplot2
 lpp &lt;- melt(pp.abund, id.vars = c(&quot;OTU&quot;, &quot;Abundance&quot;), value.name = &quot;probability&quot;)
 
@@ -937,16 +950,16 @@ ggplot(lpp, aes(x = Abundance, y = probability, colour = OTU)) +
 <div id="model-3-ts-otu-abundance-otuabundnace" class="section level3">
 <h3>Model 3: TS ~ OTU + Abundance + OTU:Abundnace</h3>
 <pre class="r"><code>fit &lt;- nnet::multinom(tumor.stage ~ OTU + Abundance + OTU:Abundance, data=dat.16s.s)</code></pre>
-<pre><code># weights:  54 (40 variable)
-initial  value 1125.224947 
-iter  10 value 1090.589208
-iter  20 value 1039.256245
-iter  30 value 996.413681
-iter  40 value 992.928158
-iter  50 value 991.429386
-iter  60 value 991.127307
-iter  70 value 990.723318
-final  value 990.722744 
+<pre><code># weights:  45 (32 variable)
+initial  value 965.662747 
+iter  10 value 941.863626
+iter  20 value 901.231110
+iter  30 value 879.803956
+iter  40 value 878.496840
+iter  50 value 877.769589
+iter  50 value 877.769583
+iter  50 value 877.769583
+final  value 877.769583 
 converged</code></pre>
 <pre class="r"><code>summary(fit)</code></pre>
 <pre><code>Call:
@@ -954,179 +967,104 @@ nnet::multinom(formula = tumor.stage ~ OTU + Abundance + OTU:Abundance,
     data = dat.16s.s)
 
 Coefficients:
-             (Intercept) OTUStreptococcus spp. OTUCampylobacter concisus
-I            -0.59669951           -0.26093056               -0.02367244
-II           -0.04925272            0.09502819                0.20651525
-III          -0.77567930            0.34796855                0.26293966
-IV           -1.04748982           -0.51444215               -0.38084125
-not reported -1.70228029           -0.40001948               -0.08221021
-             OTUPrevotella melaninogenica    Abundance
-I                             -0.13897798  0.005360968
-II                             0.13369547  0.017833598
-III                            0.05111365  0.015423279
-IV                            -0.71749336 -0.414573888
-not reported                  -0.37627244 -0.022283246
-             OTUStreptococcus spp.:Abundance
-I                                -0.00333574
-II                               -0.01676429
-III                              -0.01689038
-IV                                0.41549620
-not reported                      0.02438395
-             OTUCampylobacter concisus:Abundance
-I                                   0.0185943761
-II                                 -0.0004488833
-III                                -0.1622707887
-IV                                  0.4097502356
-not reported                        0.0170529960
-             OTUPrevotella melaninogenica:Abundance
-I                                       0.001887565
-II                                     -0.012888890
-III                                    -0.010003735
-IV                                      0.425826443
-not reported                            0.032563443
+    (Intercept) OTUStreptococcus spp. OTUCampylobacter concisus
+I   -0.59627225           -0.27271221               -0.02313882
+II  -0.04841984            0.08882484                0.20646287
+III -0.77491056            0.35263258                0.25421326
+IV  -1.07350821           -0.49271665               -0.35516007
+    OTUPrevotella melaninogenica    Abundance OTUStreptococcus spp.:Abundance
+I                    -0.12547323  0.005306701                    -0.003204521
+II                    0.14193593  0.017741150                    -0.016633470
+III                   0.06042278  0.015333265                    -0.016845951
+IV                   -0.66866510 -0.390337397                     0.391291144
+    OTUCampylobacter concisus:Abundance OTUPrevotella melaninogenica:Abundance
+I                          0.0181909576                            0.001365729
+II                        -0.0007532923                           -0.013204522
+III                       -0.1484115828                           -0.010359127
+IV                         0.3856873183                            0.400781470
 
 Std. Errors:
-             (Intercept) OTUStreptococcus spp. OTUCampylobacter concisus
-I              0.2706201             0.4738624                 0.3783916
-II             0.2281113             0.3810820                 0.3128107
-III            0.2792175             0.4573298                 0.3880796
-IV             0.3761363             0.6418971                 0.5206815
-not reported   0.4330984             0.7670192                 0.6017282
-             OTUPrevotella melaninogenica   Abundance
-I                               0.4029752 0.012475637
-II                              0.3320564 0.009770337
-III                             0.4104489 0.010117141
-IV                              0.5654752 0.363818099
-not reported                    0.6506491 0.047707083
-             OTUStreptococcus spp.:Abundance
-I                                0.012623695
-II                               0.009903424
-III                              0.010350314
-IV                               0.363828064
-not reported                     0.047801354
-             OTUCampylobacter concisus:Abundance
-I                                     0.02927336
-II                                    0.02727100
-III                                   0.17685556
-IV                                    0.36829726
-not reported                          0.08268464
-             OTUPrevotella melaninogenica:Abundance
-I                                        0.01392258
-II                                       0.01129880
-III                                      0.01205157
-IV                                       0.36388004
-not reported                             0.04830831
+    (Intercept) OTUStreptococcus spp. OTUCampylobacter concisus
+I     0.2704470             0.4774130                 0.3781801
+II    0.2279863             0.3833642                 0.3126257
+III   0.2791141             0.4593983                 0.3875920
+IV    0.3763586             0.6462099                 0.5206078
+    OTUPrevotella melaninogenica   Abundance OTUStreptococcus spp.:Abundance
+I                      0.4006033 0.012397294                     0.012552129
+II                     0.3301150 0.009700164                     0.009838977
+III                    0.4081087 0.010049130                     0.010290832
+IV                     0.5627898 0.370175948                     0.370186103
+    OTUCampylobacter concisus:Abundance OTUPrevotella melaninogenica:Abundance
+I                            0.02888437                             0.01374055
+II                           0.02686202                             0.01111699
+III                          0.17149082                             0.01184750
+IV                           0.37439040                             0.37023237
 
-Residual Deviance: 1981.445 
-AIC: 2061.445 </code></pre>
+Residual Deviance: 1755.539 
+AIC: 1819.539 </code></pre>
 <pre class="r"><code># obtain significance tests
 z &lt;- summary(fit)$coefficients/summary(fit)$standard.errors
 z</code></pre>
-<pre><code>             (Intercept) OTUStreptococcus spp. OTUCampylobacter concisus
-I             -2.2049339            -0.5506462               -0.06256069
-II            -0.2159152             0.2493642                0.66019236
-III           -2.7780470             0.7608701                0.67754060
-IV            -2.7848677            -0.8014402               -0.73142846
-not reported  -3.9304699            -0.5215247               -0.13662350
-             OTUPrevotella melaninogenica  Abundance
-I                              -0.3448798  0.4297150
-II                              0.4026288  1.8252797
-III                             0.1245311  1.5244702
-IV                             -1.2688326 -1.1395087
-not reported                   -0.5783032 -0.4670847
-             OTUStreptococcus spp.:Abundance
-I                                 -0.2642443
-II                                -1.6927768
-III                               -1.6318716
-IV                                 1.1420125
-not reported                       0.5101100
-             OTUCampylobacter concisus:Abundance
-I                                      0.6351980
-II                                    -0.0164601
-III                                   -0.9175329
-IV                                     1.1125530
-not reported                           0.2062414
-             OTUPrevotella melaninogenica:Abundance
-I                                         0.1355758
-II                                       -1.1407307
-III                                      -0.8300775
-IV                                        1.1702385
-not reported                              0.6740754</code></pre>
+<pre><code>    (Intercept) OTUStreptococcus spp. OTUCampylobacter concisus
+I    -2.2047656            -0.5712291               -0.06118464
+II   -0.2123805             0.2316983                0.66041547
+III  -2.7763223             0.7675965                0.65587854
+IV   -2.8523545            -0.7624715               -0.68220277
+    OTUPrevotella melaninogenica  Abundance OTUStreptococcus spp.:Abundance
+I                     -0.3132107  0.4280531                       -0.255297
+II                     0.4299590  1.8289536                       -1.690569
+III                    0.1480556  1.5258300                       -1.636986
+IV                    -1.1881259 -1.0544645                        1.057012
+    OTUCampylobacter concisus:Abundance OTUPrevotella melaninogenica:Abundance
+I                            0.62978554                             0.09939408
+II                          -0.02804303                            -1.18777856
+III                         -0.86542001                            -0.87437230
+IV                           1.03017416                             1.08251330</code></pre>
 <pre class="r"><code>p &lt;- (1 - pnorm(abs(z), 0, 1)) * 2
 p</code></pre>
-<pre><code>              (Intercept) OTUStreptococcus spp. OTUCampylobacter concisus
-I            2.745873e-02             0.5818762                 0.9501163
-II           8.290538e-01             0.8030791                 0.5091304
-III          5.468671e-03             0.4467347                 0.4980630
-IV           5.354957e-03             0.4228768                 0.4645175
-not reported 8.478001e-05             0.6020013                 0.8913284
-             OTUPrevotella melaninogenica  Abundance
-I                               0.7301848 0.66740297
-II                              0.6872214 0.06795883
-III                             0.9008948 0.12739130
-IV                              0.2045008 0.25449104
-not reported                    0.5630595 0.64043931
-             OTUStreptococcus spp.:Abundance
-I                                 0.79159164
-II                                0.09049797
-III                               0.10270655
-IV                                0.25344882
-not reported                      0.60997441
-             OTUCampylobacter concisus:Abundance
-I                                      0.5252993
-II                                     0.9868673
-III                                    0.3588635
-IV                                     0.2659004
-not reported                           0.8366023
-             OTUPrevotella melaninogenica:Abundance
-I                                         0.8921567
-II                                        0.2539820
-III                                       0.4064950
-IV                                        0.2419050
-not reported                              0.5002633</code></pre>
+<pre><code>    (Intercept) OTUStreptococcus spp. OTUCampylobacter concisus
+I   0.027470545             0.5678444                 0.9512122
+II  0.831810220             0.8167723                 0.5089872
+III 0.005497769             0.4427269                 0.5119023
+IV  0.004339667             0.4457787                 0.4951107
+    OTUPrevotella melaninogenica  Abundance OTUStreptococcus spp.:Abundance
+I                      0.7541206 0.66861244                      0.79849374
+II                     0.6672254 0.06740656                      0.09091913
+III                    0.8822989 0.12705220                      0.10163334
+IV                     0.2347838 0.29167030                      0.29050612
+    OTUCampylobacter concisus:Abundance OTUPrevotella melaninogenica:Abundance
+I                             0.5288349                              0.9208254
+II                            0.9776278                              0.2349207
+III                           0.3868083                              0.3819155
+IV                            0.3029283                              0.2790245</code></pre>
 <pre class="r"><code>## extract the coefficients from the model and exponentiate
 exp(coef(fit)) # interpret as relative risks</code></pre>
-<pre><code>             (Intercept) OTUStreptococcus spp. OTUCampylobacter concisus
-I              0.5506260             0.7703344                 0.9766056
-II             0.9519405             1.0996899                 1.2293865
-III            0.4603909             1.4161877                 1.3007482
-IV             0.3508173             0.5978340                 0.6832864
-not reported   0.1822674             0.6703070                 0.9210783
-             OTUPrevotella melaninogenica Abundance
-I                               0.8702472 1.0053754
-II                              1.1430447 1.0179936
-III                             1.0524425 1.0155428
-IV                              0.4879739 0.6606217
-not reported                    0.6864153 0.9779632
-             OTUStreptococcus spp.:Abundance
-I                                  0.9966698
-II                                 0.9833755
-III                                0.9832515
-IV                                 1.5151224
-not reported                       1.0246837
-             OTUCampylobacter concisus:Abundance
-I                                      1.0187683
-II                                     0.9995512
-III                                    0.8502109
-IV                                     1.5064415
-not reported                           1.0171992
-             OTUPrevotella melaninogenica:Abundance
-I                                         1.0018893
-II                                        0.9871938
-III                                       0.9900461
-IV                                        1.5308551
-not reported                              1.0330994</code></pre>
+<pre><code>    (Intercept) OTUStreptococcus spp. OTUCampylobacter concisus
+I     0.5508613             0.7613119                 0.9771268
+II    0.9527337             1.0928892                 1.2293221
+III   0.4607450             1.4228083                 1.2894468
+IV    0.3418073             0.6109644                 0.7010612
+    OTUPrevotella melaninogenica Abundance OTUStreptococcus spp.:Abundance
+I                      0.8820794 1.0053208                       0.9968006
+II                     1.1525028 1.0178995                       0.9835041
+III                    1.0622856 1.0154514                       0.9832951
+IV                     0.5123921 0.6768285                       1.4788890
+    OTUCampylobacter concisus:Abundance OTUPrevotella melaninogenica:Abundance
+I                             1.0183574                              1.0013667
+II                            0.9992470                              0.9868823
+III                           0.8620762                              0.9896943
+IV                            1.4706248                              1.4929910</code></pre>
 <pre class="r"><code># save fitted logits
 pp &lt;- fitted(fit)
 # predit data
 gmeans &lt;- dat.16s.s %&gt;% group_by(OTU) %&gt;% summarise(M = mean(Abundance))
 dotu &lt;- data.frame(OTU = c(&quot;Fusobacterium nucleatum&quot;, &quot;Streptococcus spp.&quot;, &quot;Campylobacter concisus&quot;, &quot;Prevotella melaninogenica&quot;), Abundance = gmeans$M)
 predict(fit, newdata = dotu, &quot;probs&quot;) # bigger differences</code></pre>
-<pre><code>          0         I        II       III           IV not reported
-1 0.2742667 0.1662494 0.3594195 0.1664778 5.703835e-05   0.03352950
-2 0.2692405 0.1518491 0.3276064 0.1428078 6.429135e-02   0.04420488
-3 0.2763845 0.1568249 0.3363098 0.1190824 6.553912e-02   0.04585922
-4 0.2639438 0.1540951 0.3286240 0.1482418 6.139738e-02   0.04369800</code></pre>
+<pre><code>          0         I        II       III           IV
+1 0.2819113 0.1714285 0.3737664 0.1728267 6.703098e-05
+2 0.2819423 0.1585211 0.3426071 0.1496748 6.725471e-02
+3 0.2889414 0.1641112 0.3518175 0.1266238 6.850608e-02
+4 0.2771348 0.1607634 0.3432581 0.1547942 6.404947e-02</code></pre>
 <pre class="r"><code>## look at the averaged predicted probabilities for different values of the continuous predictor variable Abundnace within each level of OTU
 dabund &lt;- data.frame(
   OTU = rep(c(&quot;Fusobacterium nucleatum&quot;, &quot;Streptococcus spp.&quot;, &quot;Campylobacter concisus&quot;, &quot;Prevotella melaninogenica&quot;), each = 51),
@@ -1135,22 +1073,22 @@ dabund &lt;- data.frame(
 pp.abund &lt;-cbind(dabund, predict(fit, newdata = dabund, &quot;probs&quot;, se = TRUE))
 
 ## calculate the mean probabilities within each level of OTU
-by(pp.abund[, 3:8], pp.abund$OTU, colMeans)</code></pre>
+by(pp.abund[, 3:7], pp.abund$OTU, colMeans)</code></pre>
 <pre><code>pp.abund$OTU: Campylobacter concisus
-           0            I           II          III           IV not reported 
- 0.044166453  0.646759905  0.290804978  0.004111035  0.008386006  0.005771623 
+          0           I          II         III          IV 
+0.046191605 0.645572197 0.294955139 0.004460403 0.008820657 
 ------------------------------------------------------------ 
 pp.abund$OTU: Fusobacterium nucleatum
-           0            I           II          III           IV not reported 
- 0.054825510  0.046476481  0.708319996  0.184358597  0.002000020  0.004019395 
+          0           I          II         III          IV 
+0.056138561 0.047243286 0.709510663 0.185038112 0.002069378 
 ------------------------------------------------------------ 
 pp.abund$OTU: Prevotella melaninogenica
-           0            I           II          III           IV not reported 
-   0.1006484    0.1888815    0.2510530    0.1237848    0.2187111    0.1169212 
+        0         I        II       III        IV 
+0.1157777 0.2142867 0.2882000 0.1418134 0.2399222 
 ------------------------------------------------------------ 
 pp.abund$OTU: Streptococcus spp.
-           0            I           II          III           IV not reported 
-  0.24877956   0.17729604   0.33879008   0.11761193   0.06536973   0.05215265 </code></pre>
+         0          I         II        III         IV 
+0.26143295 0.18858714 0.35802418 0.12294118 0.06901454 </code></pre>
 <pre class="r"><code>## melt data set to long for ggplot2
 lpp &lt;- melt(pp.abund, id.vars = c(&quot;OTU&quot;, &quot;Abundance&quot;), value.name = &quot;probability&quot;)
 
@@ -1175,16 +1113,16 @@ ggplot(lpp, aes(x = Abundance, y = probability, colour = OTU)) +
 <pre class="r"><code># in long format
 table(dat.rna$tumor.stage)</code></pre>
 <pre><code>
-           I           II          III           IV not reported 
-       16359        55309        39729         6232        17138 </code></pre>
+    I    II   III    IV 
+16359 55309 39729  6232 </code></pre>
 <pre class="r"><code># by subject
 dat &lt;- dat.rna %&gt;% filter(OTU == &quot;Fusobacterium nucleatum&quot;)
 table(dat$tumor.stage)</code></pre>
 <pre><code>
-           I           II          III           IV not reported 
-          21           71           51            8           22 </code></pre>
+  I  II III  IV 
+ 21  71  51   8 </code></pre>
 <pre class="r"><code>sum(table(dat$tumor.stage)) # sample size met</code></pre>
-<pre><code>[1] 173</code></pre>
+<pre><code>[1] 151</code></pre>
 <pre class="r"><code>dat.rna.s$Abundancej &lt;- dat.rna.s$Abundance+0.01
 mean.dat &lt;- dat.rna.s %&gt;%
   group_by(tumor.stage, OTU) %&gt;%
@@ -1210,198 +1148,175 @@ mean.dat &lt;- dat.rna.s %&gt;%
 <div id="model-1-ts-abundance-1" class="section level3">
 <h3>Model 1: TS ~ Abundance</h3>
 <pre class="r"><code>fit &lt;- nnet::multinom(tumor.stage ~ OTU, data=dat.rna.s)</code></pre>
-<pre><code># weights:  25 (16 variable)
-initial  value 2505.894830 
-iter  10 value 2169.658898
-final  value 2157.953669 
+<pre><code># weights:  20 (12 variable)
+initial  value 1883.974037 
+iter  10 value 1566.684823
+final  value 1564.788361 
 converged</code></pre>
 <pre class="r"><code>summary(fit)</code></pre>
 <pre><code>Call:
 nnet::multinom(formula = tumor.stage ~ OTU, data = dat.rna.s)
 
 Coefficients:
-             (Intercept) OTUStreptococcus spp. OTUCampylobacter concisus
-II            1.21814839          3.650884e-05              4.293757e-06
-III           0.88731491          6.336748e-06              1.097171e-04
-IV           -0.96505808          1.423347e-05             -8.499898e-05
-not reported  0.04652072         -2.047866e-05              6.233591e-05
-             OTUPrevotella melaninogenica
-II                           1.491934e-04
-III                         -2.261544e-05
-IV                          -8.737889e-05
-not reported                 5.797583e-05
+    (Intercept) OTUStreptococcus spp. OTUCampylobacter concisus
+II    1.2181362          1.612699e-05              5.420841e-05
+III   0.8872408         -4.489247e-06              1.323503e-04
+IV   -0.9655016          4.282208e-04              2.974206e-04
+    OTUPrevotella melaninogenica
+II                  1.180849e-04
+III                 7.358456e-05
+IV                  2.958596e-04
 
 Std. Errors:
-             (Intercept) OTUStreptococcus spp. OTUCampylobacter concisus
-II             0.2484024             0.2683053                 0.3512973
-III            0.2592812             0.2800559                 0.3666795
-IV             0.4154712             0.4487604                 0.5875797
-not reported   0.3050797             0.3295244                 0.4314487
-             OTUPrevotella melaninogenica
-II                              0.3512961
-III                             0.3666848
-IV                              0.5875829
-not reported                    0.4314511
+    (Intercept) OTUStreptococcus spp. OTUCampylobacter concisus
+II    0.2483960             0.2682988                 0.3512914
+III   0.2592769             0.2800517                 0.3666773
+IV    0.4155267             0.4488111                 0.5876245
+    OTUPrevotella melaninogenica
+II                     0.3512910
+III                    0.3666798
+IV                     0.5876261
 
-Residual Deviance: 4315.907 
-AIC: 4347.907 </code></pre>
+Residual Deviance: 3129.577 
+AIC: 3153.577 </code></pre>
 <pre class="r"><code># obtain significance tests
 z &lt;- summary(fit)$coefficients/summary(fit)$standard.errors
 z</code></pre>
-<pre><code>             (Intercept) OTUStreptococcus spp. OTUCampylobacter concisus
-II             4.9039323          1.360720e-04              1.222258e-05
-III            3.4222112          2.262672e-05              2.992181e-04
-IV            -2.3228036          3.171732e-05             -1.446595e-04
-not reported   0.1524871         -6.214612e-05              1.444805e-04
-             OTUPrevotella melaninogenica
-II                           4.246942e-04
-III                         -6.167541e-05
-IV                          -1.487090e-04
-not reported                 1.343741e-04</code></pre>
+<pre><code>    (Intercept) OTUStreptococcus spp. OTUCampylobacter concisus
+II     4.904009          6.010831e-05              0.0001543118
+III    3.421981         -1.603006e-05              0.0003609449
+IV    -2.323561          9.541226e-04              0.0005061405
+    OTUPrevotella melaninogenica
+II                  0.0003361456
+III                 0.0002006780
+IV                  0.0005034828</code></pre>
 <pre class="r"><code>p &lt;- (1 - pnorm(abs(z), 0, 1)) * 2
 p</code></pre>
-<pre><code>              (Intercept) OTUStreptococcus spp. OTUCampylobacter concisus
-II           9.393689e-07             0.9998914                 0.9999902
-III          6.211403e-04             0.9999819                 0.9997613
-IV           2.018971e-02             0.9999747                 0.9998846
-not reported 8.788028e-01             0.9999504                 0.9998847
-             OTUPrevotella melaninogenica
-II                              0.9996611
-III                             0.9999508
-IV                              0.9998813
-not reported                    0.9998928</code></pre>
+<pre><code>     (Intercept) OTUStreptococcus spp. OTUCampylobacter concisus
+II  9.389999e-07             0.9999520                 0.9998769
+III 6.216659e-04             0.9999872                 0.9997120
+IV  2.014904e-02             0.9992387                 0.9995962
+    OTUPrevotella melaninogenica
+II                     0.9997318
+III                    0.9998399
+IV                     0.9995983</code></pre>
 <pre class="r"><code>## extract the coefficients from the model and exponentiate
 exp(coef(fit)) # interpret as relative risks</code></pre>
-<pre><code>             (Intercept) OTUStreptococcus spp. OTUCampylobacter concisus
-II             3.3809218             1.0000365                  1.000004
-III            2.4285999             1.0000063                  1.000110
-IV             0.3809611             1.0000142                  0.999915
-not reported   1.0476198             0.9999795                  1.000062
-             OTUPrevotella melaninogenica
-II                              1.0001492
-III                             0.9999774
-IV                              0.9999126
-not reported                    1.0000580</code></pre>
+<pre><code>    (Intercept) OTUStreptococcus spp. OTUCampylobacter concisus
+II    3.3808806             1.0000161                  1.000054
+III   2.4284199             0.9999955                  1.000132
+IV    0.3807921             1.0004283                  1.000297
+    OTUPrevotella melaninogenica
+II                      1.000118
+III                     1.000074
+IV                      1.000296</code></pre>
 <pre class="r"><code># save fitted logits
 pp &lt;- fitted(fit)
 # preditive data
 dotu &lt;- data.frame(OTU = c(&quot;Fusobacterium nucleatum&quot;, &quot;Streptococcus spp.&quot;, &quot;Campylobacter concisus&quot;, &quot;Prevotella melaninogenica&quot;))
 predict(fit, newdata = dotu, &quot;probs&quot;) # only TINY differences</code></pre>
-<pre><code>          I        II       III         IV not reported
-1 0.1213872 0.4104005 0.2948009 0.04624379    0.1271676
-2 0.1213854 0.4104094 0.2947984 0.04624376    0.1271631
-3 0.1213826 0.4103867 0.2948220 0.04623810    0.1271707
-4 0.1213801 0.4104380 0.2947771 0.04623707    0.1271676</code></pre>
+<pre><code>          I        II       III         IV
+1 0.1390803 0.4702138 0.3377453 0.05296067
+2 0.1390763 0.4702078 0.3377341 0.05298183
+3 0.1390683 0.4701989 0.3377610 0.05297187
+4 0.1390669 0.4702241 0.3377377 0.05297125</code></pre>
 <pre class="r"><code>## store the predicted probabilities for each value of ses
 pp.otu &lt;-cbind(dotu, predict(fit, newdata = dotu, &quot;probs&quot;, se = TRUE))
 
 ## calculate the mean probabilities within each level of OTU
-by(pp.otu[, 2:6], pp.otu$OTU, colMeans)</code></pre>
+by(pp.otu[, 2:5], pp.otu$OTU, colMeans)</code></pre>
 <pre><code>pp.otu$OTU: Campylobacter concisus
-           I           II          III           IV not reported 
-   0.1213826    0.4103867    0.2948220    0.0462381    0.1271707 
+         I         II        III         IV 
+0.13906831 0.47019885 0.33776096 0.05297187 
 ------------------------------------------------------------ 
 pp.otu$OTU: Fusobacterium nucleatum
-           I           II          III           IV not reported 
-  0.12138718   0.41040055   0.29480088   0.04624379   0.12716761 
+         I         II        III         IV 
+0.13908026 0.47021378 0.33774529 0.05296067 
 ------------------------------------------------------------ 
 pp.otu$OTU: Prevotella melaninogenica
-           I           II          III           IV not reported 
-  0.12138015   0.41043802   0.29477715   0.04623707   0.12716762 
+         I         II        III         IV 
+0.13906691 0.47022414 0.33773770 0.05297125 
 ------------------------------------------------------------ 
 pp.otu$OTU: Streptococcus spp.
-           I           II          III           IV not reported 
-  0.12138537   0.41040941   0.29479835   0.04624376   0.12716311 </code></pre>
+         I         II        III         IV 
+0.13907627 0.47020784 0.33773406 0.05298183 </code></pre>
 </div>
 <div id="model-2-ts-otu-abundance-1" class="section level3">
 <h3>Model 2: TS ~ OTU + Abundance</h3>
 <pre class="r"><code>fit &lt;- nnet::multinom(tumor.stage ~ OTU + Abundance, data=dat.rna.s)</code></pre>
-<pre><code># weights:  30 (20 variable)
-initial  value 2505.894830 
-iter  10 value 2187.209898
-iter  20 value 2156.177222
-iter  30 value 2154.856368
-iter  30 value 2154.856366
-iter  30 value 2154.856366
-final  value 2154.856366 
+<pre><code># weights:  24 (15 variable)
+initial  value 1883.974037 
+iter  10 value 1583.114897
+iter  20 value 1561.973672
+final  value 1561.966301 
 converged</code></pre>
 <pre class="r"><code>summary(fit)</code></pre>
 <pre><code>Call:
 nnet::multinom(formula = tumor.stage ~ OTU + Abundance, data = dat.rna.s)
 
 Coefficients:
-             (Intercept) OTUStreptococcus spp. OTUCampylobacter concisus
-II            1.22389993          -0.005365375              -0.005610842
-III           0.88005998           0.006916057               0.007172288
-IV           -1.13005106           0.163682102               0.164640189
-not reported  0.03100875           0.014915539               0.015375416
-             OTUPrevotella melaninogenica     Abundance
-II                           -0.004611915 -1.845362e-05
-III                           0.006166936  1.645888e-05
-IV                            0.160760060  6.227932e-05
-not reported                  0.013607464  2.892287e-05
+    (Intercept) OTUStreptococcus spp. OTUCampylobacter concisus
+II    1.2223820          -0.003922936              -0.003953146
+III   0.8824898           0.004632690               0.004974597
+IV   -1.1199777           0.154052453               0.154872317
+    OTUPrevotella melaninogenica     Abundance
+II                  -0.003549956 -1.318433e-05
+III                  0.004212484  1.075128e-05
+IV                   0.151986559  5.025792e-05
 
 Std. Errors:
-             (Intercept) OTUStreptococcus spp. OTUCampylobacter concisus
-II            0.06528262            0.07029829                0.09577046
-III           0.06872088            0.07468645                0.10257516
-IV            0.08828314            0.06919437                0.01460932
-not reported  0.07659641            0.07887242                0.10169916
-             OTUPrevotella melaninogenica    Abundance
-II                             0.09597200 9.929516e-05
-III                            0.10267821 9.011621e-05
-IV                             0.01459417 9.001103e-05
-not reported                   0.10185631 9.174721e-05
+    (Intercept) OTUStreptococcus spp. OTUCampylobacter concisus
+II   0.07557565            0.09072775                0.08689443
+III  0.07960033            0.09603308                0.08480810
+IV   0.09845530            0.09426987                0.04516448
+    OTUPrevotella melaninogenica    Abundance
+II                    0.08695669 8.403456e-05
+III                   0.08482469 7.405390e-05
+IV                    0.04511175 7.293706e-05
 
-Residual Deviance: 4309.713 
-AIC: 4349.713 </code></pre>
+Residual Deviance: 3123.933 
+AIC: 3153.933 </code></pre>
 <pre class="r"><code># obtain significance tests
 z &lt;- summary(fit)$coefficients/summary(fit)$standard.errors
 z</code></pre>
-<pre><code>             (Intercept) OTUStreptococcus spp. OTUCampylobacter concisus
-II            18.7477134           -0.07632299               -0.05858635
-III           12.8062973            0.09260123                0.06992227
-IV           -12.8003041            2.36554091               11.26953459
-not reported   0.4048329            0.18910970                0.15118528
-             OTUPrevotella melaninogenica  Abundance
-II                            -0.04805479 -0.1858461
-III                            0.06006081  0.1826407
-IV                            11.01536518  0.6919076
-not reported                   0.13359471  0.3152452</code></pre>
+<pre><code>    (Intercept) OTUStreptococcus spp. OTUCampylobacter concisus
+II     16.17428           -0.04323854               -0.04549366
+III    11.08651            0.04824056                0.05865710
+IV    -11.37549            1.63416424                3.42907305
+    OTUPrevotella melaninogenica  Abundance
+II                   -0.04082441 -0.1568918
+III                   0.04966106  0.1451818
+IV                    3.36911230  0.6890589</code></pre>
 <pre class="r"><code>p &lt;- (1 - pnorm(abs(z), 0, 1)) * 2
 p</code></pre>
-<pre><code>             (Intercept) OTUStreptococcus spp. OTUCampylobacter concisus
-II             0.0000000            0.93916214                 0.9532816
-III            0.0000000            0.92622036                 0.9442555
-IV             0.0000000            0.01800375                 0.0000000
-not reported   0.6856003            0.85000684                 0.8798296
-             OTUPrevotella melaninogenica Abundance
-II                              0.9616726 0.8525654
-III                             0.9521072 0.8550800
-IV                              0.0000000 0.4889954
-not reported                    0.8937231 0.7525755</code></pre>
+<pre><code>    (Intercept) OTUStreptococcus spp. OTUCampylobacter concisus
+II            0             0.9655114              0.9637138257
+III           0             0.9615245              0.9532252334
+IV            0             0.1022244              0.0006056465
+    OTUPrevotella melaninogenica Abundance
+II                   0.967435878 0.8753301
+III                  0.960392485 0.8845674
+IV                   0.000754107 0.4907862</code></pre>
 <pre class="r"><code>## extract the coefficients from the model and exponentiate
 exp(coef(fit)) # interpret as relative risks</code></pre>
-<pre><code>             (Intercept) OTUStreptococcus spp. OTUCampylobacter concisus
-II             3.4004233              0.994649                 0.9944049
-III            2.4110443              1.006940                 1.0071981
-IV             0.3230168              1.177840                 1.1789688
-not reported   1.0314945              1.015027                 1.0154942
-             OTUPrevotella melaninogenica Abundance
-II                              0.9953987 0.9999815
-III                             1.0061860 1.0000165
-IV                              1.1744031 1.0000623
-not reported                    1.0137005 1.0000289</code></pre>
+<pre><code>    (Intercept) OTUStreptococcus spp. OTUCampylobacter concisus
+II    3.3952655             0.9960847                 0.9960547
+III   2.4169098             1.0046434                 1.0049870
+IV    0.3262871             1.1665521                 1.1675089
+    OTUPrevotella melaninogenica Abundance
+II                     0.9964563 0.9999868
+III                    1.0042214 1.0000108
+IV                     1.1641446 1.0000503</code></pre>
 <pre class="r"><code># save fitted logits
 pp &lt;- fitted(fit)
 # predit data
 dotu &lt;- data.frame(OTU = c(&quot;Fusobacterium nucleatum&quot;, &quot;Streptococcus spp.&quot;, &quot;Campylobacter concisus&quot;, &quot;Prevotella melaninogenica&quot;), Abundance = mean(dat.rna.s$Abundance))
 predict(fit, newdata = dotu, &quot;probs&quot;) # bigger differences</code></pre>
-<pre><code>          I        II       III         IV not reported
-1 0.1223989 0.4150705 0.2958303 0.03990376    0.1267965
-2 0.1213271 0.4092343 0.2952750 0.04658867    0.1275749
-3 0.1213176 0.4091018 0.2953275 0.04662967    0.1276236
-4 0.1213532 0.4096310 0.2951174 0.04646274    0.1274356</code></pre>
+<pre><code>          I        II       III         IV
+1 0.1400928 0.4747230 0.3391318 0.04605243
+2 0.1390656 0.4693972 0.3382085 0.05332866
+3 0.1390454 0.4693149 0.3382750 0.05336465
+4 0.1390763 0.4696085 0.3380925 0.05322270</code></pre>
 <pre class="r"><code>## look at the averaged predicted probabilities for different values of the continuous predictor variable Abundnace within each level of OTU
 dabund &lt;- data.frame(
   OTU = rep(c(&quot;Fusobacterium nucleatum&quot;, &quot;Streptococcus spp.&quot;, &quot;Campylobacter concisus&quot;, &quot;Prevotella melaninogenica&quot;), each = 51),
@@ -1410,22 +1325,22 @@ dabund &lt;- data.frame(
 pp.abund &lt;-cbind(dabund, predict(fit, newdata = dabund, &quot;probs&quot;, se = TRUE))
 
 ## calculate the mean probabilities within each level of OTU
-by(pp.abund[, 3:7], pp.abund$OTU, colMeans)</code></pre>
+by(pp.abund[, 3:6], pp.abund$OTU, colMeans)</code></pre>
 <pre><code>pp.abund$OTU: Campylobacter concisus
-           I           II          III           IV not reported 
-  0.12126844   0.40817153   0.29570285   0.04690866   0.12794852 
+         I         II        III         IV 
+0.13904297 0.46867881 0.33863960 0.05363862 
 ------------------------------------------------------------ 
 pp.abund$OTU: Fusobacterium nucleatum
-           I           II          III           IV not reported 
-  0.12235613   0.41414970   0.29622294   0.04014477   0.12712646 
+         I         II        III         IV 
+0.14009647 0.47410032 0.33951229 0.04629091 
 ------------------------------------------------------------ 
 pp.abund$OTU: Prevotella melaninogenica
-           I           II          III           IV not reported 
-  0.12130445   0.40870080   0.29549344   0.04674087   0.12776045 
+         I         II        III         IV 
+0.13907406 0.46897265 0.33845728 0.05349601 
 ------------------------------------------------------------ 
 pp.abund$OTU: Streptococcus spp.
-           I           II          III           IV not reported 
-  0.12127805   0.40830412   0.29565054   0.04686745   0.12789984 </code></pre>
+         I         II        III         IV 
+0.13906321 0.46876120 0.33857312 0.05360246 </code></pre>
 <pre class="r"><code>## melt data set to long for ggplot2
 lpp &lt;- melt(pp.abund, id.vars = c(&quot;OTU&quot;, &quot;Abundance&quot;), value.name = &quot;probability&quot;)
 
@@ -1444,17 +1359,14 @@ ggplot(lpp, aes(x = Abundance, y = probability, colour = OTU)) +
 <div id="model-3-ts-otu-abundance-otuabundnace-1" class="section level3">
 <h3>Model 3: TS ~ OTU + Abundance + OTU:Abundnace</h3>
 <pre class="r"><code>fit &lt;- nnet::multinom(tumor.stage ~ OTU + Abundance + OTU:Abundance, data=dat.rna.s)</code></pre>
-<pre><code># weights:  45 (32 variable)
-initial  value 2505.894830 
-iter  10 value 2470.269015
-iter  20 value 2262.688066
-iter  30 value 2164.261982
-iter  40 value 2149.458456
-iter  50 value 2149.039292
-iter  60 value 2149.032581
-iter  60 value 2149.032574
-iter  60 value 2149.032574
-final  value 2149.032574 
+<pre><code># weights:  36 (24 variable)
+initial  value 1883.974037 
+iter  10 value 1755.243497
+iter  20 value 1578.233029
+iter  30 value 1559.100611
+iter  40 value 1557.762012
+iter  50 value 1557.755273
+final  value 1557.755203 
 converged</code></pre>
 <pre class="r"><code>summary(fit)</code></pre>
 <pre><code>Call:
@@ -1462,154 +1374,89 @@ nnet::multinom(formula = tumor.stage ~ OTU + Abundance + OTU:Abundance,
     data = dat.rna.s)
 
 Coefficients:
-             (Intercept) OTUStreptococcus spp. OTUCampylobacter concisus
-II            1.22901888           -0.04369307               -0.05207418
-III           0.88447777           -0.03058220               -0.08501825
-IV           -1.12626064            0.25030925                0.07721200
-not reported  0.03722734           -0.02064624               -0.11097986
-             OTUPrevotella melaninogenica     Abundance
-II                            -0.05374046 -3.189722e-05
-III                           -0.03067363  5.709804e-06
-IV                             0.11646654  5.137822e-05
-not reported                  -0.07427308  1.598728e-05
-             OTUStreptococcus spp.:Abundance
-II                               0.002059400
-III                              0.002047309
-IV                              -0.010330805
-not reported                     0.001876313
-             OTUCampylobacter concisus:Abundance
-II                                    0.04055556
-III                                   0.05030128
-IV                                    0.04979592
-not reported                          0.05326765
-             OTUPrevotella melaninogenica:Abundance
-II                                      0.001313536
-III                                     0.001108104
-IV                                      0.001260908
-not reported                            0.001697479
+    (Intercept) OTUStreptococcus spp. OTUCampylobacter concisus
+II     1.226420           -0.03665663               -0.05037347
+III    0.885271           -0.02687636               -0.07806097
+IV    -1.119301            0.24098068                0.07696960
+    OTUPrevotella melaninogenica     Abundance OTUStreptococcus spp.:Abundance
+II                   -0.05421043 -2.453567e-05                     0.001777190
+III                  -0.03401722  4.203709e-06                     0.001771215
+IV                    0.10598889  4.488828e-05                    -0.010103368
+    OTUCampylobacter concisus:Abundance OTUPrevotella melaninogenica:Abundance
+II                           0.04286102                            0.001411664
+III                          0.05084790                            0.001207072
+IV                           0.05041020                            0.001372158
 
 Std. Errors:
-             (Intercept) OTUStreptococcus spp. OTUCampylobacter concisus
-II            0.06746550            0.07266861                0.09885696
-III           0.07107516            0.07709257                0.10582027
-IV            0.09393397            0.07154462                0.01606452
-not reported  0.07946376            0.08093691                0.10382815
-             OTUPrevotella melaninogenica    Abundance
-II                             0.09835665 8.938072e-05
-III                            0.10542499 7.501672e-05
-IV                             0.01597953 7.218668e-05
-not reported                   0.10410170 7.665209e-05
-             OTUStreptococcus spp.:Abundance
-II                               0.002182096
-III                              0.002198521
-IV                               0.008665140
-not reported                     0.002304902
-             OTUCampylobacter concisus:Abundance
-II                                    0.06971465
-III                                   0.06958134
-IV                                    0.07019612
-not reported                          0.06960806
-             OTUPrevotella melaninogenica:Abundance
-II                                      0.002474919
-III                                     0.002498719
-IV                                      0.002664542
-not reported                            0.002482280
+    (Intercept) OTUStreptococcus spp. OTUCampylobacter concisus
+II   0.07750445            0.09342979                0.08889085
+III  0.08179267            0.09896120                0.08678082
+IV   0.10292173            0.09824740                0.04606603
+    OTUPrevotella melaninogenica    Abundance OTUStreptococcus spp.:Abundance
+II                    0.08850307 8.013276e-05                     0.002040640
+III                   0.08598735 6.363161e-05                     0.002056782
+IV                    0.04582294 6.036275e-05                     0.008685766
+    OTUCampylobacter concisus:Abundance OTUPrevotella melaninogenica:Abundance
+II                           0.07411623                            0.002591894
+III                          0.07407726                            0.002613532
+IV                           0.07450400                            0.002776801
 
-Residual Deviance: 4298.065 
-AIC: 4362.065 </code></pre>
+Residual Deviance: 3115.51 
+AIC: 3163.51 </code></pre>
 <pre class="r"><code># obtain significance tests
 z &lt;- summary(fit)$coefficients/summary(fit)$standard.errors
 z</code></pre>
-<pre><code>             (Intercept) OTUStreptococcus spp. OTUCampylobacter concisus
-II             18.216999            -0.6012648                -0.5267628
-III            12.444261            -0.3966945                -0.8034212
-IV            -11.989918             3.4986453                 4.8063696
-not reported    0.468482            -0.2550905                -1.0688802
-             OTUPrevotella melaninogenica   Abundance
-II                             -0.5463836 -0.35686917
-III                            -0.2909522  0.07611376
-IV                              7.2884819  0.71174095
-not reported                   -0.7134665  0.20856940
-             OTUStreptococcus spp.:Abundance
-II                                 0.9437718
-III                                0.9312208
-IV                                -1.1922259
-not reported                       0.8140533
-             OTUCampylobacter concisus:Abundance
-II                                     0.5817365
-III                                    0.7229133
-IV                                     0.7093828
-not reported                           0.7652512
-             OTUPrevotella melaninogenica:Abundance
-II                                        0.5307392
-III                                       0.4434687
-IV                                        0.4732175
-not reported                              0.6838384</code></pre>
+<pre><code>    (Intercept) OTUStreptococcus spp. OTUCampylobacter concisus
+II     15.82387            -0.3923441                -0.5666891
+III    10.82335            -0.2715849                -0.8995187
+IV    -10.87527             2.4527945                 1.6708539
+    OTUPrevotella melaninogenica   Abundance OTUStreptococcus spp.:Abundance
+II                    -0.6125260 -0.30618774                       0.8708982
+III                   -0.3956073  0.06606322                       0.8611586
+IV                     2.3130093  0.74364206                      -1.1632098
+    OTUCampylobacter concisus:Abundance OTUPrevotella melaninogenica:Abundance
+II                            0.5782946                              0.5446457
+III                           0.6864170                              0.4618546
+IV                            0.6766106                              0.4941505</code></pre>
 <pre class="r"><code>p &lt;- (1 - pnorm(abs(z), 0, 1)) * 2
 p</code></pre>
-<pre><code>             (Intercept) OTUStreptococcus spp. OTUCampylobacter concisus
-II             0.0000000          0.5476636587              5.983583e-01
-III            0.0000000          0.6915927458              4.217313e-01
-IV             0.0000000          0.0004676283              1.536957e-06
-not reported   0.6394399          0.7986532214              2.851236e-01
-             OTUPrevotella melaninogenica Abundance
-II                           5.848023e-01 0.7211898
-III                          7.710879e-01 0.9393286
-IV                           3.135270e-13 0.4766252
-not reported                 4.755571e-01 0.8347844
-             OTUStreptococcus spp.:Abundance
-II                                 0.3452863
-III                                0.3517394
-IV                                 0.2331727
-not reported                       0.4156144
-             OTUCampylobacter concisus:Abundance
-II                                     0.5607442
-III                                    0.4697331
-IV                                     0.4780869
-not reported                           0.4441220
-             OTUPrevotella melaninogenica:Abundance
-II                                        0.5955995
-III                                       0.6574268
-IV                                        0.6360580
-not reported                              0.4940772</code></pre>
+<pre><code>    (Intercept) OTUStreptococcus spp. OTUCampylobacter concisus
+II            0            0.69480398                0.57092545
+III           0            0.78594124                0.36837644
+IV            0            0.01417513                0.09475055
+    OTUPrevotella melaninogenica Abundance OTUStreptococcus spp.:Abundance
+II                    0.54018980 0.7594617                       0.3838097
+III                   0.69239476 0.9473275                       0.3891507
+IV                    0.02072213 0.4570931                       0.2447444
+    OTUCampylobacter concisus:Abundance OTUPrevotella melaninogenica:Abundance
+II                            0.5630652                              0.5859972
+III                           0.4924502                              0.6441856
+IV                            0.4986530                              0.6211999</code></pre>
 <pre class="r"><code>## extract the coefficients from the model and exponentiate
 exp(coef(fit)) # interpret as relative risks</code></pre>
-<pre><code>             (Intercept) OTUStreptococcus spp. OTUCampylobacter concisus
-II             3.4178746             0.9572477                 0.9492585
-III            2.4217194             0.9698807                 0.9184955
-IV             0.3242435             1.2844226                 1.0802711
-not reported   1.0379290             0.9795654                 0.8949568
-             OTUPrevotella melaninogenica Abundance
-II                              0.9476780 0.9999681
-III                             0.9697920 1.0000057
-IV                              1.1235199 1.0000514
-not reported                    0.9284181 1.0000160
-             OTUStreptococcus spp.:Abundance
-II                                 1.0020615
-III                                1.0020494
-IV                                 0.9897224
-not reported                       1.0018781
-             OTUCampylobacter concisus:Abundance
-II                                      1.041389
-III                                     1.051588
-IV                                      1.051057
-not reported                            1.054712
-             OTUPrevotella melaninogenica:Abundance
-II                                         1.001314
-III                                        1.001109
-IV                                         1.001262
-not reported                               1.001699</code></pre>
+<pre><code>    (Intercept) OTUStreptococcus spp. OTUCampylobacter concisus
+II    3.4090035             0.9640071                 0.9508742
+III   2.4236412             0.9734816                 0.9249080
+IV    0.3265079             1.2724965                 1.0800092
+    OTUPrevotella melaninogenica Abundance OTUStreptococcus spp.:Abundance
+II                     0.9472328 0.9999755                       1.0017788
+III                    0.9665549 1.0000042                       1.0017728
+IV                     1.1118095 1.0000449                       0.9899475
+    OTUCampylobacter concisus:Abundance OTUPrevotella melaninogenica:Abundance
+II                             1.043793                               1.001413
+III                            1.052163                               1.001208
+IV                             1.051702                               1.001373</code></pre>
 <pre class="r"><code># save fitted logits
 pp &lt;- fitted(fit)
 # predit data
 gmeans &lt;- dat.rna.s %&gt;% group_by(OTU) %&gt;% summarise(M = mean(Abundance))
 dotu &lt;- data.frame(OTU = c(&quot;Fusobacterium nucleatum&quot;, &quot;Streptococcus spp.&quot;, &quot;Campylobacter concisus&quot;, &quot;Prevotella melaninogenica&quot;), Abundance = gmeans$M)
 predict(fit, newdata = dotu, &quot;probs&quot;) # bigger differences</code></pre>
-<pre><code>          I        II       III         IV not reported
-1 0.1229412 0.4051451 0.2996796 0.04227536    0.1299588
-2 0.1211784 0.4131060 0.2967207 0.04097089    0.1280240
-3 0.1019677 0.4181505 0.3033560 0.04764329    0.1288825
-4 0.1175653 0.4131520 0.2963863 0.04655773    0.1263387</code></pre>
+<pre><code>          I        II       III         IV
+1 0.1409701 0.4672700 0.3433074 0.04845248
+2 0.1390843 0.4736103 0.3401810 0.04712435
+3 0.1158487 0.4810355 0.3484301 0.05468565
+4 0.1341457 0.4731400 0.3394230 0.05329129</code></pre>
 <pre class="r"><code>## look at the averaged predicted probabilities for different values of the continuous predictor variable Abundnace within each level of OTU
 dabund &lt;- data.frame(
   OTU = rep(c(&quot;Fusobacterium nucleatum&quot;, &quot;Streptococcus spp.&quot;, &quot;Campylobacter concisus&quot;, &quot;Prevotella melaninogenica&quot;), each = 51),
@@ -1618,22 +1465,22 @@ dabund &lt;- data.frame(
 pp.abund &lt;-cbind(dabund, predict(fit, newdata = dabund, &quot;probs&quot;, se = TRUE))
 
 ## calculate the mean probabilities within each level of OTU
-by(pp.abund[, 3:7], pp.abund$OTU, colMeans)</code></pre>
+by(pp.abund[, 3:6], pp.abund$OTU, colMeans)</code></pre>
 <pre><code>pp.abund$OTU: Campylobacter concisus
-           I           II          III           IV not reported 
- 0.007163659  0.120685482  0.417339347  0.058788398  0.396023113 
+          I          II         III          IV 
+0.008166091 0.195378854 0.698070032 0.098385023 
 ------------------------------------------------------------ 
 pp.abund$OTU: Fusobacterium nucleatum
-           I           II          III           IV not reported 
-  0.12215280   0.41418934   0.29624275   0.04012074   0.12729436 
+         I         II        III         IV 
+0.13996666 0.47423005 0.33958596 0.04621733 
 ------------------------------------------------------------ 
 pp.abund$OTU: Prevotella melaninogenica
-           I           II          III           IV not reported 
-  0.09601775   0.42222526   0.29354022   0.04785669   0.14036007 
+         I         II        III         IV 
+0.10945729 0.49277179 0.34194999 0.05582093 
 ------------------------------------------------------------ 
 pp.abund$OTU: Streptococcus spp.
-           I           II          III           IV not reported 
- 0.085178216  0.447730219  0.323528352  0.009125871  0.134437342 </code></pre>
+         I         II        III         IV 
+0.10335100 0.51437864 0.37145003 0.01082033 </code></pre>
 <pre class="r"><code>## melt data set to long for ggplot2
 lpp &lt;- melt(pp.abund, id.vars = c(&quot;OTU&quot;, &quot;Abundance&quot;), value.name = &quot;probability&quot;)
 
@@ -1658,16 +1505,16 @@ ggplot(lpp, aes(x = Abundance, y = probability, colour = OTU)) +
 <pre class="r"><code># in long format
 table(dat.wgs$tumor.stage)</code></pre>
 <pre><code>
-           I           II          III           IV not reported 
-       14022        38950        21812         4674        28823 </code></pre>
+    I    II   III    IV 
+14022 38950 21812  4674 </code></pre>
 <pre class="r"><code># by subject
 dat &lt;- dat.wgs %&gt;% filter(OTU == &quot;Fusobacterium nucleatum&quot;)
 table(dat$tumor.stage)</code></pre>
 <pre><code>
-           I           II          III           IV not reported 
-          18           50           28            6           37 </code></pre>
+  I  II III  IV 
+ 18  50  28   6 </code></pre>
 <pre class="r"><code>sum(table(dat$tumor.stage)) # sample size met</code></pre>
-<pre><code>[1] 139</code></pre>
+<pre><code>[1] 102</code></pre>
 <pre class="r"><code>dat.wgs.s$Abundancej &lt;- dat.wgs.s$Abundance+0.01
 mean.dat &lt;- dat.wgs.s %&gt;%
   group_by(tumor.stage, OTU) %&gt;%
@@ -1693,198 +1540,175 @@ mean.dat &lt;- dat.wgs.s %&gt;%
 <div id="model-1-ts-abundance-2" class="section level3">
 <h3>Model 1: TS ~ Abundance</h3>
 <pre class="r"><code>fit &lt;- nnet::multinom(tumor.stage ~ OTU, data=dat.wgs.s)</code></pre>
-<pre><code># weights:  25 (16 variable)
-initial  value 2013.406828 
-iter  10 value 1814.622781
-final  value 1805.470113 
+<pre><code># weights:  20 (12 variable)
+initial  value 1272.618224 
+iter  10 value 1083.751350
+final  value 1080.603922 
 converged</code></pre>
 <pre class="r"><code>summary(fit)</code></pre>
 <pre><code>Call:
 nnet::multinom(formula = tumor.stage ~ OTU, data = dat.wgs.s)
 
 Coefficients:
-             (Intercept) OTUStreptococcus spp. OTUCampylobacter concisus
-II             1.0215028          1.890488e-04             -4.336280e-05
-III            0.4419184         -5.931869e-05             -7.276291e-05
-IV            -1.0997981          1.446667e-03              2.549813e-04
-not reported   0.7205142          6.279291e-05              1.903398e-04
-             OTUPrevotella melaninogenica
-II                           3.565444e-04
-III                         -1.755839e-04
-IV                           2.466118e-04
-not reported                -7.678646e-05
+    (Intercept) OTUStreptococcus spp. OTUCampylobacter concisus
+II     1.021682         -8.537835e-05             -2.849032e-04
+III    0.441805         -4.125951e-05              7.676744e-05
+IV    -1.098720          2.228180e-04             -6.796120e-04
+    OTUPrevotella melaninogenica
+II                 -3.004313e-05
+III                -1.326913e-04
+IV                 -6.925208e-04
 
 Std. Errors:
-             (Intercept) OTUStreptococcus spp. OTUCampylobacter concisus
-II             0.2748659             0.2968910                 0.3887233
-III            0.3020895             0.3262976                 0.4272254
-IV             0.4715916             0.5093426                 0.6669046
-not reported   0.2873596             0.3103864                 0.4063847
-             OTUPrevotella melaninogenica
-II                              0.3887180
-III                             0.4272352
-IV                              0.6669143
-not reported                    0.4063988
+    (Intercept) OTUStreptococcus spp. OTUCampylobacter concisus
+II    0.2748727             0.2968961                 0.3887207
+III   0.3021108             0.3263164                 0.4272290
+IV    0.4714239             0.5091885                 0.6667526
+    OTUPrevotella melaninogenica
+II                     0.3887206
+III                    0.4272449
+IV                     0.6667653
 
-Residual Deviance: 3610.94 
-AIC: 3642.94 </code></pre>
+Residual Deviance: 2161.208 
+AIC: 2185.208 </code></pre>
 <pre class="r"><code># obtain significance tests
 z &lt;- summary(fit)$coefficients/summary(fit)$standard.errors
 z</code></pre>
-<pre><code>             (Intercept) OTUStreptococcus spp. OTUCampylobacter concisus
-II              3.716367          0.0006367617             -0.0001115518
-III             1.462873         -0.0001817932             -0.0001703150
-IV             -2.332098          0.0028402622              0.0003823355
-not reported    2.507361          0.0002023056              0.0004683735
-             OTUPrevotella melaninogenica
-II                           0.0009172313
-III                         -0.0004109772
-IV                           0.0003697804
-not reported                -0.0001889436</code></pre>
+<pre><code>    (Intercept) OTUStreptococcus spp. OTUCampylobacter concisus
+II     3.716927         -0.0002875698             -0.0007329253
+III    1.462394         -0.0001264402              0.0001796869
+IV    -2.330642          0.0004375944             -0.0010192866
+    OTUPrevotella melaninogenica
+II                 -7.728721e-05
+III                -3.105744e-04
+IV                 -1.038627e-03</code></pre>
 <pre class="r"><code>p &lt;- (1 - pnorm(abs(z), 0, 1)) * 2
 p</code></pre>
-<pre><code>              (Intercept) OTUStreptococcus spp. OTUCampylobacter concisus
-II           0.0002021078             0.9994919                 0.9999110
-III          0.1435022029             0.9998549                 0.9998641
-IV           0.0196955171             0.9977338                 0.9996949
-not reported 0.0121636404             0.9998386                 0.9996263
-             OTUPrevotella melaninogenica
-II                              0.9992682
-III                             0.9996721
-IV                              0.9997050
-not reported                    0.9998492</code></pre>
+<pre><code>     (Intercept) OTUStreptococcus spp. OTUCampylobacter concisus
+II  0.0002016604             0.9997706                 0.9994152
+III 0.1436333009             0.9998991                 0.9998566
+IV  0.0197722350             0.9996509                 0.9991867
+    OTUPrevotella melaninogenica
+II                     0.9999383
+III                    0.9997522
+IV                     0.9991713</code></pre>
 <pre class="r"><code>## extract the coefficients from the model and exponentiate
 exp(coef(fit)) # interpret as relative risks</code></pre>
-<pre><code>             (Intercept) OTUStreptococcus spp. OTUCampylobacter concisus
-II             2.7773654             1.0001891                 0.9999566
-III            1.5556888             0.9999407                 0.9999272
-IV             0.3329383             1.0014477                 1.0002550
-not reported   2.0554899             1.0000628                 1.0001904
-             OTUPrevotella melaninogenica
-II                              1.0003566
-III                             0.9998244
-IV                              1.0002466
-not reported                    0.9999232</code></pre>
+<pre><code>    (Intercept) OTUStreptococcus spp. OTUCampylobacter concisus
+II    2.7778632             0.9999146                 0.9997151
+III   1.5555124             0.9999587                 1.0000768
+IV    0.3332973             1.0002228                 0.9993206
+    OTUPrevotella melaninogenica
+II                     0.9999700
+III                    0.9998673
+IV                     0.9993077</code></pre>
 <pre class="r"><code># save fitted logits
 pp &lt;- fitted(fit)
 # preditive data
 dotu &lt;- data.frame(OTU = c(&quot;Fusobacterium nucleatum&quot;, &quot;Streptococcus spp.&quot;, &quot;Campylobacter concisus&quot;, &quot;Prevotella melaninogenica&quot;))
 predict(fit, newdata = dotu, &quot;probs&quot;) # only TINY differences</code></pre>
-<pre><code>          I        II       III         IV not reported
-1 0.1295088 0.3596933 0.2014754 0.04311844    0.2662041
-2 0.1294913 0.3597127 0.2014362 0.04317503    0.2661848
-3 0.1295047 0.3596664 0.2014544 0.04312809    0.2662464
-4 0.1294980 0.3597917 0.2014233 0.04312550    0.2661615</code></pre>
+<pre><code>          I        II       III         IV
+1 0.1764704 0.4902106 0.2745019 0.05881711
+2 0.1764775 0.4901884 0.2745016 0.05883257
+3 0.1764984 0.4901487 0.2745665 0.05878647
+4 0.1764866 0.4902409 0.2744907 0.05878179</code></pre>
 <pre class="r"><code>## store the predicted probabilities for each value of ses
 pp.otu &lt;-cbind(dotu, predict(fit, newdata = dotu, &quot;probs&quot;, se = TRUE))
 
 ## calculate the mean probabilities within each level of OTU
-by(pp.otu[, 2:6], pp.otu$OTU, colMeans)</code></pre>
+by(pp.otu[, 2:5], pp.otu$OTU, colMeans)</code></pre>
 <pre><code>pp.otu$OTU: Campylobacter concisus
-           I           II          III           IV not reported 
-  0.12950474   0.35966639   0.20145442   0.04312809   0.26624637 
+         I         II        III         IV 
+0.17649838 0.49014867 0.27456648 0.05878647 
 ------------------------------------------------------------ 
 pp.otu$OTU: Fusobacterium nucleatum
-           I           II          III           IV not reported 
-  0.12950881   0.35969328   0.20147541   0.04311844   0.26620405 
+         I         II        III         IV 
+0.17647040 0.49021061 0.27450188 0.05881711 
 ------------------------------------------------------------ 
 pp.otu$OTU: Prevotella melaninogenica
-           I           II          III           IV not reported 
-   0.1294980    0.3597917    0.2014233    0.0431255    0.2661615 
+         I         II        III         IV 
+0.17648661 0.49024092 0.27449068 0.05878179 
 ------------------------------------------------------------ 
 pp.otu$OTU: Streptococcus spp.
-           I           II          III           IV not reported 
-  0.12949130   0.35971266   0.20143622   0.04317503   0.26618478 </code></pre>
+         I         II        III         IV 
+0.17647747 0.49018841 0.27450156 0.05883257 </code></pre>
 </div>
 <div id="model-2-ts-otu-abundance-2" class="section level3">
 <h3>Model 2: TS ~ OTU + Abundance</h3>
 <pre class="r"><code>fit &lt;- nnet::multinom(tumor.stage ~ OTU + Abundance, data=dat.wgs.s)</code></pre>
-<pre><code># weights:  30 (20 variable)
-initial  value 2013.406828 
-iter  10 value 1850.225458
-iter  20 value 1802.837098
-iter  30 value 1802.117376
-iter  30 value 1802.117364
-iter  30 value 1802.117364
-final  value 1802.117364 
+<pre><code># weights:  24 (15 variable)
+initial  value 1272.618224 
+iter  10 value 1094.897366
+iter  20 value 1078.410457
+final  value 1078.272984 
 converged</code></pre>
 <pre class="r"><code>summary(fit)</code></pre>
 <pre><code>Call:
 nnet::multinom(formula = tumor.stage ~ OTU + Abundance, data = dat.wgs.s)
 
 Coefficients:
-             (Intercept) OTUStreptococcus spp. OTUCampylobacter concisus
-II             0.9739095            0.02291961                0.03232894
-III            0.3619615            0.05176408                0.06303580
-IV            -1.1743718            0.04799757                0.05885775
-not reported   0.6568452            0.03692452                0.04742615
-             OTUPrevotella melaninogenica    Abundance
-II                            -0.01993434 0.0003775308
-III                           -0.02946379 0.0004040709
-IV                            -0.02812319 0.0004017778
-not reported                  -0.02452024 0.0003940022
+    (Intercept) OTUStreptococcus spp. OTUCampylobacter concisus
+II    0.9888923            0.01862978                0.01930877
+III   0.3803374            0.04494356                0.04665184
+IV   -1.1562146            0.04139047                0.04250580
+    OTUPrevotella melaninogenica    Abundance
+II                   -0.02200784 0.0002502637
+III                  -0.02498400 0.0002714197
+IV                   -0.02478676 0.0002694783
 
 Std. Errors:
-             (Intercept) OTUStreptococcus spp. OTUCampylobacter concisus
-II            0.05465548            0.06411303               0.038956744
-III           0.04574239            0.03721564               0.009434666
-IV            0.04711372            0.03668676               0.003790582
-not reported  0.04972819            0.05131864               0.027485605
-             OTUPrevotella melaninogenica    Abundance
-II                            0.037144838 0.0003143339
-III                           0.008830521 0.0003143168
-IV                            0.003547078 0.0003151801
-not reported                  0.026197969 0.0003143136
+    (Intercept) OTUStreptococcus spp. OTUCampylobacter concisus
+II   0.04353209            0.03376873               0.003395291
+III  0.04884489            0.03802708               0.003824299
+IV   0.03381891            0.02628255               0.002661367
+    OTUPrevotella melaninogenica    Abundance
+II                   0.003254089 0.0002822526
+III                  0.003589524 0.0002823707
+IV                   0.002530123 0.0002832039
 
-Residual Deviance: 3604.235 
-AIC: 3644.235 </code></pre>
+Residual Deviance: 2156.546 
+AIC: 2186.546 </code></pre>
 <pre class="r"><code># obtain significance tests
 z &lt;- summary(fit)$coefficients/summary(fit)$standard.errors
 z</code></pre>
-<pre><code>             (Intercept) OTUStreptococcus spp. OTUCampylobacter concisus
-II             17.819064             0.3574875                 0.8298677
-III             7.913043             1.3909226                 6.6812964
-IV            -24.926323             1.3083078                15.5273637
-not reported   13.208710             0.7195148                 1.7254903
-             OTUPrevotella melaninogenica Abundance
-II                             -0.5366652  1.201050
-III                            -3.3365860  1.285553
-IV                             -7.9285514  1.274756
-not reported                   -0.9359598  1.253532</code></pre>
+<pre><code>    (Intercept) OTUStreptococcus spp. OTUCampylobacter concisus
+II    22.716399             0.5516874                  5.686927
+III    7.786636             1.1818828                 12.198797
+IV   -34.188404             1.5748271                 15.971415
+    OTUPrevotella melaninogenica Abundance
+II                     -6.763134 0.8866659
+III                    -6.960253 0.9612175
+IV                     -9.796660 0.9515345</code></pre>
 <pre class="r"><code>p &lt;- (1 - pnorm(abs(z), 0, 1)) * 2
 p</code></pre>
-<pre><code>              (Intercept) OTUStreptococcus spp. OTUCampylobacter concisus
-II           0.000000e+00             0.7207269              4.066136e-01
-III          2.442491e-15             0.1642489              2.368372e-11
-IV           0.000000e+00             0.1907689              0.000000e+00
-not reported 0.000000e+00             0.4718238              8.443914e-02
-             OTUPrevotella melaninogenica Abundance
-II                           5.914989e-01 0.2297318
-III                          8.481420e-04 0.1985991
-IV                           2.220446e-15 0.2023955
-not reported                 3.492939e-01 0.2100121</code></pre>
+<pre><code>     (Intercept) OTUStreptococcus spp. OTUCampylobacter concisus
+II  0.000000e+00             0.5811625              1.293461e-08
+III 6.883383e-15             0.2372522              0.000000e+00
+IV  0.000000e+00             0.1152964              0.000000e+00
+    OTUPrevotella melaninogenica Abundance
+II                  1.350386e-11 0.3752588
+III                 3.396616e-12 0.3364428
+IV                  0.000000e+00 0.3413331</code></pre>
 <pre class="r"><code>## extract the coefficients from the model and exponentiate
 exp(coef(fit)) # interpret as relative risks</code></pre>
-<pre><code>             (Intercept) OTUStreptococcus spp. OTUCampylobacter concisus
-II             2.6482776              1.023184                  1.032857
-III            1.4361436              1.053127                  1.065065
-IV             0.3090131              1.049168                  1.060624
-not reported   1.9286981              1.037615                  1.048569
-             OTUPrevotella melaninogenica Abundance
-II                              0.9802630  1.000378
-III                             0.9709660  1.000404
-IV                              0.9722686  1.000402
-not reported                    0.9757779  1.000394</code></pre>
+<pre><code>    (Intercept) OTUStreptococcus spp. OTUCampylobacter concisus
+II    2.6882550              1.018804                  1.019496
+III   1.4627781              1.045969                  1.047757
+IV    0.3146751              1.042259                  1.043422
+    OTUPrevotella melaninogenica Abundance
+II                     0.9782326  1.000250
+III                    0.9753255  1.000271
+IV                     0.9755179  1.000270</code></pre>
 <pre class="r"><code># save fitted logits
 pp &lt;- fitted(fit)
 # predit data
 dotu &lt;- data.frame(OTU = c(&quot;Fusobacterium nucleatum&quot;, &quot;Streptococcus spp.&quot;, &quot;Campylobacter concisus&quot;, &quot;Prevotella melaninogenica&quot;), Abundance = mean(dat.wgs.s$Abundance))
 predict(fit, newdata = dotu, &quot;probs&quot;) # bigger differences</code></pre>
-<pre><code>          I        II       III         IV not reported
-1 0.1208789 0.3666360 0.2007297 0.04315515    0.2686003
-2 0.1172000 0.3637192 0.2049603 0.04389903    0.2702215
-3 0.1161438 0.3638489 0.2054156 0.04397845    0.2706133
-4 0.1234424 0.3670217 0.1990351 0.04284823    0.2676526</code></pre>
+<pre><code>          I        II       III         IV
+1 0.1694758 0.4984673 0.2733043 0.05875264
+2 0.1654359 0.4957350 0.2790534 0.05977577
+3 0.1652903 0.4956353 0.2792846 0.05978983
+4 0.1727639 0.4970775 0.2717324 0.05842625</code></pre>
 <pre class="r"><code>## look at the averaged predicted probabilities for different values of the continuous predictor variable Abundnace within each level of OTU
 dabund &lt;- data.frame(
   OTU = rep(c(&quot;Fusobacterium nucleatum&quot;, &quot;Streptococcus spp.&quot;, &quot;Campylobacter concisus&quot;, &quot;Prevotella melaninogenica&quot;), each = 51),
@@ -1893,22 +1717,22 @@ dabund &lt;- data.frame(
 pp.abund &lt;-cbind(dabund, predict(fit, newdata = dabund, &quot;probs&quot;, se = TRUE))
 
 ## calculate the mean probabilities within each level of OTU
-by(pp.abund[, 3:7], pp.abund$OTU, colMeans)</code></pre>
+by(pp.abund[, 3:6], pp.abund$OTU, colMeans)</code></pre>
 <pre><code>pp.abund$OTU: Campylobacter concisus
-           I           II          III           IV not reported 
-  0.12072615   0.36244970   0.20403818   0.04369439   0.26909159 
+         I         II        III         IV 
+0.16929834 0.49370725 0.27756107 0.05943334 
 ------------------------------------------------------------ 
 pp.abund$OTU: Fusobacterium nucleatum
-           I           II          III           IV not reported 
-  0.12561799   0.36514482   0.19933957   0.04286691   0.26703071 
+         I         II        III         IV 
+0.17356111 0.49646243 0.27158184 0.05839462 
 ------------------------------------------------------------ 
 pp.abund$OTU: Prevotella melaninogenica
-           I           II          III           IV not reported 
-  0.12826585   0.36548603   0.19763363   0.04255707   0.26605742 
+         I         II        III         IV 
+0.17691065 0.49503069 0.26999400 0.05806466 
 ------------------------------------------------------------ 
 pp.abund$OTU: Streptococcus spp.
-           I           II          III           IV not reported 
-  0.12181779   0.36230325   0.20357630   0.04361342   0.26868925 </code></pre>
+         I         II        III         IV 
+0.16944659 0.49380429 0.27733003 0.05941909 </code></pre>
 <pre class="r"><code>## melt data set to long for ggplot2
 lpp &lt;- melt(pp.abund, id.vars = c(&quot;OTU&quot;, &quot;Abundance&quot;), value.name = &quot;probability&quot;)
 
@@ -1927,15 +1751,15 @@ ggplot(lpp, aes(x = Abundance, y = probability, colour = OTU)) +
 <div id="model-3-ts-otu-abundance-otuabundnace-2" class="section level3">
 <h3>Model 3: TS ~ OTU + Abundance + OTU:Abundnace</h3>
 <pre class="r"><code>fit &lt;- nnet::multinom(tumor.stage ~ OTU + Abundance + OTU:Abundance, data=dat.wgs.s)</code></pre>
-<pre><code># weights:  45 (32 variable)
-initial  value 2013.406828 
-iter  10 value 1998.484917
-iter  20 value 1834.136890
-iter  30 value 1789.695310
-iter  40 value 1787.562095
-iter  50 value 1787.442956
-iter  60 value 1787.436033
-final  value 1787.435678 
+<pre><code># weights:  36 (24 variable)
+initial  value 1272.618224 
+iter  10 value 1264.071379
+iter  20 value 1088.386618
+iter  30 value 1068.588695
+iter  40 value 1068.057651
+iter  50 value 1068.044700
+iter  50 value 1068.044698
+final  value 1068.044698 
 converged</code></pre>
 <pre class="r"><code>summary(fit)</code></pre>
 <pre><code>Call:
@@ -1943,154 +1767,89 @@ nnet::multinom(formula = tumor.stage ~ OTU + Abundance + OTU:Abundance,
     data = dat.wgs.s)
 
 Coefficients:
-             (Intercept) OTUStreptococcus spp. OTUCampylobacter concisus
-II             0.9892721            0.06616078               -0.03357802
-III            0.3478732            0.04290083               -0.13258373
-IV            -1.2148038            0.08551966               -0.06154654
-not reported   0.6642967            0.01745648               -0.03093131
-             OTUPrevotella melaninogenica    Abundance
-II                            -0.08794243 0.0002676666
-III                           -0.01199882 0.0003284990
-IV                             0.03022360 0.0003357752
-not reported                  -0.06568111 0.0003049560
-             OTUStreptococcus spp.:Abundance
-II                             -1.176334e-03
-III                             1.906263e-04
-IV                              5.768491e-05
-not reported                    1.508244e-04
-             OTUCampylobacter concisus:Abundance
-II                                    0.01878000
-III                                   0.02269060
-IV                                    0.02233686
-not reported                          0.02019126
-             OTUPrevotella melaninogenica:Abundance
-II                                     0.0006269844
-III                                    0.0005563821
-IV                                     0.0005254570
-not reported                           0.0005905247
+    (Intercept) OTUStreptococcus spp. OTUCampylobacter concisus
+II    1.0009873            0.05475034               -0.03441501
+III   0.3731553            0.03709380               -0.13771028
+IV   -1.1872774            0.07070086               -0.06956073
+    OTUPrevotella melaninogenica    Abundance OTUStreptococcus spp.:Abundance
+II                  -0.098054710 0.0001629299                   -1.107990e-03
+III                 -0.038182390 0.0002076791                    1.123169e-04
+IV                  -0.001567239 0.0002142531                    2.550826e-05
+    OTUCampylobacter concisus:Abundance OTUPrevotella melaninogenica:Abundance
+II                           0.01520864                           0.0007465488
+III                          0.01876677                           0.0006936568
+IV                           0.01841968                           0.0006674453
 
 Std. Errors:
-             (Intercept) OTUStreptococcus spp. OTUCampylobacter concisus
-II            0.04024985            0.03108236               0.003934857
-III           0.04579018            0.03560846               0.003454986
-IV            0.04750239            0.03680560               0.003599811
-not reported  0.04273090            0.03299592               0.003667227
-             OTUPrevotella melaninogenica    Abundance
-II                            0.003141299 0.0006830277
-III                           0.003624091 0.0006823073
-IV                            0.003766989 0.0006827648
-not reported                  0.003332130 0.0006823819
-             OTUStreptococcus spp.:Abundance
-II                              0.0009092629
-III                             0.0007770727
-IV                              0.0008159857
-not reported                    0.0007769425
-             OTUCampylobacter concisus:Abundance
-II                                    0.03773190
-III                                   0.03771905
-IV                                    0.03772803
-not reported                          0.03772863
-             OTUPrevotella melaninogenica:Abundance
-II                                      0.001377664
-III                                     0.001377451
-IV                                      0.001381113
-not reported                            0.001377381
+    (Intercept) OTUStreptococcus spp. OTUCampylobacter concisus
+II   0.04465893            0.03410531               0.003852009
+III  0.04935453            0.03859613               0.003523711
+IV   0.03407750            0.02646180               0.002556810
+    OTUPrevotella melaninogenica    Abundance OTUStreptococcus spp.:Abundance
+II                   0.003557919 0.0004797450                    0.0008099566
+III                  0.003812940 0.0004792855                    0.0005870014
+IV                   0.002684390 0.0004799136                    0.0006106810
+    OTUCampylobacter concisus:Abundance OTUPrevotella melaninogenica:Abundance
+II                           0.03205088                            0.001302312
+III                          0.03204492                            0.001302247
+IV                           0.03205537                            0.001305493
 
-Residual Deviance: 3574.871 
-AIC: 3638.871 </code></pre>
+Residual Deviance: 2136.089 
+AIC: 2184.089 </code></pre>
 <pre class="r"><code># obtain significance tests
 z &lt;- summary(fit)$coefficients/summary(fit)$standard.errors
 z</code></pre>
-<pre><code>             (Intercept) OTUStreptococcus spp. OTUCampylobacter concisus
-II             24.578278             2.1285632                 -8.533481
-III             7.597113             1.2047933                -38.374611
-IV            -25.573531             2.3235505                -17.097158
-not reported   15.546050             0.5290497                 -8.434523
-             OTUPrevotella melaninogenica Abundance
-II                             -27.995567 0.3918824
-III                             -3.310851 0.4814532
-IV                               8.023277 0.4917875
-not reported                   -19.711448 0.4468993
-             OTUStreptococcus spp.:Abundance
-II                               -1.29372236
-III                               0.24531340
-IV                                0.07069353
-not reported                      0.19412555
-             OTUCampylobacter concisus:Abundance
-II                                     0.4977220
-III                                    0.6015687
-IV                                     0.5920494
-not reported                           0.5351709
-             OTUPrevotella melaninogenica:Abundance
-II                                        0.4551069
-III                                       0.4039215
-IV                                        0.3804590
-not reported                              0.4287301</code></pre>
+<pre><code>    (Intercept) OTUStreptococcus spp. OTUCampylobacter concisus
+II     22.41405             1.6053316                 -8.934302
+III     7.56071             0.9610757                -39.081043
+IV    -34.84051             2.6718084                -27.206065
+    OTUPrevotella melaninogenica Abundance OTUStreptococcus spp.:Abundance
+II                   -27.5595665 0.3396177                     -1.36796210
+III                  -10.0138986 0.4333098                      0.19134012
+IV                    -0.5838345 0.4464409                      0.04177019
+    OTUCampylobacter concisus:Abundance OTUPrevotella melaninogenica:Abundance
+II                            0.4745154                              0.5732487
+III                           0.5856396                              0.5326614
+IV                            0.5746208                              0.5112593</code></pre>
 <pre class="r"><code>p &lt;- (1 - pnorm(abs(z), 0, 1)) * 2
 p</code></pre>
-<pre><code>              (Intercept) OTUStreptococcus spp. OTUCampylobacter concisus
-II           0.000000e+00            0.03329042                         0
-III          3.019807e-14            0.22828311                         0
-IV           0.000000e+00            0.02014960                         0
-not reported 0.000000e+00            0.59677099                         0
-             OTUPrevotella melaninogenica Abundance
-II                           0.000000e+00 0.6951451
-III                          9.301274e-04 0.6301945
-IV                           1.110223e-15 0.6228696
-not reported                 0.000000e+00 0.6549478
-             OTUStreptococcus spp.:Abundance
-II                                 0.1957613
-III                                0.8062138
-IV                                 0.9436417
-not reported                       0.8460776
-             OTUCampylobacter concisus:Abundance
-II                                     0.6186800
-III                                    0.5474613
-IV                                     0.5538175
-not reported                           0.5925317
-             OTUPrevotella melaninogenica:Abundance
-II                                        0.6490323
-III                                       0.6862705
-IV                                        0.7036047
-not reported                              0.6681197</code></pre>
+<pre><code>     (Intercept) OTUStreptococcus spp. OTUCampylobacter concisus
+II  0.000000e+00            0.10842086                         0
+III 4.019007e-14            0.33651411                         0
+IV  0.000000e+00            0.00754437                         0
+    OTUPrevotella melaninogenica Abundance OTUStreptococcus spp.:Abundance
+II                     0.0000000 0.7341445                       0.1713239
+III                    0.0000000 0.6647897                       0.8482591
+IV                     0.5593317 0.6552788                       0.9666819
+    OTUCampylobacter concisus:Abundance OTUPrevotella melaninogenica:Abundance
+II                            0.6351324                              0.5664763
+III                           0.5581177                              0.5942680
+IV                            0.5655478                              0.6091695</code></pre>
 <pre class="r"><code>## extract the coefficients from the model and exponentiate
 exp(coef(fit)) # interpret as relative risks</code></pre>
-<pre><code>             (Intercept) OTUStreptococcus spp. OTUCampylobacter concisus
-II             2.6892762              1.068398                 0.9669795
-III            1.4160526              1.043834                 0.8758296
-IV             0.2967682              1.089283                 0.9403092
-not reported   1.9431234              1.017610                 0.9695422
-             OTUPrevotella melaninogenica Abundance
-II                              0.9158136  1.000268
-III                             0.9880729  1.000329
-IV                              1.0306850  1.000336
-not reported                    0.9364294  1.000305
-             OTUStreptococcus spp.:Abundance
-II                                 0.9988244
-III                                1.0001906
-IV                                 1.0000577
-not reported                       1.0001508
-             OTUCampylobacter concisus:Abundance
-II                                      1.018957
-III                                     1.022950
-IV                                      1.022588
-not reported                            1.020396
-             OTUPrevotella melaninogenica:Abundance
-II                                         1.000627
-III                                        1.000557
-IV                                         1.000526
-not reported                               1.000591</code></pre>
+<pre><code>    (Intercept) OTUStreptococcus spp. OTUCampylobacter concisus
+II    2.7209669              1.056277                 0.9661705
+III   1.4523098              1.037790                 0.8713511
+IV    0.3050507              1.073260                 0.9328035
+    OTUPrevotella melaninogenica Abundance OTUStreptococcus spp.:Abundance
+II                     0.9065993  1.000163                       0.9988926
+III                    0.9625374  1.000208                       1.0001123
+IV                     0.9984340  1.000214                       1.0000255
+    OTUCampylobacter concisus:Abundance OTUPrevotella melaninogenica:Abundance
+II                             1.015325                               1.000747
+III                            1.018944                               1.000694
+IV                             1.018590                               1.000668</code></pre>
 <pre class="r"><code># save fitted logits
 pp &lt;- fitted(fit)
 # predit data
 gmeans &lt;- dat.wgs.s %&gt;% group_by(OTU) %&gt;% summarise(M = mean(Abundance))
 dotu &lt;- data.frame(OTU = c(&quot;Fusobacterium nucleatum&quot;, &quot;Streptococcus spp.&quot;, &quot;Campylobacter concisus&quot;, &quot;Prevotella melaninogenica&quot;), Abundance = gmeans$M)
 predict(fit, newdata = dotu, &quot;probs&quot;) # bigger differences</code></pre>
-<pre><code>           I        II       III         IV not reported
-1 0.10246250 0.3687608 0.2074667 0.04382544    0.2774846
-2 0.13192968 0.3418828 0.2068556 0.04459787    0.2747341
-3 0.05553101 0.3790341 0.2210573 0.04887321    0.2955044
-4 0.04526407 0.3947714 0.2211947 0.04676637    0.2920034</code></pre>
+<pre><code>           I        II       III         IV
+1 0.15492073 0.5033394 0.2820674 0.05967242
+2 0.18245077 0.4709959 0.2851697 0.06138363
+3 0.09286417 0.5319037 0.3073122 0.06791994
+4 0.06259103 0.5583438 0.3127821 0.06628305</code></pre>
 <pre class="r"><code>## look at the averaged predicted probabilities for different values of the continuous predictor variable Abundnace within each level of OTU
 dabund &lt;- data.frame(
   OTU = rep(c(&quot;Fusobacterium nucleatum&quot;, &quot;Streptococcus spp.&quot;, &quot;Campylobacter concisus&quot;, &quot;Prevotella melaninogenica&quot;), each = 51),
@@ -2099,22 +1858,22 @@ dabund &lt;- data.frame(
 pp.abund &lt;-cbind(dabund, predict(fit, newdata = dabund, &quot;probs&quot;, se = TRUE))
 
 ## calculate the mean probabilities within each level of OTU
-by(pp.abund[, 3:7], pp.abund$OTU, colMeans)</code></pre>
+by(pp.abund[, 3:6], pp.abund$OTU, colMeans)</code></pre>
 <pre><code>pp.abund$OTU: Campylobacter concisus
-           I           II          III           IV not reported 
-  0.01609141   0.27664798   0.35704188   0.07270968   0.27750905 
+         I         II        III         IV 
+0.02686404 0.40139010 0.47478711 0.09695875 
 ------------------------------------------------------------ 
 pp.abund$OTU: Fusobacterium nucleatum
-           I           II          III           IV not reported 
-   0.1277517    0.3670714    0.1962556    0.0412055    0.2677158 
+         I         II        III         IV 
+0.17591465 0.49843817 0.26904262 0.05660455 
 ------------------------------------------------------------ 
 pp.abund$OTU: Prevotella melaninogenica
-           I           II          III           IV not reported 
-  0.11858942   0.36289653   0.20565457   0.04469163   0.26816784 
+         I         II        III         IV 
+0.16138847 0.49677353 0.28093211 0.06090589 
 ------------------------------------------------------------ 
 pp.abund$OTU: Streptococcus spp.
-           I           II          III           IV not reported 
-  0.13199751   0.30483885   0.22281492   0.04716287   0.29318585 </code></pre>
+         I         II        III         IV 
+0.18997612 0.43269170 0.31115069 0.06618149 </code></pre>
 <pre class="r"><code>## melt data set to long for ggplot2
 lpp &lt;- melt(pp.abund, id.vars = c(&quot;OTU&quot;, &quot;Abundance&quot;), value.name = &quot;probability&quot;)
 
@@ -2157,9 +1916,9 @@ other attached packages:
  [1] cowplot_1.1.1     dendextend_1.14.0 ggdendro_0.1.22   reshape2_1.4.4   
  [5] car_3.0-10        carData_3.0-4     gvlma_1.0.0.3     patchwork_1.1.1  
  [9] viridis_0.5.1     viridisLite_0.3.0 gridExtra_2.3     xtable_1.8-4     
-[13] kableExtra_1.3.1  data.table_1.13.6 readxl_1.3.1      forcats_0.5.0    
+[13] kableExtra_1.3.1  data.table_1.13.6 readxl_1.3.1      forcats_0.5.1    
 [17] stringr_1.4.0     dplyr_1.0.3       purrr_0.3.4       readr_1.4.0      
-[21] tidyr_1.1.2       tibble_3.0.5      ggplot2_3.3.3     tidyverse_1.3.0  
+[21] tidyr_1.1.2       tibble_3.0.6      ggplot2_3.3.3     tidyverse_1.3.0  
 [25] lmerTest_3.1-3    lme4_1.1-26       Matrix_1.2-18     vegan_2.5-7      
 [29] lattice_0.20-41   permute_0.9-5     phyloseq_1.34.0   workflowr_1.6.2  
 
@@ -2167,35 +1926,35 @@ loaded via a namespace (and not attached):
   [1] minqa_1.2.4         colorspace_2.0-0    rio_0.5.16         
   [4] ellipsis_0.3.1      rprojroot_2.0.2     XVector_0.30.0     
   [7] fs_1.5.0            rstudioapi_0.13     farver_2.0.3       
- [10] fansi_0.4.2         lubridate_1.7.9.2   xml2_1.3.2         
- [13] codetools_0.2-18    splines_4.0.3       knitr_1.30         
- [16] ade4_1.7-16         jsonlite_1.7.2      nloptr_1.2.2.2     
- [19] broom_0.7.3         cluster_2.1.0       dbplyr_2.0.0       
- [22] BiocManager_1.30.10 compiler_4.0.3      httr_1.4.2         
- [25] backports_1.2.0     assertthat_0.2.1    cli_2.2.0          
- [28] later_1.1.0.1       htmltools_0.5.1     prettyunits_1.1.1  
- [31] tools_4.0.3         igraph_1.2.6        gtable_0.3.0       
- [34] glue_1.4.2          Rcpp_1.0.6          Biobase_2.50.0     
- [37] cellranger_1.1.0    vctrs_0.3.6         Biostrings_2.58.0  
- [40] rhdf5filters_1.2.0  multtest_2.46.0     ape_5.4-1          
- [43] nlme_3.1-151        iterators_1.0.13    xfun_0.20          
- [46] ps_1.5.0            openxlsx_4.2.3      rvest_0.3.6        
- [49] lifecycle_0.2.0     statmod_1.4.35      zlibbioc_1.36.0    
- [52] MASS_7.3-53         scales_1.1.1        hms_1.0.0          
- [55] promises_1.1.1      parallel_4.0.3      biomformat_1.18.0  
- [58] rhdf5_2.34.0        curl_4.3            yaml_2.2.1         
- [61] stringi_1.5.3       S4Vectors_0.28.1    foreach_1.5.1      
+ [10] lubridate_1.7.9.2   xml2_1.3.2          codetools_0.2-16   
+ [13] splines_4.0.3       knitr_1.31          ade4_1.7-16        
+ [16] jsonlite_1.7.2      nloptr_1.2.2.2      broom_0.7.4        
+ [19] cluster_2.1.0       dbplyr_2.1.0        BiocManager_1.30.10
+ [22] compiler_4.0.3      httr_1.4.2          backports_1.2.1    
+ [25] assertthat_0.2.1    cli_2.3.0           later_1.1.0.1      
+ [28] htmltools_0.5.1.1   prettyunits_1.1.1   tools_4.0.3        
+ [31] igraph_1.2.6        gtable_0.3.0        glue_1.4.2         
+ [34] Rcpp_1.0.6          Biobase_2.50.0      cellranger_1.1.0   
+ [37] vctrs_0.3.6         Biostrings_2.58.0   rhdf5filters_1.2.0 
+ [40] multtest_2.46.0     ape_5.4-1           nlme_3.1-149       
+ [43] iterators_1.0.13    xfun_0.20           ps_1.5.0           
+ [46] openxlsx_4.2.3      rvest_0.3.6         lifecycle_0.2.0    
+ [49] statmod_1.4.35      zlibbioc_1.36.0     MASS_7.3-53        
+ [52] scales_1.1.1        hms_1.0.0           promises_1.1.1     
+ [55] parallel_4.0.3      biomformat_1.18.0   rhdf5_2.34.0       
+ [58] curl_4.3            yaml_2.2.1          stringi_1.5.3      
+ [61] highr_0.8           S4Vectors_0.28.1    foreach_1.5.1      
  [64] BiocGenerics_0.36.0 zip_2.1.1           boot_1.3-25        
  [67] rlang_0.4.10        pkgconfig_2.0.3     evaluate_0.14      
- [70] Rhdf5lib_1.12.0     labeling_0.4.2      tidyselect_1.1.0   
+ [70] Rhdf5lib_1.12.1     labeling_0.4.2      tidyselect_1.1.0   
  [73] plyr_1.8.6          magrittr_2.0.1      R6_2.5.0           
  [76] IRanges_2.24.1      generics_0.1.0      DBI_1.1.1          
- [79] foreign_0.8-81      pillar_1.4.7        haven_2.3.1        
- [82] whisker_0.4         withr_2.4.0         mgcv_1.8-33        
+ [79] foreign_0.8-80      pillar_1.4.7        haven_2.3.1        
+ [82] whisker_0.4         withr_2.4.1         mgcv_1.8-33        
  [85] nnet_7.3-14         abind_1.4-5         survival_3.2-7     
- [88] modelr_0.1.8        crayon_1.3.4        rmarkdown_2.6      
+ [88] modelr_0.1.8        crayon_1.4.1        rmarkdown_2.6      
  [91] progress_1.2.2      grid_4.0.3          git2r_0.28.0       
- [94] reprex_0.3.0        digest_0.6.27       webshot_0.5.2      
+ [94] reprex_1.0.0        digest_0.6.27       webshot_0.5.2      
  [97] httpuv_1.5.5        numDeriv_2016.8-1.1 stats4_4.0.3       
 [100] munsell_0.5.0      </code></pre>
 </div>

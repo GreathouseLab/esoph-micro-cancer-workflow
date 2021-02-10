@@ -148,24 +148,24 @@ dat.wgs$pres <- ifelse(dat.wgs$Abundance > 0, 1, 0)
 dat.wgs$pres[is.na(dat.wgs$pres)] <- 0
 
 # tumor stage variable
-dat.16s$pTNM[is.na(dat.16s$pTNM)] <- "not reported"
 dat.16s$tumor.stage <- factor(
   dat.16s$pTNM,
-  levels = c("0", "1", "I", "IIA", "IIB", "III", "IV","not reported"),
-  labels = c("0", "1", "I", "II", "II", "III", "IV", "not reported")
+  levels = c("0", "1", "I", "IIA", "IIB", "III", "IV"),
+  labels = c("0", "1", "I", "II", "II", "III", "IV")
 )
 
+dat.rna[dat.rna == "not reported"] <- NA
 dat.rna$tumor.stage <- factor(
   dat.rna$tumor_stage,
-  levels = c("stage i", "stage ia", "stage ib", "stage iib", "stage iia", "stage iii", "stage iiia", "stage iiib", "stage iiic", "stage iv", "stage iva", "not reported"),
-  labels = c("I", "I", "I", "II", "II", "III", "III", "III", "III", "IV", "IV", "not reported")
+  levels = c("stage i", "stage ia", "stage ib", "stage iib", "stage iia", "stage iii", "stage iiia", "stage iiib", "stage iiic", "stage iv", "stage iva"),
+  labels = c("I", "I", "I", "II", "II", "III", "III", "III", "III", "IV", "IV")
 )
 
-dat.wgs$tumor_stage[is.na(dat.wgs$tumor_stage)] <- "not reported"
+dat.wgs[dat.wgs == "not reported"] <- NA
 dat.wgs$tumor.stage <- factor(
   dat.wgs$tumor_stage,
-  levels = c("stage i", "stage ia", "stage ib", "stage iib", "stage iia", "stage iii", "stage iiia", "stage iiib", "stage iiic", "stage iv", "stage iva", "not reported"),
-  labels = c("I", "I", "I", "II", "II", "III", "III", "III", "III", "IV", "IV", "not reported")
+  levels = c("stage i", "stage ia", "stage ib", "stage iib", "stage iia", "stage iii", "stage iiia", "stage iiib", "stage iiic", "stage iv", "stage iva"),
+  labels = c("I", "I", "I", "II", "II", "III", "III", "III", "III", "IV", "IV")
 )
 
 
@@ -338,33 +338,33 @@ table(dat$tumor.stage)
 sum(table(dat$tumor.stage)) # sample size met
 
 
-dat.16s.s$Abundancej <- dat.16s.s$Abundance+0.01
 mean.dat <- dat.16s.s %>%
   group_by(tumor.stage, OTU) %>%
   summarize(M = mean(Abundance))
-ggplot(dat.16s.s, aes(x=tumor.stage, y=Abundancej))+
+ggplot(dat.16s.s, aes(x=tumor.stage, y=Abundance))+
   geom_violin()+
   geom_jitter(alpha=0.25,width = 0.25)+
   geom_point(data=mean.dat, aes(x=tumor.stage, y = M), size=2, alpha =0.9, color="red")+
   labs(x="Tumor Stage", 
        title="Distribution of abundance across tumor stage",
        subtitle="Red dot is average abundnace")+
-  scale_y_continuous(
-    breaks=c(0, 10, 100, 200, 300, 400, 500),
-    limits = c(0,500),
-    trans="sqrt")+
-  facet_wrap(.~OTU, nrow=1)+
+  scale_y_continuous(trans="pseudo_log")+
+  #  breaks=c(0, 10, 100, 200, 300, 400, 500),
+  #  limits = c(0,500),
+  #  
+  facet_wrap(.~OTU, nrow=1, scales="free")+
   theme_classic()
 
 ```
 
 
 Stage "1" has only 1 unique sample and will be dropped from subsequent analyses.
+And remove NA values.
 
 ```{r}
 dat.16s.s <- dat.16s.s %>%
   filter(tumor.stage != "1")%>%
-  mutate(tumor.stage = droplevels(tumor.stage, exclude="1"))
+  mutate(tumor.stage = droplevels(tumor.stage, exclude=c("1",NA)))
 ```
 
 ## Multinomial Logistic Regression
@@ -393,7 +393,7 @@ predict(fit, newdata = dotu, "probs") # only TINY differences
 pp.otu <-cbind(dotu, predict(fit, newdata = dotu, "probs", se = TRUE))
 
 ## calculate the mean probabilities within each level of OTU
-by(pp.otu[, 2:7], pp.otu$OTU, colMeans)
+by(pp.otu[, 2:6], pp.otu$OTU, colMeans)
 ```
 
 
@@ -426,7 +426,7 @@ dabund <- data.frame(
 pp.abund <-cbind(dabund, predict(fit, newdata = dabund, "probs", se = TRUE))
 
 ## calculate the mean probabilities within each level of OTU
-by(pp.abund[, 3:8], pp.abund$OTU, colMeans)
+by(pp.abund[, 3:7], pp.abund$OTU, colMeans)
 
 ## melt data set to long for ggplot2
 lpp <- melt(pp.abund, id.vars = c("OTU", "Abundance"), value.name = "probability")
@@ -473,7 +473,7 @@ dabund <- data.frame(
 pp.abund <-cbind(dabund, predict(fit, newdata = dabund, "probs", se = TRUE))
 
 ## calculate the mean probabilities within each level of OTU
-by(pp.abund[, 3:8], pp.abund$OTU, colMeans)
+by(pp.abund[, 3:7], pp.abund$OTU, colMeans)
 
 ## melt data set to long for ggplot2
 lpp <- melt(pp.abund, id.vars = c("OTU", "Abundance"), value.name = "probability")
@@ -550,7 +550,7 @@ predict(fit, newdata = dotu, "probs") # only TINY differences
 pp.otu <-cbind(dotu, predict(fit, newdata = dotu, "probs", se = TRUE))
 
 ## calculate the mean probabilities within each level of OTU
-by(pp.otu[, 2:6], pp.otu$OTU, colMeans)
+by(pp.otu[, 2:5], pp.otu$OTU, colMeans)
 ```
 
 
@@ -583,7 +583,7 @@ dabund <- data.frame(
 pp.abund <-cbind(dabund, predict(fit, newdata = dabund, "probs", se = TRUE))
 
 ## calculate the mean probabilities within each level of OTU
-by(pp.abund[, 3:7], pp.abund$OTU, colMeans)
+by(pp.abund[, 3:6], pp.abund$OTU, colMeans)
 
 ## melt data set to long for ggplot2
 lpp <- melt(pp.abund, id.vars = c("OTU", "Abundance"), value.name = "probability")
@@ -630,7 +630,7 @@ dabund <- data.frame(
 pp.abund <-cbind(dabund, predict(fit, newdata = dabund, "probs", se = TRUE))
 
 ## calculate the mean probabilities within each level of OTU
-by(pp.abund[, 3:7], pp.abund$OTU, colMeans)
+by(pp.abund[, 3:6], pp.abund$OTU, colMeans)
 
 ## melt data set to long for ggplot2
 lpp <- melt(pp.abund, id.vars = c("OTU", "Abundance"), value.name = "probability")
@@ -707,7 +707,7 @@ predict(fit, newdata = dotu, "probs") # only TINY differences
 pp.otu <-cbind(dotu, predict(fit, newdata = dotu, "probs", se = TRUE))
 
 ## calculate the mean probabilities within each level of OTU
-by(pp.otu[, 2:6], pp.otu$OTU, colMeans)
+by(pp.otu[, 2:5], pp.otu$OTU, colMeans)
 ```
 
 
@@ -740,7 +740,7 @@ dabund <- data.frame(
 pp.abund <-cbind(dabund, predict(fit, newdata = dabund, "probs", se = TRUE))
 
 ## calculate the mean probabilities within each level of OTU
-by(pp.abund[, 3:7], pp.abund$OTU, colMeans)
+by(pp.abund[, 3:6], pp.abund$OTU, colMeans)
 
 ## melt data set to long for ggplot2
 lpp <- melt(pp.abund, id.vars = c("OTU", "Abundance"), value.name = "probability")
@@ -787,7 +787,7 @@ dabund <- data.frame(
 pp.abund <-cbind(dabund, predict(fit, newdata = dabund, "probs", se = TRUE))
 
 ## calculate the mean probabilities within each level of OTU
-by(pp.abund[, 3:7], pp.abund$OTU, colMeans)
+by(pp.abund[, 3:6], pp.abund$OTU, colMeans)
 
 ## melt data set to long for ggplot2
 lpp <- melt(pp.abund, id.vars = c("OTU", "Abundance"), value.name = "probability")

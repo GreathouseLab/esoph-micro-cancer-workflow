@@ -25,6 +25,7 @@ Welcome to our research website.
 
 *[RNAscope test](data-check-for-RNAscope.html)
 
+*[Boxplots for sample type by abundance](species-sample-type-combined.html)
 
 # Specific Questions for Update
 
