@@ -30,7 +30,7 @@ if(!requireNamespace("phyloseq", quietly=T)){
 # list of packages
 packages <- c("phyloseq","vegan", "lme4", "lmerTest",
               "tidyverse", "readr", "readxl", "forcats",
-              "data.table", "ggplot2",
+              "data.table", "ggplot2", "MASS",
               "kableExtra", "xtable", "gridExtra", "viridis",
               "patchwork", "gvlma", "car", "dplyr", "stringr",
               "reshape2", "ggdendro", "dendextend", "cowplot")

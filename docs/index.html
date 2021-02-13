@@ -338,7 +338,7 @@ $(document).ready(function () {
 <div class="tab-content">
 <div id="summary" class="tab-pane fade in active">
 <p>
-<strong>Last updated:</strong> 2021-02-10
+<strong>Last updated:</strong> 2021-02-11
 </p>
 <p>
 <strong>Checks:</strong> <span class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span> 1 <span class="glyphicon glyphicon-exclamation-sign text-danger" aria-hidden="true"></span> 1
@@ -369,16 +369,16 @@ This reproducible <a href="http://rmarkdown.rstudio.com">R Markdown</a> analysis
 <div class="panel panel-default">
 <div class="panel-heading">
 <p class="panel-title">
-<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongRepositoryversionstrongahrefhttpsgithubcomGreathouseLabesophmicrocancerworkflowtree1e15f06803a34cd27b680caab83e8407b088ff08targetblank1e15f06a"> <span class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span> <strong>Repository version:</strong> <a href="https://github.com/GreathouseLab/esoph-micro-cancer-workflow/tree/1e15f06803a34cd27b680caab83e8407b088ff08" target="_blank">1e15f06</a> </a>
+<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongRepositoryversionstrongahrefhttpsgithubcomGreathouseLabesophmicrocancerworkflowtree285a2fb543b59efbec5b23efbabbad8df5bba922targetblank285a2fba"> <span class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span> <strong>Repository version:</strong> <a href="https://github.com/GreathouseLab/esoph-micro-cancer-workflow/tree/285a2fb543b59efbec5b23efbabbad8df5bba922" target="_blank">285a2fb</a> </a>
 </p>
 </div>
-<div id="strongRepositoryversionstrongahrefhttpsgithubcomGreathouseLabesophmicrocancerworkflowtree1e15f06803a34cd27b680caab83e8407b088ff08targetblank1e15f06a" class="panel-collapse collapse">
+<div id="strongRepositoryversionstrongahrefhttpsgithubcomGreathouseLabesophmicrocancerworkflowtree285a2fb543b59efbec5b23efbabbad8df5bba922targetblank285a2fba" class="panel-collapse collapse">
 <div class="panel-body">
 <p>
 Great! You are using Git for version control. Tracking code development and connecting the code version to the results is critical for reproducibility.
 </p>
 <p>
-The results in this page were generated with repository version <a href="https://github.com/GreathouseLab/esoph-micro-cancer-workflow/tree/1e15f06803a34cd27b680caab83e8407b088ff08" target="_blank">1e15f06</a>. See the <em>Past versions</em> tab to see a history of the changes made to the R Markdown and HTML files.
+The results in this page were generated with repository version <a href="https://github.com/GreathouseLab/esoph-micro-cancer-workflow/tree/285a2fb543b59efbec5b23efbabbad8df5bba922" target="_blank">285a2fb</a>. See the <em>Past versions</em> tab to see a history of the changes made to the R Markdown and HTML files.
 </p>
 <p>
 Note that you need to be careful to ensure that all relevant files for the analysis have been committed to Git prior to generating the results (you can use <code>wflow_publish</code> or <code>wflow_git_commit</code>). workflowr only checks the R Markdown file, but you know if there are other scripts or data files that it depends on. Below is the status of the Git repository when the results were generated:
@@ -390,11 +390,34 @@ Ignored files:
     Ignored:    data/
 
 Untracked files:
-    Untracked:  analysis/species-sample-type-combined.Rmd
+    Untracked:  analysis/heatmaps-dendrograms-species-level.Rmd
+    Untracked:  analysis/ordered-logit-model.Rmd
+    Untracked:  output/nci-species-lvl-heatmap-01-2021-02-11.pdf
+    Untracked:  output/nci-species-lvl-heatmap-01-2021-02-11.png
+    Untracked:  output/nci-species-lvl-heatmap-05-2021-02-11.pdf
+    Untracked:  output/nci-species-lvl-heatmap-05-2021-02-11.png
+    Untracked:  output/nci-specific-otus-heatmap-2021-02-11.pdf
+    Untracked:  output/nci-specific-otus-heatmap-2021-02-11.png
+    Untracked:  output/tcga-rna-species-lvl-heatmap-001-2021-02-11.pdf
+    Untracked:  output/tcga-rna-species-lvl-heatmap-001-2021-02-11.png
+    Untracked:  output/tcga-rna-species-lvl-heatmap-01-2021-02-11.pdf
+    Untracked:  output/tcga-rna-species-lvl-heatmap-01-2021-02-11.png
+    Untracked:  output/tcga-rna-species-lvl-heatmap-05-2021-02-11.pdf
+    Untracked:  output/tcga-rna-species-lvl-heatmap-05-2021-02-11.png
+    Untracked:  output/tcga-rna-specific-otus-heatmap-2021-02-11.pdf
+    Untracked:  output/tcga-rna-specific-otus-heatmap-2021-02-11.png
+    Untracked:  output/tcga-wgs-species-lvl-heatmap-001-2021-02-11.pdf
+    Untracked:  output/tcga-wgs-species-lvl-heatmap-001-2021-02-11.png
+    Untracked:  output/tcga-wgs-species-lvl-heatmap-01-2021-02-11.pdf
+    Untracked:  output/tcga-wgs-species-lvl-heatmap-01-2021-02-11.png
+    Untracked:  output/tcga-wgs-species-lvl-heatmap-05-2021-02-11.pdf
+    Untracked:  output/tcga-wgs-species-lvl-heatmap-05-2021-02-11.png
+    Untracked:  output/tcga-wgs-specific-otus-heatmap-2021-02-11.pdf
+    Untracked:  output/tcga-wgs-specific-otus-heatmap-2021-02-11.png
 
 Unstaged changes:
     Modified:   analysis/index.Rmd
-    Modified:   analysis/results-question-3.Rmd
+    Modified:   code/load_packages.R
 
 </code></pre>
 <p>
@@ -433,6 +456,40 @@ Message
 </tr>
 </thead>
 <tbody>
+<tr>
+<td>
+Rmd
+</td>
+<td>
+<a href="https://github.com/GreathouseLab/esoph-micro-cancer-workflow/blob/285a2fb543b59efbec5b23efbabbad8df5bba922/analysis/index.Rmd" target="_blank">285a2fb</a>
+</td>
+<td>
+noah-padgett
+</td>
+<td>
+2021-02-10
+</td>
+<td>
+updated violion plots
+</td>
+</tr>
+<tr>
+<td>
+html
+</td>
+<td>
+<a href="https://rawcdn.githack.com/GreathouseLab/esoph-micro-cancer-workflow/285a2fb543b59efbec5b23efbabbad8df5bba922/docs/index.html" target="_blank">285a2fb</a>
+</td>
+<td>
+noah-padgett
+</td>
+<td>
+2021-02-10
+</td>
+<td>
+updated violion plots
+</td>
+</tr>
 <tr>
 <td>
 Rmd
@@ -756,25 +813,14 @@ initial commit
 <p>*<a href="waterfall-plot.html">Waterfall Plots</a></p>
 <p>*<a href="data-check-for-RNAscope.html">RNAscope test</a></p>
 <p>*<a href="species-sample-type-combined.html">Boxplots for sample type by abundance</a></p>
-</div>
-<div id="specific-questions-for-update" class="section level1">
-<h1>Specific Questions for Update</h1>
-<div id="slide-figures" class="section level2">
-<h2>Slide Figures</h2>
-<p>*<a href="slide-figures-heatmaps-dendrograms-updates.html">Slides for Updates with Figures Heatmaps with Dendrograms</a></p>
-</div>
-<div id="q1-is-there-a-taxonomic-signature-shared-between-the-barretts-samples" class="section level2">
-<h2>Q1: is there a taxonomic signature shared between the barrett’s samples?</h2>
-<p>*<a href="results-question-1.html">Results Question 1</a></p>
-</div>
-<div id="q2-what-is-the-abundance-of-f.-nucleatum-andor-fusobacterium-between-these-samples---same-samples-as-above" class="section level2">
-<h2>Q2: What is the abundance of F. nucleatum and/or Fusobacterium between these samples? - same samples as above</h2>
-<p>*<a href="results-question-2.html">Results Question 2</a></p>
-</div>
-<div id="q3-is-fuso-associated-with-tumor-stage-in-either-data-set-does-x-bacteria-predict-stage-multivariable-w-age-sex-bmi-history-of-barretts" class="section level2">
-<h2>Q3: Is fuso associated with tumor stage in either data set? Does X bacteria predict stage? Multivariable w/ age, sex, BMI, history of Barrett’s</h2>
-<p>*<a href="results-question-3.html">Results Question 3</a></p>
-</div>
+<p>The following pages give a variety of heatmaps w/ dendrograms that help describe the differences in OTU abundance across groups.</p>
+<p>*<a href="slide-figures-heatmaps-dendrograms-updates.html">Genera Level Heatmaps with Dendrograms</a></p>
+<p>*<a href="heatmaps-dendrograms-species-level.html">Species Level Heatmaps with Dendrograms</a></p>
+<p>The following page helps describe the relationship between Fuso (and other OTUs) and tumor stage.</p>
+<ul>
+<li>Is fuso associated with tumor stage in either data set? Does X bacteria predict stage? Multivariable w/ age, sex, BMI, history of Barrett’s</li>
+</ul>
+<p>*<a href="ordered-logit-model.html">Ordered Logit Model Results</a></p>
 </div>
 
 

@@ -1,0 +1,3815 @@
+<!DOCTYPE html>
+
+<html>
+
+<head>
+
+<meta charset="utf-8" />
+<meta name="generator" content="pandoc" />
+<meta http-equiv="X-UA-Compatible" content="IE=EDGE" />
+
+
+
+
+<title>Updated Heatmaps and Dendrograms</title>
+
+<script src="site_libs/header-attrs-2.6/header-attrs.js"></script>
+<script src="site_libs/jquery-1.11.3/jquery.min.js"></script>
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<link href="site_libs/bootstrap-3.3.5/css/cosmo.min.css" rel="stylesheet" />
+<script src="site_libs/bootstrap-3.3.5/js/bootstrap.min.js"></script>
+<script src="site_libs/bootstrap-3.3.5/shim/html5shiv.min.js"></script>
+<script src="site_libs/bootstrap-3.3.5/shim/respond.min.js"></script>
+<script src="site_libs/jqueryui-1.11.4/jquery-ui.min.js"></script>
+<link href="site_libs/tocify-1.9.1/jquery.tocify.css" rel="stylesheet" />
+<script src="site_libs/tocify-1.9.1/jquery.tocify.js"></script>
+<script src="site_libs/navigation-1.1/tabsets.js"></script>
+<script src="site_libs/navigation-1.1/codefolding.js"></script>
+<link href="site_libs/highlightjs-9.12.0/textmate.css" rel="stylesheet" />
+<script src="site_libs/highlightjs-9.12.0/highlight.js"></script>
+<script src="site_libs/kePrint-0.0.1/kePrint.js"></script>
+<link href="site_libs/lightable-0.0.1/lightable.css" rel="stylesheet" />
+
+<link rel="icon" href="https://github.com/workflowr/workflowr-assets/raw/master/img/reproducible.png">
+<!-- Add a small amount of space between sections. -->
+<style type="text/css">
+div.section {
+  padding-top: 12px;
+}
+</style>
+
+
+
+<style type="text/css">
+  code{white-space: pre-wrap;}
+  span.smallcaps{font-variant: small-caps;}
+  span.underline{text-decoration: underline;}
+  div.column{display: inline-block; vertical-align: top; width: 50%;}
+  div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+  ul.task-list{list-style: none;}
+    </style>
+
+<style type="text/css">code{white-space: pre;}</style>
+<style type="text/css">
+  pre:not([class]) {
+    background-color: white;
+  }
+</style>
+<script type="text/javascript">
+if (window.hljs) {
+  hljs.configure({languages: []});
+  hljs.initHighlightingOnLoad();
+  if (document.readyState && document.readyState === "complete") {
+    window.setTimeout(function() { hljs.initHighlighting(); }, 0);
+  }
+}
+</script>
+
+
+
+<style type="text/css">
+h1 {
+  font-size: 34px;
+}
+h1.title {
+  font-size: 38px;
+}
+h2 {
+  font-size: 30px;
+}
+h3 {
+  font-size: 24px;
+}
+h4 {
+  font-size: 18px;
+}
+h5 {
+  font-size: 16px;
+}
+h6 {
+  font-size: 12px;
+}
+.table th:not([align]) {
+  text-align: left;
+}
+</style>
+
+
+
+
+
+<style type = "text/css">
+.main-container {
+  max-width: 940px;
+  margin-left: auto;
+  margin-right: auto;
+}
+code {
+  color: inherit;
+  background-color: rgba(0, 0, 0, 0.04);
+}
+img {
+  max-width:100%;
+}
+.tabbed-pane {
+  padding-top: 12px;
+}
+.html-widget {
+  margin-bottom: 20px;
+}
+button.code-folding-btn:focus {
+  outline: none;
+}
+summary {
+  display: list-item;
+}
+</style>
+
+
+<style type="text/css">
+/* padding for bootstrap navbar */
+body {
+  padding-top: 51px;
+  padding-bottom: 40px;
+}
+/* offset scroll position for anchor links (for fixed navbar)  */
+.section h1 {
+  padding-top: 56px;
+  margin-top: -56px;
+}
+.section h2 {
+  padding-top: 56px;
+  margin-top: -56px;
+}
+.section h3 {
+  padding-top: 56px;
+  margin-top: -56px;
+}
+.section h4 {
+  padding-top: 56px;
+  margin-top: -56px;
+}
+.section h5 {
+  padding-top: 56px;
+  margin-top: -56px;
+}
+.section h6 {
+  padding-top: 56px;
+  margin-top: -56px;
+}
+.dropdown-submenu {
+  position: relative;
+}
+.dropdown-submenu>.dropdown-menu {
+  top: 0;
+  left: 100%;
+  margin-top: -6px;
+  margin-left: -1px;
+  border-radius: 0 6px 6px 6px;
+}
+.dropdown-submenu:hover>.dropdown-menu {
+  display: block;
+}
+.dropdown-submenu>a:after {
+  display: block;
+  content: " ";
+  float: right;
+  width: 0;
+  height: 0;
+  border-color: transparent;
+  border-style: solid;
+  border-width: 5px 0 5px 5px;
+  border-left-color: #cccccc;
+  margin-top: 5px;
+  margin-right: -10px;
+}
+.dropdown-submenu:hover>a:after {
+  border-left-color: #ffffff;
+}
+.dropdown-submenu.pull-left {
+  float: none;
+}
+.dropdown-submenu.pull-left>.dropdown-menu {
+  left: -100%;
+  margin-left: 10px;
+  border-radius: 6px 0 6px 6px;
+}
+</style>
+
+<script>
+// manage active state of menu based on current page
+$(document).ready(function () {
+  // active menu anchor
+  href = window.location.pathname
+  href = href.substr(href.lastIndexOf('/') + 1)
+  if (href === "")
+    href = "index.html";
+  var menuAnchor = $('a[href="' + href + '"]');
+
+  // mark it active
+  menuAnchor.parent().addClass('active');
+
+  // if it's got a parent navbar menu mark it active as well
+  menuAnchor.closest('li.dropdown').addClass('active');
+});
+</script>
+
+<!-- tabsets -->
+
+<style type="text/css">
+.tabset-dropdown > .nav-tabs {
+  display: inline-table;
+  max-height: 500px;
+  min-height: 44px;
+  overflow-y: auto;
+  background: white;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+}
+
+.tabset-dropdown > .nav-tabs > li.active:before {
+  content: "";
+  font-family: 'Glyphicons Halflings';
+  display: inline-block;
+  padding: 10px;
+  border-right: 1px solid #ddd;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open > li.active:before {
+  content: "&#xe258;";
+  border: none;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open:before {
+  content: "";
+  font-family: 'Glyphicons Halflings';
+  display: inline-block;
+  padding: 10px;
+  border-right: 1px solid #ddd;
+}
+
+.tabset-dropdown > .nav-tabs > li.active {
+  display: block;
+}
+
+.tabset-dropdown > .nav-tabs > li > a,
+.tabset-dropdown > .nav-tabs > li > a:focus,
+.tabset-dropdown > .nav-tabs > li > a:hover {
+  border: none;
+  display: inline-block;
+  border-radius: 4px;
+  background-color: transparent;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open > li {
+  display: block;
+  float: none;
+}
+
+.tabset-dropdown > .nav-tabs > li {
+  display: none;
+}
+</style>
+
+<!-- code folding -->
+<style type="text/css">
+.code-folding-btn { margin-bottom: 4px; }
+</style>
+
+
+
+<style type="text/css">
+
+#TOC {
+  margin: 25px 0px 20px 0px;
+}
+@media (max-width: 768px) {
+#TOC {
+  position: relative;
+  width: 100%;
+}
+}
+
+@media print {
+.toc-content {
+  /* see https://github.com/w3c/csswg-drafts/issues/4434 */
+  float: right;
+}
+}
+
+.toc-content {
+  padding-left: 30px;
+  padding-right: 40px;
+}
+
+div.main-container {
+  max-width: 1200px;
+}
+
+div.tocify {
+  width: 20%;
+  max-width: 260px;
+  max-height: 85%;
+}
+
+@media (min-width: 768px) and (max-width: 991px) {
+  div.tocify {
+    width: 25%;
+  }
+}
+
+@media (max-width: 767px) {
+  div.tocify {
+    width: 100%;
+    max-width: none;
+  }
+}
+
+.tocify ul, .tocify li {
+  line-height: 20px;
+}
+
+.tocify-subheader .tocify-item {
+  font-size: 0.90em;
+}
+
+.tocify .list-group-item {
+  border-radius: 0px;
+}
+
+
+</style>
+
+
+
+</head>
+
+<body>
+
+
+<div class="container-fluid main-container">
+
+
+<!-- setup 3col/9col grid for toc_float and main content  -->
+<div class="row-fluid">
+<div class="col-xs-12 col-sm-4 col-md-3">
+<div id="TOC" class="tocify">
+</div>
+</div>
+
+<div class="toc-content col-xs-12 col-sm-8 col-md-9">
+
+
+
+
+<div class="navbar navbar-default  navbar-fixed-top" role="navigation">
+  <div class="container">
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar">
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+      <a class="navbar-brand" href="index.html">esoph-micro-cancer</a>
+    </div>
+    <div id="navbar" class="navbar-collapse collapse">
+      <ul class="nav navbar-nav">
+        <li>
+  <a href="index.html">Home</a>
+</li>
+<li>
+  <a href="about.html">About</a>
+</li>
+<li>
+  <a href="license.html">License</a>
+</li>
+      </ul>
+      <ul class="nav navbar-nav navbar-right">
+        
+      </ul>
+    </div><!--/.nav-collapse -->
+  </div><!--/.container -->
+</div><!--/.navbar -->
+
+<div class="fluid-row" id="header">
+
+<div class="btn-group pull-right">
+<button type="button" class="btn btn-default btn-xs dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><span>Code</span> <span class="caret"></span></button>
+<ul class="dropdown-menu" style="min-width: 50px;">
+<li><a id="rmd-show-all-code" href="#">Show All Code</a></li>
+<li><a id="rmd-hide-all-code" href="#">Hide All Code</a></li>
+</ul>
+</div>
+
+
+
+<h1 class="title toc-ignore">Updated Heatmaps and Dendrograms</h1>
+
+</div>
+
+
+<p>
+<button type="button" class="btn btn-default btn-workflowr btn-workflowr-report" data-toggle="collapse" data-target="#workflowr-report">
+<span class="glyphicon glyphicon-list" aria-hidden="true"></span> workflowr <span class="glyphicon glyphicon-exclamation-sign text-danger" aria-hidden="true"></span>
+</button>
+</p>
+<div id="workflowr-report" class="collapse">
+<ul class="nav nav-tabs">
+<li class="active">
+<a data-toggle="tab" href="#summary">Summary</a>
+</li>
+<li>
+<a data-toggle="tab" href="#checks"> Checks <span class="glyphicon glyphicon-exclamation-sign text-danger" aria-hidden="true"></span> </a>
+</li>
+<li>
+<a data-toggle="tab" href="#versions">Past versions</a>
+</li>
+</ul>
+<div class="tab-content">
+<div id="summary" class="tab-pane fade in active">
+<p>
+<strong>Last updated:</strong> 2021-02-11
+</p>
+<p>
+<strong>Checks:</strong> <span class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span> 6 <span class="glyphicon glyphicon-exclamation-sign text-danger" aria-hidden="true"></span> 1
+</p>
+<p>
+<strong>Knit directory:</strong> <code>esoph-micro-cancer-workflow/</code> <span class="glyphicon glyphicon-question-sign" aria-hidden="true" title="This is the local directory in which the code in this file was executed."> </span>
+</p>
+<p>
+This reproducible <a href="http://rmarkdown.rstudio.com">R Markdown</a> analysis was created with <a
+  href="https://github.com/jdblischak/workflowr">workflowr</a> (version 1.6.2). The <em>Checks</em> tab describes the reproducibility checks that were applied when the results were created. The <em>Past versions</em> tab lists the development history.
+</p>
+<hr>
+</div>
+<div id="checks" class="tab-pane fade">
+<div id="workflowr-checks" class="panel-group">
+<div class="panel panel-default">
+<div class="panel-heading">
+<p class="panel-title">
+<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongRMarkdownfilestronguncommittedchanges"> <span class="glyphicon glyphicon-exclamation-sign text-danger" aria-hidden="true"></span> <strong>R Markdown file:</strong> uncommitted changes </a>
+</p>
+</div>
+<div id="strongRMarkdownfilestronguncommittedchanges" class="panel-collapse collapse">
+<div class="panel-body">
+<p>The R Markdown is untracked by Git. To know which version of the R Markdown file created these results, you’ll want to first commit it to the Git repo. If you’re still working on the analysis, you can ignore this warning. When you’re finished, you can run <code>wflow_publish</code> to commit the R Markdown file and build the HTML.</p>
+</div>
+</div>
+</div>
+<div class="panel panel-default">
+<div class="panel-heading">
+<p class="panel-title">
+<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongEnvironmentstrongempty"> <span class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span> <strong>Environment:</strong> empty </a>
+</p>
+</div>
+<div id="strongEnvironmentstrongempty" class="panel-collapse collapse">
+<div class="panel-body">
+<p>Great job! The global environment was empty. Objects defined in the global environment can affect the analysis in your R Markdown file in unknown ways. For reproduciblity it’s best to always run the code in an empty environment.</p>
+</div>
+</div>
+</div>
+<div class="panel panel-default">
+<div class="panel-heading">
+<p class="panel-title">
+<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongSeedstrongcodesetseed20200916code"> <span class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span> <strong>Seed:</strong> <code>set.seed(20200916)</code> </a>
+</p>
+</div>
+<div id="strongSeedstrongcodesetseed20200916code" class="panel-collapse collapse">
+<div class="panel-body">
+<p>The command <code>set.seed(20200916)</code> was run prior to running the code in the R Markdown file. Setting a seed ensures that any results that rely on randomness, e.g. subsampling or permutations, are reproducible.</p>
+</div>
+</div>
+</div>
+<div class="panel panel-default">
+<div class="panel-heading">
+<p class="panel-title">
+<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongSessioninformationstrongrecorded"> <span class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span> <strong>Session information:</strong> recorded </a>
+</p>
+</div>
+<div id="strongSessioninformationstrongrecorded" class="panel-collapse collapse">
+<div class="panel-body">
+<p>Great job! Recording the operating system, R version, and package versions is critical for reproducibility.</p>
+</div>
+</div>
+</div>
+<div class="panel panel-default">
+<div class="panel-heading">
+<p class="panel-title">
+<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongCachestrongnone"> <span class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span> <strong>Cache:</strong> none </a>
+</p>
+</div>
+<div id="strongCachestrongnone" class="panel-collapse collapse">
+<div class="panel-body">
+<p>Nice! There were no cached chunks for this analysis, so you can be confident that you successfully produced the results during this run.</p>
+</div>
+</div>
+</div>
+<div class="panel panel-default">
+<div class="panel-heading">
+<p class="panel-title">
+<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongFilepathsstrongrelative"> <span class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span> <strong>File paths:</strong> relative </a>
+</p>
+</div>
+<div id="strongFilepathsstrongrelative" class="panel-collapse collapse">
+<div class="panel-body">
+<p>Great job! Using relative paths to the files within your workflowr project makes it easier to run your code on other machines.</p>
+</div>
+</div>
+</div>
+<div class="panel panel-default">
+<div class="panel-heading">
+<p class="panel-title">
+<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongRepositoryversionstrongahrefhttpsgithubcomGreathouseLabesophmicrocancerworkflowtree285a2fb543b59efbec5b23efbabbad8df5bba922targetblank285a2fba"> <span class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span> <strong>Repository version:</strong> <a href="https://github.com/GreathouseLab/esoph-micro-cancer-workflow/tree/285a2fb543b59efbec5b23efbabbad8df5bba922" target="_blank">285a2fb</a> </a>
+</p>
+</div>
+<div id="strongRepositoryversionstrongahrefhttpsgithubcomGreathouseLabesophmicrocancerworkflowtree285a2fb543b59efbec5b23efbabbad8df5bba922targetblank285a2fba" class="panel-collapse collapse">
+<div class="panel-body">
+<p>
+Great! You are using Git for version control. Tracking code development and connecting the code version to the results is critical for reproducibility.
+</p>
+<p>
+The results in this page were generated with repository version <a href="https://github.com/GreathouseLab/esoph-micro-cancer-workflow/tree/285a2fb543b59efbec5b23efbabbad8df5bba922" target="_blank">285a2fb</a>. See the <em>Past versions</em> tab to see a history of the changes made to the R Markdown and HTML files.
+</p>
+<p>
+Note that you need to be careful to ensure that all relevant files for the analysis have been committed to Git prior to generating the results (you can use <code>wflow_publish</code> or <code>wflow_git_commit</code>). workflowr only checks the R Markdown file, but you know if there are other scripts or data files that it depends on. Below is the status of the Git repository when the results were generated:
+</p>
+<pre><code>
+Ignored files:
+    Ignored:    .Rhistory
+    Ignored:    .Rproj.user/
+    Ignored:    data/
+
+Untracked files:
+    Untracked:  analysis/heatmaps-dendrograms-species-level.Rmd
+    Untracked:  output/nci-species-lvl-heatmap-01-2021-02-11.pdf
+    Untracked:  output/nci-species-lvl-heatmap-01-2021-02-11.png
+    Untracked:  output/nci-species-lvl-heatmap-05-2021-02-11.pdf
+    Untracked:  output/nci-species-lvl-heatmap-05-2021-02-11.png
+    Untracked:  output/nci-specific-otus-heatmap-2021-02-11.pdf
+    Untracked:  output/nci-specific-otus-heatmap-2021-02-11.png
+    Untracked:  output/tcga-rna-species-lvl-heatmap-001-2021-02-11.pdf
+    Untracked:  output/tcga-rna-species-lvl-heatmap-001-2021-02-11.png
+    Untracked:  output/tcga-rna-species-lvl-heatmap-01-2021-02-11.pdf
+    Untracked:  output/tcga-rna-species-lvl-heatmap-01-2021-02-11.png
+    Untracked:  output/tcga-rna-species-lvl-heatmap-05-2021-02-11.pdf
+    Untracked:  output/tcga-rna-species-lvl-heatmap-05-2021-02-11.png
+    Untracked:  output/tcga-rna-specific-otus-heatmap-2021-02-11.pdf
+    Untracked:  output/tcga-rna-specific-otus-heatmap-2021-02-11.png
+    Untracked:  output/tcga-wgs-species-lvl-heatmap-001-2021-02-11.pdf
+    Untracked:  output/tcga-wgs-species-lvl-heatmap-001-2021-02-11.png
+    Untracked:  output/tcga-wgs-species-lvl-heatmap-01-2021-02-11.pdf
+    Untracked:  output/tcga-wgs-species-lvl-heatmap-01-2021-02-11.png
+    Untracked:  output/tcga-wgs-species-lvl-heatmap-05-2021-02-11.pdf
+    Untracked:  output/tcga-wgs-species-lvl-heatmap-05-2021-02-11.png
+    Untracked:  output/tcga-wgs-specific-otus-heatmap-2021-02-11.pdf
+    Untracked:  output/tcga-wgs-specific-otus-heatmap-2021-02-11.png
+
+Unstaged changes:
+    Modified:   analysis/index.Rmd
+
+</code></pre>
+<p>
+Note that any generated files, e.g. HTML, png, CSS, etc., are not included in this status report because it is ok for generated content to have uncommitted changes.
+</p>
+</div>
+</div>
+</div>
+</div>
+<hr>
+</div>
+<div id="versions" class="tab-pane fade">
+<p>
+There are no past versions. Publish this analysis with <code>wflow_publish()</code> to start tracking its development.
+</p>
+<hr>
+</div>
+</div>
+</div>
+<div id="intro" class="section level1">
+<h1>Intro</h1>
+<p>This page contains the updated code for generating the joint figures of heatmaps with the dendrogram. The update was needed to fix how the OTUs were subset based on average relative abundance. Prior to each heatmap will be a table of the OTUs that meet the given criteria.</p>
+<p>I figured out that I originally subset based on the OTU relative abundance for each individual and sample, meaning that I subset according the just the raw <em>Abundance</em> irrespective of any OTU <em>average abundance</em>. This mistake is corrected in this document.</p>
+</div>
+<div id="heatmaps-and-dendrograms" class="section level1">
+<h1>Heatmaps and Dendrograms</h1>
+<div id="species-level---nci-16s-data" class="section level2">
+<h2>Species Level - NCI 16S Data</h2>
+<div id="relative-abudance-cutoff-0.05" class="section level3">
+<h3>Relative Abudance Cutoff: 0.05</h3>
+<pre class="r"><code>analysis.dat &lt;- dat.16s # insert dataset to be used in analysis
+avgRelAbundCutoff &lt;- 0.05 # minimum average relative abundance for OTUs
+
+
+otu.dat &lt;- analysis.dat %&gt;% filter(sample_type != &quot;0&quot;) %&gt;%
+  dplyr::group_by(OTU) %&gt;%
+  dplyr::summarise(AverageRelativeAbundance=mean(Abundance))%&gt;%
+  dplyr::filter(AverageRelativeAbundance&gt;=avgRelAbundCutoff) %&gt;%
+  dplyr::arrange(desc(AverageRelativeAbundance))
+
+kable(otu.dat[,c(2,1)], format=&quot;html&quot;, digits=3) %&gt;%
+  kable_styling(full_width = T)%&gt;%
+  scroll_box(width=&quot;100%&quot;, height=&quot;100%&quot;)</code></pre>
+<div style="border: 1px solid #ddd; padding: 0px; overflow-y: scroll; height:100%; overflow-x: scroll; width:100%; ">
+<table class="table" style="margin-left: auto; margin-right: auto;">
+<thead>
+<tr>
+<th style="text-align:right;position: sticky; top:0; background-color: #FFFFFF;">
+AverageRelativeAbundance
+</th>
+<th style="text-align:left;position: sticky; top:0; background-color: #FFFFFF;">
+OTU
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:right;">
+0.250
+</td>
+<td style="text-align:left;">
+Streptococcus_dentisani:Streptococcus_infantis:Streptococcus_mitis:Streptococcus_oligofermentans:Streptococcus_oralis:Streptococcus_pneumoniae:Streptococcus_pseudopneumoniae:Streptococcus_sanguinis
+</td>
+</tr>
+<tr>
+<td style="text-align:right;">
+0.076
+</td>
+<td style="text-align:left;">
+Pseudomonas_rhodesiae
+</td>
+</tr>
+<tr>
+<td style="text-align:right;">
+0.058
+</td>
+<td style="text-align:left;">
+Prevotella_melaninogenica
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+<pre class="r"><code>plot.dat &lt;- analysis.dat %&gt;% filter(sample_type != &quot;0&quot;) %&gt;%
+  dplyr::group_by(OTU) %&gt;%
+  dplyr::mutate(aveAbund=mean(Abundance)) %&gt;%
+  dplyr::ungroup() %&gt;%
+  dplyr::filter(aveAbund&gt;=avgRelAbundCutoff) %&gt;%
+  dplyr::mutate(ID = as.factor(accession.number)) %&gt;%
+  dplyr::select(sample_type, OTU, ID, Abundance, aveAbund)
+
+plot.dat$OTU[plot.dat$OTU == &quot;Streptococcus_dentisani:Streptococcus_infantis:Streptococcus_mitis:Streptococcus_oligofermentans:Streptococcus_oralis:Streptococcus_pneumoniae:Streptococcus_pseudopneumoniae:Streptococcus_sanguinis&quot;] &lt;- &quot;Streptoccus spp.*&quot;
+
+# widen plot.dat for dendro
+dat.wide &lt;- plot.dat %&gt;%
+  dplyr::mutate(
+    ID = paste0(ID, &quot;_&quot;,sample_type)
+  ) %&gt;%
+  dplyr::select(ID, OTU, Abundance) %&gt;%
+  dplyr::group_by(ID, OTU) %&gt;%
+  dplyr::summarise(
+    Abundance = mean(Abundance)
+  ) %&gt;%
+  tidyr::pivot_wider(
+    id_cols = OTU,
+    names_from = ID,
+    values_from = Abundance,
+    values_fill = 0
+  )
+rn &lt;- dat.wide$OTU
+mat &lt;- as.matrix(dat.wide[,-1])
+rownames(mat) &lt;- rn
+
+sample_names &lt;- colnames(mat)
+
+# Obtain the dendrogram
+dend &lt;- as.dendrogram(hclust(dist(mat)))
+dend_data &lt;- dendro_data(dend)
+
+# Setup the data, so that the layout is inverted (this is more 
+# &quot;clear&quot; than simply using coord_flip())
+segment_data &lt;- with(
+  segment(dend_data), 
+  data.frame(x = y, y = x, xend = yend, yend = xend))
+# Use the dendrogram label data to position the gene labels
+gene_pos_table &lt;- with(
+  dend_data$labels, 
+  data.frame(y_center = x, gene = as.character(label), height = 1))
+
+# Table to position the samples
+sample_pos_table &lt;- data.frame(sample = sample_names) %&gt;%
+  dplyr::mutate(x_center = (1:n()), 
+         width = 1)
+
+# Neglecting the gap parameters
+heatmap_data &lt;- mat %&gt;% 
+  reshape2::melt(value.name = &quot;expr&quot;, varnames = c(&quot;gene&quot;, &quot;sample&quot;)) %&gt;%
+  left_join(gene_pos_table) %&gt;%
+  left_join(sample_pos_table)
+
+# extract and rejoin sample IDs and sample_type names for plotting
+# first for the heatmap data.frame
+A &lt;- str_split(heatmap_data$sample, &quot;_&quot;)
+heatmap_data$ID &lt;- heatmap_data$sample_type &lt;- &quot;0&quot;
+for(i in 1:nrow(heatmap_data)){
+  heatmap_data$ID[i] &lt;- A[[i]][1]
+  heatmap_data$sample_type[i] &lt;- A[[i]][2]
+}
+# second for the sample position dataframe (dendo)
+A &lt;- str_split(sample_pos_table$sample, &quot;_&quot;)
+sample_pos_table$ID &lt;- sample_pos_table$sample_type &lt;- &quot;0&quot;
+for(i in 1:nrow(sample_pos_table)){
+  sample_pos_table$ID[i] &lt;- A[[i]][1]
+  sample_pos_table$sample_type[i] &lt;- A[[i]][2]
+}
+
+# Limits for the vertical axes
+gene_axis_limits &lt;- with(
+  gene_pos_table, 
+  c(min(y_center - 0.5 * height), max(y_center + 0.5 * height))
+) + 
+  0.1 * c(-1, 1) # extra spacing: 0.1
+
+## Build Heatmap Pieces
+# by parts
+hmd &lt;- filter(heatmap_data, sample_type == &quot;Barretts Only&quot;)
+hmd$x_center &lt;- as.numeric(as.factor(hmd$x_center))
+spd &lt;- filter(sample_pos_table, sample_type == &quot;Barretts Only&quot;)
+spd$x_center &lt;- as.numeric(as.factor(spd$x_center))
+
+plt_hmap1 &lt;- ggplot(hmd, 
+                   aes(x = x_center, y = y_center, fill = expr, 
+                       height = height, width = width)) + 
+  geom_tile() +
+  #facet_wrap(.~sample_type)+
+  scale_fill_gradient2(&quot;Abundance&quot;,trans=&quot;sqrt&quot;, high = &quot;darkred&quot;, low = &quot;darkblue&quot;, breaks=c(0, 0.10, 0.30, 0.50, 0.80)) +
+  scale_x_continuous(breaks = spd$x_center, 
+                     labels = spd$ID, 
+                     expand = c(0, 0)) + 
+  # For the y axis, alternatively set the labels as: gene_position_table$gene
+  scale_y_continuous(breaks = gene_pos_table[, &quot;y_center&quot;], 
+                     labels = rep(&quot;&quot;, nrow(gene_pos_table)),
+                     limits = gene_axis_limits, 
+                     expand = c(0, 0)) + 
+  labs(x = &quot;BO&quot;, y = NULL) +
+  theme_classic() +
+  theme(axis.text.x = element_text(size = rel(1), hjust = 0.5,vjust=0.5, angle = 90), 
+        # margin: top, right, bottom, and left
+        #axis.ticks.y = element_blank(),
+        plot.margin = unit(c(1, 0.01, 0.01, -0.7), &quot;cm&quot;), 
+        panel.grid = element_blank(),
+        legend.position = &quot;none&quot;)
+
+# Part 2: &quot;EAC-adjacent tissue w/ Barretts History&quot;
+hmd &lt;- filter(heatmap_data, sample_type == &quot;EAC-adjacent tissue w/ Barretts History&quot;)
+hmd$x_center &lt;- as.numeric(as.factor(hmd$x_center))
+spd &lt;- filter(sample_pos_table, sample_type == &quot;EAC-adjacent tissue w/ Barretts History&quot;)
+spd$x_center &lt;- as.numeric(as.factor(spd$x_center))
+
+plt_hmap2 &lt;- ggplot(hmd, 
+                    aes(x = x_center, y = y_center, fill = expr, 
+                        height = height, width = width)) + 
+  geom_tile() +
+  #facet_wrap(.~sample_type)+
+  scale_fill_gradient2(&quot;expr&quot;,trans=&quot;sqrt&quot;, high = &quot;darkred&quot;, low = &quot;darkblue&quot;, breaks=c(0, 0.1, 0.10, 0.30, 0.50, 0.80)) +
+  scale_x_continuous(breaks = spd$x_center, 
+                     labels = spd$ID, 
+                     expand = c(0, 0)) + 
+  # For the y axis, alternatively set the labels as: gene_position_table$gene
+  scale_y_continuous(breaks = gene_pos_table[, &quot;y_center&quot;], 
+                     labels = rep(&quot;&quot;, nrow(gene_pos_table)),
+                     limits = gene_axis_limits, 
+                     expand = c(0, 0)) + 
+  labs(x = &quot;EAC-adj. w/ Barretts&quot;, y = NULL) +
+  theme_classic() +
+  theme(axis.text.x = element_text(size = rel(1), hjust = 0.5,vjust=0.5, angle = 90), 
+        axis.ticks.y = element_blank(),
+        # margin: top, right, bottom, and left
+        plot.margin = unit(c(1, 0.01, 0.01, -0.7), &quot;cm&quot;), 
+        panel.grid.minor = element_blank(),
+        legend.position = &quot;none&quot;)
+
+# Part 3: &quot;EAC tissues w/ Barretts History&quot;
+hmd &lt;- filter(heatmap_data, sample_type == &quot;EAC tissues w/ Barretts History&quot;)
+hmd$x_center &lt;- as.numeric(as.factor(hmd$x_center))
+spd &lt;- filter(sample_pos_table, sample_type == &quot;EAC tissues w/ Barretts History&quot;)
+spd$x_center &lt;- as.numeric(as.factor(spd$x_center))
+
+plt_hmap3 &lt;- ggplot(hmd, 
+                    aes(x = x_center, y = y_center, fill = expr, 
+                        height = height, width = width)) + 
+  geom_tile() +
+  #facet_wrap(.~sample_type)+
+  scale_fill_gradient2(&quot;Abundance&quot;,trans=&quot;sqrt&quot;, high = &quot;darkred&quot;, low = &quot;darkblue&quot;, breaks=c(0, 0.10, 0.30, 0.50, 0.80)) +
+  scale_x_continuous(breaks = spd$x_center, 
+                     labels = spd$ID, 
+                     expand = c(0, 0)) + 
+  # For the y axis, alternatively set the labels as: gene_position_table$gene
+  scale_y_continuous(breaks = gene_pos_table[, &quot;y_center&quot;], 
+                     labels = rep(&quot;&quot;, nrow(gene_pos_table)),
+                     limits = gene_axis_limits, 
+                     expand = c(0, 0)) + 
+  labs(x = &quot;EAC w/ Barretts&quot;, y = NULL) +
+  theme_classic() +
+  theme(axis.text.x = element_text(size = rel(1), hjust = 0.75, vjust=0.5, angle = 90), 
+        axis.ticks.y = element_blank(),
+        # margin: top, right, bottom, and left
+        plot.margin = unit(c(1, 0.01, 0.01, -0.7), &quot;cm&quot;), 
+        panel.grid.minor = element_blank())
+
+
+# Dendrogram plot
+plt_dendr &lt;- ggplot(segment_data) + 
+  geom_segment(aes(x = x, y = y, xend = xend, yend = yend)) + 
+  scale_x_reverse(expand = c(0, 0.5)) + 
+  scale_y_continuous(breaks = gene_pos_table$y_center, 
+                     labels = gene_pos_table$gene, 
+                     limits = gene_axis_limits, 
+                     expand = c(0, 0)) + 
+  labs(x = &quot;&quot;, y = &quot;&quot;, colour = &quot;&quot;, size = &quot;&quot;) +
+  theme_classic() + 
+  theme(panel.grid = element_blank(),
+        axis.text.x = element_blank(),
+        axis.ticks.x = element_blank(),
+        plot.margin = unit(c(1, 0.01, 0.01, -0.7), &quot;cm&quot;))
+
+prntRelAbund &lt;- avgRelAbundCutoff*100</code></pre>
+<pre class="r"><code>p &lt;- plt_dendr+plt_hmap1+plt_hmap2+plt_hmap3+ 
+  plot_layout(
+    nrow=1, widths = c(0.2, 0.2, 1, 1),
+    guides=&quot;collect&quot;
+  ) +
+  plot_annotation(
+    title=&quot;NCI-16s Data showing average relative abundance of species level by individual&quot;,
+    subtitle=paste0(&quot;Subset to OTU average relative abundance &gt; &quot;,prntRelAbund,&quot;%; *S. dentisani, S. infantis, S. mitis, S. oligofermentans, S. oralis, S. pneumoniae, S. pseudopneumoniae, S. sanguinis&quot;)
+  )
+p</code></pre>
+<p><img src="figure/heatmaps-dendrograms-species-level.Rmd/ht-nci-species-lvl-05-plot-make-1.png" width="100%" height="500px" style="display: block; margin: auto;" /></p>
+<pre class="r"><code>if(save.plots == T){
+  ggsave(paste0(&quot;output/nci-species-lvl-heatmap-05-&quot;,save.Date,&quot;.pdf&quot;), plot=p, units=&quot;in&quot;, width=20, height=5)
+  ggsave(paste0(&quot;output/nci-species-lvl-heatmap-05-&quot;,save.Date,&quot;.png&quot;), plot=p, units=&quot;in&quot;, width=20, height=5)
+}</code></pre>
+</div>
+<div id="relative-abudance-cutoff-0.01" class="section level3">
+<h3>Relative Abudance Cutoff: 0.01</h3>
+<pre class="r"><code>analysis.dat &lt;- dat.16s # insert dataset to be used in analysis
+avgRelAbundCutoff &lt;- 0.01 # minimum average relative abundance for OTUs
+
+
+otu.dat &lt;- analysis.dat %&gt;% filter(sample_type != &quot;0&quot;) %&gt;%
+  dplyr::group_by(OTU) %&gt;%
+  dplyr::summarise(AverageRelativeAbundance=mean(Abundance))%&gt;%
+  dplyr::filter(AverageRelativeAbundance&gt;=avgRelAbundCutoff) %&gt;%
+  dplyr::arrange(desc(AverageRelativeAbundance))
+
+kable(otu.dat[,c(2,1)], format=&quot;html&quot;, digits=3) %&gt;%
+  kable_styling(full_width = T)%&gt;%
+  scroll_box(width=&quot;100%&quot;, height=&quot;400px&quot;)</code></pre>
+<div style="border: 1px solid #ddd; padding: 0px; overflow-y: scroll; height:400px; overflow-x: scroll; width:100%; ">
+<table class="table" style="margin-left: auto; margin-right: auto;">
+<thead>
+<tr>
+<th style="text-align:right;position: sticky; top:0; background-color: #FFFFFF;">
+AverageRelativeAbundance
+</th>
+<th style="text-align:left;position: sticky; top:0; background-color: #FFFFFF;">
+OTU
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:right;">
+0.250
+</td>
+<td style="text-align:left;">
+Streptococcus_dentisani:Streptococcus_infantis:Streptococcus_mitis:Streptococcus_oligofermentans:Streptococcus_oralis:Streptococcus_pneumoniae:Streptococcus_pseudopneumoniae:Streptococcus_sanguinis
+</td>
+</tr>
+<tr>
+<td style="text-align:right;">
+0.076
+</td>
+<td style="text-align:left;">
+Pseudomonas_rhodesiae
+</td>
+</tr>
+<tr>
+<td style="text-align:right;">
+0.058
+</td>
+<td style="text-align:left;">
+Prevotella_melaninogenica
+</td>
+</tr>
+<tr>
+<td style="text-align:right;">
+0.046
+</td>
+<td style="text-align:left;">
+Stenotrophomonas_maltophilia
+</td>
+</tr>
+<tr>
+<td style="text-align:right;">
+0.042
+</td>
+<td style="text-align:left;">
+Lactobacillus_gasseri:Lactobacillus_johnsonii
+</td>
+</tr>
+<tr>
+<td style="text-align:right;">
+0.041
+</td>
+<td style="text-align:left;">
+Veillonella_dispar
+</td>
+</tr>
+<tr>
+<td style="text-align:right;">
+0.034
+</td>
+<td style="text-align:left;">
+Acinetobacter_guillouiae
+</td>
+</tr>
+<tr>
+<td style="text-align:right;">
+0.031
+</td>
+<td style="text-align:left;">
+Fusobacterium_nucleatum
+</td>
+</tr>
+<tr>
+<td style="text-align:right;">
+0.025
+</td>
+<td style="text-align:left;">
+Rothia_mucilaginosa
+</td>
+</tr>
+<tr>
+<td style="text-align:right;">
+0.024
+</td>
+<td style="text-align:left;">
+Staphylococcus_epidermidis:Staphylococcus_hominis
+</td>
+</tr>
+<tr>
+<td style="text-align:right;">
+0.022
+</td>
+<td style="text-align:left;">
+Gemella_haemolysans
+</td>
+</tr>
+<tr>
+<td style="text-align:right;">
+0.018
+</td>
+<td style="text-align:left;">
+Selenomonas_sputigena
+</td>
+</tr>
+<tr>
+<td style="text-align:right;">
+0.017
+</td>
+<td style="text-align:left;">
+Granulicatella_adiacens:Granulicatella_paraadiacens
+</td>
+</tr>
+<tr>
+<td style="text-align:right;">
+0.017
+</td>
+<td style="text-align:left;">
+Haemophilus_parainfluenzae
+</td>
+</tr>
+<tr>
+<td style="text-align:right;">
+0.016
+</td>
+<td style="text-align:left;">
+otu19913:Actinobacillus_minor:Actinobacillus_porcinus:Actinobacillus_rossii:Haemophilus_paraphrohaemolyticus
+</td>
+</tr>
+<tr>
+<td style="text-align:right;">
+0.012
+</td>
+<td style="text-align:left;">
+otu16698:Tannerella_forsythia
+</td>
+</tr>
+<tr>
+<td style="text-align:right;">
+0.011
+</td>
+<td style="text-align:left;">
+Actinomyces_odontolyticus
+</td>
+</tr>
+<tr>
+<td style="text-align:right;">
+0.010
+</td>
+<td style="text-align:left;">
+Clostridium_perfringens:Clostridium_thermophilus
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+<pre class="r"><code>plot.dat &lt;- analysis.dat %&gt;% filter(sample_type != &quot;0&quot;) %&gt;%
+  dplyr::group_by(OTU) %&gt;%
+  dplyr::mutate(aveAbund=mean(Abundance)) %&gt;%
+  dplyr::ungroup() %&gt;%
+  dplyr::filter(aveAbund&gt;=avgRelAbundCutoff) %&gt;%
+  dplyr::mutate(ID = as.factor(accession.number)) %&gt;%
+  dplyr::select(sample_type, OTU, ID, Abundance, aveAbund)
+
+plot.dat$OTU[plot.dat$OTU == &quot;Streptococcus_dentisani:Streptococcus_infantis:Streptococcus_mitis:Streptococcus_oligofermentans:Streptococcus_oralis:Streptococcus_pneumoniae:Streptococcus_pseudopneumoniae:Streptococcus_sanguinis&quot;] &lt;- &quot;Streptoccus spp.*&quot;
+
+# widen plot.dat for dendro
+dat.wide &lt;- plot.dat %&gt;%
+  dplyr::mutate(
+    ID = paste0(ID, &quot;_&quot;,sample_type)
+  ) %&gt;%
+  dplyr::select(ID, OTU, Abundance) %&gt;%
+  dplyr::group_by(ID, OTU) %&gt;%
+  dplyr::summarise(
+    Abundance = mean(Abundance)
+  ) %&gt;%
+  tidyr::pivot_wider(
+    id_cols = OTU,
+    names_from = ID,
+    values_from = Abundance,
+    values_fill = 0
+  )
+rn &lt;- dat.wide$OTU
+mat &lt;- as.matrix(dat.wide[,-1])
+rownames(mat) &lt;- rn
+
+sample_names &lt;- colnames(mat)
+
+# Obtain the dendrogram
+dend &lt;- as.dendrogram(hclust(dist(mat)))
+dend_data &lt;- dendro_data(dend)
+
+# Setup the data, so that the layout is inverted (this is more 
+# &quot;clear&quot; than simply using coord_flip())
+segment_data &lt;- with(
+  segment(dend_data), 
+  data.frame(x = y, y = x, xend = yend, yend = xend))
+# Use the dendrogram label data to position the gene labels
+gene_pos_table &lt;- with(
+  dend_data$labels, 
+  data.frame(y_center = x, gene = as.character(label), height = 1))
+
+# Table to position the samples
+sample_pos_table &lt;- data.frame(sample = sample_names) %&gt;%
+  dplyr::mutate(x_center = (1:n()), 
+         width = 1)
+
+# Neglecting the gap parameters
+heatmap_data &lt;- mat %&gt;% 
+  reshape2::melt(value.name = &quot;expr&quot;, varnames = c(&quot;gene&quot;, &quot;sample&quot;)) %&gt;%
+  left_join(gene_pos_table) %&gt;%
+  left_join(sample_pos_table)
+
+# extract and rejoin sample IDs and sample_type names for plotting
+# first for the heatmap data.frame
+A &lt;- str_split(heatmap_data$sample, &quot;_&quot;)
+heatmap_data$ID &lt;- heatmap_data$sample_type &lt;- &quot;0&quot;
+for(i in 1:nrow(heatmap_data)){
+  heatmap_data$ID[i] &lt;- A[[i]][1]
+  heatmap_data$sample_type[i] &lt;- A[[i]][2]
+}
+# second for the sample position dataframe (dendo)
+A &lt;- str_split(sample_pos_table$sample, &quot;_&quot;)
+sample_pos_table$ID &lt;- sample_pos_table$sample_type &lt;- &quot;0&quot;
+for(i in 1:nrow(sample_pos_table)){
+  sample_pos_table$ID[i] &lt;- A[[i]][1]
+  sample_pos_table$sample_type[i] &lt;- A[[i]][2]
+}
+
+# Limits for the vertical axes
+gene_axis_limits &lt;- with(
+  gene_pos_table, 
+  c(min(y_center - 0.5 * height), max(y_center + 0.5 * height))
+) + 
+  0.1 * c(-1, 1) # extra spacing: 0.1
+
+## Build Heatmap Pieces
+# by parts
+hmd &lt;- filter(heatmap_data, sample_type == &quot;Barretts Only&quot;)
+hmd$x_center &lt;- as.numeric(as.factor(hmd$x_center))
+spd &lt;- filter(sample_pos_table, sample_type == &quot;Barretts Only&quot;)
+spd$x_center &lt;- as.numeric(as.factor(spd$x_center))
+
+plt_hmap1 &lt;- ggplot(hmd, 
+                   aes(x = x_center, y = y_center, fill = expr, 
+                       height = height, width = width)) + 
+  geom_tile() +
+  #facet_wrap(.~sample_type)+
+  scale_fill_gradient2(&quot;Abundance&quot;,trans=&quot;sqrt&quot;, high = &quot;darkred&quot;, low = &quot;darkblue&quot;, breaks=c(0, 0.10, 0.30, 0.50, 0.80)) +
+  scale_x_continuous(breaks = spd$x_center, 
+                     labels = spd$ID, 
+                     expand = c(0, 0)) + 
+  # For the y axis, alternatively set the labels as: gene_position_table$gene
+  scale_y_continuous(breaks = gene_pos_table[, &quot;y_center&quot;], 
+                     labels = rep(&quot;&quot;, nrow(gene_pos_table)),
+                     limits = gene_axis_limits, 
+                     expand = c(0, 0)) + 
+  labs(x = &quot;BO&quot;, y = NULL) +
+  theme_classic() +
+  theme(axis.text.x = element_text(size = rel(1), hjust = 0.5,vjust=0.5, angle = 90), 
+        # margin: top, right, bottom, and left
+        #axis.ticks.y = element_blank(),
+        plot.margin = unit(c(1, 0.01, 0.01, -0.7), &quot;cm&quot;), 
+        panel.grid = element_blank(),
+        legend.position = &quot;none&quot;)
+
+# Part 2: &quot;EAC-adjacent tissue w/ Barretts History&quot;
+hmd &lt;- filter(heatmap_data, sample_type == &quot;EAC-adjacent tissue w/ Barretts History&quot;)
+hmd$x_center &lt;- as.numeric(as.factor(hmd$x_center))
+spd &lt;- filter(sample_pos_table, sample_type == &quot;EAC-adjacent tissue w/ Barretts History&quot;)
+spd$x_center &lt;- as.numeric(as.factor(spd$x_center))
+
+plt_hmap2 &lt;- ggplot(hmd, 
+                    aes(x = x_center, y = y_center, fill = expr, 
+                        height = height, width = width)) + 
+  geom_tile() +
+  #facet_wrap(.~sample_type)+
+  scale_fill_gradient2(&quot;expr&quot;,trans=&quot;sqrt&quot;, high = &quot;darkred&quot;, low = &quot;darkblue&quot;, breaks=c(0, 0.1, 0.10, 0.30, 0.50, 0.80)) +
+  scale_x_continuous(breaks = spd$x_center, 
+                     labels = spd$ID, 
+                     expand = c(0, 0)) + 
+  # For the y axis, alternatively set the labels as: gene_position_table$gene
+  scale_y_continuous(breaks = gene_pos_table[, &quot;y_center&quot;], 
+                     labels = rep(&quot;&quot;, nrow(gene_pos_table)),
+                     limits = gene_axis_limits, 
+                     expand = c(0, 0)) + 
+  labs(x = &quot;EAC-adj. w/ Barretts&quot;, y = NULL) +
+  theme_classic() +
+  theme(axis.text.x = element_text(size = rel(1), hjust = 0.5,vjust=0.5, angle = 90), 
+        axis.ticks.y = element_blank(),
+        # margin: top, right, bottom, and left
+        plot.margin = unit(c(1, 0.01, 0.01, -0.7), &quot;cm&quot;), 
+        panel.grid.minor = element_blank(),
+        legend.position = &quot;none&quot;)
+
+# Part 3: &quot;EAC tissues w/ Barretts History&quot;
+hmd &lt;- filter(heatmap_data, sample_type == &quot;EAC tissues w/ Barretts History&quot;)
+hmd$x_center &lt;- as.numeric(as.factor(hmd$x_center))
+spd &lt;- filter(sample_pos_table, sample_type == &quot;EAC tissues w/ Barretts History&quot;)
+spd$x_center &lt;- as.numeric(as.factor(spd$x_center))
+
+plt_hmap3 &lt;- ggplot(hmd, 
+                    aes(x = x_center, y = y_center, fill = expr, 
+                        height = height, width = width)) + 
+  geom_tile() +
+  #facet_wrap(.~sample_type)+
+  scale_fill_gradient2(&quot;Abundance&quot;,trans=&quot;sqrt&quot;, high = &quot;darkred&quot;, low = &quot;darkblue&quot;, breaks=c(0, 0.10, 0.30, 0.50, 0.80)) +
+  scale_x_continuous(breaks = spd$x_center, 
+                     labels = spd$ID, 
+                     expand = c(0, 0)) + 
+  # For the y axis, alternatively set the labels as: gene_position_table$gene
+  scale_y_continuous(breaks = gene_pos_table[, &quot;y_center&quot;], 
+                     labels = rep(&quot;&quot;, nrow(gene_pos_table)),
+                     limits = gene_axis_limits, 
+                     expand = c(0, 0)) + 
+  labs(x = &quot;EAC w/ Barretts&quot;, y = NULL) +
+  theme_classic() +
+  theme(axis.text.x = element_text(size = rel(1), hjust = 0.75, vjust=0.5, angle = 90), 
+        axis.ticks.y = element_blank(),
+        # margin: top, right, bottom, and left
+        plot.margin = unit(c(1, 0.01, 0.01, -0.7), &quot;cm&quot;), 
+        panel.grid.minor = element_blank())
+
+
+
+# Dendrogram plot
+plt_dendr &lt;- ggplot(segment_data) + 
+  geom_segment(aes(x = x, y = y, xend = xend, yend = yend)) + 
+  scale_x_reverse(expand = c(0, 0.5)) + 
+  scale_y_continuous(breaks = gene_pos_table$y_center, 
+                     labels = gene_pos_table$gene, 
+                     limits = gene_axis_limits, 
+                     expand = c(0, 0)) + 
+  labs(x = &quot;&quot;, y = &quot;&quot;, colour = &quot;&quot;, size = &quot;&quot;) +
+  theme_classic() + 
+  theme(panel.grid = element_blank(),
+        axis.text.x = element_blank(),
+        axis.ticks.x = element_blank(),
+        plot.margin = unit(c(1, 0.01, 0.01, -0.7), &quot;cm&quot;))
+
+prntRelAbund &lt;- avgRelAbundCutoff*100</code></pre>
+<pre class="r"><code>p &lt;- plt_dendr+plt_hmap1+plt_hmap2+plt_hmap3+ 
+  plot_layout(
+    nrow=1, widths = c(0.5, 0.2, 1, 1),
+    guides=&quot;collect&quot;
+  ) +
+  plot_annotation(
+    title=&quot;NCI-16s Data showing average relative abundance of genera by individual&quot;,
+    subtitle=paste0(&quot;Subset to OTU average relative abundance &gt; &quot;,prntRelAbund,&quot;%&quot;)
+  )
+p</code></pre>
+<p><img src="figure/heatmaps-dendrograms-species-level.Rmd/ht-nci-species-lvl-01-plot-make-1.png" width="150%" height="500px" style="display: block; margin: auto;" /></p>
+<pre class="r"><code>if(save.plots == T){
+  ggsave(paste0(&quot;output/nci-species-lvl-heatmap-01-&quot;,save.Date,&quot;.pdf&quot;), plot=p, units=&quot;in&quot;, width=25, height=7)
+  ggsave(paste0(&quot;output/nci-species-lvl-heatmap-01-&quot;,save.Date,&quot;.png&quot;), plot=p, units=&quot;in&quot;, width=25, height=7)
+}</code></pre>
+</div>
+<div id="specific-otus" class="section level3">
+<h3>Specific OTUs</h3>
+<pre class="r"><code>p &lt;- plt_dendr+plt_hmap1+plt_hmap2+plt_hmap3+ plt_hmap4+
+  plot_layout(
+    nrow=1, widths = c(0.2, 0.2, 1, 1, 1),
+    guides=&quot;collect&quot;
+  ) +
+  plot_annotation(
+    title=&quot;NCI-16s Data showing average relative abundance of specific OTUs by individual&quot;
+  )
+p</code></pre>
+<p><img src="figure/heatmaps-dendrograms-species-level.Rmd/ht-nci-otus-05-plot-make-1.png" width="100%" height="500px" style="display: block; margin: auto;" /></p>
+<pre class="r"><code>if(save.plots == T){
+  ggsave(paste0(&quot;output/nci-specific-otus-heatmap-&quot;,save.Date,&quot;.pdf&quot;), plot=p, units=&quot;in&quot;, width=25, height=5)
+  ggsave(paste0(&quot;output/nci-specific-otus-heatmap-&quot;,save.Date,&quot;.png&quot;), plot=p, units=&quot;in&quot;, width=25, height=5)
+}</code></pre>
+</div>
+</div>
+<div id="species-level---tcga-rnaseq-data" class="section level2">
+<h2>Species Level - TCGA RNAseq Data</h2>
+<p>The heatmaps for slide 6 focus on the TCGA RNAseq data.</p>
+<div id="relative-abudance-cutoff-0.05-1" class="section level3">
+<h3>Relative Abudance Cutoff: 0.05</h3>
+<pre class="r"><code>analysis.dat &lt;- dat.rna %&gt;%
+  dplyr::mutate(OTU = otu2) # insert dataset to be used in analysis
+avgRelAbundCutoff &lt;- 0.05 # minimum average relative abundance for OTUs
+
+
+otu.dat &lt;- analysis.dat %&gt;% filter(sample_type != &quot;0&quot;) %&gt;%
+  dplyr::group_by(OTU) %&gt;%
+  dplyr::summarise(AverageRelativeAbundance=mean(Abundance, na.rm=T))%&gt;%
+  dplyr::filter(AverageRelativeAbundance&gt;=avgRelAbundCutoff) %&gt;%
+  dplyr::arrange(desc(AverageRelativeAbundance))
+
+kable(otu.dat[,c(2,1)], format=&quot;html&quot;, digits=3) %&gt;%
+  kable_styling(full_width = T)%&gt;%
+  scroll_box(width=&quot;100%&quot;, height=&quot;100%&quot;)</code></pre>
+<div style="border: 1px solid #ddd; padding: 0px; overflow-y: scroll; height:100%; overflow-x: scroll; width:100%; ">
+<table class="table" style="margin-left: auto; margin-right: auto;">
+<thead>
+<tr>
+<th style="text-align:right;position: sticky; top:0; background-color: #FFFFFF;">
+AverageRelativeAbundance
+</th>
+<th style="text-align:left;position: sticky; top:0; background-color: #FFFFFF;">
+OTU
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:right;">
+0.426
+</td>
+<td style="text-align:left;">
+Pseudomonas fluorescens group
+</td>
+</tr>
+<tr>
+<td style="text-align:right;">
+0.320
+</td>
+<td style="text-align:left;">
+Pseudomonas sp. UW4
+</td>
+</tr>
+<tr>
+<td style="text-align:right;">
+0.075
+</td>
+<td style="text-align:left;">
+Arthrobacter phenanthrenivorans
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+<pre class="r"><code>plot.dat &lt;- analysis.dat %&gt;% filter(sample_type != &quot;0&quot;) %&gt;%
+  dplyr::group_by(OTU) %&gt;%
+  dplyr::mutate(aveAbund=mean(Abundance, na.rm=T)) %&gt;%
+  dplyr::ungroup() %&gt;%
+  dplyr::filter(aveAbund&gt;=avgRelAbundCutoff) %&gt;%
+  dplyr::mutate(ID = as.factor(Patient_ID),
+                Abundance = ifelse(is.na(Abundance), 0, Abundance)) %&gt;%
+  dplyr::select(sample_type, OTU, ID, Abundance, aveAbund)
+
+
+# widen plot.dat for dendro
+dat.wide &lt;- plot.dat %&gt;%
+  dplyr::mutate(
+    ID = paste0(ID, &quot;_&quot;,sample_type)
+  ) %&gt;%
+  dplyr::select(ID, OTU, Abundance) %&gt;%
+  dplyr::group_by(ID, OTU) %&gt;%
+  dplyr::summarise(
+    Abundance = mean(Abundance)
+  ) %&gt;%
+  tidyr::pivot_wider(
+    id_cols = OTU,
+    names_from = ID,
+    values_from = Abundance,
+    values_fill = 0
+  )
+rn &lt;- dat.wide$OTU
+mat &lt;- as.matrix(dat.wide[,-1])
+rownames(mat) &lt;- rn
+
+sample_names &lt;- colnames(mat)
+
+# Obtain the dendrogram
+dend &lt;- as.dendrogram(hclust(dist(mat)))
+dend_data &lt;- dendro_data(dend)
+
+# Setup the data, so that the layout is inverted (this is more 
+# &quot;clear&quot; than simply using coord_flip())
+segment_data &lt;- with(
+  segment(dend_data), 
+  data.frame(x = y, y = x, xend = yend, yend = xend))
+# Use the dendrogram label data to position the gene labels
+gene_pos_table &lt;- with(
+  dend_data$labels, 
+  data.frame(y_center = x, gene = as.character(label), height = 1))
+
+# Table to position the samples
+sample_pos_table &lt;- data.frame(sample = sample_names) %&gt;%
+  dplyr::mutate(x_center = (1:n()), 
+         width = 1)
+
+# Neglecting the gap parameters
+heatmap_data &lt;- mat %&gt;% 
+  reshape2::melt(value.name = &quot;expr&quot;, varnames = c(&quot;gene&quot;, &quot;sample&quot;)) %&gt;%
+  left_join(gene_pos_table) %&gt;%
+  left_join(sample_pos_table)
+
+# extract and rejoin sample IDs and sample_type names for plotting
+# first for the heatmap data.frame
+A &lt;- str_split(heatmap_data$sample, &quot;_&quot;)
+heatmap_data$ID &lt;- heatmap_data$sample_type &lt;- &quot;0&quot;
+for(i in 1:nrow(heatmap_data)){
+  heatmap_data$ID[i] &lt;- A[[i]][1]
+  heatmap_data$sample_type[i] &lt;- A[[i]][2]
+}
+# second for the sample position dataframe (dendo)
+A &lt;- str_split(sample_pos_table$sample, &quot;_&quot;)
+sample_pos_table$ID &lt;- sample_pos_table$sample_type &lt;- &quot;0&quot;
+for(i in 1:nrow(sample_pos_table)){
+  sample_pos_table$ID[i] &lt;- A[[i]][1]
+  sample_pos_table$sample_type[i] &lt;- A[[i]][2]
+}
+
+# Limits for the vertical axes
+gene_axis_limits &lt;- with(
+  gene_pos_table, 
+  c(min(y_center - 0.5 * height), max(y_center + 0.5 * height))
+) + 
+  0.1 * c(-1, 1) # extra spacing: 0.1
+
+## Build Heatmap Pieces
+# EAC w/ Barrets
+hmd &lt;- filter(heatmap_data, sample_type == &quot;EAC tissues w/ Barretts History&quot;)
+hmd$x_center &lt;- as.numeric(as.factor(hmd$x_center))
+spd &lt;- filter(sample_pos_table, sample_type == &quot;EAC tissues w/ Barretts History&quot;)
+spd$x_center &lt;- as.numeric(as.factor(spd$x_center))
+
+plt_hmap1 &lt;- ggplot(hmd, 
+                   aes(x = x_center, y = y_center, fill = expr, 
+                       height = height, width = width)) + 
+  geom_tile() +
+  #facet_wrap(.~sample_type)+
+  scale_fill_gradient2(&quot;Abundance&quot;,trans=&quot;sqrt&quot;, high = &quot;darkred&quot;, low = &quot;darkblue&quot;, breaks=c(0, 0.10, 0.30, 0.50, 0.80)) +
+  scale_x_continuous(breaks = spd$x_center, 
+                     labels = spd$ID, 
+                     expand = c(0, 0)) + 
+  # For the y axis, alternatively set the labels as: gene_position_table$gene
+  scale_y_continuous(breaks = gene_pos_table[, &quot;y_center&quot;], 
+                     labels = rep(&quot;&quot;, nrow(gene_pos_table)),
+                     limits = gene_axis_limits, 
+                     expand = c(0, 0)) + 
+  labs(x = &quot;EAC w/ Barretts&quot;, y = NULL) +
+  theme_classic() +
+  theme(axis.text.x = element_text(size = rel(1), hjust = 0.5,vjust=0.5, angle = 90), 
+        # margin: top, right, bottom, and left
+        #axis.ticks.y = element_blank(),
+        plot.margin = unit(c(1, 0.01, 0.01, -0.7), &quot;cm&quot;), 
+        panel.grid = element_blank(),
+        legend.position = &quot;none&quot;)
+
+# Part 2: &quot;EAC-adjacent tissue w/ Barretts History&quot;
+hmd &lt;- filter(heatmap_data, sample_type == &quot;EAC-adjacent tissue w/ Barretts History&quot;)
+hmd$x_center &lt;- as.numeric(as.factor(hmd$x_center))
+spd &lt;- filter(sample_pos_table, sample_type == &quot;EAC-adjacent tissue w/ Barretts History&quot;)
+spd$x_center &lt;- as.numeric(as.factor(spd$x_center))
+
+plt_hmap2 &lt;- ggplot(hmd, 
+                    aes(x = x_center, y = y_center, fill = expr, 
+                        height = height, width = width)) + 
+  geom_tile() +
+  #facet_wrap(.~sample_type)+
+  scale_fill_gradient2(&quot;expr&quot;,trans=&quot;sqrt&quot;, high = &quot;darkred&quot;, low = &quot;darkblue&quot;, breaks=c(0, 0.1, 0.10, 0.30, 0.50, 0.80)) +
+  scale_x_continuous(breaks = spd$x_center, 
+                     labels = spd$ID, 
+                     expand = c(0, 0)) + 
+  # For the y axis, alternatively set the labels as: gene_position_table$gene
+  scale_y_continuous(breaks = gene_pos_table[, &quot;y_center&quot;], 
+                     labels = rep(&quot;&quot;, nrow(gene_pos_table)),
+                     limits = gene_axis_limits, 
+                     expand = c(0, 0)) + 
+  labs(x = &quot;EAC-adj. w/ Barretts&quot;, y = NULL) +
+  theme_classic() +
+  theme(axis.text.x = element_text(size = rel(1), hjust = 0.5,vjust=0.5, angle = 90), 
+        axis.ticks.y = element_blank(),
+        # margin: top, right, bottom, and left
+        plot.margin = unit(c(1, 0.01, 0.01, -0.7), &quot;cm&quot;), 
+        panel.grid.minor = element_blank(),
+        legend.position = &quot;none&quot;)
+
+# Part 3: &quot;EAC tissues w/o Barretts History&quot;
+hmd &lt;- filter(heatmap_data, sample_type == &quot;EAC tissues w/o Barretts History&quot;)
+hmd$x_center &lt;- as.numeric(as.factor(hmd$x_center))
+spd &lt;- filter(sample_pos_table, sample_type == &quot;EAC tissues w/o Barretts History&quot;)
+spd$x_center &lt;- as.numeric(as.factor(spd$x_center))
+
+plt_hmap3 &lt;- ggplot(hmd, 
+                    aes(x = x_center, y = y_center, fill = expr, 
+                        height = height, width = width)) + 
+  geom_tile() +
+  #facet_wrap(.~sample_type)+
+  scale_fill_gradient2(&quot;Abundance&quot;,trans=&quot;sqrt&quot;, high = &quot;darkred&quot;, low = &quot;darkblue&quot;, breaks=c(0, 0.10, 0.30, 0.50, 0.80)) +
+  scale_x_continuous(breaks = spd$x_center, 
+                     labels = spd$ID, 
+                     expand = c(0, 0)) + 
+  # For the y axis, alternatively set the labels as: gene_position_table$gene
+  scale_y_continuous(breaks = gene_pos_table[, &quot;y_center&quot;], 
+                     labels = rep(&quot;&quot;, nrow(gene_pos_table)),
+                     limits = gene_axis_limits, 
+                     expand = c(0, 0)) + 
+  labs(x = &quot;EAC w/o Barretts&quot;, y = NULL) +
+  theme_classic() +
+  theme(axis.text.x = element_text(size = rel(1), hjust = 0.75, vjust=0.5, angle = 90), 
+        axis.ticks.y = element_blank(),
+        # margin: top, right, bottom, and left
+        plot.margin = unit(c(1, 0.01, 0.01, -0.7), &quot;cm&quot;), 
+        panel.grid.minor = element_blank())
+
+
+# Dendrogram plot
+plt_dendr &lt;- ggplot(segment_data) + 
+  geom_segment(aes(x = x, y = y, xend = xend, yend = yend)) + 
+  scale_x_reverse(expand = c(0, 0.5)) + 
+  scale_y_continuous(breaks = gene_pos_table$y_center, 
+                     labels = gene_pos_table$gene, 
+                     limits = gene_axis_limits, 
+                     expand = c(0, 0)) + 
+  labs(x = &quot;&quot;, y = &quot;&quot;, colour = &quot;&quot;, size = &quot;&quot;) +
+  theme_classic() + 
+  theme(panel.grid = element_blank(),
+        axis.text.x = element_blank(),
+        axis.ticks.x = element_blank(),
+        plot.margin = unit(c(1, 0.01, 0.01, -0.7), &quot;cm&quot;))
+
+prntRelAbund &lt;- avgRelAbundCutoff*100</code></pre>
+<pre class="r"><code>p &lt;- plt_dendr+plt_hmap1+plt_hmap2+plt_hmap3+ 
+  plot_layout(
+    nrow=1, widths = c(0.2, 0.4, 0.15, 1),
+    guides=&quot;collect&quot;
+  ) +
+  plot_annotation(
+    title=&quot;TCGA RNAseq Data showing average relative abundance of species by individual&quot;,
+    subtitle=paste0(&quot;Subset to OTU average relative abundance &gt; &quot;,prntRelAbund,&quot;%&quot;)
+  )
+p</code></pre>
+<p><img src="figure/heatmaps-dendrograms-species-level.Rmd/ht-tcga-rna-species-lvl-05-plot-make-1.png" width="100%" height="500px" style="display: block; margin: auto;" /></p>
+<pre class="r"><code>if(save.plots == T){
+  ggsave(paste0(&quot;output/tcga-rna-species-lvl-heatmap-05-&quot;,save.Date,&quot;.pdf&quot;), plot=p, units=&quot;in&quot;, width=25, height=5)
+  ggsave(paste0(&quot;output/tcga-rna-species-lvl-heatmap-05-&quot;,save.Date,&quot;.png&quot;), plot=p, units=&quot;in&quot;, width=25, height=5)
+}</code></pre>
+</div>
+<div id="relative-abudance-cutoff-0.01-1" class="section level3">
+<h3>Relative Abudance Cutoff: 0.01</h3>
+<pre class="r"><code>analysis.dat &lt;- dat.rna %&gt;%
+  dplyr::mutate(OTU = otu2) # insert dataset to be used in analysis
+avgRelAbundCutoff &lt;- 0.01 # minimum average relative abundance for OTUs
+
+
+otu.dat &lt;- analysis.dat %&gt;% filter(sample_type != &quot;0&quot;) %&gt;%
+  dplyr::group_by(OTU) %&gt;%
+  dplyr::summarise(AverageRelativeAbundance=mean(Abundance, na.rm=T))%&gt;%
+  dplyr::filter(AverageRelativeAbundance&gt;=avgRelAbundCutoff) %&gt;%
+  dplyr::arrange(desc(AverageRelativeAbundance))
+
+kable(otu.dat[,c(2,1)], format=&quot;html&quot;, digits=3) %&gt;%
+  kable_styling(full_width = T)%&gt;%
+  scroll_box(width=&quot;100%&quot;, height=&quot;100%&quot;)</code></pre>
+<div style="border: 1px solid #ddd; padding: 0px; overflow-y: scroll; height:100%; overflow-x: scroll; width:100%; ">
+<table class="table" style="margin-left: auto; margin-right: auto;">
+<thead>
+<tr>
+<th style="text-align:right;position: sticky; top:0; background-color: #FFFFFF;">
+AverageRelativeAbundance
+</th>
+<th style="text-align:left;position: sticky; top:0; background-color: #FFFFFF;">
+OTU
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:right;">
+0.426
+</td>
+<td style="text-align:left;">
+Pseudomonas fluorescens group
+</td>
+</tr>
+<tr>
+<td style="text-align:right;">
+0.320
+</td>
+<td style="text-align:left;">
+Pseudomonas sp. UW4
+</td>
+</tr>
+<tr>
+<td style="text-align:right;">
+0.075
+</td>
+<td style="text-align:left;">
+Arthrobacter phenanthrenivorans
+</td>
+</tr>
+<tr>
+<td style="text-align:right;">
+0.041
+</td>
+<td style="text-align:left;">
+Pseudomonas sp. UK4
+</td>
+</tr>
+<tr>
+<td style="text-align:right;">
+0.029
+</td>
+<td style="text-align:left;">
+Bradyrhizobium sp. BTAi1
+</td>
+</tr>
+<tr>
+<td style="text-align:right;">
+0.027
+</td>
+<td style="text-align:left;">
+Pseudomonas putida group
+</td>
+</tr>
+<tr>
+<td style="text-align:right;">
+0.011
+</td>
+<td style="text-align:left;">
+Bacillus cereus group
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+<pre class="r"><code>plot.dat &lt;- analysis.dat %&gt;% filter(sample_type != &quot;0&quot;) %&gt;%
+  dplyr::group_by(OTU) %&gt;%
+  dplyr::mutate(aveAbund=mean(Abundance, na.rm=T)) %&gt;%
+  dplyr::ungroup() %&gt;%
+  dplyr::filter(aveAbund&gt;=avgRelAbundCutoff) %&gt;%
+  dplyr::mutate(ID = as.factor(Patient_ID),
+                Abundance = ifelse(is.na(Abundance), 0, Abundance)) %&gt;%
+  dplyr::select(sample_type, OTU, ID, Abundance, aveAbund)
+
+
+# widen plot.dat for dendro
+dat.wide &lt;- plot.dat %&gt;%
+  dplyr::mutate(
+    ID = paste0(ID, &quot;_&quot;,sample_type)
+  ) %&gt;%
+  dplyr::select(ID, OTU, Abundance) %&gt;%
+  dplyr::group_by(ID, OTU) %&gt;%
+  dplyr::summarise(
+    Abundance = mean(Abundance)
+  ) %&gt;%
+  tidyr::pivot_wider(
+    id_cols = OTU,
+    names_from = ID,
+    values_from = Abundance,
+    values_fill = 0
+  )
+rn &lt;- dat.wide$OTU
+mat &lt;- as.matrix(dat.wide[,-1])
+rownames(mat) &lt;- rn
+
+sample_names &lt;- colnames(mat)
+
+# Obtain the dendrogram
+dend &lt;- as.dendrogram(hclust(dist(mat)))
+dend_data &lt;- dendro_data(dend)
+
+# Setup the data, so that the layout is inverted (this is more 
+# &quot;clear&quot; than simply using coord_flip())
+segment_data &lt;- with(
+  segment(dend_data), 
+  data.frame(x = y, y = x, xend = yend, yend = xend))
+# Use the dendrogram label data to position the gene labels
+gene_pos_table &lt;- with(
+  dend_data$labels, 
+  data.frame(y_center = x, gene = as.character(label), height = 1))
+
+# Table to position the samples
+sample_pos_table &lt;- data.frame(sample = sample_names) %&gt;%
+  dplyr::mutate(x_center = (1:n()), 
+         width = 1)
+
+# Neglecting the gap parameters
+heatmap_data &lt;- mat %&gt;% 
+  reshape2::melt(value.name = &quot;expr&quot;, varnames = c(&quot;gene&quot;, &quot;sample&quot;)) %&gt;%
+  left_join(gene_pos_table) %&gt;%
+  left_join(sample_pos_table)
+
+# extract and rejoin sample IDs and sample_type names for plotting
+# first for the heatmap data.frame
+A &lt;- str_split(heatmap_data$sample, &quot;_&quot;)
+heatmap_data$ID &lt;- heatmap_data$sample_type &lt;- &quot;0&quot;
+for(i in 1:nrow(heatmap_data)){
+  heatmap_data$ID[i] &lt;- A[[i]][1]
+  heatmap_data$sample_type[i] &lt;- A[[i]][2]
+}
+# second for the sample position dataframe (dendo)
+A &lt;- str_split(sample_pos_table$sample, &quot;_&quot;)
+sample_pos_table$ID &lt;- sample_pos_table$sample_type &lt;- &quot;0&quot;
+for(i in 1:nrow(sample_pos_table)){
+  sample_pos_table$ID[i] &lt;- A[[i]][1]
+  sample_pos_table$sample_type[i] &lt;- A[[i]][2]
+}
+
+# Limits for the vertical axes
+gene_axis_limits &lt;- with(
+  gene_pos_table, 
+  c(min(y_center - 0.5 * height), max(y_center + 0.5 * height))
+) + 
+  0.1 * c(-1, 1) # extra spacing: 0.1
+
+## Build Heatmap Pieces
+# EAC w/ Barrets
+hmd &lt;- filter(heatmap_data, sample_type == &quot;EAC tissues w/ Barretts History&quot;)
+hmd$x_center &lt;- as.numeric(as.factor(hmd$x_center))
+spd &lt;- filter(sample_pos_table, sample_type == &quot;EAC tissues w/ Barretts History&quot;)
+spd$x_center &lt;- as.numeric(as.factor(spd$x_center))
+
+plt_hmap1 &lt;- ggplot(hmd, 
+                   aes(x = x_center, y = y_center, fill = expr, 
+                       height = height, width = width)) + 
+  geom_tile() +
+  #facet_wrap(.~sample_type)+
+  scale_fill_gradient2(&quot;Abundance&quot;,trans=&quot;sqrt&quot;, high = &quot;darkred&quot;, low = &quot;darkblue&quot;, breaks=c(0, 0.10, 0.30, 0.50, 0.80)) +
+  scale_x_continuous(breaks = spd$x_center, 
+                     labels = spd$ID, 
+                     expand = c(0, 0)) + 
+  # For the y axis, alternatively set the labels as: gene_position_table$gene
+  scale_y_continuous(breaks = gene_pos_table[, &quot;y_center&quot;], 
+                     labels = rep(&quot;&quot;, nrow(gene_pos_table)),
+                     limits = gene_axis_limits, 
+                     expand = c(0, 0)) + 
+  labs(x = &quot;EAC w/ Barretts&quot;, y = NULL) +
+  theme_classic() +
+  theme(axis.text.x = element_text(size = rel(1), hjust = 0.5,vjust=0.5, angle = 90), 
+        # margin: top, right, bottom, and left
+        #axis.ticks.y = element_blank(),
+        plot.margin = unit(c(1, 0.01, 0.01, -0.7), &quot;cm&quot;), 
+        panel.grid = element_blank(),
+        legend.position = &quot;none&quot;)
+
+# Part 2: &quot;EAC-adjacent tissue w/ Barretts History&quot;
+hmd &lt;- filter(heatmap_data, sample_type == &quot;EAC-adjacent tissue w/ Barretts History&quot;)
+hmd$x_center &lt;- as.numeric(as.factor(hmd$x_center))
+spd &lt;- filter(sample_pos_table, sample_type == &quot;EAC-adjacent tissue w/ Barretts History&quot;)
+spd$x_center &lt;- as.numeric(as.factor(spd$x_center))
+
+plt_hmap2 &lt;- ggplot(hmd, 
+                    aes(x = x_center, y = y_center, fill = expr, 
+                        height = height, width = width)) + 
+  geom_tile() +
+  #facet_wrap(.~sample_type)+
+  scale_fill_gradient2(&quot;expr&quot;,trans=&quot;sqrt&quot;, high = &quot;darkred&quot;, low = &quot;darkblue&quot;, breaks=c(0, 0.1, 0.10, 0.30, 0.50, 0.80)) +
+  scale_x_continuous(breaks = spd$x_center, 
+                     labels = spd$ID, 
+                     expand = c(0, 0)) + 
+  # For the y axis, alternatively set the labels as: gene_position_table$gene
+  scale_y_continuous(breaks = gene_pos_table[, &quot;y_center&quot;], 
+                     labels = rep(&quot;&quot;, nrow(gene_pos_table)),
+                     limits = gene_axis_limits, 
+                     expand = c(0, 0)) + 
+  labs(x = &quot;EAC-adj. w/ Barretts&quot;, y = NULL) +
+  theme_classic() +
+  theme(axis.text.x = element_text(size = rel(1), hjust = 0.5,vjust=0.5, angle = 90), 
+        axis.ticks.y = element_blank(),
+        # margin: top, right, bottom, and left
+        plot.margin = unit(c(1, 0.01, 0.01, -0.7), &quot;cm&quot;), 
+        panel.grid.minor = element_blank(),
+        legend.position = &quot;none&quot;)
+
+# Part 3: &quot;EAC tissues w/o Barretts History&quot;
+hmd &lt;- filter(heatmap_data, sample_type == &quot;EAC tissues w/o Barretts History&quot;)
+hmd$x_center &lt;- as.numeric(as.factor(hmd$x_center))
+spd &lt;- filter(sample_pos_table, sample_type == &quot;EAC tissues w/o Barretts History&quot;)
+spd$x_center &lt;- as.numeric(as.factor(spd$x_center))
+
+plt_hmap3 &lt;- ggplot(hmd, 
+                    aes(x = x_center, y = y_center, fill = expr, 
+                        height = height, width = width)) + 
+  geom_tile() +
+  #facet_wrap(.~sample_type)+
+  scale_fill_gradient2(&quot;Abundance&quot;,trans=&quot;sqrt&quot;, high = &quot;darkred&quot;, low = &quot;darkblue&quot;, breaks=c(0, 0.10, 0.30, 0.50, 0.80)) +
+  scale_x_continuous(breaks = spd$x_center, 
+                     labels = spd$ID, 
+                     expand = c(0, 0)) + 
+  # For the y axis, alternatively set the labels as: gene_position_table$gene
+  scale_y_continuous(breaks = gene_pos_table[, &quot;y_center&quot;], 
+                     labels = rep(&quot;&quot;, nrow(gene_pos_table)),
+                     limits = gene_axis_limits, 
+                     expand = c(0, 0)) + 
+  labs(x = &quot;EAC w/o Barretts&quot;, y = NULL) +
+  theme_classic() +
+  theme(axis.text.x = element_text(size = rel(1), hjust = 0.75, vjust=0.5, angle = 90), 
+        axis.ticks.y = element_blank(),
+        # margin: top, right, bottom, and left
+        plot.margin = unit(c(1, 0.01, 0.01, -0.7), &quot;cm&quot;), 
+        panel.grid.minor = element_blank())
+
+
+# Dendrogram plot
+plt_dendr &lt;- ggplot(segment_data) + 
+  geom_segment(aes(x = x, y = y, xend = xend, yend = yend)) + 
+  scale_x_reverse(expand = c(0, 0.5)) + 
+  scale_y_continuous(breaks = gene_pos_table$y_center, 
+                     labels = gene_pos_table$gene, 
+                     limits = gene_axis_limits, 
+                     expand = c(0, 0)) + 
+  labs(x = &quot;&quot;, y = &quot;&quot;, colour = &quot;&quot;, size = &quot;&quot;) +
+  theme_classic() + 
+  theme(panel.grid = element_blank(),
+        axis.text.x = element_blank(),
+        axis.ticks.x = element_blank(),
+        plot.margin = unit(c(1, 0.01, 0.01, -0.7), &quot;cm&quot;))
+
+prntRelAbund &lt;- avgRelAbundCutoff*100</code></pre>
+<pre class="r"><code>p &lt;- plt_dendr+plt_hmap1+plt_hmap2+plt_hmap3+ 
+  plot_layout(
+    nrow=1, widths = c(0.2, 0.4, 0.15, 1),
+    guides=&quot;collect&quot;
+  ) +
+  plot_annotation(
+    title=&quot;TCGA RNAseq Data showing average relative abundance of species by individual&quot;,
+    subtitle=paste0(&quot;Subset to OTU average relative abundance &gt; &quot;,prntRelAbund,&quot;%&quot;)
+  )
+p</code></pre>
+<p><img src="figure/heatmaps-dendrograms-species-level.Rmd/ht-tcga-rna-species-lvl-01-plot-make-1.png" width="100%" height="500px" style="display: block; margin: auto;" /></p>
+<pre class="r"><code>if(save.plots == T){
+  ggsave(paste0(&quot;output/tcga-rna-species-lvl-heatmap-01-&quot;,save.Date,&quot;.pdf&quot;), plot=p, units=&quot;in&quot;, width=25, height=5)
+  ggsave(paste0(&quot;output/tcga-rna-species-lvl-heatmap-01-&quot;,save.Date,&quot;.png&quot;), plot=p, units=&quot;in&quot;, width=25, height=5)
+}</code></pre>
+</div>
+<div id="relative-abudance-cutoff-0.001" class="section level3">
+<h3>Relative Abudance Cutoff: 0.001</h3>
+<pre class="r"><code>analysis.dat &lt;- dat.rna %&gt;%
+  dplyr::mutate(OTU = otu2) # insert dataset to be used in analysis
+avgRelAbundCutoff &lt;- 0.001 # minimum average relative abundance for OTUs
+
+
+otu.dat &lt;- analysis.dat %&gt;% filter(sample_type != &quot;0&quot;) %&gt;%
+  dplyr::group_by(OTU) %&gt;%
+  dplyr::summarise(AverageRelativeAbundance=mean(Abundance, na.rm=T))%&gt;%
+  dplyr::filter(AverageRelativeAbundance&gt;=avgRelAbundCutoff) %&gt;%
+  dplyr::arrange(desc(AverageRelativeAbundance))
+
+kable(otu.dat[,c(2,1)], format=&quot;html&quot;, digits=3) %&gt;%
+  kable_styling(full_width = T)%&gt;%
+  scroll_box(width=&quot;100%&quot;, height=&quot;100%&quot;)</code></pre>
+<div style="border: 1px solid #ddd; padding: 0px; overflow-y: scroll; height:100%; overflow-x: scroll; width:100%; ">
+<table class="table" style="margin-left: auto; margin-right: auto;">
+<thead>
+<tr>
+<th style="text-align:right;position: sticky; top:0; background-color: #FFFFFF;">
+AverageRelativeAbundance
+</th>
+<th style="text-align:left;position: sticky; top:0; background-color: #FFFFFF;">
+OTU
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:right;">
+0.426
+</td>
+<td style="text-align:left;">
+Pseudomonas fluorescens group
+</td>
+</tr>
+<tr>
+<td style="text-align:right;">
+0.320
+</td>
+<td style="text-align:left;">
+Pseudomonas sp. UW4
+</td>
+</tr>
+<tr>
+<td style="text-align:right;">
+0.075
+</td>
+<td style="text-align:left;">
+Arthrobacter phenanthrenivorans
+</td>
+</tr>
+<tr>
+<td style="text-align:right;">
+0.041
+</td>
+<td style="text-align:left;">
+Pseudomonas sp. UK4
+</td>
+</tr>
+<tr>
+<td style="text-align:right;">
+0.029
+</td>
+<td style="text-align:left;">
+Bradyrhizobium sp. BTAi1
+</td>
+</tr>
+<tr>
+<td style="text-align:right;">
+0.027
+</td>
+<td style="text-align:left;">
+Pseudomonas putida group
+</td>
+</tr>
+<tr>
+<td style="text-align:right;">
+0.011
+</td>
+<td style="text-align:left;">
+Bacillus cereus group
+</td>
+</tr>
+<tr>
+<td style="text-align:right;">
+0.009
+</td>
+<td style="text-align:left;">
+Propionibacterium acnes
+</td>
+</tr>
+<tr>
+<td style="text-align:right;">
+0.006
+</td>
+<td style="text-align:left;">
+Escherichia coli
+</td>
+</tr>
+<tr>
+<td style="text-align:right;">
+0.004
+</td>
+<td style="text-align:left;">
+Arthrobacter sp. FB24
+</td>
+</tr>
+<tr>
+<td style="text-align:right;">
+0.004
+</td>
+<td style="text-align:left;">
+Bacillus megaterium
+</td>
+</tr>
+<tr>
+<td style="text-align:right;">
+0.003
+</td>
+<td style="text-align:left;">
+Haemophilus influenzae
+</td>
+</tr>
+<tr>
+<td style="text-align:right;">
+0.003
+</td>
+<td style="text-align:left;">
+Pseudomonas aeruginosa group
+</td>
+</tr>
+<tr>
+<td style="text-align:right;">
+0.003
+</td>
+<td style="text-align:left;">
+Pseudomonas brassicacearum
+</td>
+</tr>
+<tr>
+<td style="text-align:right;">
+0.002
+</td>
+<td style="text-align:left;">
+Enterobacter cloacae complex
+</td>
+</tr>
+<tr>
+<td style="text-align:right;">
+0.001
+</td>
+<td style="text-align:left;">
+Psychrobacter sp. PRwf-1
+</td>
+</tr>
+<tr>
+<td style="text-align:right;">
+0.001
+</td>
+<td style="text-align:left;">
+Enterococcus faecalis
+</td>
+</tr>
+<tr>
+<td style="text-align:right;">
+0.001
+</td>
+<td style="text-align:left;">
+Arthrobacter chlorophenolicus
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+<pre class="r"><code>plot.dat &lt;- analysis.dat %&gt;% filter(sample_type != &quot;0&quot;) %&gt;%
+  dplyr::group_by(OTU) %&gt;%
+  dplyr::mutate(aveAbund=mean(Abundance, na.rm=T)) %&gt;%
+  dplyr::ungroup() %&gt;%
+  dplyr::filter(aveAbund&gt;=avgRelAbundCutoff) %&gt;%
+  dplyr::mutate(ID = as.factor(Patient_ID),
+                Abundance = ifelse(is.na(Abundance), 0, Abundance)) %&gt;%
+  dplyr::select(sample_type, OTU, ID, Abundance, aveAbund)
+
+
+# widen plot.dat for dendro
+dat.wide &lt;- plot.dat %&gt;%
+  dplyr::mutate(
+    ID = paste0(ID, &quot;_&quot;,sample_type)
+  ) %&gt;%
+  dplyr::select(ID, OTU, Abundance) %&gt;%
+  dplyr::group_by(ID, OTU) %&gt;%
+  dplyr::summarise(
+    Abundance = mean(Abundance)
+  ) %&gt;%
+  tidyr::pivot_wider(
+    id_cols = OTU,
+    names_from = ID,
+    values_from = Abundance,
+    values_fill = 0
+  )
+rn &lt;- dat.wide$OTU
+mat &lt;- as.matrix(dat.wide[,-1])
+rownames(mat) &lt;- rn
+
+sample_names &lt;- colnames(mat)
+
+# Obtain the dendrogram
+dend &lt;- as.dendrogram(hclust(dist(mat)))
+dend_data &lt;- dendro_data(dend)
+
+# Setup the data, so that the layout is inverted (this is more 
+# &quot;clear&quot; than simply using coord_flip())
+segment_data &lt;- with(
+  segment(dend_data), 
+  data.frame(x = y, y = x, xend = yend, yend = xend))
+# Use the dendrogram label data to position the gene labels
+gene_pos_table &lt;- with(
+  dend_data$labels, 
+  data.frame(y_center = x, gene = as.character(label), height = 1))
+
+# Table to position the samples
+sample_pos_table &lt;- data.frame(sample = sample_names) %&gt;%
+  dplyr::mutate(x_center = (1:n()), 
+         width = 1)
+
+# Neglecting the gap parameters
+heatmap_data &lt;- mat %&gt;% 
+  reshape2::melt(value.name = &quot;expr&quot;, varnames = c(&quot;gene&quot;, &quot;sample&quot;)) %&gt;%
+  left_join(gene_pos_table) %&gt;%
+  left_join(sample_pos_table)
+
+# extract and rejoin sample IDs and sample_type names for plotting
+# first for the heatmap data.frame
+A &lt;- str_split(heatmap_data$sample, &quot;_&quot;)
+heatmap_data$ID &lt;- heatmap_data$sample_type &lt;- &quot;0&quot;
+for(i in 1:nrow(heatmap_data)){
+  heatmap_data$ID[i] &lt;- A[[i]][1]
+  heatmap_data$sample_type[i] &lt;- A[[i]][2]
+}
+# second for the sample position dataframe (dendo)
+A &lt;- str_split(sample_pos_table$sample, &quot;_&quot;)
+sample_pos_table$ID &lt;- sample_pos_table$sample_type &lt;- &quot;0&quot;
+for(i in 1:nrow(sample_pos_table)){
+  sample_pos_table$ID[i] &lt;- A[[i]][1]
+  sample_pos_table$sample_type[i] &lt;- A[[i]][2]
+}
+
+# Limits for the vertical axes
+gene_axis_limits &lt;- with(
+  gene_pos_table, 
+  c(min(y_center - 0.5 * height), max(y_center + 0.5 * height))
+) + 
+  0.1 * c(-1, 1) # extra spacing: 0.1
+
+## Build Heatmap Pieces
+# EAC w/ Barrets
+hmd &lt;- filter(heatmap_data, sample_type == &quot;EAC tissues w/ Barretts History&quot;)
+hmd$x_center &lt;- as.numeric(as.factor(hmd$x_center))
+spd &lt;- filter(sample_pos_table, sample_type == &quot;EAC tissues w/ Barretts History&quot;)
+spd$x_center &lt;- as.numeric(as.factor(spd$x_center))
+
+plt_hmap1 &lt;- ggplot(hmd, 
+                   aes(x = x_center, y = y_center, fill = expr, 
+                       height = height, width = width)) + 
+  geom_tile() +
+  #facet_wrap(.~sample_type)+
+  scale_fill_gradient2(&quot;Abundance&quot;,trans=&quot;sqrt&quot;, high = &quot;darkred&quot;, low = &quot;darkblue&quot;, breaks=c(0, 0.10, 0.30, 0.50, 0.80)) +
+  scale_x_continuous(breaks = spd$x_center, 
+                     labels = spd$ID, 
+                     expand = c(0, 0)) + 
+  # For the y axis, alternatively set the labels as: gene_position_table$gene
+  scale_y_continuous(breaks = gene_pos_table[, &quot;y_center&quot;], 
+                     labels = rep(&quot;&quot;, nrow(gene_pos_table)),
+                     limits = gene_axis_limits, 
+                     expand = c(0, 0)) + 
+  labs(x = &quot;EAC w/ Barretts&quot;, y = NULL) +
+  theme_classic() +
+  theme(axis.text.x = element_text(size = rel(1), hjust = 0.5,vjust=0.5, angle = 90), 
+        # margin: top, right, bottom, and left
+        #axis.ticks.y = element_blank(),
+        plot.margin = unit(c(1, 0.01, 0.01, -0.7), &quot;cm&quot;), 
+        panel.grid = element_blank(),
+        legend.position = &quot;none&quot;)
+
+# Part 2: &quot;EAC-adjacent tissue w/ Barretts History&quot;
+hmd &lt;- filter(heatmap_data, sample_type == &quot;EAC-adjacent tissue w/ Barretts History&quot;)
+hmd$x_center &lt;- as.numeric(as.factor(hmd$x_center))
+spd &lt;- filter(sample_pos_table, sample_type == &quot;EAC-adjacent tissue w/ Barretts History&quot;)
+spd$x_center &lt;- as.numeric(as.factor(spd$x_center))
+
+plt_hmap2 &lt;- ggplot(hmd, 
+                    aes(x = x_center, y = y_center, fill = expr, 
+                        height = height, width = width)) + 
+  geom_tile() +
+  #facet_wrap(.~sample_type)+
+  scale_fill_gradient2(&quot;expr&quot;,trans=&quot;sqrt&quot;, high = &quot;darkred&quot;, low = &quot;darkblue&quot;, breaks=c(0, 0.1, 0.10, 0.30, 0.50, 0.80)) +
+  scale_x_continuous(breaks = spd$x_center, 
+                     labels = spd$ID, 
+                     expand = c(0, 0)) + 
+  # For the y axis, alternatively set the labels as: gene_position_table$gene
+  scale_y_continuous(breaks = gene_pos_table[, &quot;y_center&quot;], 
+                     labels = rep(&quot;&quot;, nrow(gene_pos_table)),
+                     limits = gene_axis_limits, 
+                     expand = c(0, 0)) + 
+  labs(x = &quot;EAC-adj. w/ Barretts&quot;, y = NULL) +
+  theme_classic() +
+  theme(axis.text.x = element_text(size = rel(1), hjust = 0.5,vjust=0.5, angle = 90), 
+        axis.ticks.y = element_blank(),
+        # margin: top, right, bottom, and left
+        plot.margin = unit(c(1, 0.01, 0.01, -0.7), &quot;cm&quot;), 
+        panel.grid.minor = element_blank(),
+        legend.position = &quot;none&quot;)
+
+# Part 3: &quot;EAC tissues w/o Barretts History&quot;
+hmd &lt;- filter(heatmap_data, sample_type == &quot;EAC tissues w/o Barretts History&quot;)
+hmd$x_center &lt;- as.numeric(as.factor(hmd$x_center))
+spd &lt;- filter(sample_pos_table, sample_type == &quot;EAC tissues w/o Barretts History&quot;)
+spd$x_center &lt;- as.numeric(as.factor(spd$x_center))
+
+plt_hmap3 &lt;- ggplot(hmd, 
+                    aes(x = x_center, y = y_center, fill = expr, 
+                        height = height, width = width)) + 
+  geom_tile() +
+  #facet_wrap(.~sample_type)+
+  scale_fill_gradient2(&quot;Abundance&quot;,trans=&quot;sqrt&quot;, high = &quot;darkred&quot;, low = &quot;darkblue&quot;, breaks=c(0, 0.10, 0.30, 0.50, 0.80)) +
+  scale_x_continuous(breaks = spd$x_center, 
+                     labels = spd$ID, 
+                     expand = c(0, 0)) + 
+  # For the y axis, alternatively set the labels as: gene_position_table$gene
+  scale_y_continuous(breaks = gene_pos_table[, &quot;y_center&quot;], 
+                     labels = rep(&quot;&quot;, nrow(gene_pos_table)),
+                     limits = gene_axis_limits, 
+                     expand = c(0, 0)) + 
+  labs(x = &quot;EAC w/o Barretts&quot;, y = NULL) +
+  theme_classic() +
+  theme(axis.text.x = element_text(size = rel(1), hjust = 0.75, vjust=0.5, angle = 90), 
+        axis.ticks.y = element_blank(),
+        # margin: top, right, bottom, and left
+        plot.margin = unit(c(1, 0.01, 0.01, -0.7), &quot;cm&quot;), 
+        panel.grid.minor = element_blank())
+
+
+# Dendrogram plot
+plt_dendr &lt;- ggplot(segment_data) + 
+  geom_segment(aes(x = x, y = y, xend = xend, yend = yend)) + 
+  scale_x_reverse(expand = c(0, 0.5)) + 
+  scale_y_continuous(breaks = gene_pos_table$y_center, 
+                     labels = gene_pos_table$gene, 
+                     limits = gene_axis_limits, 
+                     expand = c(0, 0)) + 
+  labs(x = &quot;&quot;, y = &quot;&quot;, colour = &quot;&quot;, size = &quot;&quot;) +
+  theme_classic() + 
+  theme(panel.grid = element_blank(),
+        axis.text.x = element_blank(),
+        axis.ticks.x = element_blank(),
+        plot.margin = unit(c(1, 0.01, 0.01, -0.7), &quot;cm&quot;))
+
+prntRelAbund &lt;- avgRelAbundCutoff*100</code></pre>
+<pre class="r"><code>p &lt;- plt_dendr+plt_hmap1+plt_hmap2+plt_hmap3+ 
+  plot_layout(
+    nrow=1, widths = c(0.5, 0.4, 0.15, 1),
+    guides=&quot;collect&quot;
+  ) +
+  plot_annotation(
+    title=&quot;TCGA RNAseq Data showing average relative abundance of species by individual&quot;,
+    subtitle=paste0(&quot;Subset to OTU average relative abundance &gt; &quot;,prntRelAbund,&quot;%&quot;)
+  )
+p</code></pre>
+<p><img src="figure/heatmaps-dendrograms-species-level.Rmd/ht-tcga-rna-species-lvl-001-plot-make-1.png" width="100%" height="500px" style="display: block; margin: auto;" /></p>
+<pre class="r"><code>if(save.plots == T){
+  ggsave(paste0(&quot;output/tcga-rna-species-lvl-heatmap-001-&quot;,save.Date,&quot;.pdf&quot;), plot=p, units=&quot;in&quot;, width=25, height=5)
+  ggsave(paste0(&quot;output/tcga-rna-species-lvl-heatmap-001-&quot;,save.Date,&quot;.png&quot;), plot=p, units=&quot;in&quot;, width=25, height=5)
+}</code></pre>
+</div>
+<div id="specific-otus-1" class="section level3">
+<h3>Specific OTUs</h3>
+<p>The heatmaps for slide 9 focus on the TCGA RNAseq data. The difference here is we focus on 4 OTUs.</p>
+<pre class="r"><code>p &lt;- plt_dendr+plt_hmap1+plt_hmap2+plt_hmap3+ 
+  plot_layout(
+    nrow=1, widths = c(0.2, 0.4, 0.15, 1),
+    guides=&quot;collect&quot;
+  ) +
+  plot_annotation(
+    title=&quot;TCGA RNAseq Data showing average relative abundance of specific OTUs by individual&quot;
+  )
+p</code></pre>
+<p><img src="figure/heatmaps-dendrograms-species-level.Rmd/ht-tcga-rna-otus-05-plot-make-1.png" width="100%" height="500px" style="display: block; margin: auto;" /></p>
+<pre class="r"><code>if(save.plots == T){
+  ggsave(paste0(&quot;output/tcga-rna-specific-otus-heatmap-&quot;,save.Date,&quot;.pdf&quot;), plot=p, units=&quot;in&quot;, width=25, height=5)
+  ggsave(paste0(&quot;output/tcga-rna-specific-otus-heatmap-&quot;,save.Date,&quot;.png&quot;), plot=p, units=&quot;in&quot;, width=25, height=5)
+}</code></pre>
+</div>
+</div>
+<div id="sepcies-level---tcga-wgs-data" class="section level2">
+<h2>Sepcies Level - TCGA WGS Data</h2>
+<p>The heatmaps for slide7 focus on the TCGA WGS data.</p>
+<div id="relative-abudance-cutoff-0.05-2" class="section level3">
+<h3>Relative Abudance Cutoff: 0.05</h3>
+<pre class="r"><code>analysis.dat &lt;- dat.wgs %&gt;%
+  dplyr::mutate(OTU = otu2) # insert dataset to be used in analysis
+avgRelAbundCutoff &lt;- 0.05 # minimum average relative abundance for OTUs
+
+
+otu.dat &lt;- analysis.dat %&gt;% filter(sample_type != &quot;0&quot;) %&gt;%
+  dplyr::group_by(OTU) %&gt;%
+  dplyr::summarise(AverageRelativeAbundance=mean(Abundance, na.rm=T))%&gt;%
+  dplyr::filter(AverageRelativeAbundance&gt;=avgRelAbundCutoff) %&gt;%
+  dplyr::arrange(desc(AverageRelativeAbundance))
+
+kable(otu.dat[,c(2,1)], format=&quot;html&quot;, digits=3) %&gt;%
+  kable_styling(full_width = T)%&gt;%
+  scroll_box(width=&quot;100%&quot;, height=&quot;100%&quot;)</code></pre>
+<div style="border: 1px solid #ddd; padding: 0px; overflow-y: scroll; height:100%; overflow-x: scroll; width:100%; ">
+<table class="table" style="margin-left: auto; margin-right: auto;">
+<thead>
+<tr>
+<th style="text-align:right;position: sticky; top:0; background-color: #FFFFFF;">
+AverageRelativeAbundance
+</th>
+<th style="text-align:left;position: sticky; top:0; background-color: #FFFFFF;">
+OTU
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:right;">
+0.465
+</td>
+<td style="text-align:left;">
+Coprobacillus sp. D7
+</td>
+</tr>
+<tr>
+<td style="text-align:right;">
+0.106
+</td>
+<td style="text-align:left;">
+Propionibacterium acnes
+</td>
+</tr>
+<tr>
+<td style="text-align:right;">
+0.074
+</td>
+<td style="text-align:left;">
+Haemophilus influenzae
+</td>
+</tr>
+<tr>
+<td style="text-align:right;">
+0.057
+</td>
+<td style="text-align:left;">
+Prevotella melaninogenica
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+<pre class="r"><code>plot.dat &lt;- analysis.dat %&gt;% filter(sample_type != &quot;0&quot;) %&gt;%
+  dplyr::group_by(OTU) %&gt;%
+  dplyr::mutate(aveAbund=mean(Abundance, na.rm=T)) %&gt;%
+  dplyr::ungroup() %&gt;%
+  dplyr::filter(aveAbund&gt;=avgRelAbundCutoff) %&gt;%
+  dplyr::mutate(ID = as.factor(Patient_ID),
+                Abundance = ifelse(is.na(Abundance), 0, Abundance)) %&gt;%
+  dplyr::select(sample_type, OTU, ID, Abundance, aveAbund)
+
+
+# widen plot.dat for dendro
+dat.wide &lt;- plot.dat %&gt;%
+  dplyr::mutate(
+    ID = paste0(ID, &quot;_&quot;,sample_type)
+  ) %&gt;%
+  dplyr::select(ID, OTU, Abundance) %&gt;%
+  dplyr::group_by(ID, OTU) %&gt;%
+  dplyr::summarise(
+    Abundance = mean(Abundance)
+  ) %&gt;%
+  tidyr::pivot_wider(
+    id_cols = OTU,
+    names_from = ID,
+    values_from = Abundance,
+    values_fill = 0
+  )
+rn &lt;- dat.wide$OTU
+mat &lt;- as.matrix(dat.wide[,-1])
+rownames(mat) &lt;- rn
+
+sample_names &lt;- colnames(mat)
+
+# Obtain the dendrogram
+dend &lt;- as.dendrogram(hclust(dist(mat)))
+dend_data &lt;- dendro_data(dend)
+
+# Setup the data, so that the layout is inverted (this is more 
+# &quot;clear&quot; than simply using coord_flip())
+segment_data &lt;- with(
+  segment(dend_data), 
+  data.frame(x = y, y = x, xend = yend, yend = xend))
+# Use the dendrogram label data to position the gene labels
+gene_pos_table &lt;- with(
+  dend_data$labels, 
+  data.frame(y_center = x, gene = as.character(label), height = 1))
+
+# Table to position the samples
+sample_pos_table &lt;- data.frame(sample = sample_names) %&gt;%
+  dplyr::mutate(x_center = (1:n()), 
+         width = 1)
+
+# Neglecting the gap parameters
+heatmap_data &lt;- mat %&gt;% 
+  reshape2::melt(value.name = &quot;expr&quot;, varnames = c(&quot;gene&quot;, &quot;sample&quot;)) %&gt;%
+  left_join(gene_pos_table) %&gt;%
+  left_join(sample_pos_table)
+
+# extract and rejoin sample IDs and sample_type names for plotting
+# first for the heatmap data.frame
+A &lt;- str_split(heatmap_data$sample, &quot;_&quot;)
+heatmap_data$ID &lt;- heatmap_data$sample_type &lt;- &quot;0&quot;
+for(i in 1:nrow(heatmap_data)){
+  heatmap_data$ID[i] &lt;- A[[i]][1]
+  heatmap_data$sample_type[i] &lt;- A[[i]][2]
+}
+# second for the sample position dataframe (dendo)
+A &lt;- str_split(sample_pos_table$sample, &quot;_&quot;)
+sample_pos_table$ID &lt;- sample_pos_table$sample_type &lt;- &quot;0&quot;
+for(i in 1:nrow(sample_pos_table)){
+  sample_pos_table$ID[i] &lt;- A[[i]][1]
+  sample_pos_table$sample_type[i] &lt;- A[[i]][2]
+}
+
+# Limits for the vertical axes
+gene_axis_limits &lt;- with(
+  gene_pos_table, 
+  c(min(y_center - 0.5 * height), max(y_center + 0.5 * height))
+) + 
+  0.1 * c(-1, 1) # extra spacing: 0.1
+
+## Build Heatmap Pieces
+# EAC w/ Barrets
+hmd &lt;- filter(heatmap_data, sample_type == &quot;EAC tissues w/ Barretts History&quot;)
+hmd$x_center &lt;- as.numeric(as.factor(hmd$x_center))
+spd &lt;- filter(sample_pos_table, sample_type == &quot;EAC tissues w/ Barretts History&quot;)
+spd$x_center &lt;- as.numeric(as.factor(spd$x_center))
+
+plt_hmap1 &lt;- ggplot(hmd, 
+                   aes(x = x_center, y = y_center, fill = expr, 
+                       height = height, width = width)) + 
+  geom_tile() +
+  #facet_wrap(.~sample_type)+
+  scale_fill_gradient2(&quot;Abundance&quot;,trans=&quot;sqrt&quot;, high = &quot;darkred&quot;, low = &quot;darkblue&quot;, breaks=c(0, 0.10, 0.30, 0.50, 0.80)) +
+  scale_x_continuous(breaks = spd$x_center, 
+                     labels = spd$ID, 
+                     expand = c(0, 0)) + 
+  # For the y axis, alternatively set the labels as: gene_position_table$gene
+  scale_y_continuous(breaks = gene_pos_table[, &quot;y_center&quot;], 
+                     labels = rep(&quot;&quot;, nrow(gene_pos_table)),
+                     limits = gene_axis_limits, 
+                     expand = c(0, 0)) + 
+  labs(x = &quot;EAC w/ Barretts&quot;, y = NULL) +
+  theme_classic() +
+  theme(axis.text.x = element_text(size = rel(1), hjust = 0.5,vjust=0.5, angle = 90), 
+        # margin: top, right, bottom, and left
+        #axis.ticks.y = element_blank(),
+        plot.margin = unit(c(1, 0.01, 0.01, -0.7), &quot;cm&quot;), 
+        panel.grid = element_blank(),
+        legend.position = &quot;none&quot;)
+
+# Part 2: &quot;EAC-adjacent tissue w/ Barretts History&quot;
+hmd &lt;- filter(heatmap_data, sample_type == &quot;EAC-adjacent tissue w/ Barretts History&quot;)
+hmd$x_center &lt;- as.numeric(as.factor(hmd$x_center))
+spd &lt;- filter(sample_pos_table, sample_type == &quot;EAC-adjacent tissue w/ Barretts History&quot;)
+spd$x_center &lt;- as.numeric(as.factor(spd$x_center))
+
+plt_hmap2 &lt;- ggplot(hmd, 
+                    aes(x = x_center, y = y_center, fill = expr, 
+                        height = height, width = width)) + 
+  geom_tile() +
+  #facet_wrap(.~sample_type)+
+  scale_fill_gradient2(&quot;expr&quot;,trans=&quot;sqrt&quot;, high = &quot;darkred&quot;, low = &quot;darkblue&quot;, breaks=c(0, 0.1, 0.10, 0.30, 0.50, 0.80)) +
+  scale_x_continuous(breaks = spd$x_center, 
+                     labels = spd$ID, 
+                     expand = c(0, 0)) + 
+  # For the y axis, alternatively set the labels as: gene_position_table$gene
+  scale_y_continuous(breaks = gene_pos_table[, &quot;y_center&quot;], 
+                     labels = rep(&quot;&quot;, nrow(gene_pos_table)),
+                     limits = gene_axis_limits, 
+                     expand = c(0, 0)) + 
+  labs(x = &quot;EAC-adj. w/ Barretts&quot;, y = NULL) +
+  theme_classic() +
+  theme(axis.text.x = element_text(size = rel(1), hjust = 0.5,vjust=0.5, angle = 90), 
+        axis.ticks.y = element_blank(),
+        # margin: top, right, bottom, and left
+        plot.margin = unit(c(1, 0.01, 0.01, -0.7), &quot;cm&quot;), 
+        panel.grid.minor = element_blank(),
+        legend.position = &quot;none&quot;)
+
+# Part 3: &quot;EAC tissues w/o Barretts History&quot;
+hmd &lt;- filter(heatmap_data, sample_type == &quot;EAC tissues w/o Barretts History&quot;)
+hmd$x_center &lt;- as.numeric(as.factor(hmd$x_center))
+spd &lt;- filter(sample_pos_table, sample_type == &quot;EAC tissues w/o Barretts History&quot;)
+spd$x_center &lt;- as.numeric(as.factor(spd$x_center))
+
+plt_hmap3 &lt;- ggplot(hmd, 
+                    aes(x = x_center, y = y_center, fill = expr, 
+                        height = height, width = width)) + 
+  geom_tile() +
+  #facet_wrap(.~sample_type)+
+  scale_fill_gradient2(&quot;Abundance&quot;,trans=&quot;sqrt&quot;, high = &quot;darkred&quot;, low = &quot;darkblue&quot;, breaks=c(0, 0.10, 0.30, 0.50, 0.80)) +
+  scale_x_continuous(breaks = spd$x_center, 
+                     labels = spd$ID, 
+                     expand = c(0, 0)) + 
+  # For the y axis, alternatively set the labels as: gene_position_table$gene
+  scale_y_continuous(breaks = gene_pos_table[, &quot;y_center&quot;], 
+                     labels = rep(&quot;&quot;, nrow(gene_pos_table)),
+                     limits = gene_axis_limits, 
+                     expand = c(0, 0)) + 
+  labs(x = &quot;EAC w/o Barretts&quot;, y = NULL) +
+  theme_classic() +
+  theme(axis.text.x = element_text(size = rel(1), hjust = 0.75, vjust=0.5, angle = 90), 
+        axis.ticks.y = element_blank(),
+        # margin: top, right, bottom, and left
+        plot.margin = unit(c(1, 0.01, 0.01, -0.7), &quot;cm&quot;), 
+        panel.grid.minor = element_blank())
+
+
+# Dendrogram plot
+plt_dendr &lt;- ggplot(segment_data) + 
+  geom_segment(aes(x = x, y = y, xend = xend, yend = yend)) + 
+  scale_x_reverse(expand = c(0, 0.5)) + 
+  scale_y_continuous(breaks = gene_pos_table$y_center, 
+                     labels = gene_pos_table$gene, 
+                     limits = gene_axis_limits, 
+                     expand = c(0, 0)) + 
+  labs(x = &quot;&quot;, y = &quot;&quot;, colour = &quot;&quot;, size = &quot;&quot;) +
+  theme_classic() + 
+  theme(panel.grid = element_blank(),
+        axis.text.x = element_blank(),
+        axis.ticks.x = element_blank(),
+        plot.margin = unit(c(1, 0.01, 0.01, -0.7), &quot;cm&quot;))
+
+prntRelAbund &lt;- avgRelAbundCutoff*100</code></pre>
+<pre class="r"><code>p &lt;- plt_dendr+plt_hmap1+plt_hmap2+plt_hmap3+ 
+  plot_layout(
+    nrow=1, widths = c(0.3, 0.4, 0.15, 1),
+    guides=&quot;collect&quot;
+  ) +
+  plot_annotation(
+    title=&quot;TCGA WGS Data showing average relative abundance of species by individual&quot;,
+    subtitle=paste0(&quot;Subset to OTU average relative abundance &gt; &quot;,prntRelAbund,&quot;%&quot;)
+  )
+p</code></pre>
+<p><img src="figure/heatmaps-dendrograms-species-level.Rmd/ht-tcga-wgs-species-lvl-05-plot-make-1.png" width="100%" height="500px" style="display: block; margin: auto;" /></p>
+<pre class="r"><code>if(save.plots == T){
+  ggsave(paste0(&quot;output/tcga-wgs-species-lvl-heatmap-05-&quot;,save.Date,&quot;.pdf&quot;), plot=p, units=&quot;in&quot;, width=20, height=5)
+  ggsave(paste0(&quot;output/tcga-wgs-species-lvl-heatmap-05-&quot;,save.Date,&quot;.png&quot;), plot=p, units=&quot;in&quot;, width=20, height=5)
+}</code></pre>
+</div>
+<div id="relative-abudance-cutoff-0.01-2" class="section level3">
+<h3>Relative Abudance Cutoff: 0.01</h3>
+<pre class="r"><code>analysis.dat &lt;- dat.wgs %&gt;%
+  dplyr::mutate(OTU = otu2) # insert dataset to be used in analysis
+avgRelAbundCutoff &lt;- 0.01 # minimum average relative abundance for OTUs
+
+
+otu.dat &lt;- analysis.dat %&gt;% filter(sample_type != &quot;0&quot;) %&gt;%
+  dplyr::group_by(OTU) %&gt;%
+  dplyr::summarise(AverageRelativeAbundance=mean(Abundance, na.rm=T))%&gt;%
+  dplyr::filter(AverageRelativeAbundance&gt;=avgRelAbundCutoff) %&gt;%
+  dplyr::arrange(desc(AverageRelativeAbundance))
+
+kable(otu.dat[,c(2,1)], format=&quot;html&quot;, digits=3) %&gt;%
+  kable_styling(full_width = T)%&gt;%
+  scroll_box(width=&quot;100%&quot;, height=&quot;100%&quot;)</code></pre>
+<div style="border: 1px solid #ddd; padding: 0px; overflow-y: scroll; height:100%; overflow-x: scroll; width:100%; ">
+<table class="table" style="margin-left: auto; margin-right: auto;">
+<thead>
+<tr>
+<th style="text-align:right;position: sticky; top:0; background-color: #FFFFFF;">
+AverageRelativeAbundance
+</th>
+<th style="text-align:left;position: sticky; top:0; background-color: #FFFFFF;">
+OTU
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:right;">
+0.465
+</td>
+<td style="text-align:left;">
+Coprobacillus sp. D7
+</td>
+</tr>
+<tr>
+<td style="text-align:right;">
+0.106
+</td>
+<td style="text-align:left;">
+Propionibacterium acnes
+</td>
+</tr>
+<tr>
+<td style="text-align:right;">
+0.074
+</td>
+<td style="text-align:left;">
+Haemophilus influenzae
+</td>
+</tr>
+<tr>
+<td style="text-align:right;">
+0.057
+</td>
+<td style="text-align:left;">
+Prevotella melaninogenica
+</td>
+</tr>
+<tr>
+<td style="text-align:right;">
+0.028
+</td>
+<td style="text-align:left;">
+Cyanothece sp. CCY0110
+</td>
+</tr>
+<tr>
+<td style="text-align:right;">
+0.027
+</td>
+<td style="text-align:left;">
+Fusobacterium nucleatum
+</td>
+</tr>
+<tr>
+<td style="text-align:right;">
+0.022
+</td>
+<td style="text-align:left;">
+Campylobacter concisus
+</td>
+</tr>
+<tr>
+<td style="text-align:right;">
+0.019
+</td>
+<td style="text-align:left;">
+Bradyrhizobium sp. BTAi1
+</td>
+</tr>
+<tr>
+<td style="text-align:right;">
+0.016
+</td>
+<td style="text-align:left;">
+Bradyrhizobium diazoefficiens
+</td>
+</tr>
+<tr>
+<td style="text-align:right;">
+0.014
+</td>
+<td style="text-align:left;">
+Streptococcus pneumoniae
+</td>
+</tr>
+<tr>
+<td style="text-align:right;">
+0.012
+</td>
+<td style="text-align:left;">
+Bradyrhizobium japonicum
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+<pre class="r"><code>plot.dat &lt;- analysis.dat %&gt;% filter(sample_type != &quot;0&quot;) %&gt;%
+  dplyr::group_by(OTU) %&gt;%
+  dplyr::mutate(aveAbund=mean(Abundance, na.rm=T)) %&gt;%
+  dplyr::ungroup() %&gt;%
+  dplyr::filter(aveAbund&gt;=avgRelAbundCutoff) %&gt;%
+  dplyr::mutate(ID = as.factor(Patient_ID),
+                Abundance = ifelse(is.na(Abundance), 0, Abundance)) %&gt;%
+  dplyr::select(sample_type, OTU, ID, Abundance, aveAbund)
+
+
+# widen plot.dat for dendro
+dat.wide &lt;- plot.dat %&gt;%
+  dplyr::mutate(
+    ID = paste0(ID, &quot;_&quot;,sample_type)
+  ) %&gt;%
+  dplyr::select(ID, OTU, Abundance) %&gt;%
+  dplyr::group_by(ID, OTU) %&gt;%
+  dplyr::summarise(
+    Abundance = mean(Abundance)
+  ) %&gt;%
+  tidyr::pivot_wider(
+    id_cols = OTU,
+    names_from = ID,
+    values_from = Abundance,
+    values_fill = 0
+  )
+rn &lt;- dat.wide$OTU
+mat &lt;- as.matrix(dat.wide[,-1])
+rownames(mat) &lt;- rn
+
+sample_names &lt;- colnames(mat)
+
+# Obtain the dendrogram
+dend &lt;- as.dendrogram(hclust(dist(mat)))
+dend_data &lt;- dendro_data(dend)
+
+# Setup the data, so that the layout is inverted (this is more 
+# &quot;clear&quot; than simply using coord_flip())
+segment_data &lt;- with(
+  segment(dend_data), 
+  data.frame(x = y, y = x, xend = yend, yend = xend))
+# Use the dendrogram label data to position the gene labels
+gene_pos_table &lt;- with(
+  dend_data$labels, 
+  data.frame(y_center = x, gene = as.character(label), height = 1))
+
+# Table to position the samples
+sample_pos_table &lt;- data.frame(sample = sample_names) %&gt;%
+  dplyr::mutate(x_center = (1:n()), 
+         width = 1)
+
+# Neglecting the gap parameters
+heatmap_data &lt;- mat %&gt;% 
+  reshape2::melt(value.name = &quot;expr&quot;, varnames = c(&quot;gene&quot;, &quot;sample&quot;)) %&gt;%
+  left_join(gene_pos_table) %&gt;%
+  left_join(sample_pos_table)
+
+# extract and rejoin sample IDs and sample_type names for plotting
+# first for the heatmap data.frame
+A &lt;- str_split(heatmap_data$sample, &quot;_&quot;)
+heatmap_data$ID &lt;- heatmap_data$sample_type &lt;- &quot;0&quot;
+for(i in 1:nrow(heatmap_data)){
+  heatmap_data$ID[i] &lt;- A[[i]][1]
+  heatmap_data$sample_type[i] &lt;- A[[i]][2]
+}
+# second for the sample position dataframe (dendo)
+A &lt;- str_split(sample_pos_table$sample, &quot;_&quot;)
+sample_pos_table$ID &lt;- sample_pos_table$sample_type &lt;- &quot;0&quot;
+for(i in 1:nrow(sample_pos_table)){
+  sample_pos_table$ID[i] &lt;- A[[i]][1]
+  sample_pos_table$sample_type[i] &lt;- A[[i]][2]
+}
+
+# Limits for the vertical axes
+gene_axis_limits &lt;- with(
+  gene_pos_table, 
+  c(min(y_center - 0.5 * height), max(y_center + 0.5 * height))
+) + 
+  0.1 * c(-1, 1) # extra spacing: 0.1
+
+## Build Heatmap Pieces
+# EAC w/ Barrets
+hmd &lt;- filter(heatmap_data, sample_type == &quot;EAC tissues w/ Barretts History&quot;)
+hmd$x_center &lt;- as.numeric(as.factor(hmd$x_center))
+spd &lt;- filter(sample_pos_table, sample_type == &quot;EAC tissues w/ Barretts History&quot;)
+spd$x_center &lt;- as.numeric(as.factor(spd$x_center))
+
+plt_hmap1 &lt;- ggplot(hmd, 
+                   aes(x = x_center, y = y_center, fill = expr, 
+                       height = height, width = width)) + 
+  geom_tile() +
+  #facet_wrap(.~sample_type)+
+  scale_fill_gradient2(&quot;Abundance&quot;,trans=&quot;sqrt&quot;, high = &quot;darkred&quot;, low = &quot;darkblue&quot;, breaks=c(0, 0.10, 0.30, 0.50, 0.80)) +
+  scale_x_continuous(breaks = spd$x_center, 
+                     labels = spd$ID, 
+                     expand = c(0, 0)) + 
+  # For the y axis, alternatively set the labels as: gene_position_table$gene
+  scale_y_continuous(breaks = gene_pos_table[, &quot;y_center&quot;], 
+                     labels = rep(&quot;&quot;, nrow(gene_pos_table)),
+                     limits = gene_axis_limits, 
+                     expand = c(0, 0)) + 
+  labs(x = &quot;EAC w/ Barretts&quot;, y = NULL) +
+  theme_classic() +
+  theme(axis.text.x = element_text(size = rel(1), hjust = 0.5,vjust=0.5, angle = 90), 
+        # margin: top, right, bottom, and left
+        #axis.ticks.y = element_blank(),
+        plot.margin = unit(c(1, 0.01, 0.01, -0.7), &quot;cm&quot;), 
+        panel.grid = element_blank(),
+        legend.position = &quot;none&quot;)
+
+# Part 2: &quot;EAC-adjacent tissue w/ Barretts History&quot;
+hmd &lt;- filter(heatmap_data, sample_type == &quot;EAC-adjacent tissue w/ Barretts History&quot;)
+hmd$x_center &lt;- as.numeric(as.factor(hmd$x_center))
+spd &lt;- filter(sample_pos_table, sample_type == &quot;EAC-adjacent tissue w/ Barretts History&quot;)
+spd$x_center &lt;- as.numeric(as.factor(spd$x_center))
+
+plt_hmap2 &lt;- ggplot(hmd, 
+                    aes(x = x_center, y = y_center, fill = expr, 
+                        height = height, width = width)) + 
+  geom_tile() +
+  #facet_wrap(.~sample_type)+
+  scale_fill_gradient2(&quot;expr&quot;,trans=&quot;sqrt&quot;, high = &quot;darkred&quot;, low = &quot;darkblue&quot;, breaks=c(0, 0.1, 0.10, 0.30, 0.50, 0.80)) +
+  scale_x_continuous(breaks = spd$x_center, 
+                     labels = spd$ID, 
+                     expand = c(0, 0)) + 
+  # For the y axis, alternatively set the labels as: gene_position_table$gene
+  scale_y_continuous(breaks = gene_pos_table[, &quot;y_center&quot;], 
+                     labels = rep(&quot;&quot;, nrow(gene_pos_table)),
+                     limits = gene_axis_limits, 
+                     expand = c(0, 0)) + 
+  labs(x = &quot;EAC-adj. w/ Barretts&quot;, y = NULL) +
+  theme_classic() +
+  theme(axis.text.x = element_text(size = rel(1), hjust = 0.5,vjust=0.5, angle = 90), 
+        axis.ticks.y = element_blank(),
+        # margin: top, right, bottom, and left
+        plot.margin = unit(c(1, 0.01, 0.01, -0.7), &quot;cm&quot;), 
+        panel.grid.minor = element_blank(),
+        legend.position = &quot;none&quot;)
+
+# Part 3: &quot;EAC tissues w/o Barretts History&quot;
+hmd &lt;- filter(heatmap_data, sample_type == &quot;EAC tissues w/o Barretts History&quot;)
+hmd$x_center &lt;- as.numeric(as.factor(hmd$x_center))
+spd &lt;- filter(sample_pos_table, sample_type == &quot;EAC tissues w/o Barretts History&quot;)
+spd$x_center &lt;- as.numeric(as.factor(spd$x_center))
+
+plt_hmap3 &lt;- ggplot(hmd, 
+                    aes(x = x_center, y = y_center, fill = expr, 
+                        height = height, width = width)) + 
+  geom_tile() +
+  #facet_wrap(.~sample_type)+
+  scale_fill_gradient2(&quot;Abundance&quot;,trans=&quot;sqrt&quot;, high = &quot;darkred&quot;, low = &quot;darkblue&quot;, breaks=c(0, 0.10, 0.30, 0.50, 0.80)) +
+  scale_x_continuous(breaks = spd$x_center, 
+                     labels = spd$ID, 
+                     expand = c(0, 0)) + 
+  # For the y axis, alternatively set the labels as: gene_position_table$gene
+  scale_y_continuous(breaks = gene_pos_table[, &quot;y_center&quot;], 
+                     labels = rep(&quot;&quot;, nrow(gene_pos_table)),
+                     limits = gene_axis_limits, 
+                     expand = c(0, 0)) + 
+  labs(x = &quot;EAC w/o Barretts&quot;, y = NULL) +
+  theme_classic() +
+  theme(axis.text.x = element_text(size = rel(1), hjust = 0.75, vjust=0.5, angle = 90), 
+        axis.ticks.y = element_blank(),
+        # margin: top, right, bottom, and left
+        plot.margin = unit(c(1, 0.01, 0.01, -0.7), &quot;cm&quot;), 
+        panel.grid.minor = element_blank())
+
+
+# Dendrogram plot
+plt_dendr &lt;- ggplot(segment_data) + 
+  geom_segment(aes(x = x, y = y, xend = xend, yend = yend)) + 
+  scale_x_reverse(expand = c(0, 0.5)) + 
+  scale_y_continuous(breaks = gene_pos_table$y_center, 
+                     labels = gene_pos_table$gene, 
+                     limits = gene_axis_limits, 
+                     expand = c(0, 0)) + 
+  labs(x = &quot;&quot;, y = &quot;&quot;, colour = &quot;&quot;, size = &quot;&quot;) +
+  theme_classic() + 
+  theme(panel.grid = element_blank(),
+        axis.text.x = element_blank(),
+        axis.ticks.x = element_blank(),
+        plot.margin = unit(c(1, 0.01, 0.01, -0.7), &quot;cm&quot;))
+
+prntRelAbund &lt;- avgRelAbundCutoff*100</code></pre>
+<pre class="r"><code>p &lt;- plt_dendr+plt_hmap1+plt_hmap2+plt_hmap3+ 
+  plot_layout(
+    nrow=1, widths = c(0.3, 0.4, 0.15, 1),
+    guides=&quot;collect&quot;
+  ) +
+  plot_annotation(
+    title=&quot;TCGA WGS Data showing average relative abundance of species by individual&quot;,
+    subtitle=paste0(&quot;Subset to OTU average relative abundance &gt; &quot;,prntRelAbund,&quot;%&quot;)
+  )
+p</code></pre>
+<p><img src="figure/heatmaps-dendrograms-species-level.Rmd/ht-tcga-wgs-species-lvl-01-plot-make-1.png" width="100%" height="500px" style="display: block; margin: auto;" /></p>
+<pre class="r"><code>if(save.plots == T){
+  ggsave(paste0(&quot;output/tcga-wgs-species-lvl-heatmap-01-&quot;,save.Date,&quot;.pdf&quot;), plot=p, units=&quot;in&quot;, width=20, height=5)
+  ggsave(paste0(&quot;output/tcga-wgs-species-lvl-heatmap-01-&quot;,save.Date,&quot;.png&quot;), plot=p, units=&quot;in&quot;, width=20, height=5)
+}</code></pre>
+</div>
+<div id="relative-abudance-cutoff-0.001-1" class="section level3">
+<h3>Relative Abudance Cutoff: 0.001</h3>
+<pre class="r"><code>analysis.dat &lt;- dat.wgs %&gt;%
+  dplyr::mutate(OTU = otu2) # insert dataset to be used in analysis
+avgRelAbundCutoff &lt;- 0.001 # minimum average relative abundance for OTUs
+
+
+otu.dat &lt;- analysis.dat %&gt;% filter(sample_type != &quot;0&quot;) %&gt;%
+  dplyr::group_by(OTU) %&gt;%
+  dplyr::summarise(AverageRelativeAbundance=mean(Abundance, na.rm=T))%&gt;%
+  dplyr::filter(AverageRelativeAbundance&gt;=avgRelAbundCutoff) %&gt;%
+  dplyr::arrange(desc(AverageRelativeAbundance))
+
+kable(otu.dat[,c(2,1)], format=&quot;html&quot;, digits=3) %&gt;%
+  kable_styling(full_width = T)%&gt;%
+  scroll_box(width=&quot;100%&quot;, height=&quot;100%&quot;)</code></pre>
+<div style="border: 1px solid #ddd; padding: 0px; overflow-y: scroll; height:100%; overflow-x: scroll; width:100%; ">
+<table class="table" style="margin-left: auto; margin-right: auto;">
+<thead>
+<tr>
+<th style="text-align:right;position: sticky; top:0; background-color: #FFFFFF;">
+AverageRelativeAbundance
+</th>
+<th style="text-align:left;position: sticky; top:0; background-color: #FFFFFF;">
+OTU
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:right;">
+0.465
+</td>
+<td style="text-align:left;">
+Coprobacillus sp. D7
+</td>
+</tr>
+<tr>
+<td style="text-align:right;">
+0.106
+</td>
+<td style="text-align:left;">
+Propionibacterium acnes
+</td>
+</tr>
+<tr>
+<td style="text-align:right;">
+0.074
+</td>
+<td style="text-align:left;">
+Haemophilus influenzae
+</td>
+</tr>
+<tr>
+<td style="text-align:right;">
+0.057
+</td>
+<td style="text-align:left;">
+Prevotella melaninogenica
+</td>
+</tr>
+<tr>
+<td style="text-align:right;">
+0.028
+</td>
+<td style="text-align:left;">
+Cyanothece sp. CCY0110
+</td>
+</tr>
+<tr>
+<td style="text-align:right;">
+0.027
+</td>
+<td style="text-align:left;">
+Fusobacterium nucleatum
+</td>
+</tr>
+<tr>
+<td style="text-align:right;">
+0.022
+</td>
+<td style="text-align:left;">
+Campylobacter concisus
+</td>
+</tr>
+<tr>
+<td style="text-align:right;">
+0.019
+</td>
+<td style="text-align:left;">
+Bradyrhizobium sp. BTAi1
+</td>
+</tr>
+<tr>
+<td style="text-align:right;">
+0.016
+</td>
+<td style="text-align:left;">
+Bradyrhizobium diazoefficiens
+</td>
+</tr>
+<tr>
+<td style="text-align:right;">
+0.014
+</td>
+<td style="text-align:left;">
+Streptococcus pneumoniae
+</td>
+</tr>
+<tr>
+<td style="text-align:right;">
+0.012
+</td>
+<td style="text-align:left;">
+Bradyrhizobium japonicum
+</td>
+</tr>
+<tr>
+<td style="text-align:right;">
+0.010
+</td>
+<td style="text-align:left;">
+Bradyrhizobium sp. S23321
+</td>
+</tr>
+<tr>
+<td style="text-align:right;">
+0.008
+</td>
+<td style="text-align:left;">
+candidate division TM7 single-cell isolate TM7a
+</td>
+</tr>
+<tr>
+<td style="text-align:right;">
+0.008
+</td>
+<td style="text-align:left;">
+Veillonella parvula
+</td>
+</tr>
+<tr>
+<td style="text-align:right;">
+0.008
+</td>
+<td style="text-align:left;">
+Streptococcus parasanguinis
+</td>
+</tr>
+<tr>
+<td style="text-align:right;">
+0.007
+</td>
+<td style="text-align:left;">
+Rhodopseudomonas palustris
+</td>
+</tr>
+<tr>
+<td style="text-align:right;">
+0.006
+</td>
+<td style="text-align:left;">
+Pseudomonas fluorescens group
+</td>
+</tr>
+<tr>
+<td style="text-align:right;">
+0.006
+</td>
+<td style="text-align:left;">
+Bradyrhizobium sp. ORS 278
+</td>
+</tr>
+<tr>
+<td style="text-align:right;">
+0.006
+</td>
+<td style="text-align:left;">
+Streptococcus mitis
+</td>
+</tr>
+<tr>
+<td style="text-align:right;">
+0.005
+</td>
+<td style="text-align:left;">
+Beggiatoa sp. PS
+</td>
+</tr>
+<tr>
+<td style="text-align:right;">
+0.004
+</td>
+<td style="text-align:left;">
+Staphylococcus epidermidis
+</td>
+</tr>
+<tr>
+<td style="text-align:right;">
+0.004
+</td>
+<td style="text-align:left;">
+Corynebacterium tuberculostearicum
+</td>
+</tr>
+<tr>
+<td style="text-align:right;">
+0.004
+</td>
+<td style="text-align:left;">
+Streptococcus suis
+</td>
+</tr>
+<tr>
+<td style="text-align:right;">
+0.003
+</td>
+<td style="text-align:left;">
+Haemophilus parainfluenzae
+</td>
+</tr>
+<tr>
+<td style="text-align:right;">
+0.003
+</td>
+<td style="text-align:left;">
+Streptococcus pseudopneumoniae
+</td>
+</tr>
+<tr>
+<td style="text-align:right;">
+0.003
+</td>
+<td style="text-align:left;">
+Delftia sp. Cs1-4
+</td>
+</tr>
+<tr>
+<td style="text-align:right;">
+0.003
+</td>
+<td style="text-align:left;">
+Lactobacillus gasseri
+</td>
+</tr>
+<tr>
+<td style="text-align:right;">
+0.003
+</td>
+<td style="text-align:left;">
+[Eubacterium] hallii
+</td>
+</tr>
+<tr>
+<td style="text-align:right;">
+0.002
+</td>
+<td style="text-align:left;">
+Delftia acidovorans
+</td>
+</tr>
+<tr>
+<td style="text-align:right;">
+0.002
+</td>
+<td style="text-align:left;">
+Streptococcus oralis
+</td>
+</tr>
+<tr>
+<td style="text-align:right;">
+0.002
+</td>
+<td style="text-align:left;">
+Pseudomonas putida group
+</td>
+</tr>
+<tr>
+<td style="text-align:right;">
+0.002
+</td>
+<td style="text-align:left;">
+Streptococcus thermophilus
+</td>
+</tr>
+<tr>
+<td style="text-align:right;">
+0.002
+</td>
+<td style="text-align:left;">
+Pseudomonas aeruginosa group
+</td>
+</tr>
+<tr>
+<td style="text-align:right;">
+0.002
+</td>
+<td style="text-align:left;">
+Atopobium rimae
+</td>
+</tr>
+<tr>
+<td style="text-align:right;">
+0.002
+</td>
+<td style="text-align:left;">
+Prevotella intermedia
+</td>
+</tr>
+<tr>
+<td style="text-align:right;">
+0.001
+</td>
+<td style="text-align:left;">
+candidate division TM7 single-cell isolate TM7c
+</td>
+</tr>
+<tr>
+<td style="text-align:right;">
+0.001
+</td>
+<td style="text-align:left;">
+Acidovorax delafieldii
+</td>
+</tr>
+<tr>
+<td style="text-align:right;">
+0.001
+</td>
+<td style="text-align:left;">
+Staphylococcus capitis
+</td>
+</tr>
+<tr>
+<td style="text-align:right;">
+0.001
+</td>
+<td style="text-align:left;">
+Escherichia coli
+</td>
+</tr>
+<tr>
+<td style="text-align:right;">
+0.001
+</td>
+<td style="text-align:left;">
+Oligotropha carboxidovorans
+</td>
+</tr>
+<tr>
+<td style="text-align:right;">
+0.001
+</td>
+<td style="text-align:left;">
+Acinetobacter junii
+</td>
+</tr>
+<tr>
+<td style="text-align:right;">
+0.001
+</td>
+<td style="text-align:left;">
+Acidovorax ebreus
+</td>
+</tr>
+<tr>
+<td style="text-align:right;">
+0.001
+</td>
+<td style="text-align:left;">
+Lactococcus garvieae
+</td>
+</tr>
+<tr>
+<td style="text-align:right;">
+0.001
+</td>
+<td style="text-align:left;">
+Gemmata obscuriglobus
+</td>
+</tr>
+<tr>
+<td style="text-align:right;">
+0.001
+</td>
+<td style="text-align:left;">
+Lactobacillus crispatus
+</td>
+</tr>
+<tr>
+<td style="text-align:right;">
+0.001
+</td>
+<td style="text-align:left;">
+Streptococcus gordonii
+</td>
+</tr>
+<tr>
+<td style="text-align:right;">
+0.001
+</td>
+<td style="text-align:left;">
+Xanthomonas campestris
+</td>
+</tr>
+<tr>
+<td style="text-align:right;">
+0.001
+</td>
+<td style="text-align:left;">
+Bacteroides sp. 3_1_33FAA
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+<pre class="r"><code>plot.dat &lt;- analysis.dat %&gt;% filter(sample_type != &quot;0&quot;) %&gt;%
+  dplyr::group_by(OTU) %&gt;%
+  dplyr::mutate(aveAbund=mean(Abundance, na.rm=T)) %&gt;%
+  dplyr::ungroup() %&gt;%
+  dplyr::filter(aveAbund&gt;=avgRelAbundCutoff) %&gt;%
+  dplyr::mutate(ID = as.factor(Patient_ID),
+                Abundance = ifelse(is.na(Abundance), 0, Abundance)) %&gt;%
+  dplyr::select(sample_type, OTU, ID, Abundance, aveAbund)
+
+
+# widen plot.dat for dendro
+dat.wide &lt;- plot.dat %&gt;%
+  dplyr::mutate(
+    ID = paste0(ID, &quot;_&quot;,sample_type)
+  ) %&gt;%
+  dplyr::select(ID, OTU, Abundance) %&gt;%
+  dplyr::group_by(ID, OTU) %&gt;%
+  dplyr::summarise(
+    Abundance = mean(Abundance)
+  ) %&gt;%
+  tidyr::pivot_wider(
+    id_cols = OTU,
+    names_from = ID,
+    values_from = Abundance,
+    values_fill = 0
+  )
+rn &lt;- dat.wide$OTU
+mat &lt;- as.matrix(dat.wide[,-1])
+rownames(mat) &lt;- rn
+
+sample_names &lt;- colnames(mat)
+
+# Obtain the dendrogram
+dend &lt;- as.dendrogram(hclust(dist(mat)))
+dend_data &lt;- dendro_data(dend)
+
+# Setup the data, so that the layout is inverted (this is more 
+# &quot;clear&quot; than simply using coord_flip())
+segment_data &lt;- with(
+  segment(dend_data), 
+  data.frame(x = y, y = x, xend = yend, yend = xend))
+# Use the dendrogram label data to position the gene labels
+gene_pos_table &lt;- with(
+  dend_data$labels, 
+  data.frame(y_center = x, gene = as.character(label), height = 1))
+
+# Table to position the samples
+sample_pos_table &lt;- data.frame(sample = sample_names) %&gt;%
+  dplyr::mutate(x_center = (1:n()), 
+         width = 1)
+
+# Neglecting the gap parameters
+heatmap_data &lt;- mat %&gt;% 
+  reshape2::melt(value.name = &quot;expr&quot;, varnames = c(&quot;gene&quot;, &quot;sample&quot;)) %&gt;%
+  left_join(gene_pos_table) %&gt;%
+  left_join(sample_pos_table)
+
+# extract and rejoin sample IDs and sample_type names for plotting
+# first for the heatmap data.frame
+A &lt;- str_split(heatmap_data$sample, &quot;_&quot;)
+heatmap_data$ID &lt;- heatmap_data$sample_type &lt;- &quot;0&quot;
+for(i in 1:nrow(heatmap_data)){
+  heatmap_data$ID[i] &lt;- A[[i]][1]
+  heatmap_data$sample_type[i] &lt;- A[[i]][2]
+}
+# second for the sample position dataframe (dendo)
+A &lt;- str_split(sample_pos_table$sample, &quot;_&quot;)
+sample_pos_table$ID &lt;- sample_pos_table$sample_type &lt;- &quot;0&quot;
+for(i in 1:nrow(sample_pos_table)){
+  sample_pos_table$ID[i] &lt;- A[[i]][1]
+  sample_pos_table$sample_type[i] &lt;- A[[i]][2]
+}
+
+# Limits for the vertical axes
+gene_axis_limits &lt;- with(
+  gene_pos_table, 
+  c(min(y_center - 0.5 * height), max(y_center + 0.5 * height))
+) + 
+  0.1 * c(-1, 1) # extra spacing: 0.1
+
+## Build Heatmap Pieces
+# EAC w/ Barrets
+hmd &lt;- filter(heatmap_data, sample_type == &quot;EAC tissues w/ Barretts History&quot;)
+hmd$x_center &lt;- as.numeric(as.factor(hmd$x_center))
+spd &lt;- filter(sample_pos_table, sample_type == &quot;EAC tissues w/ Barretts History&quot;)
+spd$x_center &lt;- as.numeric(as.factor(spd$x_center))
+
+plt_hmap1 &lt;- ggplot(hmd, 
+                   aes(x = x_center, y = y_center, fill = expr, 
+                       height = height, width = width)) + 
+  geom_tile() +
+  #facet_wrap(.~sample_type)+
+  scale_fill_gradient2(&quot;Abundance&quot;,trans=&quot;sqrt&quot;, high = &quot;darkred&quot;, low = &quot;darkblue&quot;, breaks=c(0, 0.10, 0.30, 0.50, 0.80)) +
+  scale_x_continuous(breaks = spd$x_center, 
+                     labels = spd$ID, 
+                     expand = c(0, 0)) + 
+  # For the y axis, alternatively set the labels as: gene_position_table$gene
+  scale_y_continuous(breaks = gene_pos_table[, &quot;y_center&quot;], 
+                     labels = rep(&quot;&quot;, nrow(gene_pos_table)),
+                     limits = gene_axis_limits, 
+                     expand = c(0, 0)) + 
+  labs(x = &quot;EAC w/ Barretts&quot;, y = NULL) +
+  theme_classic() +
+  theme(axis.text.x = element_text(size = rel(1), hjust = 0.5,vjust=0.5, angle = 90), 
+        # margin: top, right, bottom, and left
+        #axis.ticks.y = element_blank(),
+        plot.margin = unit(c(1, 0.01, 0.01, -0.7), &quot;cm&quot;), 
+        panel.grid = element_blank(),
+        legend.position = &quot;none&quot;)
+
+# Part 2: &quot;EAC-adjacent tissue w/ Barretts History&quot;
+hmd &lt;- filter(heatmap_data, sample_type == &quot;EAC-adjacent tissue w/ Barretts History&quot;)
+hmd$x_center &lt;- as.numeric(as.factor(hmd$x_center))
+spd &lt;- filter(sample_pos_table, sample_type == &quot;EAC-adjacent tissue w/ Barretts History&quot;)
+spd$x_center &lt;- as.numeric(as.factor(spd$x_center))
+
+plt_hmap2 &lt;- ggplot(hmd, 
+                    aes(x = x_center, y = y_center, fill = expr, 
+                        height = height, width = width)) + 
+  geom_tile() +
+  #facet_wrap(.~sample_type)+
+  scale_fill_gradient2(&quot;expr&quot;,trans=&quot;sqrt&quot;, high = &quot;darkred&quot;, low = &quot;darkblue&quot;, breaks=c(0, 0.1, 0.10, 0.30, 0.50, 0.80)) +
+  scale_x_continuous(breaks = spd$x_center, 
+                     labels = spd$ID, 
+                     expand = c(0, 0)) + 
+  # For the y axis, alternatively set the labels as: gene_position_table$gene
+  scale_y_continuous(breaks = gene_pos_table[, &quot;y_center&quot;], 
+                     labels = rep(&quot;&quot;, nrow(gene_pos_table)),
+                     limits = gene_axis_limits, 
+                     expand = c(0, 0)) + 
+  labs(x = &quot;EAC-adj. w/ Barretts&quot;, y = NULL) +
+  theme_classic() +
+  theme(axis.text.x = element_text(size = rel(1), hjust = 0.5,vjust=0.5, angle = 90), 
+        axis.ticks.y = element_blank(),
+        # margin: top, right, bottom, and left
+        plot.margin = unit(c(1, 0.01, 0.01, -0.7), &quot;cm&quot;), 
+        panel.grid.minor = element_blank(),
+        legend.position = &quot;none&quot;)
+
+# Part 3: &quot;EAC tissues w/o Barretts History&quot;
+hmd &lt;- filter(heatmap_data, sample_type == &quot;EAC tissues w/o Barretts History&quot;)
+hmd$x_center &lt;- as.numeric(as.factor(hmd$x_center))
+spd &lt;- filter(sample_pos_table, sample_type == &quot;EAC tissues w/o Barretts History&quot;)
+spd$x_center &lt;- as.numeric(as.factor(spd$x_center))
+
+plt_hmap3 &lt;- ggplot(hmd, 
+                    aes(x = x_center, y = y_center, fill = expr, 
+                        height = height, width = width)) + 
+  geom_tile() +
+  #facet_wrap(.~sample_type)+
+  scale_fill_gradient2(&quot;Abundance&quot;,trans=&quot;sqrt&quot;, high = &quot;darkred&quot;, low = &quot;darkblue&quot;, breaks=c(0, 0.10, 0.30, 0.50, 0.80)) +
+  scale_x_continuous(breaks = spd$x_center, 
+                     labels = spd$ID, 
+                     expand = c(0, 0)) + 
+  # For the y axis, alternatively set the labels as: gene_position_table$gene
+  scale_y_continuous(breaks = gene_pos_table[, &quot;y_center&quot;], 
+                     labels = rep(&quot;&quot;, nrow(gene_pos_table)),
+                     limits = gene_axis_limits, 
+                     expand = c(0, 0)) + 
+  labs(x = &quot;EAC w/o Barretts&quot;, y = NULL) +
+  theme_classic() +
+  theme(axis.text.x = element_text(size = rel(1), hjust = 0.75, vjust=0.5, angle = 90), 
+        axis.ticks.y = element_blank(),
+        # margin: top, right, bottom, and left
+        plot.margin = unit(c(1, 0.01, 0.01, -0.7), &quot;cm&quot;), 
+        panel.grid.minor = element_blank())
+
+
+# Dendrogram plot
+plt_dendr &lt;- ggplot(segment_data) + 
+  geom_segment(aes(x = x, y = y, xend = xend, yend = yend)) + 
+  scale_x_reverse(expand = c(0, 0.5)) + 
+  scale_y_continuous(breaks = gene_pos_table$y_center, 
+                     labels = gene_pos_table$gene, 
+                     limits = gene_axis_limits, 
+                     expand = c(0, 0)) + 
+  labs(x = &quot;&quot;, y = &quot;&quot;, colour = &quot;&quot;, size = &quot;&quot;) +
+  theme_classic() + 
+  theme(panel.grid = element_blank(),
+        axis.text.x = element_blank(),
+        axis.ticks.x = element_blank(),
+        plot.margin = unit(c(1, 0.01, 0.01, -0.7), &quot;cm&quot;))
+
+prntRelAbund &lt;- avgRelAbundCutoff*100</code></pre>
+<pre class="r"><code>p &lt;- plt_dendr+plt_hmap1+plt_hmap2+plt_hmap3+ 
+  plot_layout(
+    nrow=1, widths = c(0.3, 0.4, 0.15, 1),
+    guides=&quot;collect&quot;
+  ) +
+  plot_annotation(
+    title=&quot;TCGA WGS Data showing average relative abundance of species by individual&quot;,
+    subtitle=paste0(&quot;Subset to OTU average relative abundance &gt; &quot;,prntRelAbund,&quot;%&quot;)
+  )
+p</code></pre>
+<p><img src="figure/heatmaps-dendrograms-species-level.Rmd/ht-tcga-wgs-species-lvl-001-plot-make-1.png" width="100%" height="500px" style="display: block; margin: auto;" /></p>
+<pre class="r"><code>if(save.plots == T){
+  ggsave(paste0(&quot;output/tcga-wgs-species-lvl-heatmap-001-&quot;,save.Date,&quot;.pdf&quot;), plot=p, units=&quot;in&quot;, width=20, height=10)
+  ggsave(paste0(&quot;output/tcga-wgs-species-lvl-heatmap-001-&quot;,save.Date,&quot;.png&quot;), plot=p, units=&quot;in&quot;, width=20, height=10)
+}</code></pre>
+</div>
+<div id="specific-otus-2" class="section level3">
+<h3>Specific OTUs</h3>
+<p>The heatmaps for slide76 focus on the TCGA WGS data.</p>
+<pre class="r"><code>analysis.dat &lt;- dat.wgs.s # insert dataset to be used in analysis
+
+
+otu.dat &lt;- analysis.dat %&gt;% filter(sample_type != &quot;0&quot;) %&gt;%
+  dplyr::group_by(OTU) %&gt;%
+  dplyr::summarise(AverageRelativeAbundance=mean(Abundance, na.rm=T))
+
+kable(otu.dat[,c(2,1)], format=&quot;html&quot;, digits=3) %&gt;%
+  kable_styling(full_width = T)%&gt;%
+  scroll_box(width=&quot;100%&quot;, height=&quot;100%&quot;)</code></pre>
+<div style="border: 1px solid #ddd; padding: 0px; overflow-y: scroll; height:100%; overflow-x: scroll; width:100%; ">
+<table class="table" style="margin-left: auto; margin-right: auto;">
+<thead>
+<tr>
+<th style="text-align:right;position: sticky; top:0; background-color: #FFFFFF;">
+AverageRelativeAbundance
+</th>
+<th style="text-align:left;position: sticky; top:0; background-color: #FFFFFF;">
+OTU
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:right;">
+0.027
+</td>
+<td style="text-align:left;">
+Fusobacterium nucleatum
+</td>
+</tr>
+<tr>
+<td style="text-align:right;">
+0.005
+</td>
+<td style="text-align:left;">
+Streptococcus spp.
+</td>
+</tr>
+<tr>
+<td style="text-align:right;">
+0.022
+</td>
+<td style="text-align:left;">
+Campylobacter concisus
+</td>
+</tr>
+<tr>
+<td style="text-align:right;">
+0.057
+</td>
+<td style="text-align:left;">
+Prevotella
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+<pre class="r"><code>plot.dat &lt;- analysis.dat %&gt;% filter(sample_type != &quot;0&quot;) %&gt;%
+  dplyr::group_by(OTU) %&gt;%
+  dplyr::mutate(aveAbund=mean(Abundance, na.rm=T)) %&gt;%
+  dplyr::ungroup() %&gt;%
+  dplyr::mutate(ID = as.factor(Patient_ID),
+                Abundance = ifelse(is.na(Abundance), 0, Abundance)) %&gt;%
+  dplyr::select(sample_type, OTU, ID, Abundance, aveAbund)
+
+
+# widen plot.dat for dendro
+dat.wide &lt;- plot.dat %&gt;%
+  dplyr::mutate(
+    ID = paste0(ID, &quot;_&quot;,sample_type)
+  ) %&gt;%
+  dplyr::select(ID, OTU, Abundance) %&gt;%
+  dplyr::group_by(ID, OTU) %&gt;%
+  dplyr::summarise(
+    Abundance = mean(Abundance)
+  ) %&gt;%
+  tidyr::pivot_wider(
+    id_cols = OTU,
+    names_from = ID,
+    values_from = Abundance,
+    values_fill = 0
+  )
+rn &lt;- dat.wide$OTU
+mat &lt;- as.matrix(dat.wide[,-1])
+rownames(mat) &lt;- rn
+
+sample_names &lt;- colnames(mat)
+
+# Obtain the dendrogram
+dend &lt;- as.dendrogram(hclust(dist(mat)))
+dend_data &lt;- dendro_data(dend)
+
+# Setup the data, so that the layout is inverted (this is more 
+# &quot;clear&quot; than simply using coord_flip())
+segment_data &lt;- with(
+  segment(dend_data), 
+  data.frame(x = y, y = x, xend = yend, yend = xend))
+# Use the dendrogram label data to position the gene labels
+gene_pos_table &lt;- with(
+  dend_data$labels, 
+  data.frame(y_center = x, gene = as.character(label), height = 1))
+
+# Table to position the samples
+sample_pos_table &lt;- data.frame(sample = sample_names) %&gt;%
+  dplyr::mutate(x_center = (1:n()), 
+         width = 1)
+
+# Neglecting the gap parameters
+heatmap_data &lt;- mat %&gt;% 
+  reshape2::melt(value.name = &quot;expr&quot;, varnames = c(&quot;gene&quot;, &quot;sample&quot;)) %&gt;%
+  left_join(gene_pos_table) %&gt;%
+  left_join(sample_pos_table)
+
+# extract and rejoin sample IDs and sample_type names for plotting
+# first for the heatmap data.frame
+A &lt;- str_split(heatmap_data$sample, &quot;_&quot;)
+heatmap_data$ID &lt;- heatmap_data$sample_type &lt;- &quot;0&quot;
+for(i in 1:nrow(heatmap_data)){
+  heatmap_data$ID[i] &lt;- A[[i]][1]
+  heatmap_data$sample_type[i] &lt;- A[[i]][2]
+}
+# second for the sample position dataframe (dendo)
+A &lt;- str_split(sample_pos_table$sample, &quot;_&quot;)
+sample_pos_table$ID &lt;- sample_pos_table$sample_type &lt;- &quot;0&quot;
+for(i in 1:nrow(sample_pos_table)){
+  sample_pos_table$ID[i] &lt;- A[[i]][1]
+  sample_pos_table$sample_type[i] &lt;- A[[i]][2]
+}
+
+# Limits for the vertical axes
+gene_axis_limits &lt;- with(
+  gene_pos_table, 
+  c(min(y_center - 0.5 * height), max(y_center + 0.5 * height))
+) + 
+  0.1 * c(-1, 1) # extra spacing: 0.1
+
+## Build Heatmap Pieces
+# EAC w/ Barrets
+hmd &lt;- filter(heatmap_data, sample_type == &quot;EAC tissues w/ Barretts History&quot;)
+hmd$x_center &lt;- as.numeric(as.factor(hmd$x_center))
+spd &lt;- filter(sample_pos_table, sample_type == &quot;EAC tissues w/ Barretts History&quot;)
+spd$x_center &lt;- as.numeric(as.factor(spd$x_center))
+
+plt_hmap1 &lt;- ggplot(hmd, 
+                   aes(x = x_center, y = y_center, fill = expr, 
+                       height = height, width = width)) + 
+  geom_tile() +
+  #facet_wrap(.~sample_type)+
+  scale_fill_gradient2(&quot;Abundance&quot;,trans=&quot;sqrt&quot;, high = &quot;darkred&quot;, low = &quot;darkblue&quot;, breaks=c(0, 0.10, 0.30, 0.50, 0.80)) +
+  scale_x_continuous(breaks = spd$x_center, 
+                     labels = spd$ID, 
+                     expand = c(0, 0)) + 
+  # For the y axis, alternatively set the labels as: gene_position_table$gene
+  scale_y_continuous(breaks = gene_pos_table[, &quot;y_center&quot;], 
+                     labels = rep(&quot;&quot;, nrow(gene_pos_table)),
+                     limits = gene_axis_limits, 
+                     expand = c(0, 0)) + 
+  labs(x = &quot;EAC w/ Barretts&quot;, y = NULL) +
+  theme_classic() +
+  theme(axis.text.x = element_text(size = rel(1), hjust = 0.5,vjust=0.5, angle = 90), 
+        # margin: top, right, bottom, and left
+        #axis.ticks.y = element_blank(),
+        plot.margin = unit(c(1, 0.01, 0.01, -0.7), &quot;cm&quot;), 
+        panel.grid = element_blank(),
+        legend.position = &quot;none&quot;)
+
+# Part 2: &quot;EAC-adjacent tissue w/ Barretts History&quot;
+hmd &lt;- filter(heatmap_data, sample_type == &quot;EAC-adjacent tissue w/ Barretts History&quot;)
+hmd$x_center &lt;- as.numeric(as.factor(hmd$x_center))
+spd &lt;- filter(sample_pos_table, sample_type == &quot;EAC-adjacent tissue w/ Barretts History&quot;)
+spd$x_center &lt;- as.numeric(as.factor(spd$x_center))
+
+plt_hmap2 &lt;- ggplot(hmd, 
+                    aes(x = x_center, y = y_center, fill = expr, 
+                        height = height, width = width)) + 
+  geom_tile() +
+  #facet_wrap(.~sample_type)+
+  scale_fill_gradient2(&quot;expr&quot;,trans=&quot;sqrt&quot;, high = &quot;darkred&quot;, low = &quot;darkblue&quot;, breaks=c(0, 0.1, 0.10, 0.30, 0.50, 0.80)) +
+  scale_x_continuous(breaks = spd$x_center, 
+                     labels = spd$ID, 
+                     expand = c(0, 0)) + 
+  # For the y axis, alternatively set the labels as: gene_position_table$gene
+  scale_y_continuous(breaks = gene_pos_table[, &quot;y_center&quot;], 
+                     labels = rep(&quot;&quot;, nrow(gene_pos_table)),
+                     limits = gene_axis_limits, 
+                     expand = c(0, 0)) + 
+  labs(x = &quot;EAC-adj. w/ Barretts&quot;, y = NULL) +
+  theme_classic() +
+  theme(axis.text.x = element_text(size = rel(1), hjust = 0.5,vjust=0.5, angle = 90), 
+        axis.ticks.y = element_blank(),
+        # margin: top, right, bottom, and left
+        plot.margin = unit(c(1, 0.01, 0.01, -0.7), &quot;cm&quot;), 
+        panel.grid.minor = element_blank(),
+        legend.position = &quot;none&quot;)
+
+# Part 3: &quot;EAC tissues w/o Barretts History&quot;
+hmd &lt;- filter(heatmap_data, sample_type == &quot;EAC tissues w/o Barretts History&quot;)
+hmd$x_center &lt;- as.numeric(as.factor(hmd$x_center))
+spd &lt;- filter(sample_pos_table, sample_type == &quot;EAC tissues w/o Barretts History&quot;)
+spd$x_center &lt;- as.numeric(as.factor(spd$x_center))
+
+plt_hmap3 &lt;- ggplot(hmd, 
+                    aes(x = x_center, y = y_center, fill = expr, 
+                        height = height, width = width)) + 
+  geom_tile() +
+  #facet_wrap(.~sample_type)+
+  scale_fill_gradient2(&quot;Abundance&quot;,trans=&quot;sqrt&quot;, high = &quot;darkred&quot;, low = &quot;darkblue&quot;, breaks=c(0, 0.10, 0.30, 0.50, 0.80)) +
+  scale_x_continuous(breaks = spd$x_center, 
+                     labels = spd$ID, 
+                     expand = c(0, 0)) + 
+  # For the y axis, alternatively set the labels as: gene_position_table$gene
+  scale_y_continuous(breaks = gene_pos_table[, &quot;y_center&quot;], 
+                     labels = rep(&quot;&quot;, nrow(gene_pos_table)),
+                     limits = gene_axis_limits, 
+                     expand = c(0, 0)) + 
+  labs(x = &quot;EAC w/o Barretts&quot;, y = NULL) +
+  theme_classic() +
+  theme(axis.text.x = element_text(size = rel(1), hjust = 0.75, vjust=0.5, angle = 90), 
+        axis.ticks.y = element_blank(),
+        # margin: top, right, bottom, and left
+        plot.margin = unit(c(1, 0.01, 0.01, -0.7), &quot;cm&quot;), 
+        panel.grid.minor = element_blank())
+
+
+# Dendrogram plot
+plt_dendr &lt;- ggplot(segment_data) + 
+  geom_segment(aes(x = x, y = y, xend = xend, yend = yend)) + 
+  scale_x_reverse(expand = c(0, 0.5)) + 
+  scale_y_continuous(breaks = gene_pos_table$y_center, 
+                     labels = gene_pos_table$gene, 
+                     limits = gene_axis_limits, 
+                     expand = c(0, 0)) + 
+  labs(x = &quot;&quot;, y = &quot;&quot;, colour = &quot;&quot;, size = &quot;&quot;) +
+  theme_classic() + 
+  theme(panel.grid = element_blank(),
+        axis.text.x = element_blank(),
+        axis.ticks.x = element_blank(),
+        plot.margin = unit(c(1, 0.01, 0.01, -0.7), &quot;cm&quot;))
+
+prntRelAbund &lt;- avgRelAbundCutoff*100</code></pre>
+<pre class="r"><code>p &lt;- plt_dendr+plt_hmap1+plt_hmap2+plt_hmap3+ 
+  plot_layout(
+    nrow=1, widths = c(0.5, 0.4, 0.15, 1),
+    guides=&quot;collect&quot;
+  ) +
+  plot_annotation(
+    title=&quot;TCGA WGS Data showing average relative abundance of specific OTUs by individual&quot;
+  )
+p</code></pre>
+<p><img src="figure/heatmaps-dendrograms-species-level.Rmd/ht-tcga-wgs-specific-otus-plot-make-1.png" width="100%" height="500px" style="display: block; margin: auto;" /></p>
+<pre class="r"><code>if(save.plots == T){
+  ggsave(paste0(&quot;output/tcga-wgs-specific-otus-heatmap-&quot;,save.Date,&quot;.pdf&quot;), plot=p, units=&quot;in&quot;, width=25, height=5)
+  ggsave(paste0(&quot;output/tcga-wgs-specific-otus-heatmap-&quot;,save.Date,&quot;.png&quot;), plot=p, units=&quot;in&quot;, width=25, height=5)
+}</code></pre>
+<br>
+<p>
+<button type="button" class="btn btn-default btn-workflowr btn-workflowr-sessioninfo" data-toggle="collapse" data-target="#workflowr-sessioninfo" style="display: block;">
+<span class="glyphicon glyphicon-wrench" aria-hidden="true"></span> Session information
+</button>
+</p>
+<div id="workflowr-sessioninfo" class="collapse">
+<pre class="r"><code>sessionInfo()</code></pre>
+<pre><code>R version 4.0.3 (2020-10-10)
+Platform: x86_64-w64-mingw32/x64 (64-bit)
+Running under: Windows 10 x64 (build 19042)
+
+Matrix products: default
+
+locale:
+[1] LC_COLLATE=English_United States.1252 
+[2] LC_CTYPE=English_United States.1252   
+[3] LC_MONETARY=English_United States.1252
+[4] LC_NUMERIC=C                          
+[5] LC_TIME=English_United States.1252    
+
+attached base packages:
+[1] stats     graphics  grDevices utils     datasets  methods   base     
+
+other attached packages:
+ [1] cowplot_1.1.1     dendextend_1.14.0 ggdendro_0.1.22   reshape2_1.4.4   
+ [5] car_3.0-10        carData_3.0-4     gvlma_1.0.0.3     patchwork_1.1.1  
+ [9] viridis_0.5.1     viridisLite_0.3.0 gridExtra_2.3     xtable_1.8-4     
+[13] kableExtra_1.3.1  data.table_1.13.6 readxl_1.3.1      forcats_0.5.1    
+[17] stringr_1.4.0     dplyr_1.0.3       purrr_0.3.4       readr_1.4.0      
+[21] tidyr_1.1.2       tibble_3.0.6      ggplot2_3.3.3     tidyverse_1.3.0  
+[25] lmerTest_3.1-3    lme4_1.1-26       Matrix_1.2-18     vegan_2.5-7      
+[29] lattice_0.20-41   permute_0.9-5     phyloseq_1.34.0   workflowr_1.6.2  
+
+loaded via a namespace (and not attached):
+ [1] minqa_1.2.4         colorspace_2.0-0    rio_0.5.16         
+ [4] ellipsis_0.3.1      rprojroot_2.0.2     XVector_0.30.0     
+ [7] fs_1.5.0            rstudioapi_0.13     farver_2.0.3       
+[10] lubridate_1.7.9.2   xml2_1.3.2          codetools_0.2-16   
+[13] splines_4.0.3       knitr_1.31          ade4_1.7-16        
+[16] jsonlite_1.7.2      nloptr_1.2.2.2      broom_0.7.4        
+[19] cluster_2.1.0       dbplyr_2.1.0        BiocManager_1.30.10
+[22] compiler_4.0.3      httr_1.4.2          backports_1.2.1    
+[25] assertthat_0.2.1    cli_2.3.0           later_1.1.0.1      
+[28] htmltools_0.5.1.1   prettyunits_1.1.1   tools_4.0.3        
+[31] igraph_1.2.6        gtable_0.3.0        glue_1.4.2         
+[34] Rcpp_1.0.6          Biobase_2.50.0      cellranger_1.1.0   
+[37] vctrs_0.3.6         Biostrings_2.58.0   rhdf5filters_1.2.0 
+[40] multtest_2.46.0     ape_5.4-1           nlme_3.1-149       
+[43] iterators_1.0.13    xfun_0.20           ps_1.5.0           
+[46] openxlsx_4.2.3      rvest_0.3.6         lifecycle_0.2.0    
+[49] statmod_1.4.35      zlibbioc_1.36.0     MASS_7.3-53        
+[52] scales_1.1.1        hms_1.0.0           promises_1.1.1     
+[55] parallel_4.0.3      biomformat_1.18.0   rhdf5_2.34.0       
+[58] curl_4.3            yaml_2.2.1          stringi_1.5.3      
+[61] highr_0.8           S4Vectors_0.28.1    foreach_1.5.1      
+[64] BiocGenerics_0.36.0 zip_2.1.1           boot_1.3-25        
+[67] rlang_0.4.10        pkgconfig_2.0.3     evaluate_0.14      
+[70] Rhdf5lib_1.12.1     labeling_0.4.2      tidyselect_1.1.0   
+[73] plyr_1.8.6          magrittr_2.0.1      R6_2.5.0           
+[76] IRanges_2.24.1      generics_0.1.0      DBI_1.1.1          
+[79] foreign_0.8-80      pillar_1.4.7        haven_2.3.1        
+[82] withr_2.4.1         mgcv_1.8-33         abind_1.4-5        
+[85] survival_3.2-7      modelr_0.1.8        crayon_1.4.1       
+[88] rmarkdown_2.6       progress_1.2.2      grid_4.0.3         
+[91] git2r_0.28.0        reprex_1.0.0        digest_0.6.27      
+[94] webshot_0.5.2       httpuv_1.5.5        numDeriv_2016.8-1.1
+[97] stats4_4.0.3        munsell_0.5.0      </code></pre>
+</div>
+</div>
+</div>
+</div>
+
+
+<!-- Adjust MathJax settings so that all math formulae are shown using
+TeX fonts only; see
+http://docs.mathjax.org/en/latest/configuration.html.  This will make
+the presentation more consistent at the cost of the webpage sometimes
+taking slightly longer to load. Note that this only works because the
+footer is added to webpages before the MathJax javascript. -->
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Config({
+    "HTML-CSS": { availableFonts: ["TeX"] }
+  });
+</script>
+
+
+
+
+</div>
+</div>
+
+</div>
+
+<script>
+
+// add bootstrap table styles to pandoc tables
+function bootstrapStylePandocTables() {
+  $('tr.odd').parent('tbody').parent('table').addClass('table table-condensed');
+}
+$(document).ready(function () {
+  bootstrapStylePandocTables();
+});
+
+
+</script>
+
+<!-- tabsets -->
+
+<script>
+$(document).ready(function () {
+  window.buildTabsets("TOC");
+});
+
+$(document).ready(function () {
+  $('.tabset-dropdown > .nav-tabs > li').click(function () {
+    $(this).parent().toggleClass('nav-tabs-open')
+  });
+});
+</script>
+
+<!-- code folding -->
+<script>
+$(document).ready(function () {
+  window.initializeCodeFolding("hide" === "show");
+});
+</script>
+
+<script>
+$(document).ready(function ()  {
+
+    // move toc-ignore selectors from section div to header
+    $('div.section.toc-ignore')
+        .removeClass('toc-ignore')
+        .children('h1,h2,h3,h4,h5').addClass('toc-ignore');
+
+    // establish options
+    var options = {
+      selectors: "h1,h2,h3",
+      theme: "bootstrap3",
+      context: '.toc-content',
+      hashGenerator: function (text) {
+        return text.replace(/[.\\/?&!#<>]/g, '').replace(/\s/g, '_');
+      },
+      ignoreSelector: ".toc-ignore",
+      scrollTo: 0
+    };
+    options.showAndHide = true;
+    options.smoothScroll = true;
+
+    // tocify
+    var toc = $("#TOC").tocify(options).data("toc-tocify");
+});
+</script>
+
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    script.src  = "https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML";
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
+
+</body>
+</html>

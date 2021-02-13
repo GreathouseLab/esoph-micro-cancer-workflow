@@ -27,24 +27,14 @@ Welcome to our research website.
 
 *[Boxplots for sample type by abundance](species-sample-type-combined.html)
 
-# Specific Questions for Update
+The following pages give a variety of heatmaps w/ dendrograms that help describe the differences in OTU abundance across groups.
 
-## Slide Figures 
+*[Genera Level Heatmaps with Dendrograms](slide-figures-heatmaps-dendrograms-updates.html)
 
-*[Slides for Updates with Figures Heatmaps with Dendrograms](slide-figures-heatmaps-dendrograms-updates.html)
+*[Species Level Heatmaps with Dendrograms](heatmaps-dendrograms-species-level.html)
 
+The following page helps describe the relationship between Fuso (and other OTUs) and tumor stage.
 
-## Q1: is there a taxonomic signature shared between the barrett's samples?
+* Is fuso associated with tumor stage in either data set? Does X bacteria predict stage? Multivariable w/ age, sex, BMI, history of Barrett's
 
-*[Results Question 1](results-question-1.html)
-
-
-## Q2: What is the abundance of F. nucleatum and/or Fusobacterium between these samples? - same samples as above
-
-*[Results Question 2](results-question-2.html)
- 
-
-## Q3: Is fuso associated with tumor stage in either data set? Does X bacteria predict stage? Multivariable w/ age, sex, BMI, history of Barrett's
-
-
-*[Results Question 3](results-question-3.html)
+*[Ordered Logit Model Results](ordered-logit-model.html)
