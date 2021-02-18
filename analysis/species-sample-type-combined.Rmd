@@ -53,7 +53,7 @@ for(i in 1:nrow(dat.wgs)){
 dat.16s$sample_type <- NA
 dat.16s$sample_type[dat.16s$tissue=="T" &
                       dat.16s$Histology=="ADC" &
-                      dat.16s$Barretts. == "Y"] <- "16SrRNA Tumor (w/Barrett's history)"
+                      dat.16s$Barretts. == "Y"] <- "16SrRNA Tumor (w/ Barrett's history)"
 dat.16s$sample_type[dat.16s$tissue=="BO" &
                       dat.16s$Histology=="Barrets only"&
                       dat.16s$Barretts. == "Y"] <-"16SrRNA Barrett's (BO)"
@@ -288,8 +288,8 @@ dat.wgs$OTU <- dat.wgs$otu2
 
 
 
-
-```{r ht-slide5-05-plot, warning=F, error=F, message=F}
+#Violin Plot Fuso
+```{r violin-fuso, warning=F, error=F, message=F}
 
 # merge datasets by subsetting to specific variables then merging
 analysis.dat <- dat.16s.s %>% 
@@ -304,7 +304,8 @@ dat <- dat.wgs.s %>%
   dplyr::select(OTU, sample_type, Abundance, ID, source)
 
 analysis.dat <- full_join(analysis.dat, dat) %>%
-  mutate(pres = ifelse(Abundance > 0, 1, 0)) # create a presence/absences variable
+  mutate(pres = ifelse(Abundance > 0, 1, 0)) %>%
+  filter(OTU=="Fusobacterium nucleatum")# create a presence/absences variable
 
 
 tb <- analysis.dat %>%
@@ -336,21 +337,253 @@ invroot<-function(x){
 }
 
 p <- ggplot(analysis.dat, aes(sample_type, Abund)) +
-  geom_violin(scale="width", adjust=1.5)+
+  geom_violin(scale="width", adjust=2)+
   geom_point(alpha=0.75)+
   scale_y_continuous(
     trans=scales::trans_new("root", root, invroot),
     breaks=c(0, 0.001,0.01, 0.1, 1,10,50, 100),
-    labels = c(0, 0.001,0.01, 0.1, 1,10,50, 100)
+    labels = c(0, 0.001,0.01, 0.1, 1,10,50, 100),
+    limits = c(0, 110)
   )+
   annotate(
-    "text", x=c(1, 3), y=c(95, 95),
-    label=c(paste0(tb[1,5],"% (",tb[1,4],",",tb[1,3],")"),"round 2")
+    "text", x=c(1:7), y=c(rep(110, 7)),
+    label=c(paste0(round(tb[1,5], 0),"% (",tb[1,4],"/",tb[1,3],")"), 
+            paste0(round(tb[2,5], 0),"% (",tb[2,4],"/",tb[2,3],")"),
+            paste0(round(tb[3,5], 0),"% (",tb[3,4],"/",tb[3,3],")"),
+            paste0(round(tb[4,5], 0),"% (",tb[4,4],"/",tb[4,3],")"),
+            paste0(round(tb[5,5], 0),"% (",tb[5,4],"/",tb[5,3],")"),
+            paste0(round(tb[6,5], 0),"% (",tb[6,4],"/",tb[6,3],")"),
+            paste0(round(tb[7,5], 0),"% (",tb[7,4],"/",tb[7,3],")"))
   )+
+  labs(x=NULL, y="% Abundance")+
   theme(
     axis.text.x = element_text(angle=30, hjust=0.95, vjust=0.95)
   )
 p
-
+ggsave("output/Barretts_violin-fuso.pdf", p, units = "in", width = 10, height = 6)
 ```
 
+#Violin Plot Strepto
+```{r violin-strepto, warning=F, error=F, message=F}
+
+# merge datasets by subsetting to specific variables then merging
+analysis.dat <- dat.16s.s %>% 
+  dplyr::mutate(ID = as.factor(accession.number)) %>%
+  dplyr::select(OTU, sample_type, Abundance, ID, source)
+
+dat <- dat.rna.s %>% 
+  dplyr::select(OTU, sample_type, Abundance, ID, source)
+analysis.dat <- full_join(analysis.dat, dat)
+
+dat <- dat.wgs.s %>% 
+  dplyr::select(OTU, sample_type, Abundance, ID, source)
+
+analysis.dat <- full_join(analysis.dat, dat) %>%
+  mutate(pres = ifelse(Abundance > 0, 1, 0)) %>%
+  filter(OTU=="Streptococcus spp.")# create a presence/absences variable
+
+
+tb <- analysis.dat %>%
+  filter(is.na(sample_type)==F)%>%
+  group_by(sample_type, OTU) %>%
+  summarise(
+    N=n(),
+    p = sum(pres, na.rm=T),
+    percent = p/N*100
+  )
+
+kable(tb, format="html")%>%
+  kable_styling(full_width = T)
+
+analysis.dat <- analysis.dat %>%
+  filter(is.na(sample_type)==F)%>%
+  mutate(
+    Abund = Abundance*100
+  )
+
+#root function
+root<-function(x){
+  x <- ifelse(x < 0, 0, x)
+  x**(0.2)
+}
+#inverse root function
+invroot<-function(x){
+  x**(5)
+}
+
+p <- ggplot(analysis.dat, aes(sample_type, Abund)) +
+  geom_violin(scale="width", adjust=2)+
+  geom_point(alpha=0.75)+
+  scale_y_continuous(
+    trans=scales::trans_new("root", root, invroot),
+    breaks=c(0, 0.001,0.01, 0.1, 1,10,50, 100),
+    labels = c(0, 0.001,0.01, 0.1, 1,10,50, 100),
+    limits = c(0, 110)
+  )+
+  annotate(
+    "text", x=c(1:7), y=c(rep(110, 7)),
+    label=c(paste0(round(tb[1,5], 0),"% (",tb[1,4],"/",tb[1,3],")"), 
+            paste0(round(tb[2,5], 0),"% (",tb[2,4],"/",tb[2,3],")"),
+            paste0(round(tb[3,5], 0),"% (",tb[3,4],"/",tb[3,3],")"),
+            paste0(round(tb[4,5], 0),"% (",tb[4,4],"/",tb[4,3],")"),
+            paste0(round(tb[5,5], 0),"% (",tb[5,4],"/",tb[5,3],")"),
+            paste0(round(tb[6,5], 0),"% (",tb[6,4],"/",tb[6,3],")"),
+            paste0(round(tb[7,5], 0),"% (",tb[7,4],"/",tb[7,3],")"))
+  )+
+  labs(x=NULL, y="% Abundance")+
+  theme(
+    axis.text.x = element_text(angle=30, hjust=0.95, vjust=0.95)
+  )
+p
+ggsave("output/Barretts_violin-strepto.pdf", p, units = "in", width = 10, height = 6)
+```
+
+#Violin Plot Campy
+```{r violin-campy, warning=F, error=F, message=F}
+
+# merge datasets by subsetting to specific variables then merging
+analysis.dat <- dat.16s.s %>% 
+  dplyr::mutate(ID = as.factor(accession.number)) %>%
+  dplyr::select(OTU, sample_type, Abundance, ID, source)
+
+dat <- dat.rna.s %>% 
+  dplyr::select(OTU, sample_type, Abundance, ID, source)
+analysis.dat <- full_join(analysis.dat, dat)
+
+dat <- dat.wgs.s %>% 
+  dplyr::select(OTU, sample_type, Abundance, ID, source)
+
+analysis.dat <- full_join(analysis.dat, dat) %>%
+  mutate(pres = ifelse(Abundance > 0, 1, 0)) %>%
+  filter(OTU=="Campylobacter concisus")# create a presence/absences variable
+
+
+tb <- analysis.dat %>%
+  filter(is.na(sample_type)==F)%>%
+  group_by(sample_type, OTU) %>%
+  summarise(
+    N=n(),
+    p = sum(pres, na.rm=T),
+    percent = p/N*100
+  )
+
+kable(tb, format="html")%>%
+  kable_styling(full_width = T)
+
+analysis.dat <- analysis.dat %>%
+  filter(is.na(sample_type)==F)%>%
+  mutate(
+    Abund = Abundance*100
+  )
+
+#root function
+root<-function(x){
+  x <- ifelse(x < 0, 0, x)
+  x**(0.2)
+}
+#inverse root function
+invroot<-function(x){
+  x**(5)
+}
+
+p <- ggplot(analysis.dat, aes(sample_type, Abund)) +
+  geom_violin(scale="width", adjust=2)+
+  geom_point(alpha=0.75)+
+  scale_y_continuous(
+    trans=scales::trans_new("root", root, invroot),
+    breaks=c(0, 0.001,0.01, 0.1, 1,10,50, 100),
+    labels = c(0, 0.001,0.01, 0.1, 1,10,50, 100),
+    limits = c(0, 110)
+  )+
+  annotate(
+    "text", x=c(1:7), y=c(rep(110, 7)),
+    label=c(paste0(round(tb[1,5], 0),"% (",tb[1,4],"/",tb[1,3],")"), 
+            paste0(round(tb[2,5], 0),"% (",tb[2,4],"/",tb[2,3],")"),
+            paste0(round(tb[3,5], 0),"% (",tb[3,4],"/",tb[3,3],")"),
+            paste0(round(tb[4,5], 0),"% (",tb[4,4],"/",tb[4,3],")"),
+            paste0(round(tb[5,5], 0),"% (",tb[5,4],"/",tb[5,3],")"),
+            paste0(round(tb[6,5], 0),"% (",tb[6,4],"/",tb[6,3],")"),
+            paste0(round(tb[7,5], 0),"% (",tb[7,4],"/",tb[7,3],")"))
+  )+
+  labs(x=NULL, y="% Abundance")+
+  theme(
+    axis.text.x = element_text(angle=30, hjust=0.95, vjust=0.95)
+  )
+p
+ggsave("output/Barretts_violin-campy.pdf", p, units = "in", width = 10, height = 6)
+```
+
+#Violin Plot Prevo
+```{r violin-prevo, warning=F, error=F, message=F}
+
+# merge datasets by subsetting to specific variables then merging
+analysis.dat <- dat.16s.s %>% 
+  dplyr::mutate(ID = as.factor(accession.number)) %>%
+  dplyr::select(OTU, sample_type, Abundance, ID, source)
+
+dat <- dat.rna.s %>% 
+  dplyr::select(OTU, sample_type, Abundance, ID, source)
+analysis.dat <- full_join(analysis.dat, dat)
+
+dat <- dat.wgs.s %>% 
+  dplyr::select(OTU, sample_type, Abundance, ID, source)
+
+analysis.dat <- full_join(analysis.dat, dat) %>%
+  mutate(pres = ifelse(Abundance > 0, 1, 0)) %>%
+  filter(OTU=="Prevotella melaninogenica")# create a presence/absences variable
+
+
+tb <- analysis.dat %>%
+  filter(is.na(sample_type)==F)%>%
+  group_by(sample_type, OTU) %>%
+  summarise(
+    N=n(),
+    p = sum(pres, na.rm=T),
+    percent = p/N*100
+  )
+
+kable(tb, format="html")%>%
+  kable_styling(full_width = T)
+
+analysis.dat <- analysis.dat %>%
+  filter(is.na(sample_type)==F)%>%
+  mutate(
+    Abund = Abundance*100
+  )
+
+#root function
+root<-function(x){
+  x <- ifelse(x < 0, 0, x)
+  x**(0.2)
+}
+#inverse root function
+invroot<-function(x){
+  x**(5)
+}
+
+p <- ggplot(analysis.dat, aes(sample_type, Abund)) +
+  geom_violin(scale="width", adjust=2)+
+  geom_point(alpha=0.75)+
+  scale_y_continuous(
+    trans=scales::trans_new("root", root, invroot),
+    breaks=c(0, 0.001,0.01, 0.1, 1,10,50, 100),
+    labels = c(0, 0.001,0.01, 0.1, 1,10,50, 100),
+    limits = c(0, 110)
+  )+
+  annotate(
+    "text", x=c(1:7), y=c(rep(110, 7)),
+    label=c(paste0(round(tb[1,5], 0),"% (",tb[1,4],"/",tb[1,3],")"), 
+            paste0(round(tb[2,5], 0),"% (",tb[2,4],"/",tb[2,3],")"),
+            paste0(round(tb[3,5], 0),"% (",tb[3,4],"/",tb[3,3],")"),
+            paste0(round(tb[4,5], 0),"% (",tb[4,4],"/",tb[4,3],")"),
+            paste0(round(tb[5,5], 0),"% (",tb[5,4],"/",tb[5,3],")"),
+            paste0(round(tb[6,5], 0),"% (",tb[6,4],"/",tb[6,3],")"),
+            paste0(round(tb[7,5], 0),"% (",tb[7,4],"/",tb[7,3],")"))
+  )+
+  labs(x=NULL, y="% Abundance")+
+  theme(
+    axis.text.x = element_text(angle=30, hjust=0.95, vjust=0.95)
+  )
+p
+ggsave("output/Barretts_violin-prevo.pdf", p, units = "in", width = 10, height = 6)
+```
