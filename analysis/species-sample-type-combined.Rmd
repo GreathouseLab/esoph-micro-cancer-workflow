@@ -65,11 +65,11 @@ dat.rna$sample_type <- NA
 dat.rna$sample_type[(dat.rna$morphology=="8140/3" |
                        dat.rna$morphology=="8480/3") &
                        dat.rna$SampleType_Level2=="Tumor" &
-                       dat.rna$Barrett.s.Esophagus.Reported=="No"] <- "RNA-seq Tumor (w/o Barrett's history)"
+                       dat.rna$Barrett.s.Esophagus.Reported=="Yes"] <- "RNA-seq Tumor (w/ Barrett's history)"
 dat.rna$sample_type[(dat.rna$morphology=="8140/3" | 
                        dat.rna$morphology=="8480/3") &
                        dat.rna$SampleType_Level2=="Normal"&
-                       dat.rna$Barrett.s.Esophagus.Reported=="No"] <- "RNA-seq Non-tumor (w/o Barrett's history)"
+                       dat.rna$Barrett.s.Esophagus.Reported=="Yes"] <- "RNA-seq Non-tumor (w/ Barrett's history)"
 
 dat.wgs$sample_type <- NA
 dat.wgs$sample_type[(dat.wgs$morphology=="8140/3" |
@@ -79,7 +79,7 @@ dat.wgs$sample_type[(dat.wgs$morphology=="8140/3" |
 dat.wgs$sample_type[(dat.wgs$morphology=="8140/3" | 
                        dat.wgs$morphology=="8480/3") &
                        dat.wgs$SampleType_Level2=="Normal"&
-                       dat.wgs$Barrett.s.Esophagus.Reported=="No"] <- "WGS Non-tumor (w/o Barrett's history)"
+                       dat.wgs$Barrett.s.Esophagus.Reported=="Yes"] <- "WGS Non-tumor (w/ Barrett's history)"
 
 
 # make tumor vs normal variable
@@ -289,7 +289,7 @@ dat.wgs$OTU <- dat.wgs$otu2
 
 
 #Violin Plot Fuso
-```{r violin-fuso, warning=F, error=F, message=F}
+```{r violin-fuso, warning=F, error=F, message=F, fig.dim=c(7,5), out.height="400px", out.width="100%"}
 
 # merge datasets by subsetting to specific variables then merging
 analysis.dat <- dat.16s.s %>% 
@@ -364,7 +364,7 @@ ggsave("output/Barretts_violin-fuso.pdf", p, units = "in", width = 10, height = 
 ```
 
 #Violin Plot Strepto
-```{r violin-strepto, warning=F, error=F, message=F}
+```{r violin-strepto, warning=F, error=F, message=F, fig.dim=c(7,5), out.height="400px", out.width="100%"}
 
 # merge datasets by subsetting to specific variables then merging
 analysis.dat <- dat.16s.s %>% 
@@ -439,7 +439,7 @@ ggsave("output/Barretts_violin-strepto.pdf", p, units = "in", width = 10, height
 ```
 
 #Violin Plot Campy
-```{r violin-campy, warning=F, error=F, message=F}
+```{r violin-campy, warning=F, error=F, message=F, fig.dim=c(7,5), out.height="400px", out.width="100%"}
 
 # merge datasets by subsetting to specific variables then merging
 analysis.dat <- dat.16s.s %>% 
@@ -514,7 +514,7 @@ ggsave("output/Barretts_violin-campy.pdf", p, units = "in", width = 10, height =
 ```
 
 #Violin Plot Prevo
-```{r violin-prevo, warning=F, error=F, message=F}
+```{r violin-prevo, warning=F, error=F, message=F, fig.dim=c(7,5), out.height="400px", out.width="100%"}
 
 # merge datasets by subsetting to specific variables then merging
 analysis.dat <- dat.16s.s %>% 
