@@ -75,7 +75,7 @@ dat.wgs$sample_type <- NA
 dat.wgs$sample_type[(dat.wgs$morphology=="8140/3" |
                        dat.wgs$morphology=="8480/3") &
                        dat.wgs$SampleType_Level2=="Tumor" &
-                       dat.wgs$Barrett.s.Esophagus.Reported=="No"] <- "WGS Tumor (w/o Barrett's history) "
+                       dat.wgs$Barrett.s.Esophagus.Reported=="Yes"] <- "WGS Tumor (w/ Barrett's history) "
 dat.wgs$sample_type[(dat.wgs$morphology=="8140/3" | 
                        dat.wgs$morphology=="8480/3") &
                        dat.wgs$SampleType_Level2=="Normal"&
