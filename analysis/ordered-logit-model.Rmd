@@ -67,6 +67,28 @@ for(i in 1:nrow(dat.wgs)){
 }
 
 # set up variables
+dat.16s <- dat.16s %>%
+  group_by(OTU) %>%
+  mutate(
+    BarrettsHist = ifelse(Barretts. == "Y", 1, 0),
+    bar.c = BarrettsHist - mean(BarrettsHist),
+    female = ifelse(gender=="F", 1, 0),
+    female.c = female-mean(female),
+    age.c = age - mean(age),
+    BMI.n = ifelse(BMI == "U", NA, BMI),
+    BMI.n = as.numeric(BMI.n),
+    bmi.c = BMI.n - mean(BMI.n, na.rm=T),
+    bmi.c = ifelse(is.na(bmi.c), 0, bmi.c)
+  )
+dat.rna$BarrettsHist <- ifelse(dat.rna$Barrett.s.Esophagus.Reported == "Yes", 1, 0)
+dat.wgs$BarrettsHist <- ifelse(dat.wgs$Barrett.s.Esophagus.Reported == "Yes", 1, 0)
+
+dat.16s$female <- 
+dat.rna$female <- ifelse(dat.rna$gender=="F", 1, 0)
+dat.wgs$female <- ifelse(dat.wgs$gender=="F", 1, 0)
+
+dat.16s$avgAge <- dat.16s$age - mean(dat.16s$age)
+
 dat.16s$sample_type <- 0
 dat.16s$sample_type[dat.16s$tissue=="T" &
                       dat.16s$Histology=="ADC" &
@@ -584,6 +606,61 @@ glm(I(as.numeric(tumor.stage) >= 4) ~ OTU, family="binomial", data = dat.16s.s)
 glm(I(as.numeric(tumor.stage) >= 5) ~ OTU, family="binomial", data = dat.16s.s)
 
 ```
+
+### Model 5: TS ~ OTU + Abundance + OTU:Abundnace + COVARIATES
+
+```{r glm-16s-m5, fig.height=5, out.width="100%", out.height="100%"}
+
+## fit ordered logit model and store results
+fit <- MASS::polr(tumor.stage ~ OTU + Abundance+ OTU:Abundance + age.c + female.c + bmi.c + bar.c, data = dat.16s.s, Hess=TRUE)
+
+## view a summary of the model
+summary(fit)
+
+# obtain approximate p-values
+ctable <- coef(summary(fit))
+p <- pnorm(abs(ctable[, "t value"]), lower.tail = FALSE) * 2
+(ctable <- cbind(ctable, "p value" = p))
+
+# obtain CIs
+(ci <- confint(fit))  # CIs assuming normality
+
+## OR and CI
+exp(cbind(OR = coef(fit), ci))
+
+
+# save fitted logits
+pp <- fitted(fit)
+## look at the averaged predicted probabilities for different values of the continuous predictor variable Abundnace within each level of OTU
+dabund <- data.frame(
+  OTU = rep(c("Fusobacterium nucleatum", "Streptococcus spp.", "Campylobacter concisus", "Prevotella melaninogenica"), each = 51),
+  Abundance = rep(seq(0, 500,10), 4),
+  age.c=0,
+  female.c=0,
+  bmi.c = 0,
+  bar.c = 0
+)
+pp.abund <-cbind(dabund, predict(fit, newdata = dabund, "probs", se = TRUE))
+
+## calculate the mean probabilities within each level of OTU
+by(pp.abund[, 7:11], pp.abund$OTU, colMeans)
+
+## melt data set to long for ggplot2
+lpp <- melt(pp.abund, id.vars = c("OTU", "Abundance", "age.c","female.c","bmi.c","bar.c"), value.name = "probability") %>%
+  mutate(Tumor_Stage = variable)
+
+## plot predicted probabilities across Abundance values for each level of OTU
+## facetted by tumor.stage
+ggplot(lpp, aes(x = Abundance, y = probability, colour = OTU)) +
+  geom_line() + 
+  facet_grid(Tumor_Stage ~., scales="free", labeller="label_both")+
+  labs(y="Probability of Tumor Stage",
+       title="Tumor stage likelihood with bacteria abundance and OTU")+
+  theme(
+    panel.grid = element_blank()
+  )
+```
+
 
 
 <!-- # TCGA RNAseq data -->

@@ -1,0 +1,360 @@
+---
+title: "PICRUSt Analyses"
+output:
+  workflowr::wflow_html:
+    toc: true
+editor_options:
+  chunk_output_type: console
+---
+
+```
+For PICRUSt analysis: 
+
+Use file KO_metagenome_out > pred_metagenome_unstrat_descrip.tsv to conduct the following tests/measures: 
+
+Mean relative abundance in Tumors 
+
+Standard error of mean in Tumors 
+
+Mean relative abundance in Non-tumors 
+
+Standard error of mean in Non-tumors 
+
+GLM differential abundance analysis between Tumor vs Non-tumor (Patient=Fixed effect) 
+
+P-value 
+
+FDR corrected q-value 
+
+GLMM differential abundance analysis between Tumor vs Non-tumor (Patient=Random Effect) 
+
+P-value 
+
+FDR corrected q-value 
+
+Use file EC_metagenome_out > pred_metagenome_unstrat_descrip to conduct the same analyses as described for A. 
+
+Use file pathways_out > path_abun_unstrat_descrip to conduct the same analyses as in A.  
+```
+
+```{r data, include=FALSE, echo=FALSE, warning=F, error=F, message=F}
+# load packages
+source("code/load_packages.R")
+
+# get data
+source("code/get_cleaned_data.R")
+
+theme_set(theme_bw())
+# pal = "Sequential"
+# scale_colour_discrete <-  function(palname=pal, ...){
+#   scale_colour_brewer(palette=palname, ...)
+# }
+# scale_fill_discrete <-  function(palname=pal, ...){
+#   scale_fill_brewer(palette=palname, ...)
+# }
+
+knitr::opts_chunk$set(out.width = "225%", out.height = 10)
+
+options(digits=5, scipen=5)
+
+# transform to relative abundances 
+# in scale of 0-100
+phylo.data.nci.umd <- transform_sample_counts(phylo.data.nci.umd, function(x){100*(x / sum(x))})
+
+# melt data down for use
+dat.16s <- phyloseq::sample_data(phylo.data.nci.umd)
+
+# set up variables
+dat.16s$sample_type <- 0
+dat.16s$sample_type[dat.16s$tissue=="T" &
+                      dat.16s$Histology=="ADC" &
+                      dat.16s$Barretts. == "Y"] <- "EAC tissues w/ Barretts History"
+dat.16s$sample_type[dat.16s$tissue=="N" &
+                      dat.16s$Histology=="ADC" &
+                      dat.16s$Barretts. == "Y"] <- "EAC-adjacent tissue w/ Barretts History"
+dat.16s$sample_type[dat.16s$tissue=="BO" &
+                      dat.16s$Histology=="Barrets only"&
+                      dat.16s$Barretts. == "Y"] <-"Barretts Only"
+
+
+# make tumor vs normal variable
+dat.16s$tumor.cat <- factor(dat.16s$tissue, levels=c("BO", "N", "T"), labels = c("Non-Tumor", "Non-Tumor", "Tumor"))
+
+# relabel as (0/1) for analysis
+dat.16s$tumor <- as.numeric(factor(dat.16s$tissue, levels=c("BO", "N", "T"), labels = c("Non-Tumor", "Non-Tumor", "Tumor"))) - 1
+
+# tumor stage variable
+dat.16s$tumor.stage <- factor(
+  dat.16s$pTNM,
+  levels = c("0", "1", "I", "IIA", "IIB", "III", "IV"),
+  labels = c("0", "1", "I", "II", "II", "III", "IV")
+)
+
+
+
+```
+
+
+# Part 1 EC Data
+
+```{r pi-dat-ec}
+
+pi.dat <- readr::read_tsv("data/PICRUST/ec_pred_metagenome_unstrat_descrip.tsv")
+
+pi.dat <- pi.dat %>%
+  pivot_longer(
+    cols=`1.S37.Jun172016`:`99.D01.S37.Jun232016`,
+    names_to = "ID",
+    values_to = "Abundance"
+  )
+d <- as.data.frame(dat.16s)
+mydata <- full_join(pi.dat[,-1], d)
+
+mydata <- mydata %>%
+  mutate(
+    ID.n = as.numeric(as.factor(ID)),
+    description.n = as.numeric(as.factor(description))
+  ) %>%
+  group_by(ID) %>%
+  mutate(RelAbundance = Abundance/sum(Abundance)*100) %>%
+  ungroup()%>%
+  group_by(description)%>%
+  mutate(avgRA = mean(RelAbundance))
+
+```
+
+
+## Relative Abundance
+
+```{r ec-ra}
+
+tb.ra1 <- mydata %>%
+  group_by(description) %>%
+  summarise(ng = n(),
+            Overall.M = mean(RelAbundance),
+            Overall.SE = sd(RelAbundance)/ng)
+tb.ra2m <- mydata %>%
+  group_by(description, tumor.cat) %>%
+  summarise(M = mean(RelAbundance)) %>%
+  pivot_wider(id_cols = description,
+              names_from = tumor.cat,
+              values_from = M)
+tb.ra2se <- mydata %>%
+  group_by(description, tumor.cat) %>%
+  summarise(ng=n(),SE = sd(RelAbundance)/ng) %>%
+  pivot_wider(id_cols = description,
+              names_from = tumor.cat,
+              values_from = SE)
+tb.ra <- left_join(tb.ra1, tb.ra2m)
+tb.ra <- cbind(tb.ra, tb.ra2se[,-1]) 
+colnames(tb.ra) <- c("description", "ng", "Overall Mean", "Overall SE", "Non-Tumor Mean", "Tumor Mean", "Non-Tumor SE", "Tumor SE")
+tb.ra <- tb.ra %>%
+  arrange(desc(`Overall Mean`))
+tb.ra <- tb.ra[, c("description", "Overall Mean", "Overall SE","Tumor Mean", "Tumor SE", "Non-Tumor Mean", "Non-Tumor SE")]
+
+kable(tb.ra, format="html", digits=5, caption="EC Data Average Relative Abundance of Each Description (sorted in descending order)") %>%
+  kable_styling(full_width = T) %>%
+  scroll_box(width = "100%", height="600px")
+
+```
+
+## Modeling Difference between Tumor and Non-Tumor
+
+For the modeling, we used a generalized linear mixed model (GLMM).
+
+First, we looked at the biserial correlation between the abundance of each description and the tumor status.
+
+```{r}
+
+tb <- mydata %>%
+  group_by(description)%>%
+  summarise(
+    r = cor(tumor, Abundance)
+  ) %>%
+  mutate(
+    M=mean(r)
+  )
+
+ggplot(tb, aes(x=r))+
+  geom_density()+
+  geom_vline(aes(xintercept = M))+
+  labs(x="Biserial Correlation",title="Relationship between description abundance and tumor (tumor vs. non-tumor)")+
+  theme(panel.grid = element_blank())
+
+```
+
+Next, we need the data to be on an interpretable scale.
+First, let's use the raw abundance like scale.
+
+```{r ec-glmm-overview}
+
+p <- ggplot(mydata, aes(x=Abundance))+
+  geom_density()
+p
+
+mydata <- mydata %>%
+  mutate(Abundance.dich=ifelse(Abundance==0, 0, 1))
+table(mydata$Abundance.dich)
+
+# so, there is a general zero-inflation..
+p <- mydata %>%
+  filter(avgRA > 0.5) %>%
+  ggplot(aes(x=Abundance)) +
+    geom_density(adjust=1.5)+
+    facet_wrap(.~description)+
+    labs(title="Descriptions with Average Relative Abundance >= 0.5")
+p
+```
+
+Due to the zero-inflation, let's look at how to effectively model this.
+Let's first run models by description so that we can avoid the nesting issue initially. We will come back to this to conduct the final model (it will be more powerful).
+
+```{r glmm-zi, message=F}
+DESCRIPTIONS <- unique(mydata$description)
+i<-1
+dat0 <- mydata %>% filter(description==DESCRIPTIONS[i])
+
+library(brms)
+
+# set up output object
+results.out <- as.data.frame(matrix(ncol=7, nrow=length(DESCRIPTIONS)*3))
+colnames(results.out) <- c("Description", "Parameter", "Est", "SE", "Q2.5", "Q97.5", "Rhat")
+results.out$Description <- rep(DESCRIPTIONS, 3)
+
+# for(i in 1:length(DESCRIPTIONS)){
+for(i in 1:5){ 
+  dat0 <- mydata %>%
+    filter(description == DESCRIPTIONS[i])
+  fit0 <- brms::brm(
+    Abundance ~ 1 + tumor,
+    data= dat0,
+    family=hurdle_lognormal(link="identity"),
+    control = list(adapt_delta=0.99),
+    silent = T)
+  # the resulting "hu" parameter is the model for the proportion of zeros estimated
+  #summary(fit0)
+  #plot(fit0)
+  # save the posterior summaries (intercept, tumor, and hu)
+  fit.post <- round(posterior_summary(fit0),3)
+  
+  results.out[results.out$Description == DESCRIPTIONS[i], 2] <- c("b_Intercept", "b_tumor", "hu")
+  results.out[results.out$Description == DESCRIPTIONS[i], 3:6] <- fit.post[c("b_Intercept", "b_tumor", "hu"),]
+  results.out[results.out$Description == DESCRIPTIONS[i], 7] <- rhat(fit0)[c("b_Intercept", "b_tumor", "hu")]
+  cat(".")
+}
+
+kable(results.out, format="html", digits=3) %>%
+  kable_styling(full_width = T)%>%
+  scroll_box(width="100%", height="600px")
+
+```
+
+Draft of a plots for these results
+
+```{r glmm-plot1}
+
+res.out2 <- left_join(results.out, tb.ra,by=c("Description"="description")) %>% pivot_longer(
+  cols = c("Tumor Mean", "Non-Tumor Mean"),
+  names_to = "Tumor", values_to = "RelAbundance"
+)
+
+# based on above
+dat0 <- res.out2 %>%
+  mutate(estseR=abs(Est/SE))%>%
+  na.omit()%>%
+  filter(Parameter=="b_tumor", estseR >=0.25)
+
+p <- ggplot(dat0, aes(y=Description, x=Est))+
+  geom_point()+
+  geom_segment(aes(y=Description, yend=Description, x=Q2.5, xend=Q97.5))
+p
+
+p2 <- ggplot(dat0, aes(x=RelAbundance, y=Description, color=Tumor))+
+  geom_point(position = "dodge")
+p2
+```
+
+
+Alternatively, we can model the relative abundance data.
+For this, transform the RA data to be 0-100 instead of 0-1.
+
+```{r glmm-ra, message=F}
+
+
+# set up output object
+results.out <- as.data.frame(matrix(ncol=7, nrow=length(DESCRIPTIONS)*3))
+colnames(results.out) <- c("Description", "Parameter", "Est", "SE", "Q2.5", "Q97.5", "Rhat")
+results.out$Description <- rep(DESCRIPTIONS, 3)
+
+# for(i in 1:length(DESCRIPTIONS)){
+for(i in 1:5){ 
+  dat0 <- mydata %>%
+    filter(description == DESCRIPTIONS[i])%>%
+    mutate(RelAbundance= RelAbundance*100)
+  fit0 <- brms::brm(
+    RelAbundance ~ 1 + tumor,
+    data= dat0,
+    family=hurdle_lognormal(link="identity"),
+    control = list(adapt_delta=0.99),
+    silent = T)
+  # the resulting "hu" parameter is the model for the proportion of zeros estimated
+  #summary(fit0)
+  #plot(fit0)
+  # save the posterior summaries (intercept, tumor, and hu)
+  fit.post <- round(posterior_summary(fit0),3)
+  
+  results.out[results.out$Description == DESCRIPTIONS[i], 2] <- c("b_Intercept", "b_tumor", "hu")
+  results.out[results.out$Description == DESCRIPTIONS[i], 3:6] <- fit.post[c("b_Intercept", "b_tumor", "hu"),]
+  results.out[results.out$Description == DESCRIPTIONS[i], 7] <- rhat(fit0)[c("b_Intercept", "b_tumor", "hu")]
+  cat(".")
+}
+
+kable(results.out, format="html", digits=3) %>%
+  kable_styling(full_width = T)%>%
+  scroll_box(width="100%", height="600px")
+
+```
+
+Draft of a plots for these results
+
+```{r glmm-plot-ra}
+
+# based on above
+p <- results.out %>%
+  na.omit()%>%
+  filter(Parameter=="b_tumor")%>%
+  ggplot(aes(y=Description, x=Est))+
+  geom_point()+
+  geom_segment(aes(y=Description, yend=Description, x=Q2.5, xend=Q97.5))
+p
+```
+
+For these analyses, we need to use some kind of hurdle/zero-inflated model to account for the large proportion of zeros in SOME of the the descriptions.
+This creates a programming difficulty because only SOME really need this feature.
+In the above, I tested two types of approaches.
+First, we could model each descriptions separately (the quicker - time wise way).
+Secondly, we could jointly model the descriptions using a multilevel model (2-level) hurdle model.
+The latter is EXTREMELY computationally intensive.
+
+```{r glmm-full, eval=F}
+
+# random effects model (may be too large)
+# let's try on a small subset
+
+dat0 <- mydata %>%
+  filter(description %in% DESCRIPTIONS[sample(1:length(DESCRIPTIONS),25)])
+# priors
+priors2 <-c(set_prior("lkj(2)", class = "cor"))
+fit0 <- brms::brm(
+  Abundance ~ 1 + tumor + (1 + tumor | description),
+  prior = priors2,
+  data= dat0,
+  family=hurdle_lognormal(link="identity"), 
+  #iter = 10000, warmup=2000,
+  save_all_pars = T,
+  control = list(adapt_delta=0.99))
+# the resulting "hu" parameter is the model for the proportion of zeros estimated
+summary(fit0)
+plot(fit0)
+
+```
