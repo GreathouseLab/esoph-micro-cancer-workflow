@@ -505,16 +505,16 @@ This reproducible <a href="http://rmarkdown.rstudio.com">R Markdown</a> analysis
 <div class="panel panel-default">
 <div class="panel-heading">
 <p class="panel-title">
-<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongRepositoryversionstrongahrefhttpsgithubcomGreathouseLabesophmicrocancerworkflowtree092bf3396fc69f4b16398092009ec0b9122b058dtargetblank092bf33a"> <span class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span> <strong>Repository version:</strong> <a href="https://github.com/GreathouseLab/esoph-micro-cancer-workflow/tree/092bf3396fc69f4b16398092009ec0b9122b058d" target="_blank">092bf33</a> </a>
+<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongRepositoryversionstrongahrefhttpsgithubcomGreathouseLabesophmicrocancerworkflowtreee3241da2194c6bcc9a9ca5188bef13788a10b538targetblanke3241daa"> <span class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span> <strong>Repository version:</strong> <a href="https://github.com/GreathouseLab/esoph-micro-cancer-workflow/tree/e3241da2194c6bcc9a9ca5188bef13788a10b538" target="_blank">e3241da</a> </a>
 </p>
 </div>
-<div id="strongRepositoryversionstrongahrefhttpsgithubcomGreathouseLabesophmicrocancerworkflowtree092bf3396fc69f4b16398092009ec0b9122b058dtargetblank092bf33a" class="panel-collapse collapse">
+<div id="strongRepositoryversionstrongahrefhttpsgithubcomGreathouseLabesophmicrocancerworkflowtreee3241da2194c6bcc9a9ca5188bef13788a10b538targetblanke3241daa" class="panel-collapse collapse">
 <div class="panel-body">
 <p>
 Great! You are using Git for version control. Tracking code development and connecting the code version to the results is critical for reproducibility.
 </p>
 <p>
-The results in this page were generated with repository version <a href="https://github.com/GreathouseLab/esoph-micro-cancer-workflow/tree/092bf3396fc69f4b16398092009ec0b9122b058d" target="_blank">092bf33</a>. See the <em>Past versions</em> tab to see a history of the changes made to the R Markdown and HTML files.
+The results in this page were generated with repository version <a href="https://github.com/GreathouseLab/esoph-micro-cancer-workflow/tree/e3241da2194c6bcc9a9ca5188bef13788a10b538" target="_blank">e3241da</a>. See the <em>Past versions</em> tab to see a history of the changes made to the R Markdown and HTML files.
 </p>
 <p>
 Note that you need to be careful to ensure that all relevant files for the analysis have been committed to Git prior to generating the results (you can use <code>wflow_publish</code> or <code>wflow_git_commit</code>). workflowr only checks the R Markdown file, but you know if there are other scripts or data files that it depends on. Below is the status of the Git repository when the results were generated:
@@ -523,11 +523,11 @@ Note that you need to be careful to ensure that all relevant files for the analy
 Ignored files:
     Ignored:    .Rhistory
     Ignored:    .Rproj.user/
-    Ignored:    analysis/figure/
     Ignored:    data/
 
 Unstaged changes:
     Modified:   analysis/ordered-logit-model.Rmd
+    Modified:   analysis/species-sample-type-combined.Rmd
 
 </code></pre>
 <p>
@@ -566,6 +566,40 @@ Message
 </tr>
 </thead>
 <tbody>
+<tr>
+<td>
+Rmd
+</td>
+<td>
+<a href="https://github.com/GreathouseLab/esoph-micro-cancer-workflow/blob/e3241da2194c6bcc9a9ca5188bef13788a10b538/analysis/ordered-logit-model.Rmd" target="_blank">e3241da</a>
+</td>
+<td>
+noah-padgett
+</td>
+<td>
+2021-03-05
+</td>
+<td>
+updated logistic reg
+</td>
+</tr>
+<tr>
+<td>
+html
+</td>
+<td>
+<a href="https://rawcdn.githack.com/GreathouseLab/esoph-micro-cancer-workflow/e3241da2194c6bcc9a9ca5188bef13788a10b538/docs/ordered-logit-model.html" target="_blank">e3241da</a>
+</td>
+<td>
+noah-padgett
+</td>
+<td>
+2021-03-05
+</td>
+<td>
+updated logistic reg
+</td>
+</tr>
 <tr>
 <td>
 Rmd
@@ -672,6 +706,13 @@ table(dat$tumor.stage)</code></pre>
   facet_wrap(.~OTU, nrow=1, scales=&quot;free&quot;)+
   theme_classic()</code></pre>
 <p><img src="figure/ordered-logit-model.Rmd/nci-fig1-1.png" width="100%" height="100%" style="display: block; margin: auto;" /></p>
+<p><strong>NOTE</strong> the bacteria were not uniquely defined for 16S data. That means that these are the bacteria truly used:</p>
+<ul>
+<li>“Fusobacterium_nucleatum”</li>
+<li>Streptococcus spp. = “Streptococcus_dentisani:Streptococcus_infantis:Streptococcus_mitis:Streptococcus_oligofermentans:Streptococcus_oralis:Streptococcus_pneumoniae:Streptococcus_pseudopneumoniae:Streptococcus_sanguinis”,</li>
+<li>Campylobacter spp. = “Campylobacter_rectus:Campylobacter_showae”,</li>
+<li>Prevotella spp. = “Prevotella_melaninogenica”</li>
+</ul>
 <p>Stage “1” has only 1 unique sample and will be dropped from subsequent analyses. And remove NA values (7).</p>
 <pre class="r"><code>dat.16s.s &lt;- dat.16s.s %&gt;%
   filter(tumor.stage != &quot;1&quot;)%&gt;%
@@ -731,21 +772,21 @@ Pr(TS = IV)&amp;=1 - Pr(TS\leq IV) =1-0.93=0.07,\\
 <p>This model expands on the previous model to include OTU abundance as a predictor of TS. OTU abundance is captured by four variables as predictors of TS (the four OTUs listed at the top of this document).</p>
 <pre class="r"><code>dat0 &lt;- dat.16s.wide
 ## fit ordered logit model and store results &#39;m&#39;
-fit &lt;- fit1 &lt;- MASS::polr(tumor.stage ~ 1+ `Streptococcus spp.` + `Fusobacterium nucleatum` + `Prevotella melaninogenica` + `Campylobacter concisus`, data = dat.16s.wide, Hess=TRUE)
+fit &lt;- fit1 &lt;- MASS::polr(tumor.stage ~ 1 + `Fusobacterium nucleatum` + `Streptococcus spp.*` + `Campylobacter spp.*` + `Prevotella spp.`, data = dat.16s.wide, Hess=TRUE)
 
 ## view a summary of the model
 summary(fit)</code></pre>
 <pre><code>Call:
-MASS::polr(formula = tumor.stage ~ 1 + `Streptococcus spp.` + 
-    `Fusobacterium nucleatum` + `Prevotella melaninogenica` + 
-    `Campylobacter concisus`, data = dat.16s.wide, Hess = TRUE)
+MASS::polr(formula = tumor.stage ~ 1 + `Fusobacterium nucleatum` + 
+    `Streptococcus spp.*` + `Campylobacter spp.*` + `Prevotella spp.`, 
+    data = dat.16s.wide, Hess = TRUE)
 
 Coefficients:
-                                Value Std. Error t value
-`Streptococcus spp.`         0.000488    0.00577  0.0846
-`Fusobacterium nucleatum`    0.013240    0.01245  1.0639
-`Prevotella melaninogenica`  0.015590    0.01532  1.0178
-`Campylobacter concisus`    -0.037641    0.07027 -0.5357
+                              Value Std. Error t value
+`Fusobacterium nucleatum`  0.013240    0.01245  1.0639
+`Streptococcus spp.*`      0.000488    0.00577  0.0846
+`Campylobacter spp.*`     -0.037641    0.07027 -0.5357
+`Prevotella spp.`          0.015590    0.01532  1.0178
 
 Intercepts:
        Value  Std. Error t value
@@ -760,9 +801,9 @@ AIC: 458.49 </code></pre>
 <pre><code>Likelihood ratio tests of ordinal regression models
 
 Response: tumor.stage
-                                                                                                          Model
-1                                                                                                             1
-2 1 + `Streptococcus spp.` + `Fusobacterium nucleatum` + `Prevotella melaninogenica` + `Campylobacter concisus`
+                                                                                              Model
+1                                                                                                 1
+2 1 + `Fusobacterium nucleatum` + `Streptococcus spp.*` + `Campylobacter spp.*` + `Prevotella spp.`
   Resid. df Resid. Dev   Test    Df LR stat. Pr(Chi)
 1       146      445.3                              
 2       142      442.5 1 vs 2     4    2.864  0.5809</code></pre>
@@ -770,30 +811,30 @@ Response: tumor.stage
 ctable &lt;- coef(summary(fit))
 p &lt;- pnorm(abs(ctable[, &quot;t value&quot;]), lower.tail = FALSE) * 2
 (ctable &lt;- cbind(ctable, &quot;p value&quot; = p))</code></pre>
-<pre><code>                                 Value Std. Error  t value   p value
-`Streptococcus spp.`         0.0004884   0.005772  0.08461 9.326e-01
-`Fusobacterium nucleatum`    0.0132397   0.012445  1.06385 2.874e-01
-`Prevotella melaninogenica`  0.0155899   0.015317  1.01780 3.088e-01
-`Campylobacter concisus`    -0.0376410   0.070265 -0.53570 5.922e-01
-0|I                         -0.8207942   0.273501 -3.00106 2.690e-03
-I|II                        -0.1057784   0.266764 -0.39652 6.917e-01
-II|III                       1.4243029   0.290278  4.90669 9.263e-07
-III|IV                       2.8030741   0.390066  7.18615 6.664e-13</code></pre>
+<pre><code>                               Value Std. Error  t value   p value
+`Fusobacterium nucleatum`  0.0132397   0.012445  1.06385 2.874e-01
+`Streptococcus spp.*`      0.0004884   0.005772  0.08461 9.326e-01
+`Campylobacter spp.*`     -0.0376410   0.070265 -0.53570 5.922e-01
+`Prevotella spp.`          0.0155899   0.015317  1.01780 3.088e-01
+0|I                       -0.8207942   0.273501 -3.00106 2.690e-03
+I|II                      -0.1057784   0.266764 -0.39652 6.917e-01
+II|III                     1.4243029   0.290278  4.90669 9.263e-07
+III|IV                     2.8030741   0.390066  7.18615 6.664e-13</code></pre>
 <pre class="r"><code># obtain CIs
 (ci &lt;- confint(fit))  # CIs assuming normality</code></pre>
 <pre><code>Waiting for profiling to be done...</code></pre>
-<pre><code>                               2.5 %  97.5 %
-`Streptococcus spp.`        -0.01089 0.01180
-`Fusobacterium nucleatum`   -0.01124 0.03852
-`Prevotella melaninogenica` -0.01508 0.04568
-`Campylobacter concisus`    -0.19516 0.09332</code></pre>
+<pre><code>                             2.5 %  97.5 %
+`Fusobacterium nucleatum` -0.01124 0.03852
+`Streptococcus spp.*`     -0.01089 0.01180
+`Campylobacter spp.*`     -0.19516 0.09332
+`Prevotella spp.`         -0.01508 0.04568</code></pre>
 <pre class="r"><code>## OR and CI
 exp(cbind(OR = coef(fit), ci))</code></pre>
-<pre><code>                                OR  2.5 % 97.5 %
-`Streptococcus spp.`        1.0005 0.9892  1.012
-`Fusobacterium nucleatum`   1.0133 0.9888  1.039
-`Prevotella melaninogenica` 1.0157 0.9850  1.047
-`Campylobacter concisus`    0.9631 0.8227  1.098</code></pre>
+<pre><code>                              OR  2.5 % 97.5 %
+`Fusobacterium nucleatum` 1.0133 0.9888  1.039
+`Streptococcus spp.*`     1.0005 0.9892  1.012
+`Campylobacter spp.*`     0.9631 0.8227  1.098
+`Prevotella spp.`         1.0157 0.9850  1.047</code></pre>
 <pre class="r"><code># save fitted logits
 pp &lt;- fitted(fit)
 # predictive data
@@ -807,7 +848,7 @@ dat1 &lt;- dat0 %&gt;%
     values_to = &quot;Pred.Prob&quot;
   ) %&gt;%
   pivot_longer(
-    cols=`Streptococcus spp.`:`Campylobacter concisus`,
+    cols=`Streptococcus spp.*`:`Campylobacter spp.*`,
     names_to=&quot;OTU&quot;,
     values_to=&quot;Abundance&quot;
   )
@@ -831,32 +872,31 @@ logit\left(Pr(TS\leq I)\right)&amp;=-0.24\\
 logit\left(Pr(TS\leq II)\right)&amp;=1.27\\
 logit\left(Pr(TS\leq III)\right)&amp;=2.64\\
 \end{align*}\]</span> While interpreting the odds ratios can be done as follows. First, take Streptococcus spp., the OR was 1.00 95% CI (0.99, 1.01). This implies that for individuals who had a 1% higher relative abundance of Streptococcus spp., the odds of being in a higher tumor stage is multiplied 1.00 times (i.e., 0% increase on average) holding the abundance of other OTUs constant. This means that the knowledge of relative abundance of Strepto was not informative over the base probability we estimated in model 0.</p>
-<p>For Fusobacterium nucleatum (OR = 1.01, 95% CI [0.99, 1.04]) and Prevotella melaninogenica (OR = 1.01, 95% CI [0.99, 1.05]), the interpretation is as follows because the OR is the same. For individuals who had a 1% higher relative abundance of this OTU (Fuso. or Prevo.), the odds of being in a higher tumor stage is multiplied 1.01 times (i.e., about a 1% increase on average) holding the abundance of other OTUs constant.</p>
+<p>For Fusobacterium nucleatum (OR = 1.01, 95% CI [0.99, 1.04]) and Prevotella spp. (OR = 1.01, 95% CI [0.99, 1.05]), the interpretation is as follows because the OR is the same. For individuals who had a 1% higher relative abundance of this OTU (Fuso. or Prevo.), the odds of being in a higher tumor stage is multiplied 1.01 times (i.e., about a 1% increase on average) holding the abundance of other OTUs constant.</p>
 </div>
 <div id="model-2-ts-otu-covariates" class="section level3">
 <h3>Model 2: TS ~ OTU + COVARIATES</h3>
 <pre class="r"><code>dat0 &lt;- dat.16s.wide
 ## fit ordered logit model and store results &#39;m&#39;
-fit &lt;- fit2 &lt;- MASS::polr(tumor.stage ~ 1+ `Streptococcus spp.` + `Fusobacterium nucleatum` + `Prevotella melaninogenica` + `Campylobacter concisus` + age.c + female.c + bmi.c + bar.c, data = dat.16s.wide, Hess=TRUE)
+fit &lt;- fit2 &lt;- MASS::polr(tumor.stage ~ 1+ `Fusobacterium nucleatum` + `Streptococcus spp.*` + `Campylobacter spp.*` + `Prevotella spp.` + age.c + female.c + bmi.c + bar.c, data = dat.16s.wide, Hess=TRUE)
 
 ## view a summary of the model
 summary(fit)</code></pre>
 <pre><code>Call:
-MASS::polr(formula = tumor.stage ~ 1 + `Streptococcus spp.` + 
-    `Fusobacterium nucleatum` + `Prevotella melaninogenica` + 
-    `Campylobacter concisus` + age.c + female.c + bmi.c + bar.c, 
-    data = dat.16s.wide, Hess = TRUE)
+MASS::polr(formula = tumor.stage ~ 1 + `Fusobacterium nucleatum` + 
+    `Streptococcus spp.*` + `Campylobacter spp.*` + `Prevotella spp.` + 
+    age.c + female.c + bmi.c + bar.c, data = dat.16s.wide, Hess = TRUE)
 
 Coefficients:
-                               Value Std. Error t value
-`Streptococcus spp.`         0.00250    0.00589  0.4240
-`Fusobacterium nucleatum`    0.01447    0.01264  1.1453
-`Prevotella melaninogenica`  0.01515    0.01595  0.9501
-`Campylobacter concisus`    -0.03350    0.07537 -0.4444
-age.c                       -0.00415    0.01371 -0.3025
-female.c                    -0.01082    0.43529 -0.0248
-bmi.c                       -0.01602    0.02275 -0.7043
-bar.c                        0.62262    0.34717  1.7934
+                             Value Std. Error t value
+`Fusobacterium nucleatum`  0.01447    0.01264  1.1453
+`Streptococcus spp.*`      0.00250    0.00589  0.4240
+`Campylobacter spp.*`     -0.03350    0.07537 -0.4444
+`Prevotella spp.`          0.01515    0.01595  0.9501
+age.c                     -0.00415    0.01371 -0.3025
+female.c                  -0.01082    0.43529 -0.0248
+bmi.c                     -0.01602    0.02275 -0.7043
+bar.c                      0.62262    0.34717  1.7934
 
 Intercepts:
        Value  Std. Error t value
@@ -871,9 +911,9 @@ AIC: 462.63 </code></pre>
 <pre><code>Likelihood ratio tests of ordinal regression models
 
 Response: tumor.stage
-                                                                                                                                             Model
-1                                                                                                                                                1
-2 1 + `Streptococcus spp.` + `Fusobacterium nucleatum` + `Prevotella melaninogenica` + `Campylobacter concisus` + age.c + female.c + bmi.c + bar.c
+                                                                                                                                 Model
+1                                                                                                                                    1
+2 1 + `Fusobacterium nucleatum` + `Streptococcus spp.*` + `Campylobacter spp.*` + `Prevotella spp.` + age.c + female.c + bmi.c + bar.c
   Resid. df Resid. Dev   Test    Df LR stat. Pr(Chi)
 1       146      445.3                              
 2       138      438.6 1 vs 2     8    6.715  0.5677</code></pre>
@@ -881,42 +921,42 @@ Response: tumor.stage
 ctable &lt;- coef(summary(fit))
 p &lt;- pnorm(abs(ctable[, &quot;t value&quot;]), lower.tail = FALSE) * 2
 (ctable &lt;- cbind(ctable, &quot;p value&quot; = p))</code></pre>
-<pre><code>                                Value Std. Error  t value   p value
-`Streptococcus spp.`         0.002499   0.005893  0.42397 6.716e-01
-`Fusobacterium nucleatum`    0.014473   0.012636  1.14533 2.521e-01
-`Prevotella melaninogenica`  0.015152   0.015948  0.95008 3.421e-01
-`Campylobacter concisus`    -0.033496   0.075370 -0.44442 6.567e-01
-age.c                       -0.004149   0.013715 -0.30249 7.623e-01
-female.c                    -0.010816   0.435289 -0.02485 9.802e-01
-bmi.c                       -0.016024   0.022751 -0.70430 4.812e-01
-bar.c                        0.622623   0.347169  1.79343 7.290e-02
-0|I                         -0.775974   0.275914 -2.81238 4.918e-03
-I|II                        -0.050542   0.270417 -0.18691 8.517e-01
-II|III                       1.500106   0.295276  5.08035 3.767e-07
-III|IV                       2.892116   0.394360  7.33369 2.239e-13</code></pre>
+<pre><code>                              Value Std. Error  t value   p value
+`Fusobacterium nucleatum`  0.014473   0.012636  1.14533 2.521e-01
+`Streptococcus spp.*`      0.002499   0.005893  0.42397 6.716e-01
+`Campylobacter spp.*`     -0.033496   0.075370 -0.44442 6.567e-01
+`Prevotella spp.`          0.015152   0.015948  0.95008 3.421e-01
+age.c                     -0.004149   0.013715 -0.30249 7.623e-01
+female.c                  -0.010816   0.435289 -0.02485 9.802e-01
+bmi.c                     -0.016024   0.022751 -0.70430 4.812e-01
+bar.c                      0.622623   0.347169  1.79343 7.290e-02
+0|I                       -0.775974   0.275914 -2.81238 4.918e-03
+I|II                      -0.050542   0.270417 -0.18691 8.517e-01
+II|III                     1.500106   0.295276  5.08035 3.767e-07
+III|IV                     2.892116   0.394360  7.33369 2.239e-13</code></pre>
 <pre class="r"><code># obtain CIs
 (ci &lt;- confint(fit))  # CIs assuming normality</code></pre>
 <pre><code>Waiting for profiling to be done...</code></pre>
-<pre><code>                                2.5 %  97.5 %
-`Streptococcus spp.`        -0.009111 0.01405
-`Fusobacterium nucleatum`   -0.010312 0.04018
-`Prevotella melaninogenica` -0.016973 0.04624
-`Campylobacter concisus`    -0.199242 0.10805
-age.c                       -0.031171 0.02275
-female.c                    -0.873271 0.83890
-bmi.c                       -0.061385 0.02842
-bar.c                       -0.056145 1.30794</code></pre>
+<pre><code>                              2.5 %  97.5 %
+`Fusobacterium nucleatum` -0.010312 0.04018
+`Streptococcus spp.*`     -0.009111 0.01405
+`Campylobacter spp.*`     -0.199242 0.10805
+`Prevotella spp.`         -0.016973 0.04624
+age.c                     -0.031171 0.02275
+female.c                  -0.873271 0.83890
+bmi.c                     -0.061385 0.02842
+bar.c                     -0.056145 1.30794</code></pre>
 <pre class="r"><code>## OR and CI
 exp(cbind(OR = coef(fit), ci))</code></pre>
-<pre><code>                                OR  2.5 % 97.5 %
-`Streptococcus spp.`        1.0025 0.9909  1.014
-`Fusobacterium nucleatum`   1.0146 0.9897  1.041
-`Prevotella melaninogenica` 1.0153 0.9832  1.047
-`Campylobacter concisus`    0.9671 0.8194  1.114
-age.c                       0.9959 0.9693  1.023
-female.c                    0.9892 0.4176  2.314
-bmi.c                       0.9841 0.9405  1.029
-bar.c                       1.8638 0.9454  3.699</code></pre>
+<pre><code>                              OR  2.5 % 97.5 %
+`Fusobacterium nucleatum` 1.0146 0.9897  1.041
+`Streptococcus spp.*`     1.0025 0.9909  1.014
+`Campylobacter spp.*`     0.9671 0.8194  1.114
+`Prevotella spp.`         1.0153 0.9832  1.047
+age.c                     0.9959 0.9693  1.023
+female.c                  0.9892 0.4176  2.314
+bmi.c                     0.9841 0.9405  1.029
+bar.c                     1.8638 0.9454  3.699</code></pre>
 <pre class="r"><code># save fitted logits
 pp &lt;- fitted(fit)
 # predictive data
@@ -930,7 +970,7 @@ dat1 &lt;- dat0 %&gt;%
     values_to = &quot;Pred.Prob&quot;
   ) %&gt;%
   pivot_longer(
-    cols=`Streptococcus spp.`:`Campylobacter concisus`,
+    cols=`Streptococcus spp.*`:`Campylobacter spp.*`,
     names_to=&quot;OTU&quot;,
     values_to=&quot;Abundance&quot;
   )
@@ -963,29 +1003,28 @@ apply(dat.16s.wide[,c(&#39;TI&#39;,&#39;TII&#39;,&#39;TIII&#39;, &#39;TIV&#39;)]
 <pre><code>       TI TII TIII TIV
 FALSE  42  66  117 140
 TRUE  108  84   33  10</code></pre>
-<pre class="r"><code>summary(glm(TI  ~ 1 + `Streptococcus spp.` + `Fusobacterium nucleatum` + `Prevotella melaninogenica` + `Campylobacter concisus`+ age.c + female.c + bmi.c + bar.c, data = dat.16s.wide, family=binomial(link=&quot;logit&quot;)))</code></pre>
+<pre class="r"><code>summary(glm(TI  ~ 1 + `Fusobacterium nucleatum` + `Streptococcus spp.*` + `Campylobacter spp.*` + `Prevotella spp.`+ age.c + female.c + bmi.c + bar.c, data = dat.16s.wide, family=binomial(link=&quot;logit&quot;)))</code></pre>
 <pre><code>
 Call:
-glm(formula = TI ~ 1 + `Streptococcus spp.` + `Fusobacterium nucleatum` + 
-    `Prevotella melaninogenica` + `Campylobacter concisus` + 
-    age.c + female.c + bmi.c + bar.c, family = binomial(link = &quot;logit&quot;), 
-    data = dat.16s.wide)
+glm(formula = TI ~ 1 + `Fusobacterium nucleatum` + `Streptococcus spp.*` + 
+    `Campylobacter spp.*` + `Prevotella spp.` + age.c + female.c + 
+    bmi.c + bar.c, family = binomial(link = &quot;logit&quot;), data = dat.16s.wide)
 
 Deviance Residuals: 
    Min      1Q  Median      3Q     Max  
 -2.001  -1.186   0.624   0.828   1.259  
 
 Coefficients:
-                            Estimate Std. Error z value Pr(&gt;|z|)  
-(Intercept)                  0.49816    0.30842    1.62    0.106  
-`Streptococcus spp.`         0.01025    0.00768    1.34    0.182  
-`Fusobacterium nucleatum`    0.06398    0.04394    1.46    0.145  
-`Prevotella melaninogenica`  0.01499    0.02613    0.57    0.566  
-`Campylobacter concisus`     0.00351    0.11131    0.03    0.975  
-age.c                        0.00969    0.01783    0.54    0.587  
-female.c                    -0.16395    0.51003   -0.32    0.748  
-bmi.c                        0.01611    0.03096    0.52    0.603  
-bar.c                        0.88774    0.44663    1.99    0.047 *
+                          Estimate Std. Error z value Pr(&gt;|z|)  
+(Intercept)                0.49816    0.30842    1.62    0.106  
+`Fusobacterium nucleatum`  0.06398    0.04394    1.46    0.145  
+`Streptococcus spp.*`      0.01025    0.00768    1.34    0.182  
+`Campylobacter spp.*`      0.00351    0.11131    0.03    0.975  
+`Prevotella spp.`          0.01499    0.02613    0.57    0.566  
+age.c                      0.00969    0.01783    0.54    0.587  
+female.c                  -0.16395    0.51003   -0.32    0.748  
+bmi.c                      0.01611    0.03096    0.52    0.603  
+bar.c                      0.88774    0.44663    1.99    0.047 *
 ---
 Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1
 
@@ -996,29 +1035,28 @@ Residual deviance: 163.73  on 141  degrees of freedom
 AIC: 181.7
 
 Number of Fisher Scoring iterations: 6</code></pre>
-<pre class="r"><code>summary(glm(TII ~ 1 + `Streptococcus spp.` + `Fusobacterium nucleatum` + `Prevotella melaninogenica` + `Campylobacter concisus`+ age.c + female.c + bmi.c + bar.c, data = dat.16s.wide, family=binomial(link=&quot;logit&quot;)))</code></pre>
+<pre class="r"><code>summary(glm(TII ~ 1 + `Fusobacterium nucleatum` + `Streptococcus spp.*` + `Campylobacter spp.*` + `Prevotella spp.`+ age.c + female.c + bmi.c + bar.c, data = dat.16s.wide, family=binomial(link=&quot;logit&quot;)))</code></pre>
 <pre><code>
 Call:
-glm(formula = TII ~ 1 + `Streptococcus spp.` + `Fusobacterium nucleatum` + 
-    `Prevotella melaninogenica` + `Campylobacter concisus` + 
-    age.c + female.c + bmi.c + bar.c, family = binomial(link = &quot;logit&quot;), 
-    data = dat.16s.wide)
+glm(formula = TII ~ 1 + `Fusobacterium nucleatum` + `Streptococcus spp.*` + 
+    `Campylobacter spp.*` + `Prevotella spp.` + age.c + female.c + 
+    bmi.c + bar.c, family = binomial(link = &quot;logit&quot;), data = dat.16s.wide)
 
 Deviance Residuals: 
    Min      1Q  Median      3Q     Max  
 -1.489  -1.212   0.704   1.108   1.499  
 
 Coefficients:
-                             Estimate Std. Error z value Pr(&gt;|z|)  
-(Intercept)                  0.000384   0.283602    0.00    0.999  
-`Streptococcus spp.`         0.003275   0.006798    0.48    0.630  
-`Fusobacterium nucleatum`    0.073311   0.038078    1.93    0.054 .
-`Prevotella melaninogenica` -0.001872   0.020207   -0.09    0.926  
-`Campylobacter concisus`    -0.059713   0.088063   -0.68    0.498  
-age.c                       -0.014604   0.015986   -0.91    0.361  
-female.c                     0.402529   0.486388    0.83    0.408  
-bmi.c                        0.006519   0.026552    0.25    0.806  
-bar.c                        0.486287   0.399061    1.22    0.223  
+                           Estimate Std. Error z value Pr(&gt;|z|)  
+(Intercept)                0.000384   0.283602    0.00    0.999  
+`Fusobacterium nucleatum`  0.073311   0.038078    1.93    0.054 .
+`Streptococcus spp.*`      0.003275   0.006798    0.48    0.630  
+`Campylobacter spp.*`     -0.059713   0.088063   -0.68    0.498  
+`Prevotella spp.`         -0.001872   0.020207   -0.09    0.926  
+age.c                     -0.014604   0.015986   -0.91    0.361  
+female.c                   0.402529   0.486388    0.83    0.408  
+bmi.c                      0.006519   0.026552    0.25    0.806  
+bar.c                      0.486287   0.399061    1.22    0.223  
 ---
 Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1
 
@@ -1029,29 +1067,28 @@ Residual deviance: 195.34  on 141  degrees of freedom
 AIC: 213.3
 
 Number of Fisher Scoring iterations: 5</code></pre>
-<pre class="r"><code>summary(glm(TIII ~ 1 + `Streptococcus spp.` + `Fusobacterium nucleatum` + `Prevotella melaninogenica` + `Campylobacter concisus`+ age.c + female.c + bmi.c + bar.c, data = dat.16s.wide, family=binomial(link=&quot;logit&quot;)))</code></pre>
+<pre class="r"><code>summary(glm(TIII ~ 1 + `Fusobacterium nucleatum` + `Streptococcus spp.*` + `Campylobacter spp.*` + `Prevotella spp.`+ age.c + female.c + bmi.c + bar.c, data = dat.16s.wide, family=binomial(link=&quot;logit&quot;)))</code></pre>
 <pre><code>
 Call:
-glm(formula = TIII ~ 1 + `Streptococcus spp.` + `Fusobacterium nucleatum` + 
-    `Prevotella melaninogenica` + `Campylobacter concisus` + 
-    age.c + female.c + bmi.c + bar.c, family = binomial(link = &quot;logit&quot;), 
-    data = dat.16s.wide)
+glm(formula = TIII ~ 1 + `Fusobacterium nucleatum` + `Streptococcus spp.*` + 
+    `Campylobacter spp.*` + `Prevotella spp.` + age.c + female.c + 
+    bmi.c + bar.c, family = binomial(link = &quot;logit&quot;), data = dat.16s.wide)
 
 Deviance Residuals: 
    Min      1Q  Median      3Q     Max  
 -1.347  -0.756  -0.576  -0.202   2.107  
 
 Coefficients:
-                            Estimate Std. Error z value Pr(&gt;|z|)    
-(Intercept)                 -1.26111    0.36325   -3.47  0.00052 ***
-`Streptococcus spp.`        -0.00693    0.00900   -0.77  0.44116    
-`Fusobacterium nucleatum`   -0.01641    0.02223   -0.74  0.46031    
-`Prevotella melaninogenica`  0.03267    0.02188    1.49  0.13532    
-`Campylobacter concisus`    -0.40193    0.36903   -1.09  0.27608    
-age.c                        0.00600    0.01879    0.32  0.74944    
-female.c                    -0.32657    0.63515   -0.51  0.60714    
-bmi.c                       -0.10841    0.04514   -2.40  0.01632 *  
-bar.c                        0.80964    0.49326    1.64  0.10071    
+                          Estimate Std. Error z value Pr(&gt;|z|)    
+(Intercept)               -1.26111    0.36325   -3.47  0.00052 ***
+`Fusobacterium nucleatum` -0.01641    0.02223   -0.74  0.46031    
+`Streptococcus spp.*`     -0.00693    0.00900   -0.77  0.44116    
+`Campylobacter spp.*`     -0.40193    0.36903   -1.09  0.27608    
+`Prevotella spp.`          0.03267    0.02188    1.49  0.13532    
+age.c                      0.00600    0.01879    0.32  0.74944    
+female.c                  -0.32657    0.63515   -0.51  0.60714    
+bmi.c                     -0.10841    0.04514   -2.40  0.01632 *  
+bar.c                      0.80964    0.49326    1.64  0.10071    
 ---
 Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1
 
@@ -1062,30 +1099,29 @@ Residual deviance: 144.20  on 141  degrees of freedom
 AIC: 162.2
 
 Number of Fisher Scoring iterations: 7</code></pre>
-<pre class="r"><code>summary(glm(TIV  ~ 1 + `Streptococcus spp.` + `Fusobacterium nucleatum` + `Prevotella melaninogenica` + `Campylobacter concisus`+ age.c + female.c + bmi.c + bar.c, data = dat.16s.wide, family=binomial(link=&quot;logit&quot;)))</code></pre>
+<pre class="r"><code>summary(glm(TIV  ~ 1 + `Fusobacterium nucleatum` + `Streptococcus spp.*` + `Campylobacter spp.*` + `Prevotella spp.` + age.c + female.c + bmi.c + bar.c, data = dat.16s.wide, family=binomial(link=&quot;logit&quot;)))</code></pre>
 <pre><code>Warning: glm.fit: fitted probabilities numerically 0 or 1 occurred</code></pre>
 <pre><code>
 Call:
-glm(formula = TIV ~ 1 + `Streptococcus spp.` + `Fusobacterium nucleatum` + 
-    `Prevotella melaninogenica` + `Campylobacter concisus` + 
-    age.c + female.c + bmi.c + bar.c, family = binomial(link = &quot;logit&quot;), 
-    data = dat.16s.wide)
+glm(formula = TIV ~ 1 + `Fusobacterium nucleatum` + `Streptococcus spp.*` + 
+    `Campylobacter spp.*` + `Prevotella spp.` + age.c + female.c + 
+    bmi.c + bar.c, family = binomial(link = &quot;logit&quot;), data = dat.16s.wide)
 
 Deviance Residuals: 
     Min       1Q   Median       3Q      Max  
 -2.0213  -0.3107  -0.1561  -0.0027   2.2971  
 
 Coefficients:
-                            Estimate Std. Error z value Pr(&gt;|z|)    
-(Intercept)                 -3.53618    0.87137   -4.06  4.9e-05 ***
-`Streptococcus spp.`        -0.00368    0.01603   -0.23   0.8184    
-`Fusobacterium nucleatum`   -2.65756    2.07129   -1.28   0.1995    
-`Prevotella melaninogenica`  0.15010    0.05747    2.61   0.0090 ** 
-`Campylobacter concisus`     0.42004    0.33434    1.26   0.2090    
-age.c                       -0.01818    0.03911   -0.46   0.6420    
-female.c                    -1.50786    1.16883   -1.29   0.1970    
-bmi.c                       -0.28740    0.10923   -2.63   0.0085 ** 
-bar.c                        0.16138    0.94158    0.17   0.8639    
+                          Estimate Std. Error z value Pr(&gt;|z|)    
+(Intercept)               -3.53618    0.87137   -4.06  4.9e-05 ***
+`Fusobacterium nucleatum` -2.65756    2.07129   -1.28   0.1995    
+`Streptococcus spp.*`     -0.00368    0.01603   -0.23   0.8184    
+`Campylobacter spp.*`      0.42004    0.33434    1.26   0.2090    
+`Prevotella spp.`          0.15010    0.05747    2.61   0.0090 ** 
+age.c                     -0.01818    0.03911   -0.46   0.6420    
+female.c                  -1.50786    1.16883   -1.29   0.1970    
+bmi.c                     -0.28740    0.10923   -2.63   0.0085 ** 
+bar.c                      0.16138    0.94158    0.17   0.8639    
 ---
 Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1
 
@@ -1161,7 +1197,7 @@ mean.dat &lt;- dat.rna.s %&gt;%
   facet_wrap(.~OTU, nrow=1, scales=&quot;free&quot;)+
   theme_classic()</code></pre>
 <pre><code>Warning: Removed 428 rows containing non-finite values (stat_ydensity).</code></pre>
-<pre><code>Warning: Removed 461 rows containing missing values (geom_point).</code></pre>
+<pre><code>Warning: Removed 464 rows containing missing values (geom_point).</code></pre>
 <p><img src="figure/ordered-logit-model.Rmd/rna-fig1-1.png" width="100%" height="100%" style="display: block; margin: auto;" /></p>
 <p>Stage IV only has two cases, remove for analysis.</p>
 <pre class="r"><code>dat.rna.s &lt;- dat.rna.s %&gt;%
@@ -1212,65 +1248,99 @@ pp[1,]</code></pre>
 <p>This model expands on the previous model to include OTU abundance as a predictor of TS. OTU abundance is captured by four variables as predictors of TS (the four OTUs listed at the top of this document).</p>
 <pre class="r"><code>dat0 &lt;- dat.rna.wide
 ## fit ordered logit model and store results &#39;m&#39;
-fit &lt;- fit1 &lt;- MASS::polr(tumor.stage ~ 1+ `Streptococcus spp.` + `Fusobacterium nucleatum` + `Prevotella melaninogenica` + `Campylobacter concisus`, data = dat.rna.wide, Hess=TRUE)</code></pre>
+fit &lt;- fit1 &lt;- MASS::polr(tumor.stage ~ 1 + `Fusobacterium nucleatum` + `Streptococcus sanguinis` + `Campylobacter concisus` + `Prevotella spp.`, data = dat.rna.wide, Hess=TRUE)</code></pre>
 <pre><code>Warning: glm.fit: fitted probabilities numerically 0 or 1 occurred</code></pre>
 <pre class="r"><code>## view a summary of the model
 summary(fit)</code></pre>
 <pre><code>Call:
-MASS::polr(formula = tumor.stage ~ 1 + `Streptococcus spp.` + 
-    `Fusobacterium nucleatum` + `Prevotella melaninogenica` + 
-    `Campylobacter concisus`, data = dat.rna.wide, Hess = TRUE)
+MASS::polr(formula = tumor.stage ~ 1 + `Fusobacterium nucleatum` + 
+    `Streptococcus sanguinis` + `Campylobacter concisus` + `Prevotella spp.`, 
+    data = dat.rna.wide, Hess = TRUE)
 
 Coefficients:
-                              Value Std. Error t value
-`Streptococcus spp.`         2.7963      4.913   0.569
-`Fusobacterium nucleatum`   -0.0525      0.159  -0.330
-`Prevotella melaninogenica` -0.6643      1.628  -0.408
-`Campylobacter concisus`     7.2512     15.257   0.475
+                            Value Std. Error t value
+`Fusobacterium nucleatum`  -0.245       0.24   -1.02
+`Streptococcus sanguinis`  -8.209       4.77   -1.72
+`Campylobacter concisus`  145.354      70.02    2.08
+`Prevotella spp.`         -20.894      12.87   -1.62
+
+Intercepts:
+       Value   Std. Error t value
+I|II    -1.678   0.416     -4.037
+II|III   0.680   0.358      1.900
+
+Residual Deviance: 143.04 
+AIC: 155.04 </code></pre>
+<pre class="r"><code># rescale variables
+dat.rna.wide &lt;- dat.rna.wide %&gt;%
+  mutate(
+    `Fusobacterium nucleatum` = 10*`Fusobacterium nucleatum`,
+    `Streptococcus sanguinis` = 10*`Streptococcus sanguinis`,
+    `Campylobacter concisus` = 10*`Campylobacter concisus`,
+    `Prevotella spp.` = 10*`Prevotella spp.`
+  )
+dat0 &lt;- dat.rna.wide
+fit &lt;- fit1 &lt;- MASS::polr(tumor.stage ~ 1 + `Fusobacterium nucleatum` + `Streptococcus sanguinis` + `Campylobacter concisus` + `Prevotella spp.`, data = dat.rna.wide, Hess=TRUE)</code></pre>
+<pre><code>Warning: glm.fit: fitted probabilities numerically 0 or 1 occurred</code></pre>
+<pre class="r"><code># interpret in terms of change in 0.1% increase in relative abundance
+
+## view a summary of the model
+summary(fit)</code></pre>
+<pre><code>Call:
+MASS::polr(formula = tumor.stage ~ 1 + `Fusobacterium nucleatum` + 
+    `Streptococcus sanguinis` + `Campylobacter concisus` + `Prevotella spp.`, 
+    data = dat.rna.wide, Hess = TRUE)
+
+Coefficients:
+                             Value Std. Error t value
+`Fusobacterium nucleatum` -0.00612     0.0162 -0.3781
+`Streptococcus sanguinis` -0.00722     0.3158 -0.0229
+`Campylobacter concisus`   1.10682     1.7836  0.6206
+`Prevotella spp.`         -0.19603     0.4870 -0.4025
 
 Intercepts:
        Value  Std. Error t value
-I|II   -1.210  0.367     -3.296 
-II|III  0.884  0.345      2.565 
+I|II   -1.307  0.355     -3.686 
+II|III  0.791  0.319      2.476 
 
-Residual Deviance: 114.53 
-AIC: 126.53 </code></pre>
+Residual Deviance: 114.85 
+AIC: 126.85 </code></pre>
 <pre class="r"><code>anova(fit1, fit0) # Chi-square difference test</code></pre>
 <pre><code>Likelihood ratio tests of ordinal regression models
 
 Response: tumor.stage
-                                                                                                          Model
-1                                                                                                             1
-2 1 + `Streptococcus spp.` + `Fusobacterium nucleatum` + `Prevotella melaninogenica` + `Campylobacter concisus`
+                                                                                                     Model
+1                                                                                                        1
+2 1 + `Fusobacterium nucleatum` + `Streptococcus sanguinis` + `Campylobacter concisus` + `Prevotella spp.`
   Resid. df Resid. Dev   Test    Df LR stat. Pr(Chi)
 1        53      115.4                              
-2        49      114.5 1 vs 2     4   0.8931  0.9255</code></pre>
+2        49      114.8 1 vs 2     4   0.5733   0.966</code></pre>
 <pre class="r"><code># obtain approximate p-values
 ctable &lt;- coef(summary(fit))
 p &lt;- pnorm(abs(ctable[, &quot;t value&quot;]), lower.tail = FALSE) * 2
 (ctable &lt;- cbind(ctable, &quot;p value&quot; = p))</code></pre>
-<pre><code>                               Value Std. Error t value   p value
-`Streptococcus spp.`         2.79631     4.9131  0.5692 0.5692510
-`Fusobacterium nucleatum`   -0.05254     0.1594 -0.3296 0.7416751
-`Prevotella melaninogenica` -0.66427     1.6278 -0.4081 0.6832171
-`Campylobacter concisus`     7.25117    15.2571  0.4753 0.6345980
-I|II                        -1.21043     0.3673 -3.2957 0.0009819
-II|III                       0.88364     0.3445  2.5646 0.0103282</code></pre>
+<pre><code>                              Value Std. Error  t value   p value
+`Fusobacterium nucleatum` -0.006124     0.0162 -0.37809 0.7053659
+`Streptococcus sanguinis` -0.007217     0.3158 -0.02285 0.9817661
+`Campylobacter concisus`   1.106818     1.7836  0.62055 0.5348951
+`Prevotella spp.`         -0.196030     0.4870 -0.40255 0.6872800
+I|II                      -1.306986     0.3546 -3.68606 0.0002278
+II|III                     0.790929     0.3194  2.47624 0.0132773</code></pre>
 <pre class="r"><code># obtain CIs
 (ci &lt;- confint(fit))  # CIs assuming normality</code></pre>
 <pre><code>Waiting for profiling to be done...</code></pre>
-<pre><code>                               2.5 %  97.5 %
-`Streptococcus spp.`         -7.0912 13.0226
-`Fusobacterium nucleatum`    -0.3907  0.2666
-`Prevotella melaninogenica`  -4.6019  2.3536
-`Campylobacter concisus`    -19.8730 43.8222</code></pre>
+<pre><code>                             2.5 %  97.5 %
+`Fusobacterium nucleatum` -0.03913 0.02708
+`Streptococcus sanguinis` -0.64345 0.69627
+`Campylobacter concisus`  -2.38265 4.88828
+`Prevotella spp.`         -1.21830 0.78885</code></pre>
 <pre class="r"><code>## OR and CI
 exp(cbind(OR = coef(fit), ci))</code></pre>
-<pre><code>                                   OR     2.5 %    97.5 %
-`Streptococcus spp.`          16.3841 8.324e-04 4.525e+05
-`Fusobacterium nucleatum`      0.9488 6.766e-01 1.306e+00
-`Prevotella melaninogenica`    0.5146 1.003e-02 1.052e+01
-`Campylobacter concisus`    1409.7570 2.340e-09 1.076e+19</code></pre>
+<pre><code>                              OR   2.5 %  97.5 %
+`Fusobacterium nucleatum` 0.9939 0.96162   1.027
+`Streptococcus sanguinis` 0.9928 0.52548   2.006
+`Campylobacter concisus`  3.0247 0.09231 132.725
+`Prevotella spp.`         0.8220 0.29573   2.201</code></pre>
 <pre class="r"><code># predictive data
 pp &lt;- as.data.frame(predict(fit, newdata = dat.rna.wide, &quot;probs&quot;))
 dat0 &lt;- cbind(dat0, pp)
@@ -1293,7 +1363,7 @@ ggplot(dat1, aes(x = Abundance, y = Pred.Prob, color=TS, group=TS, linetype=TS))
   geom_line() + 
   facet_grid(OTU ~., scales=&quot;free&quot;)+
   labs(y=&quot;Probability of Tumor Stage&quot;,
-       x=&quot;Relative Abundance (%)&quot;,
+       x=&quot;Relative Abundance (% times 10)&quot;,
        title=&quot;Tumor stage likelihood with bacteria abundance&quot;,
        color=&quot;Tumor Stage&quot;, linetype=&quot;Tumor Stage&quot;)+
   scale_x_continuous(
@@ -1311,82 +1381,81 @@ ggplot(dat1, aes(x = Abundance, y = Pred.Prob, color=TS, group=TS, linetype=TS))
 <h3>Model 2: TS ~ OTU + COVARIATES</h3>
 <pre class="r"><code>dat0 &lt;- dat.rna.wide
 ## fit ordered logit model and store results &#39;m&#39;
-fit &lt;- fit2 &lt;- MASS::polr(tumor.stage ~ 1+ `Streptococcus spp.` + `Fusobacterium nucleatum` + `Prevotella melaninogenica` + `Campylobacter concisus` + age.c + female.c + bmi.c + bar.c, data = dat.rna.wide, Hess=TRUE)</code></pre>
+fit &lt;- fit2 &lt;- MASS::polr(tumor.stage ~ 1+ `Fusobacterium nucleatum` + `Streptococcus sanguinis` + `Campylobacter concisus` + `Prevotella spp.` + age.c + female.c + bmi.c + bar.c, data = dat.rna.wide, Hess=TRUE)</code></pre>
 <pre><code>Warning: glm.fit: fitted probabilities numerically 0 or 1 occurred</code></pre>
 <pre class="r"><code>## view a summary of the model
 summary(fit)</code></pre>
 <pre><code>Call:
-MASS::polr(formula = tumor.stage ~ 1 + `Streptococcus spp.` + 
-    `Fusobacterium nucleatum` + `Prevotella melaninogenica` + 
-    `Campylobacter concisus` + age.c + female.c + bmi.c + bar.c, 
-    data = dat.rna.wide, Hess = TRUE)
+MASS::polr(formula = tumor.stage ~ 1 + `Fusobacterium nucleatum` + 
+    `Streptococcus sanguinis` + `Campylobacter concisus` + `Prevotella spp.` + 
+    age.c + female.c + bmi.c + bar.c, data = dat.rna.wide, Hess = TRUE)
 
 Coefficients:
-                              Value Std. Error t value
-`Streptococcus spp.`         0.8852     5.2418   0.169
-`Fusobacterium nucleatum`   -0.1576     0.1786  -0.882
-`Prevotella melaninogenica`  1.0219     1.9421   0.526
-`Campylobacter concisus`    -6.2926    17.9404  -0.351
-age.c                       -0.0150     0.0233  -0.645
-female.c                    -2.4460     0.8541  -2.864
-bmi.c                        0.0144     0.0456   0.315
-bar.c                       -2.0994     1.1047  -1.900
+                            Value Std. Error t value
+`Fusobacterium nucleatum` -0.0205     0.0181  -1.132
+`Streptococcus sanguinis` -0.0484     0.3454  -0.140
+`Campylobacter concisus`  -1.4005     2.1245  -0.659
+`Prevotella spp.`          0.5203     0.5899   0.882
+age.c                     -0.0172     0.0237  -0.727
+female.c                  -2.5483     0.8638  -2.950
+bmi.c                      0.0134     0.0452   0.297
+bar.c                     -2.1175     1.1068  -1.913
 
 Intercepts:
        Value  Std. Error t value
-I|II   -1.644  0.451     -3.645 
-II|III  1.086  0.374      2.900 
+I|II   -1.657  0.439     -3.778 
+II|III  1.095  0.358      3.058 
 
-Residual Deviance: 97.52 
-AIC: 117.52 </code></pre>
+Residual Deviance: 97.05 
+AIC: 117.05 </code></pre>
 <pre class="r"><code>anova(fit2, fit0) # Chi-square difference test</code></pre>
 <pre><code>Likelihood ratio tests of ordinal regression models
 
 Response: tumor.stage
-                                                                                                                                             Model
-1                                                                                                                                                1
-2 1 + `Streptococcus spp.` + `Fusobacterium nucleatum` + `Prevotella melaninogenica` + `Campylobacter concisus` + age.c + female.c + bmi.c + bar.c
+                                                                                                                                        Model
+1                                                                                                                                           1
+2 1 + `Fusobacterium nucleatum` + `Streptococcus sanguinis` + `Campylobacter concisus` + `Prevotella spp.` + age.c + female.c + bmi.c + bar.c
   Resid. df Resid. Dev   Test    Df LR stat. Pr(Chi)
 1        53     115.42                              
-2        45      97.52 1 vs 2     8     17.9   0.022</code></pre>
+2        45      97.05 1 vs 2     8    18.37 0.01863</code></pre>
 <pre class="r"><code># obtain approximate p-values
 ctable &lt;- coef(summary(fit))
 p &lt;- pnorm(abs(ctable[, &quot;t value&quot;]), lower.tail = FALSE) * 2
 (ctable &lt;- cbind(ctable, &quot;p value&quot; = p))</code></pre>
-<pre><code>                               Value Std. Error t value   p value
-`Streptococcus spp.`         0.88522    5.24183  0.1689 0.8658937
-`Fusobacterium nucleatum`   -0.15762    0.17864 -0.8823 0.3776030
-`Prevotella melaninogenica`  1.02186    1.94212  0.5262 0.5987809
-`Campylobacter concisus`    -6.29262   17.94037 -0.3508 0.7257744
-age.c                       -0.01502    0.02329 -0.6451 0.5188823
-female.c                    -2.44604    0.85409 -2.8639 0.0041846
-bmi.c                        0.01437    0.04562  0.3150 0.7527811
-bar.c                       -2.09943    1.10468 -1.9005 0.0573691
-I|II                        -1.64361    0.45090 -3.6452 0.0002672
-II|III                       1.08557    0.37430  2.9003 0.0037283</code></pre>
+<pre><code>                             Value Std. Error t value   p value
+`Fusobacterium nucleatum` -0.02052    0.01812 -1.1324 0.2574586
+`Streptococcus sanguinis` -0.04837    0.34537 -0.1400 0.8886235
+`Campylobacter concisus`  -1.40055    2.12450 -0.6592 0.5097449
+`Prevotella spp.`          0.52033    0.58993  0.8820 0.3777649
+age.c                     -0.01724    0.02371 -0.7273 0.4670374
+female.c                  -2.54831    0.86383 -2.9500 0.0031777
+bmi.c                      0.01340    0.04516  0.2968 0.7666236
+bar.c                     -2.11750    1.10682 -1.9131 0.0557308
+I|II                      -1.65721    0.43860 -3.7784 0.0001578
+II|III                     1.09453    0.35795  3.0578 0.0022299</code></pre>
 <pre class="r"><code># obtain CIs
 (ci &lt;- confint(fit))  # CIs assuming normality</code></pre>
 <pre><code>Waiting for profiling to be done...</code></pre>
-<pre><code>                                2.5 %   97.5 %
-`Streptococcus spp.`         -9.44506 11.77218
-`Fusobacterium nucleatum`    -0.51454  0.20082
-`Prevotella melaninogenica`  -3.09305  4.88336
-`Campylobacter concisus`    -41.54235 31.43536
-age.c                        -0.06142  0.03073
-female.c                     -4.24838 -0.84159
-bmi.c                        -0.07663  0.10587
-bar.c                        -4.39018  0.11094</code></pre>
+<pre><code>                             2.5 %   97.5 %
+`Fusobacterium nucleatum` -0.05676  0.01580
+`Streptococcus sanguinis` -0.74145  0.68344
+`Campylobacter concisus`  -5.64271  2.90149
+`Prevotella spp.`         -0.65985  1.70969
+age.c                     -0.06461  0.02922
+female.c                  -4.37653 -0.93020
+bmi.c                     -0.07659  0.10402
+bar.c                     -4.41206  0.09545</code></pre>
 <pre class="r"><code>## OR and CI
 exp(cbind(OR = coef(fit), ci))</code></pre>
-<pre><code>                                 OR     2.5 %    97.5 %
-`Streptococcus spp.`        2.42352 7.908e-05 1.296e+05
-`Fusobacterium nucleatum`   0.85418 5.978e-01 1.222e+00
-`Prevotella melaninogenica` 2.77834 4.536e-02 1.321e+02
-`Campylobacter concisus`    0.00185 9.086e-19 4.490e+13
-age.c                       0.98509 9.404e-01 1.031e+00
-female.c                    0.08664 1.429e-02 4.310e-01
-bmi.c                       1.01447 9.262e-01 1.112e+00
-bar.c                       0.12253 1.240e-02 1.117e+00</code></pre>
+<pre><code>                               OR    2.5 %  97.5 %
+`Fusobacterium nucleatum` 0.97969 0.944822  1.0159
+`Streptococcus sanguinis` 0.95278 0.476421  1.9807
+`Campylobacter concisus`  0.24646 0.003543 18.2012
+`Prevotella spp.`         1.68258 0.516931  5.5272
+age.c                     0.98291 0.937429  1.0297
+female.c                  0.07821 0.012569  0.3945
+bmi.c                     1.01349 0.926273  1.1096
+bar.c                     0.12033 0.012130  1.1002</code></pre>
 <pre class="r"><code># predictive data
 pp &lt;- as.data.frame(predict(fit, newdata = dat.rna.wide, &quot;probs&quot;))
 dat0 &lt;- cbind(dat0, pp)
@@ -1409,7 +1478,7 @@ ggplot(dat1, aes(x = Abundance, y = Pred.Prob, color=TS, group=TS, linetype=TS))
   geom_line() + 
   facet_grid(OTU ~., scales=&quot;free&quot;)+
   labs(y=&quot;Probability of Tumor Stage&quot;,
-       x=&quot;Relative Abundance (%)&quot;,
+       x=&quot;Relative Abundance (% time 10)&quot;,
        title=&quot;Tumor stage likelihood with bacteria abundance&quot;,
        color=&quot;Tumor Stage&quot;, linetype=&quot;Tumor Stage&quot;)+
   scale_x_continuous(
@@ -1435,74 +1504,502 @@ apply(dat.rna.wide[,c(&#39;TII&#39;,&#39;TIII&#39;)],2, table)</code></pre>
 <pre><code>      TII TIII
 FALSE  12   38
 TRUE   43   17</code></pre>
-<pre class="r"><code>summary(glm(TII ~ 1 + `Streptococcus spp.` + `Fusobacterium nucleatum` + `Prevotella melaninogenica` + `Campylobacter concisus`+ age.c + female.c + bmi.c + bar.c, data = dat.rna.wide, family=binomial(link=&quot;logit&quot;)))</code></pre>
+<pre class="r"><code>summary(glm(TII ~ 1 + `Fusobacterium nucleatum` + `Streptococcus sanguinis` + `Campylobacter concisus` + `Prevotella spp.`+ age.c + female.c + bmi.c + bar.c, data = dat.rna.wide, family=binomial(link=&quot;logit&quot;)))</code></pre>
 <pre><code>Warning: glm.fit: fitted probabilities numerically 0 or 1 occurred</code></pre>
 <pre><code>
 Call:
-glm(formula = TII ~ 1 + `Streptococcus spp.` + `Fusobacterium nucleatum` + 
-    `Prevotella melaninogenica` + `Campylobacter concisus` + 
-    age.c + female.c + bmi.c + bar.c, family = binomial(link = &quot;logit&quot;), 
-    data = dat.rna.wide)
+glm(formula = TII ~ 1 + `Fusobacterium nucleatum` + `Streptococcus sanguinis` + 
+    `Campylobacter concisus` + `Prevotella spp.` + age.c + female.c + 
+    bmi.c + bar.c, family = binomial(link = &quot;logit&quot;), data = dat.rna.wide)
 
 Deviance Residuals: 
    Min      1Q  Median      3Q     Max  
--2.157   0.000   0.138   0.333   1.762  
+-1.949   0.000   0.186   0.493   1.730  
 
 Coefficients:
-                            Estimate Std. Error z value Pr(&gt;|z|)   
-(Intercept)                   0.0420     0.9230    0.05   0.9637   
-`Streptococcus spp.`        184.3652   108.3115    1.70   0.0887 . 
-`Fusobacterium nucleatum`    -1.0753     0.8912   -1.21   0.2276   
-`Prevotella melaninogenica`  26.7602    51.5574    0.52   0.6037   
-`Campylobacter concisus`     99.8426   493.2974    0.20   0.8396   
-age.c                        -0.0457     0.0458   -1.00   0.3189   
-female.c                     -3.4180     1.3056   -2.62   0.0088 **
-bmi.c                         0.0139     0.0561    0.25   0.8049   
-bar.c                        -2.2659     1.3256   -1.71   0.0874 . 
+                          Estimate Std. Error z value Pr(&gt;|z|)  
+(Intercept)                1.00964    0.74243    1.36    0.174  
+`Fusobacterium nucleatum` -0.08846    0.07027   -1.26    0.208  
+`Streptococcus sanguinis` 14.34127   11.23202    1.28    0.202  
+`Campylobacter concisus`  23.38285   35.68046    0.66    0.512  
+`Prevotella spp.`          1.45744    2.81043    0.52    0.604  
+age.c                     -0.09412    0.04568   -2.06    0.039 *
+female.c                  -2.61481    1.04119   -2.51    0.012 *
+bmi.c                      0.00523    0.05552    0.09    0.925  
+bar.c                     -2.07633    1.29713   -1.60    0.109  
 ---
 Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1
 
 (Dispersion parameter for binomial family taken to be 1)
 
     Null deviance: 57.706  on 54  degrees of freedom
-Residual deviance: 27.629  on 46  degrees of freedom
-AIC: 45.63
+Residual deviance: 32.402  on 46  degrees of freedom
+AIC: 50.4
 
-Number of Fisher Scoring iterations: 9</code></pre>
-<pre class="r"><code>summary(glm(TIII ~ 1 + `Streptococcus spp.` + `Fusobacterium nucleatum` + `Prevotella melaninogenica` + `Campylobacter concisus`+ age.c + female.c + bmi.c + bar.c, data = dat.rna.wide, family=binomial(link=&quot;logit&quot;)))</code></pre>
+Number of Fisher Scoring iterations: 10</code></pre>
+<pre class="r"><code>summary(glm(TIII ~ 1 + `Fusobacterium nucleatum` + `Streptococcus sanguinis` + `Campylobacter concisus` + `Prevotella spp.`+ age.c + female.c + bmi.c + bar.c, data = dat.rna.wide, family=binomial(link=&quot;logit&quot;)))</code></pre>
 <pre><code>Warning: glm.fit: fitted probabilities numerically 0 or 1 occurred</code></pre>
 <pre><code>
 Call:
-glm(formula = TIII ~ 1 + `Streptococcus spp.` + `Fusobacterium nucleatum` + 
-    `Prevotella melaninogenica` + `Campylobacter concisus` + 
-    age.c + female.c + bmi.c + bar.c, family = binomial(link = &quot;logit&quot;), 
-    data = dat.rna.wide)
+glm(formula = TIII ~ 1 + `Fusobacterium nucleatum` + `Streptococcus sanguinis` + 
+    `Campylobacter concisus` + `Prevotella spp.` + age.c + female.c + 
+    bmi.c + bar.c, family = binomial(link = &quot;logit&quot;), data = dat.rna.wide)
 
 Deviance Residuals: 
     Min       1Q   Median       3Q      Max  
--1.5739  -0.7366  -0.0001   0.9631   2.2206  
+-1.2186  -1.0213  -0.0001   1.1988   1.7178  
 
 Coefficients:
-                             Estimate Std. Error z value Pr(&gt;|z|)  
-(Intercept)                 -5.52e+00   6.71e+02   -0.01    0.993  
-`Streptococcus spp.`        -2.28e+01   1.09e+01   -2.10    0.036 *
-`Fusobacterium nucleatum`   -1.62e-01   2.70e-01   -0.60    0.548  
-`Prevotella melaninogenica` -3.18e+01   1.36e+01   -2.33    0.020 *
-`Campylobacter concisus`     2.10e+02   9.21e+01    2.29    0.022 *
-age.c                        7.13e-03   3.00e-02    0.24    0.812  
-female.c                    -1.86e+01   2.69e+03   -0.01    0.994  
-bmi.c                       -8.57e-02   8.76e-02   -0.98    0.328  
-bar.c                       -1.87e+01   3.20e+03   -0.01    0.995  
+                           Estimate Std. Error z value Pr(&gt;|z|)
+(Intercept)               -6.01e+00   7.37e+02   -0.01     0.99
+`Fusobacterium nucleatum` -4.13e-03   2.21e-02   -0.19     0.85
+`Streptococcus sanguinis` -6.74e-01   8.80e-01   -0.77     0.44
+`Campylobacter concisus`   2.58e+00   4.26e+00    0.60     0.55
+`Prevotella spp.`         -9.85e-01   1.43e+00   -0.69     0.49
+age.c                      1.02e-02   2.82e-02    0.36     0.72
+female.c                  -1.86e+01   2.99e+03   -0.01     1.00
+bmi.c                     -2.23e-02   7.52e-02   -0.30     0.77
+bar.c                     -1.84e+01   3.48e+03   -0.01     1.00
+
+(Dispersion parameter for binomial family taken to be 1)
+
+    Null deviance: 68.021  on 54  degrees of freedom
+Residual deviance: 53.854  on 46  degrees of freedom
+AIC: 71.85
+
+Number of Fisher Scoring iterations: 18</code></pre>
+</div>
+</div>
+</div>
+<div id="tcga-wgs-data" class="section level1">
+<h1>TCGA WGS data</h1>
+<div id="double-checking-data-2" class="section level2">
+<h2>Double Checking Data</h2>
+<pre class="r"><code># in long format
+table(dat.wgs.s$tumor.stage)</code></pre>
+<pre><code>
+  I  II III  IV 
+ 72 200 112  24 </code></pre>
+<pre class="r"><code># by subject
+dat &lt;- dat.wgs.s %&gt;% filter(OTU == &quot;Fusobacterium nucleatum&quot;)
+table(dat$tumor.stage)</code></pre>
+<pre><code>
+  I  II III  IV 
+ 18  50  28   6 </code></pre>
+<pre class="r"><code>sum(table(dat$tumor.stage)) </code></pre>
+<pre><code>[1] 102</code></pre>
+<pre class="r"><code>nrow(dat) # matches but there&#39;s missing data</code></pre>
+<pre><code>[1] 139</code></pre>
+<pre class="r"><code>sum(is.na(dat$Abundance))</code></pre>
+<pre><code>[1] 16</code></pre>
+<pre class="r"><code># number of non-missing abundnance data
+nrow(dat) - sum(is.na(dat$Abundance))</code></pre>
+<pre><code>[1] 123</code></pre>
+<pre class="r"><code># matches 
+dat0 &lt;- dat %&gt;%
+  filter()
+table(dat0$tumor.stage)</code></pre>
+<pre><code>
+  I  II III  IV 
+ 18  50  28   6 </code></pre>
+<pre class="r"><code># plot functions
+#root function
+root&lt;-function(x){
+  x &lt;- ifelse(x &lt; 0, 0, x)
+  x**(0.2)
+}
+#inverse root function
+invroot&lt;-function(x){
+  x**(5)
+}
+
+mean.dat &lt;- dat.wgs.s %&gt;%
+  group_by(tumor.stage, OTU) %&gt;%
+  summarize(M = mean(Abundance, na.rm=T))</code></pre>
+<pre><code>`summarise()` has grouped output by &#39;tumor.stage&#39;. You can override using the `.groups` argument.</code></pre>
+<pre class="r"><code>ggplot(dat.wgs.s, aes(x=tumor.stage, y=Abundance))+
+  geom_violin()+
+  geom_jitter(alpha=0.25,width = 0.25)+
+  geom_point(data=mean.dat, aes(x=tumor.stage, y = M), size=2, alpha =0.9, color=&quot;red&quot;)+
+  labs(x=&quot;Tumor Stage&quot;, y=&quot;Percent Relative Abundance&quot;,
+       title=&quot;Distribution of abundance across tumor stage&quot;,
+       subtitle=&quot;Red dot is average percent relative abundance&quot;)+
+  scale_y_continuous(
+    trans=scales::trans_new(&quot;root&quot;, root, invroot),
+    breaks=c(0, 0.001,0.01, 0.1, 1,10,50),
+    labels = c(0, 0.001,0.01, 0.1, 1,10,50),
+    limits = c(0, 50)
+  )+
+  facet_wrap(.~OTU, nrow=1, scales=&quot;free&quot;)+
+  theme_classic()</code></pre>
+<pre><code>Warning: Removed 64 rows containing non-finite values (stat_ydensity).</code></pre>
+<pre><code>Warning: Removed 198 rows containing missing values (geom_point).</code></pre>
+<p><img src="figure/ordered-logit-model.Rmd/wgs-fig1-1.png" width="100%" height="100%" style="display: block; margin: auto;" /></p>
+<pre class="r"><code>dat.wgs.s &lt;- dat.wgs.s %&gt;%
+  filter(is.na(Abundance) == F, is.na(tumor.stage)==F)</code></pre>
+<p>Now, transform data into a useful wide-format representation to avoid inflating sample size. The long-format above is very useful for making plots, but less useful for the ordered logistic regression to follow.</p>
+<pre class="r"><code>dat.wgs.wide &lt;- dat.wgs.s %&gt;%
+  dplyr::select(OTU, Abundance, ID, BarrettsHist, bar.c, female.c, age.c, bmi.c, tumor.stage) %&gt;%
+  
+  pivot_wider(names_from = OTU, values_from = Abundance)</code></pre>
+</div>
+<div id="ordered-logistic-regression-2" class="section level2">
+<h2>Ordered Logistic Regression</h2>
+<div id="model-0-ts-1-2" class="section level3">
+<h3>Model 0: TS ~ 1</h3>
+<p>This in the intercept only model. Implying that we will only estimate the unique intercepts for the <span class="math inline">\(J-1\)</span> categories.</p>
+<pre class="r"><code>## fit ordered logit model and store results &#39;m&#39;
+fit &lt;- fit0 &lt;- MASS::polr(tumor.stage ~ 1, data = dat.wgs.wide, Hess=TRUE)
+## view a summary of the model
+summary(fit)</code></pre>
+<pre><code>Call:
+MASS::polr(formula = tumor.stage ~ 1, data = dat.wgs.wide, Hess = TRUE)
+
+No coefficients
+
+Intercepts:
+       Value  Std. Error t value
+I|II   -1.504  0.276     -5.442 
+II|III  0.710  0.227      3.132 
+III|IV  2.615  0.423      6.183 
+
+Residual Deviance: 210.09 
+AIC: 216.09 </code></pre>
+<pre class="r"><code># save fitted probabilities
+# these represent the estimated probability of each tumor stage
+pp &lt;- fitted(fit)
+pp[1,]</code></pre>
+<pre><code>      I      II     III      IV 
+0.18182 0.48862 0.26137 0.06818 </code></pre>
+</div>
+<div id="model-1-ts-otu-2" class="section level3">
+<h3>Model 1: TS ~ OTU</h3>
+<p>This model expands on the previous model to include OTU abundance as a predictor of TS. OTU abundance is captured by four variables as predictors of TS (the four OTUs listed at the top of this document).</p>
+<pre class="r"><code>dat0 &lt;- dat.wgs.wide
+## fit ordered logit model and store results &#39;m&#39;
+fit &lt;- fit1 &lt;- MASS::polr(tumor.stage ~ 1+ `Fusobacterium nucleatum` + `Streptococcus sanguinis` + `Campylobacter concisus` + `Prevotella spp.`, data = dat.wgs.wide, Hess=TRUE)
+
+## view a summary of the model
+summary(fit)</code></pre>
+<pre><code>Call:
+MASS::polr(formula = tumor.stage ~ 1 + `Fusobacterium nucleatum` + 
+    `Streptococcus sanguinis` + `Campylobacter concisus` + `Prevotella spp.`, 
+    data = dat.wgs.wide, Hess = TRUE)
+
+Coefficients:
+                            Value Std. Error t value
+`Fusobacterium nucleatum`  0.0197     0.0320   0.617
+`Streptococcus sanguinis` -0.5081     2.5577  -0.199
+`Campylobacter concisus`   0.0424     0.0443   0.956
+`Prevotella spp.`         -0.0188     0.0634  -0.296
+
+Intercepts:
+       Value  Std. Error t value
+I|II   -1.498  0.294     -5.102 
+II|III  0.734  0.248      2.960 
+III|IV  2.674  0.443      6.032 
+
+Residual Deviance: 208.64 
+AIC: 222.64 </code></pre>
+<pre class="r"><code>anova(fit1, fit0) # Chi-square difference test</code></pre>
+<pre><code>Likelihood ratio tests of ordinal regression models
+
+Response: tumor.stage
+                                                                                                     Model
+1                                                                                                        1
+2 1 + `Fusobacterium nucleatum` + `Streptococcus sanguinis` + `Campylobacter concisus` + `Prevotella spp.`
+  Resid. df Resid. Dev   Test    Df LR stat. Pr(Chi)
+1        85      210.1                              
+2        81      208.6 1 vs 2     4    1.448  0.8358</code></pre>
+<pre class="r"><code># obtain approximate p-values
+ctable &lt;- coef(summary(fit))
+p &lt;- pnorm(abs(ctable[, &quot;t value&quot;]), lower.tail = FALSE) * 2
+(ctable &lt;- cbind(ctable, &quot;p value&quot; = p))</code></pre>
+<pre><code>                             Value Std. Error t value   p value
+`Fusobacterium nucleatum`  0.01974    0.03200  0.6167 5.374e-01
+`Streptococcus sanguinis` -0.50809    2.55771 -0.1987 8.425e-01
+`Campylobacter concisus`   0.04236    0.04431  0.9561 3.390e-01
+`Prevotella spp.`         -0.01878    0.06340 -0.2962 7.671e-01
+I|II                      -1.49795    0.29358 -5.1023 3.355e-07
+II|III                     0.73360    0.24782  2.9602 3.074e-03
+III|IV                     2.67399    0.44327  6.0325 1.615e-09</code></pre>
+<pre class="r"><code># obtain CIs
+(ci &lt;- confint(fit))  # CIs assuming normality</code></pre>
+<pre><code>Waiting for profiling to be done...</code></pre>
+<pre><code>                             2.5 %  97.5 %
+`Fusobacterium nucleatum` -0.04485 0.08137
+`Streptococcus sanguinis` -5.30661 5.43749
+`Campylobacter concisus`  -0.05433 0.13737
+`Prevotella spp.`         -0.14695 0.10643</code></pre>
+<pre class="r"><code>## OR and CI
+exp(cbind(OR = coef(fit), ci))</code></pre>
+<pre><code>                              OR    2.5 %  97.5 %
+`Fusobacterium nucleatum` 1.0199 0.956137   1.085
+`Streptococcus sanguinis` 0.6016 0.004959 229.865
+`Campylobacter concisus`  1.0433 0.947123   1.147
+`Prevotella spp.`         0.9814 0.863333   1.112</code></pre>
+<pre class="r"><code># predictive data
+pp &lt;- as.data.frame(predict(fit, newdata = dat.wgs.wide, &quot;probs&quot;))
+dat0 &lt;- cbind(dat0, pp)
+
+## melt data set to long for ggplot2
+dat1 &lt;- dat0 %&gt;%
+  pivot_longer(
+    cols=`I`:`IV`,
+    names_to = &quot;TS&quot;,
+    values_to = &quot;Pred.Prob&quot;
+  ) %&gt;%
+  pivot_longer(
+    cols=`Prevotella spp.`:`Streptococcus sanguinis` ,
+    names_to=&quot;OTU&quot;,
+    values_to=&quot;Abundance&quot;
+  )
+## plot predicted probabilities across Abundance values for each level of OTU
+## facetted by tumor.stage
+ggplot(dat1, aes(x = Abundance, y = Pred.Prob, color=TS, group=TS, linetype=TS)) +
+  geom_line() + 
+  facet_grid(OTU ~., scales=&quot;free&quot;)+
+  labs(y=&quot;Probability of Tumor Stage&quot;,
+       x=&quot;Relative Abundance (%)&quot;,
+       title=&quot;Tumor stage likelihood with bacteria abundance&quot;,
+       color=&quot;Tumor Stage&quot;, linetype=&quot;Tumor Stage&quot;)+
+  scale_x_continuous(
+    trans=scales::trans_new(&quot;root&quot;, root, invroot),
+    breaks=c(0, 0.001,0.01, 0.1, 1,10,50),
+    labels = c(0, 0.001,0.01, 0.1, 1,10,50),
+    limits = c(0, 50)
+  )+
+  theme(
+    panel.grid = element_blank()
+  )</code></pre>
+<p><img src="figure/ordered-logit-model.Rmd/glm-wgs-m1-1.png" width="100%" height="100%" style="display: block; margin: auto;" /></p>
+</div>
+<div id="model-2-ts-otu-covariates-2" class="section level3">
+<h3>Model 2: TS ~ OTU + COVARIATES</h3>
+<pre class="r"><code>dat0 &lt;- dat.wgs.wide
+## fit ordered logit model and store results &#39;m&#39;
+fit &lt;- fit2 &lt;- MASS::polr(tumor.stage ~ 1+ `Fusobacterium nucleatum` + `Streptococcus sanguinis` + `Campylobacter concisus` + `Prevotella spp.` + age.c + female.c + bmi.c + bar.c, data = dat.wgs.wide, Hess=TRUE)</code></pre>
+<pre><code>Warning: glm.fit: fitted probabilities numerically 0 or 1 occurred</code></pre>
+<pre class="r"><code>## view a summary of the model
+summary(fit)</code></pre>
+<pre><code>Call:
+MASS::polr(formula = tumor.stage ~ 1 + `Fusobacterium nucleatum` + 
+    `Streptococcus sanguinis` + `Campylobacter concisus` + `Prevotella spp.` + 
+    age.c + female.c + bmi.c + bar.c, data = dat.wgs.wide, Hess = TRUE)
+
+Coefficients:
+                             Value Std. Error t value
+`Fusobacterium nucleatum`  0.01876     0.0317  0.5920
+`Streptococcus sanguinis`  3.60241     2.5964  1.3875
+`Campylobacter concisus`   0.05124     0.0468  1.0954
+`Prevotella spp.`          0.03731     0.0706  0.5287
+age.c                     -0.02700     0.0187 -1.4468
+female.c                  -2.96547     0.7164 -4.1394
+bmi.c                     -0.00221     0.0341 -0.0648
+bar.c                     -3.07797     1.1171 -2.7554
+
+Intercepts:
+       Value  Std. Error t value
+I|II   -2.161  0.440     -4.907 
+II|III  1.244  0.307      4.048 
+III|IV  3.410  0.497      6.866 
+
+Residual Deviance: 168.64 
+AIC: 190.64 </code></pre>
+<pre class="r"><code>anova(fit2, fit0) # Chi-square difference test</code></pre>
+<pre><code>Likelihood ratio tests of ordinal regression models
+
+Response: tumor.stage
+                                                                                                                                        Model
+1                                                                                                                                           1
+2 1 + `Fusobacterium nucleatum` + `Streptococcus sanguinis` + `Campylobacter concisus` + `Prevotella spp.` + age.c + female.c + bmi.c + bar.c
+  Resid. df Resid. Dev   Test    Df LR stat.   Pr(Chi)
+1        85      210.1                                
+2        77      168.6 1 vs 2     8    41.45 1.719e-06</code></pre>
+<pre class="r"><code># obtain approximate p-values
+ctable &lt;- coef(summary(fit))
+p &lt;- pnorm(abs(ctable[, &quot;t value&quot;]), lower.tail = FALSE) * 2
+(ctable &lt;- cbind(ctable, &quot;p value&quot; = p))</code></pre>
+<pre><code>                              Value Std. Error  t value   p value
+`Fusobacterium nucleatum`  0.018757    0.03169  0.59196 5.539e-01
+`Streptococcus sanguinis`  3.602407    2.59640  1.38746 1.653e-01
+`Campylobacter concisus`   0.051243    0.04678  1.09544 2.733e-01
+`Prevotella spp.`          0.037305    0.07056  0.52873 5.970e-01
+age.c                     -0.027004    0.01867 -1.44675 1.480e-01
+female.c                  -2.965470    0.71640 -4.13941 3.482e-05
+bmi.c                     -0.002208    0.03409 -0.06479 9.483e-01
+bar.c                     -3.077971    1.11707 -2.75540 5.862e-03
+I|II                      -2.160568    0.44034 -4.90657 9.268e-07
+II|III                     1.244477    0.30740  4.04838 5.157e-05
+III|IV                     3.409648    0.49663  6.86556 6.623e-12</code></pre>
+<pre class="r"><code># obtain CIs
+(ci &lt;- confint(fit))  # CIs assuming normality</code></pre>
+<pre><code>Waiting for profiling to be done...</code></pre>
+<pre><code>                             2.5 %    97.5 %
+`Fusobacterium nucleatum` -0.04662  0.080488
+`Streptococcus sanguinis` -2.20769  8.700862
+`Campylobacter concisus`  -0.04783  0.150464
+`Prevotella spp.`         -0.10439  0.178492
+age.c                     -0.06444  0.009142
+female.c                  -4.49173 -1.643432
+bmi.c                     -0.06963  0.067081
+bar.c                     -5.49187 -0.947215</code></pre>
+<pre class="r"><code>## OR and CI
+exp(cbind(OR = coef(fit), ci))</code></pre>
+<pre><code>                                OR   2.5 %    97.5 %
+`Fusobacterium nucleatum`  1.01893 0.95445    1.0838
+`Streptococcus sanguinis` 36.68642 0.10995 6008.0879
+`Campylobacter concisus`   1.05258 0.95329    1.1624
+`Prevotella spp.`          1.03801 0.90087    1.1954
+age.c                      0.97336 0.93759    1.0092
+female.c                   0.05154 0.01120    0.1933
+bmi.c                      0.99779 0.93274    1.0694
+bar.c                      0.04605 0.00412    0.3878</code></pre>
+<pre class="r"><code># predictive data
+pp &lt;- as.data.frame(predict(fit, newdata = dat.wgs.wide, &quot;probs&quot;))
+dat0 &lt;- cbind(dat0, pp)
+
+## melt data set to long for ggplot2
+dat1 &lt;- dat0 %&gt;%
+  pivot_longer(
+    cols=`I`:`IV`,
+    names_to = &quot;TS&quot;,
+    values_to = &quot;Pred.Prob&quot;
+  ) %&gt;%
+  pivot_longer(
+    cols=`Prevotella spp.`:`Streptococcus sanguinis` ,
+    names_to=&quot;OTU&quot;,
+    values_to=&quot;Abundance&quot;
+  )
+## plot predicted probabilities across Abundance values for each level of OTU
+## facetted by tumor.stage
+ggplot(dat1, aes(x = Abundance, y = Pred.Prob, color=TS, group=TS, linetype=TS)) +
+  geom_line() + 
+  facet_grid(OTU ~., scales=&quot;free&quot;)+
+  labs(y=&quot;Probability of Tumor Stage&quot;,
+       x=&quot;Relative Abundance (%)&quot;,
+       title=&quot;Tumor stage likelihood with bacteria abundance&quot;,
+       color=&quot;Tumor Stage&quot;, linetype=&quot;Tumor Stage&quot;)+
+  scale_x_continuous(
+    trans=scales::trans_new(&quot;root&quot;, root, invroot),
+    breaks=c(0, 0.001,0.01, 0.1, 1,10,25),
+    labels = c(0, 0.001,0.01, 0.1, 1,10,25),
+    limits = c(0, 25)
+  )+
+  theme(
+    panel.grid = element_blank()
+  )</code></pre>
+<p><img src="figure/ordered-logit-model.Rmd/glm-wgs-m2-1.png" width="100%" height="100%" style="display: block; margin: auto;" /></p>
+</div>
+<div id="proportional-odds-assumption-2" class="section level3">
+<h3>Proportional Odds Assumption</h3>
+<pre class="r"><code>dat.wgs.wide &lt;- dat.wgs.wide %&gt;%
+  mutate(
+    TI = I(as.numeric(tumor.stage) &gt;= 1),
+    TII = I(as.numeric(tumor.stage) &gt;= 2),
+    TIII = I(as.numeric(tumor.stage) &gt;= 3),
+    TIV = I(as.numeric(tumor.stage) &gt;= 4)
+  )
+apply(dat.wgs.wide[,c(&#39;TII&#39;,&#39;TIII&#39;, &quot;TIV&quot;)],2, table)</code></pre>
+<pre><code>      TII TIII TIV
+FALSE  16   59  82
+TRUE   72   29   6</code></pre>
+<pre class="r"><code>summary(glm(TII ~ 1 + `Fusobacterium nucleatum` + `Streptococcus sanguinis` + `Campylobacter concisus` + `Prevotella spp.`+ age.c + female.c + bmi.c + bar.c, data = dat.wgs.wide, family=binomial(link=&quot;logit&quot;)))</code></pre>
+<pre><code>
+Call:
+glm(formula = TII ~ 1 + `Fusobacterium nucleatum` + `Streptococcus sanguinis` + 
+    `Campylobacter concisus` + `Prevotella spp.` + age.c + female.c + 
+    bmi.c + bar.c, family = binomial(link = &quot;logit&quot;), data = dat.wgs.wide)
+
+Deviance Residuals: 
+   Min      1Q  Median      3Q     Max  
+-2.445   0.160   0.252   0.456   1.387  
+
+Coefficients:
+                           Estimate Std. Error z value Pr(&gt;|z|)    
+(Intercept)                2.129956   0.478515    4.45  8.5e-06 ***
+`Fusobacterium nucleatum` -0.029680   0.040528   -0.73  0.46396    
+`Streptococcus sanguinis`  3.054631   3.333072    0.92  0.35943    
+`Campylobacter concisus`   0.047735   0.149567    0.32  0.74961    
+`Prevotella spp.`          0.229980   0.150947    1.52  0.12761    
+age.c                     -0.077698   0.039339   -1.98  0.04826 *  
+female.c                  -2.951814   0.865403   -3.41  0.00065 ***
+bmi.c                     -0.000123   0.038766    0.00  0.99746    
+bar.c                     -2.707614   1.174572   -2.31  0.02116 *  
 ---
 Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1
 
 (Dispersion parameter for binomial family taken to be 1)
 
-    Null deviance: 68.021  on 54  degrees of freedom
-Residual deviance: 45.884  on 46  degrees of freedom
-AIC: 63.88
+    Null deviance: 83.449  on 87  degrees of freedom
+Residual deviance: 52.501  on 79  degrees of freedom
+AIC: 70.5
+
+Number of Fisher Scoring iterations: 6</code></pre>
+<pre class="r"><code>summary(glm(TIII ~ 1 + `Fusobacterium nucleatum` + `Streptococcus sanguinis` + `Campylobacter concisus` + `Prevotella spp.`+ age.c + female.c + bmi.c + bar.c, data = dat.wgs.wide, family=binomial(link=&quot;logit&quot;)))</code></pre>
+<pre><code>Warning: glm.fit: fitted probabilities numerically 0 or 1 occurred</code></pre>
+<pre><code>
+Call:
+glm(formula = TIII ~ 1 + `Fusobacterium nucleatum` + `Streptococcus sanguinis` + 
+    `Campylobacter concisus` + `Prevotella spp.` + age.c + female.c + 
+    bmi.c + bar.c, family = binomial(link = &quot;logit&quot;), data = dat.wgs.wide)
+
+Deviance Residuals: 
+    Min       1Q   Median       3Q      Max  
+-1.7599  -1.0071  -0.0001   0.9691   1.6134  
+
+Coefficients:
+                           Estimate Std. Error z value Pr(&gt;|z|)
+(Intercept)                 -5.3908   402.6497   -0.01     0.99
+`Fusobacterium nucleatum`    0.0219     0.0574    0.38     0.70
+`Streptococcus sanguinis`    8.6435     6.7044    1.29     0.20
+`Campylobacter concisus`     1.6132     3.1766    0.51     0.61
+`Prevotella spp.`           -0.1028     0.1499   -0.69     0.49
+age.c                       -0.0197     0.0236   -0.84     0.40
+female.c                   -19.5936  1905.8950   -0.01     0.99
+bmi.c                       -0.0424     0.0603   -0.70     0.48
+bar.c                      -17.5866  2864.7043   -0.01     1.00
+
+(Dispersion parameter for binomial family taken to be 1)
+
+    Null deviance: 111.559  on 87  degrees of freedom
+Residual deviance:  81.407  on 79  degrees of freedom
+AIC: 99.41
 
 Number of Fisher Scoring iterations: 18</code></pre>
+<pre class="r"><code>summary(glm(TIV ~ 1 + `Fusobacterium nucleatum` + `Streptococcus sanguinis` + `Campylobacter concisus` + `Prevotella spp.`+ age.c + female.c + bmi.c + bar.c, data = dat.wgs.wide, family=binomial(link=&quot;logit&quot;)))</code></pre>
+<pre><code>Warning: glm.fit: fitted probabilities numerically 0 or 1 occurred</code></pre>
+<pre><code>
+Call:
+glm(formula = TIV ~ 1 + `Fusobacterium nucleatum` + `Streptococcus sanguinis` + 
+    `Campylobacter concisus` + `Prevotella spp.` + age.c + female.c + 
+    bmi.c + bar.c, family = binomial(link = &quot;logit&quot;), data = dat.wgs.wide)
+
+Deviance Residuals: 
+   Min      1Q  Median      3Q     Max  
+-0.644  -0.411  -0.158   0.000   3.589  
+
+Coefficients:
+                           Estimate Std. Error z value Pr(&gt;|z|)  
+(Intercept)               -8.64e+00   5.94e+02   -0.01    0.988  
+`Fusobacterium nucleatum`  4.48e-01   8.17e-01    0.55    0.583  
+`Streptococcus sanguinis`  5.59e+00   1.03e+01    0.54    0.589  
+`Campylobacter concisus`  -9.43e-02   7.89e-01   -0.12    0.905  
+`Prevotella spp.`         -2.19e+00   3.82e+00   -0.57    0.566  
+age.c                      4.90e-05   4.72e-02    0.00    0.999  
+female.c                  -1.82e+01   2.89e+03   -0.01    0.995  
+bmi.c                     -3.95e-01   2.39e-01   -1.65    0.099 .
+bar.c                     -1.61e+01   4.06e+03    0.00    0.997  
+---
+Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1
+
+(Dispersion parameter for binomial family taken to be 1)
+
+    Null deviance: 43.808  on 87  degrees of freedom
+Residual deviance: 28.602  on 79  degrees of freedom
+AIC: 46.6
+
+Number of Fisher Scoring iterations: 19</code></pre>
 <br>
 <p>
 <button type="button" class="btn btn-default btn-workflowr btn-workflowr-sessioninfo" data-toggle="collapse" data-target="#workflowr-sessioninfo" style="display: block;">

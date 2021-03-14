@@ -132,47 +132,33 @@ dat.wgs$tumor.stage <- factor(
 )
 
 
-# subset to fuso. nuc. only
-# Streptococcus sanguinis 
-# Campylobacter concisus
-# Prevotella spp.
-
+# Not uniquely identified in 16s
 dat.16s.s <- filter(
   dat.16s,
   OTU %in% c(
     "Fusobacterium_nucleatum",
-    unique(dat.16s$OTU[dat.16s$OTU %like% "Streptococcus_"]),
+    unique(dat.16s$OTU[dat.16s$OTU %like% "Streptococcus_sanguinis"]),
     unique(dat.16s$OTU[dat.16s$OTU %like% "Campylobacter_"]),
-    "Prevotella_melaninogenica")
+    unique(dat.16s$OTU[dat.16s$OTU %like% "Prevotella"]))
 )
 dat.rna.s <- filter(
   dat.rna,
   otu2 %in% c(
     "Fusobacterium nucleatum",
     "Streptococcus sanguinis",
-      "Streptococcus oralis",
-      "Streptococcus mitis", 
-      "Streptococcus pneumoniae", 
-      "Streptococcus parasanguinis", 
-      "Streptococcus salivarius",
     "Campylobacter concisus",
-    "Prevotella melaninogenica")
+    unique(dat.rna$otu2[dat.rna$otu2 %like% "Prevotella"]))
 )
 dat.wgs.s <- filter(
   dat.wgs,
   otu2 %in% c(
     "Fusobacterium nucleatum",
     "Streptococcus sanguinis",
-      "Streptococcus oralis",
-      "Streptococcus mitis", 
-      "Streptococcus pneumoniae", 
-      "Streptococcus parasanguinis", 
-      "Streptococcus salivarius",
     "Campylobacter concisus",
-    "Prevotella melaninogenica")
+    unique(dat.wgs$otu2[dat.wgs$otu2 %like% "Prevotella"]))
 )
 
-# new names
+# new names -> due to lack of uniqueness
 dat.16s.s$OTU1 <- factor(
   dat.16s.s$OTU,
   levels = c(
@@ -183,9 +169,9 @@ dat.16s.s$OTU1 <- factor(
   ),
   labels = c(
     "Fusobacterium nucleatum",
-    "Streptococcus sanguinis",
-    "Campylobacter concisus",
-    "Prevotella melaninogenica"
+    "Streptococcus spp. (not uniquely identified)",
+    "Campylobacter spp. (not uniquely identified)",
+    "Prevotella spp."
   )
 )
 dat.rna.s$OTU1 <- factor(
@@ -194,12 +180,18 @@ dat.rna.s$OTU1 <- factor(
     "Fusobacterium nucleatum",
     "Streptococcus sanguinis",
     "Campylobacter concisus",
-    "Prevotella melaninogenica"),
+    "Prevotella melaninogenica",
+      "Prevotella denticola",
+      "Prevotella intermedia",
+      "Prevotella ruminicola"),
   labels = c(
     "Fusobacterium nucleatum",
     "Streptococcus sanguinis",
     "Campylobacter concisus",
-    "Prevotella melaninogenica")
+    "Prevotella spp.", 
+      "Prevotella spp.", 
+      "Prevotella spp.", 
+      "Prevotella spp.")
 )
 
 dat.wgs.s$OTU1 <- factor(
@@ -208,87 +200,44 @@ dat.wgs.s$OTU1 <- factor(
     "Fusobacterium nucleatum",
     "Streptococcus sanguinis",
     "Campylobacter concisus",
-    "Prevotella melaninogenica"),
+    "Prevotella melaninogenica",
+      "Prevotella denticola",
+      "Prevotella intermedia",
+      "Prevotella ruminicola"),
   labels = c(
     "Fusobacterium nucleatum",
     "Streptococcus sanguinis",
     "Campylobacter concisus",
-    "Prevotella melaninogenica")
+    "Prevotella spp.", 
+      "Prevotella spp.", 
+      "Prevotella spp.", 
+      "Prevotella spp.")
 )
 
-# rename bacteria
-dat.16s.s$OTU <- factor(
-  dat.16s.s$OTU,
-  levels = c(
-    "Fusobacterium_nucleatum",
-    "Streptococcus_dentisani:Streptococcus_infantis:Streptococcus_mitis:Streptococcus_oligofermentans:Streptococcus_oralis:Streptococcus_pneumoniae:Streptococcus_pseudopneumoniae:Streptococcus_sanguinis",
-    "Campylobacter_rectus:Campylobacter_showae",
-    "Prevotella_melaninogenica"
-  ),
-  labels = c(
-    "Fusobacterium nucleatum",
-    "Streptococcus spp.",
-    "Campylobacter concisus",
-    "Prevotella melaninogenica"
-  )
-)
-dat.rna.s$OTU <- factor(
-  dat.rna.s$otu2,
-  levels = c(
-    "Fusobacterium nucleatum",
-    "Streptococcus sanguinis",
-      "Streptococcus oralis",
-      "Streptococcus mitis", 
-      "Streptococcus pneumoniae", 
-      "Streptococcus parasanguinis", 
-      "Streptococcus salivarius",
-    "Campylobacter concisus",
-    "Prevotella melaninogenica"),
-  labels = c(
-    "Fusobacterium nucleatum",
-    "Streptococcus spp.",
-      "Streptococcus spp.",
-      "Streptococcus spp.", 
-      "Streptococcus spp.", 
-      "Streptococcus spp.", 
-      "Streptococcus spp.",
-    "Campylobacter concisus",
-    "Prevotella melaninogenica")
-)
-
-dat.wgs.s$OTU <- factor(
-  dat.wgs.s$otu2,
-  levels = c(
-    "Fusobacterium nucleatum",
-    "Streptococcus sanguinis",
-      "Streptococcus oralis",
-      "Streptococcus mitis", 
-      "Streptococcus pneumoniae", 
-      "Streptococcus parasanguinis", 
-      "Streptococcus salivarius",
-    "Campylobacter concisus",
-    "Prevotella melaninogenica"),
-  labels = c(
-    "Fusobacterium nucleatum",
-    "Streptococcus spp.",
-      "Streptococcus spp.",
-      "Streptococcus spp.", 
-      "Streptococcus spp.", 
-      "Streptococcus spp.", 
-      "Streptococcus spp.",
-    "Campylobacter concisus",
-    "Prevotella melaninogenica")
-)
-
+# rename bacteria/OTU variables
+dat.16s.s$OTU <- dat.16s.s$OTU1
+dat.rna.s$OTU <- dat.rna.s$otu2
+dat.wgs.s$OTU <- dat.wgs.s$otu2
 dat.rna$OTU <- dat.rna$otu2
 dat.wgs$OTU <- dat.wgs$otu2
+
+# fix abundance/OTU in rna and WGS data
+dat.rna.s <- dat.rna.s %>%
+  dplyr::group_by(OTU, ID)%>%
+  mutate(Abundance = mean(Abundance))%>%
+  distinct(OTU, ID, .keep_all = T)
+dat.wgs.s <- dat.wgs.s %>%
+  dplyr::group_by(OTU, ID)%>%
+  mutate(Abundance = mean(Abundance))%>%
+  distinct(OTU, ID, .keep_all = T)
 
 ```
 
 
 
 
-#Violin Plot Fuso
+# Violin Plot Fuso
+
 ```{r violin-fuso, warning=F, error=F, message=F, fig.dim=c(7,5), out.height="400px", out.width="100%"}
 
 # merge datasets by subsetting to specific variables then merging
@@ -363,7 +312,7 @@ p
 ggsave("output/Barretts_violin-fuso.pdf", p, units = "in", width = 10, height = 6)
 ```
 
-#Violin Plot Strepto
+# Violin Plot Strepto
 ```{r violin-strepto, warning=F, error=F, message=F, fig.dim=c(7,5), out.height="400px", out.width="100%"}
 
 # merge datasets by subsetting to specific variables then merging
@@ -380,7 +329,7 @@ dat <- dat.wgs.s %>%
 
 analysis.dat <- full_join(analysis.dat, dat) %>%
   mutate(pres = ifelse(Abundance > 0, 1, 0)) %>%
-  filter(OTU=="Streptococcus spp.")# create a presence/absences variable
+  filter(OTU%like%"Streptococcus")# create a presence/absences variable
 
 
 tb <- analysis.dat %>%
@@ -438,7 +387,7 @@ p
 ggsave("output/Barretts_violin-strepto.pdf", p, units = "in", width = 10, height = 6)
 ```
 
-#Violin Plot Campy
+# Violin Plot Campy
 ```{r violin-campy, warning=F, error=F, message=F, fig.dim=c(7,5), out.height="400px", out.width="100%"}
 
 # merge datasets by subsetting to specific variables then merging
@@ -455,7 +404,7 @@ dat <- dat.wgs.s %>%
 
 analysis.dat <- full_join(analysis.dat, dat) %>%
   mutate(pres = ifelse(Abundance > 0, 1, 0)) %>%
-  filter(OTU=="Campylobacter concisus")# create a presence/absences variable
+  filter(OTU %like% "Campylobacter")# create a presence/absences variable
 
 
 tb <- analysis.dat %>%
@@ -513,7 +462,7 @@ p
 ggsave("output/Barretts_violin-campy.pdf", p, units = "in", width = 10, height = 6)
 ```
 
-#Violin Plot Prevo
+# Violin Plot Prevo
 ```{r violin-prevo, warning=F, error=F, message=F, fig.dim=c(7,5), out.height="400px", out.width="100%"}
 
 # merge datasets by subsetting to specific variables then merging
@@ -530,7 +479,7 @@ dat <- dat.wgs.s %>%
 
 analysis.dat <- full_join(analysis.dat, dat) %>%
   mutate(pres = ifelse(Abundance > 0, 1, 0)) %>%
-  filter(OTU=="Prevotella melaninogenica")# create a presence/absences variable
+  filter(OTU %like% "Prevotella")# create a presence/absences variable
 
 
 tb <- analysis.dat %>%

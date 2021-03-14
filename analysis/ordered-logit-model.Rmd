@@ -117,9 +117,9 @@ dat.wgs <- dat.wgs %>%
   mutate(
     BarrettsHist = ifelse(Barrett.s.Esophagus.Reported == "Yes", 1, 0),
     BarrettsHist = ifelse(BarrettsHist == "Not Available", NA, BarrettsHist),
-    bar.c = BarrettsHist - mean(BarrettsHist),
+    bar.c = BarrettsHist - mean(BarrettsHist, na.rm=T),
     female = ifelse(Gender=="female", 1, 0),
-    female.c = female-mean(female),
+    female.c = female-mean(female, na.rm=T),
     year_of_death = ifelse(is.na(year_of_death), 2021, year_of_death),
     age = year_of_death-year_of_birth,
     age.c = age - mean(age, na.rm=T),
@@ -236,42 +236,33 @@ dat.wgs$tumor.stage <- factor(
 # Campylobacter concisus
 # Prevotella spp.
 
+# Not uniquely identified in 16s
 dat.16s.s <- filter(
   dat.16s,
   OTU %in% c(
     "Fusobacterium_nucleatum",
-    unique(dat.16s$OTU[dat.16s$OTU %like% "Streptococcus_"]),
+    unique(dat.16s$OTU[dat.16s$OTU %like% "Streptococcus_sanguinis"]),
     unique(dat.16s$OTU[dat.16s$OTU %like% "Campylobacter_"]),
-    "Prevotella_melaninogenica")
+    unique(dat.16s$OTU[dat.16s$OTU %like% "Prevotella"]))
 )
 dat.rna.s <- filter(
   dat.rna,
   otu2 %in% c(
     "Fusobacterium nucleatum",
     "Streptococcus sanguinis",
-      "Streptococcus oralis",
-      "Streptococcus mitis", 
-      "Streptococcus pneumoniae", 
-      "Streptococcus parasanguinis", 
-      "Streptococcus salivarius",
     "Campylobacter concisus",
-    "Prevotella melaninogenica")
+    unique(dat.rna$otu2[dat.rna$otu2 %like% "Prevotella"]))
 )
 dat.wgs.s <- filter(
   dat.wgs,
   otu2 %in% c(
     "Fusobacterium nucleatum",
     "Streptococcus sanguinis",
-      "Streptococcus oralis",
-      "Streptococcus mitis", 
-      "Streptococcus pneumoniae", 
-      "Streptococcus parasanguinis", 
-      "Streptococcus salivarius",
     "Campylobacter concisus",
-    "Prevotella melaninogenica")
+    unique(dat.wgs$otu2[dat.wgs$otu2 %like% "Prevotella"]))
 )
 
-# new names
+# new names -> due to lack of uniqueness
 dat.16s.s$OTU1 <- factor(
   dat.16s.s$OTU,
   levels = c(
@@ -282,9 +273,9 @@ dat.16s.s$OTU1 <- factor(
   ),
   labels = c(
     "Fusobacterium nucleatum",
-    "Streptococcus sanguinis",
-    "Campylobacter concisus",
-    "Prevotella melaninogenica"
+    "Streptococcus spp.*",
+    "Campylobacter spp.*",
+    "Prevotella spp."
   )
 )
 dat.rna.s$OTU1 <- factor(
@@ -293,12 +284,18 @@ dat.rna.s$OTU1 <- factor(
     "Fusobacterium nucleatum",
     "Streptococcus sanguinis",
     "Campylobacter concisus",
-    "Prevotella melaninogenica"),
+    "Prevotella melaninogenica",
+      "Prevotella denticola",
+      "Prevotella intermedia",
+      "Prevotella ruminicola"),
   labels = c(
     "Fusobacterium nucleatum",
     "Streptococcus sanguinis",
     "Campylobacter concisus",
-    "Prevotella melaninogenica")
+    "Prevotella spp.", 
+      "Prevotella spp.", 
+      "Prevotella spp.", 
+      "Prevotella spp.")
 )
 
 dat.wgs.s$OTU1 <- factor(
@@ -307,78 +304,24 @@ dat.wgs.s$OTU1 <- factor(
     "Fusobacterium nucleatum",
     "Streptococcus sanguinis",
     "Campylobacter concisus",
-    "Prevotella melaninogenica"),
+    "Prevotella melaninogenica",
+      "Prevotella denticola",
+      "Prevotella intermedia",
+      "Prevotella ruminicola"),
   labels = c(
     "Fusobacterium nucleatum",
     "Streptococcus sanguinis",
     "Campylobacter concisus",
-    "Prevotella melaninogenica")
+    "Prevotella spp.", 
+      "Prevotella spp.", 
+      "Prevotella spp.", 
+      "Prevotella spp.")
 )
 
-# rename bacteria
-dat.16s.s$OTU <- factor(
-  dat.16s.s$OTU,
-  levels = c(
-    "Fusobacterium_nucleatum",
-    "Streptococcus_dentisani:Streptococcus_infantis:Streptococcus_mitis:Streptococcus_oligofermentans:Streptococcus_oralis:Streptococcus_pneumoniae:Streptococcus_pseudopneumoniae:Streptococcus_sanguinis",
-    "Campylobacter_rectus:Campylobacter_showae",
-    "Prevotella_melaninogenica"
-  ),
-  labels = c(
-    "Fusobacterium nucleatum",
-    "Streptococcus spp.",
-    "Campylobacter concisus",
-    "Prevotella melaninogenica"
-  )
-)
-dat.rna.s$OTU <- factor(
-  dat.rna.s$otu2,
-  levels = c(
-    "Fusobacterium nucleatum",
-    "Streptococcus sanguinis",
-      "Streptococcus oralis",
-      "Streptococcus mitis", 
-      "Streptococcus pneumoniae", 
-      "Streptococcus parasanguinis", 
-      "Streptococcus salivarius",
-    "Campylobacter concisus",
-    "Prevotella melaninogenica"),
-  labels = c(
-    "Fusobacterium nucleatum",
-    "Streptococcus spp.",
-      "Streptococcus spp.",
-      "Streptococcus spp.", 
-      "Streptococcus spp.", 
-      "Streptococcus spp.", 
-      "Streptococcus spp.",
-    "Campylobacter concisus",
-    "Prevotella melaninogenica")
-)
-
-dat.wgs.s$OTU <- factor(
-  dat.wgs.s$otu2,
-  levels = c(
-    "Fusobacterium nucleatum",
-    "Streptococcus sanguinis",
-      "Streptococcus oralis",
-      "Streptococcus mitis", 
-      "Streptococcus pneumoniae", 
-      "Streptococcus parasanguinis", 
-      "Streptococcus salivarius",
-    "Campylobacter concisus",
-    "Prevotella melaninogenica"),
-  labels = c(
-    "Fusobacterium nucleatum",
-    "Streptococcus spp.",
-      "Streptococcus spp.",
-      "Streptococcus spp.", 
-      "Streptococcus spp.", 
-      "Streptococcus spp.", 
-      "Streptococcus spp.",
-    "Campylobacter concisus",
-    "Prevotella melaninogenica")
-)
-
+# rename bacteria/OTU variables
+dat.16s.s$OTU <- dat.16s.s$OTU1
+dat.rna.s$OTU <- dat.rna.s$OTU1
+dat.wgs.s$OTU <- dat.wgs.s$OTU1
 dat.rna$OTU <- dat.rna$otu2
 dat.wgs$OTU <- dat.wgs$otu2
 
@@ -425,6 +368,13 @@ ggplot(dat.16s.s, aes(x=tumor.stage, y=Abundance))+
 
 ```
 
+**NOTE** the bacteria were not uniquely defined for 16S data.
+That means that these are the bacteria truly used:
+
+* "Fusobacterium_nucleatum"
+* Streptococcus spp. = "Streptococcus_dentisani:Streptococcus_infantis:Streptococcus_mitis:Streptococcus_oligofermentans:Streptococcus_oralis:Streptococcus_pneumoniae:Streptococcus_pseudopneumoniae:Streptococcus_sanguinis",
+* Campylobacter spp. = "Campylobacter_rectus:Campylobacter_showae",
+* Prevotella spp. = "Prevotella_melaninogenica"
 
 Stage "1" has only 1 unique sample and will be dropped from subsequent analyses.
 And remove NA values (7).
@@ -495,7 +445,7 @@ OTU abundance is captured by four variables as predictors of TS (the four OTUs l
 
 dat0 <- dat.16s.wide
 ## fit ordered logit model and store results 'm'
-fit <- fit1 <- MASS::polr(tumor.stage ~ 1+ `Streptococcus spp.` + `Fusobacterium nucleatum` + `Prevotella melaninogenica` + `Campylobacter concisus`, data = dat.16s.wide, Hess=TRUE)
+fit <- fit1 <- MASS::polr(tumor.stage ~ 1 + `Fusobacterium nucleatum` + `Streptococcus spp.*` + `Campylobacter spp.*` + `Prevotella spp.`, data = dat.16s.wide, Hess=TRUE)
 
 ## view a summary of the model
 summary(fit)
@@ -524,7 +474,7 @@ dat1 <- dat0 %>%
     values_to = "Pred.Prob"
   ) %>%
   pivot_longer(
-    cols=`Streptococcus spp.`:`Campylobacter concisus`,
+    cols=`Streptococcus spp.*`:`Campylobacter spp.*`,
     names_to="OTU",
     values_to="Abundance"
   )
@@ -558,7 +508,7 @@ First, take Streptococcus spp., the OR was 1.00 95% CI (0.99, 1.01).
 This implies that for individuals who had a 1% higher relative abundance of Streptococcus spp., the odds of being in a higher tumor stage is multiplied 1.00 times (i.e., 0% increase on average) holding the abundance of other OTUs constant.
 This means that the knowledge of relative abundance of Strepto was not informative over the base probability we estimated in model 0.
 
-For Fusobacterium nucleatum (OR = 1.01, 95% CI [0.99, 1.04]) and Prevotella melaninogenica (OR = 1.01, 95% CI [0.99, 1.05]), the interpretation is as follows because the OR is the same.
+For Fusobacterium nucleatum (OR = 1.01, 95% CI [0.99, 1.04]) and Prevotella spp. (OR = 1.01, 95% CI [0.99, 1.05]), the interpretation is as follows because the OR is the same.
 For individuals who had a 1% higher relative abundance of this OTU (Fuso. or Prevo.), the odds of being in a higher tumor stage is multiplied 1.01 times (i.e., about a 1% increase on average) holding the abundance of other OTUs constant.
 
 ### Model 2: TS ~ OTU + COVARIATES
@@ -567,7 +517,7 @@ For individuals who had a 1% higher relative abundance of this OTU (Fuso. or Pre
 
 dat0 <- dat.16s.wide
 ## fit ordered logit model and store results 'm'
-fit <- fit2 <- MASS::polr(tumor.stage ~ 1+ `Streptococcus spp.` + `Fusobacterium nucleatum` + `Prevotella melaninogenica` + `Campylobacter concisus` + age.c + female.c + bmi.c + bar.c, data = dat.16s.wide, Hess=TRUE)
+fit <- fit2 <- MASS::polr(tumor.stage ~ 1+ `Fusobacterium nucleatum` + `Streptococcus spp.*` + `Campylobacter spp.*` + `Prevotella spp.` + age.c + female.c + bmi.c + bar.c, data = dat.16s.wide, Hess=TRUE)
 
 ## view a summary of the model
 summary(fit)
@@ -596,7 +546,7 @@ dat1 <- dat0 %>%
     values_to = "Pred.Prob"
   ) %>%
   pivot_longer(
-    cols=`Streptococcus spp.`:`Campylobacter concisus`,
+    cols=`Streptococcus spp.*`:`Campylobacter spp.*`,
     names_to="OTU",
     values_to="Abundance"
   )
@@ -631,13 +581,13 @@ dat.16s.wide <- dat.16s.wide %>%
   )
 apply(dat.16s.wide[,c('TI','TII','TIII', 'TIV')],2, table)
 
-summary(glm(TI  ~ 1 + `Streptococcus spp.` + `Fusobacterium nucleatum` + `Prevotella melaninogenica` + `Campylobacter concisus`+ age.c + female.c + bmi.c + bar.c, data = dat.16s.wide, family=binomial(link="logit")))
+summary(glm(TI  ~ 1 + `Fusobacterium nucleatum` + `Streptococcus spp.*` + `Campylobacter spp.*` + `Prevotella spp.`+ age.c + female.c + bmi.c + bar.c, data = dat.16s.wide, family=binomial(link="logit")))
 
-summary(glm(TII ~ 1 + `Streptococcus spp.` + `Fusobacterium nucleatum` + `Prevotella melaninogenica` + `Campylobacter concisus`+ age.c + female.c + bmi.c + bar.c, data = dat.16s.wide, family=binomial(link="logit")))
+summary(glm(TII ~ 1 + `Fusobacterium nucleatum` + `Streptococcus spp.*` + `Campylobacter spp.*` + `Prevotella spp.`+ age.c + female.c + bmi.c + bar.c, data = dat.16s.wide, family=binomial(link="logit")))
 
-summary(glm(TIII ~ 1 + `Streptococcus spp.` + `Fusobacterium nucleatum` + `Prevotella melaninogenica` + `Campylobacter concisus`+ age.c + female.c + bmi.c + bar.c, data = dat.16s.wide, family=binomial(link="logit")))
+summary(glm(TIII ~ 1 + `Fusobacterium nucleatum` + `Streptococcus spp.*` + `Campylobacter spp.*` + `Prevotella spp.`+ age.c + female.c + bmi.c + bar.c, data = dat.16s.wide, family=binomial(link="logit")))
 
-summary(glm(TIV  ~ 1 + `Streptococcus spp.` + `Fusobacterium nucleatum` + `Prevotella melaninogenica` + `Campylobacter concisus`+ age.c + female.c + bmi.c + bar.c, data = dat.16s.wide, family=binomial(link="logit")))
+summary(glm(TIV  ~ 1 + `Fusobacterium nucleatum` + `Streptococcus spp.*` + `Campylobacter spp.*` + `Prevotella spp.` + age.c + female.c + bmi.c + bar.c, data = dat.16s.wide, family=binomial(link="logit")))
 
 ```
 
@@ -750,10 +700,26 @@ OTU abundance is captured by four variables as predictors of TS (the four OTUs l
 
 dat0 <- dat.rna.wide
 ## fit ordered logit model and store results 'm'
-fit <- fit1 <- MASS::polr(tumor.stage ~ 1+ `Streptococcus spp.` + `Fusobacterium nucleatum` + `Prevotella melaninogenica` + `Campylobacter concisus`, data = dat.rna.wide, Hess=TRUE)
+fit <- fit1 <- MASS::polr(tumor.stage ~ 1 + `Fusobacterium nucleatum` + `Streptococcus sanguinis` + `Campylobacter concisus` + `Prevotella spp.`, data = dat.rna.wide, Hess=TRUE)
 
 ## view a summary of the model
 summary(fit)
+
+# rescale variables
+dat.rna.wide <- dat.rna.wide %>%
+  mutate(
+    `Fusobacterium nucleatum` = 10*`Fusobacterium nucleatum`,
+    `Streptococcus sanguinis` = 10*`Streptococcus sanguinis`,
+    `Campylobacter concisus` = 10*`Campylobacter concisus`,
+    `Prevotella spp.` = 10*`Prevotella spp.`
+  )
+dat0 <- dat.rna.wide
+fit <- fit1 <- MASS::polr(tumor.stage ~ 1 + `Fusobacterium nucleatum` + `Streptococcus sanguinis` + `Campylobacter concisus` + `Prevotella spp.`, data = dat.rna.wide, Hess=TRUE)
+# interpret in terms of change in 0.1% increase in relative abundance
+
+## view a summary of the model
+summary(fit)
+
 anova(fit1, fit0) # Chi-square difference test
 # obtain approximate p-values
 ctable <- coef(summary(fit))
@@ -788,7 +754,7 @@ ggplot(dat1, aes(x = Abundance, y = Pred.Prob, color=TS, group=TS, linetype=TS))
   geom_line() + 
   facet_grid(OTU ~., scales="free")+
   labs(y="Probability of Tumor Stage",
-       x="Relative Abundance (%)",
+       x="Relative Abundance (% times 10)",
        title="Tumor stage likelihood with bacteria abundance",
        color="Tumor Stage", linetype="Tumor Stage")+
   scale_x_continuous(
@@ -810,7 +776,7 @@ ggplot(dat1, aes(x = Abundance, y = Pred.Prob, color=TS, group=TS, linetype=TS))
 
 dat0 <- dat.rna.wide
 ## fit ordered logit model and store results 'm'
-fit <- fit2 <- MASS::polr(tumor.stage ~ 1+ `Streptococcus spp.` + `Fusobacterium nucleatum` + `Prevotella melaninogenica` + `Campylobacter concisus` + age.c + female.c + bmi.c + bar.c, data = dat.rna.wide, Hess=TRUE)
+fit <- fit2 <- MASS::polr(tumor.stage ~ 1+ `Fusobacterium nucleatum` + `Streptococcus sanguinis` + `Campylobacter concisus` + `Prevotella spp.` + age.c + female.c + bmi.c + bar.c, data = dat.rna.wide, Hess=TRUE)
 
 ## view a summary of the model
 summary(fit)
@@ -848,7 +814,7 @@ ggplot(dat1, aes(x = Abundance, y = Pred.Prob, color=TS, group=TS, linetype=TS))
   geom_line() + 
   facet_grid(OTU ~., scales="free")+
   labs(y="Probability of Tumor Stage",
-       x="Relative Abundance (%)",
+       x="Relative Abundance (% time 10)",
        title="Tumor stage likelihood with bacteria abundance",
        color="Tumor Stage", linetype="Tumor Stage")+
   scale_x_continuous(
@@ -874,9 +840,244 @@ dat.rna.wide <- dat.rna.wide %>%
   )
 apply(dat.rna.wide[,c('TII','TIII')],2, table)
 
-summary(glm(TII ~ 1 + `Streptococcus spp.` + `Fusobacterium nucleatum` + `Prevotella melaninogenica` + `Campylobacter concisus`+ age.c + female.c + bmi.c + bar.c, data = dat.rna.wide, family=binomial(link="logit")))
+summary(glm(TII ~ 1 + `Fusobacterium nucleatum` + `Streptococcus sanguinis` + `Campylobacter concisus` + `Prevotella spp.`+ age.c + female.c + bmi.c + bar.c, data = dat.rna.wide, family=binomial(link="logit")))
 
-summary(glm(TIII ~ 1 + `Streptococcus spp.` + `Fusobacterium nucleatum` + `Prevotella melaninogenica` + `Campylobacter concisus`+ age.c + female.c + bmi.c + bar.c, data = dat.rna.wide, family=binomial(link="logit")))
+summary(glm(TIII ~ 1 + `Fusobacterium nucleatum` + `Streptococcus sanguinis` + `Campylobacter concisus` + `Prevotella spp.`+ age.c + female.c + bmi.c + bar.c, data = dat.rna.wide, family=binomial(link="logit")))
+
+```
+
+
+# TCGA WGS data
+
+## Double Checking Data
+
+```{r wgs-fig1, fig.height=5, out.width="100%", out.height="100%"}
+
+# in long format
+table(dat.wgs.s$tumor.stage)
+# by subject
+dat <- dat.wgs.s %>% filter(OTU == "Fusobacterium nucleatum")
+table(dat$tumor.stage)
+sum(table(dat$tumor.stage)) 
+nrow(dat) # matches but there's missing data
+sum(is.na(dat$Abundance))
+# number of non-missing abundnance data
+nrow(dat) - sum(is.na(dat$Abundance))
+# matches 
+dat0 <- dat %>%
+  filter()
+table(dat0$tumor.stage)
+
+# plot functions
+#root function
+root<-function(x){
+  x <- ifelse(x < 0, 0, x)
+  x**(0.2)
+}
+#inverse root function
+invroot<-function(x){
+  x**(5)
+}
+
+mean.dat <- dat.wgs.s %>%
+  group_by(tumor.stage, OTU) %>%
+  summarize(M = mean(Abundance, na.rm=T))
+ggplot(dat.wgs.s, aes(x=tumor.stage, y=Abundance))+
+  geom_violin()+
+  geom_jitter(alpha=0.25,width = 0.25)+
+  geom_point(data=mean.dat, aes(x=tumor.stage, y = M), size=2, alpha =0.9, color="red")+
+  labs(x="Tumor Stage", y="Percent Relative Abundance",
+       title="Distribution of abundance across tumor stage",
+       subtitle="Red dot is average percent relative abundance")+
+  scale_y_continuous(
+    trans=scales::trans_new("root", root, invroot),
+    breaks=c(0, 0.001,0.01, 0.1, 1,10,50),
+    labels = c(0, 0.001,0.01, 0.1, 1,10,50),
+    limits = c(0, 50)
+  )+
+  facet_wrap(.~OTU, nrow=1, scales="free")+
+  theme_classic()
+
+```
+
+
+```{r wgs-data-manip1}
+dat.wgs.s <- dat.wgs.s %>%
+  filter(is.na(Abundance) == F, is.na(tumor.stage)==F)
+  
+```
+
+Now, transform data into a useful wide-format representation to avoid inflating sample size.
+The long-format above is very useful for making plots, but less useful for the ordered logistic regression to follow.
+
+```{r wgs-data-manip2}
+
+dat.wgs.wide <- dat.wgs.s %>%
+  dplyr::select(OTU, Abundance, ID, BarrettsHist, bar.c, female.c, age.c, bmi.c, tumor.stage) %>%
+  
+  pivot_wider(names_from = OTU, values_from = Abundance)
+
+```
+
+## Ordered Logistic Regression
+
+### Model 0: TS ~ 1
+
+This in the intercept only model. Implying that we will only estimate the unique intercepts for the $J-1$ categories.
+
+```{r glm-wgs-m0}
+## fit ordered logit model and store results 'm'
+fit <- fit0 <- MASS::polr(tumor.stage ~ 1, data = dat.wgs.wide, Hess=TRUE)
+## view a summary of the model
+summary(fit)
+# save fitted probabilities
+# these represent the estimated probability of each tumor stage
+pp <- fitted(fit)
+pp[1,]
+```
+
+
+
+### Model 1: TS ~ OTU
+
+This model expands on the previous model to include OTU abundance as a predictor of TS.
+OTU abundance is captured by four variables as predictors of TS (the four OTUs listed at the top of this document).
+
+
+```{r glm-wgs-m1, fig.height=5, out.width="100%", out.height="100%"}
+
+dat0 <- dat.wgs.wide
+## fit ordered logit model and store results 'm'
+fit <- fit1 <- MASS::polr(tumor.stage ~ 1+ `Fusobacterium nucleatum` + `Streptococcus sanguinis` + `Campylobacter concisus` + `Prevotella spp.`, data = dat.wgs.wide, Hess=TRUE)
+
+## view a summary of the model
+summary(fit)
+anova(fit1, fit0) # Chi-square difference test
+# obtain approximate p-values
+ctable <- coef(summary(fit))
+p <- pnorm(abs(ctable[, "t value"]), lower.tail = FALSE) * 2
+(ctable <- cbind(ctable, "p value" = p))
+
+# obtain CIs
+(ci <- confint(fit))  # CIs assuming normality
+
+## OR and CI
+exp(cbind(OR = coef(fit), ci))
+
+# predictive data
+pp <- as.data.frame(predict(fit, newdata = dat.wgs.wide, "probs"))
+dat0 <- cbind(dat0, pp)
+
+## melt data set to long for ggplot2
+dat1 <- dat0 %>%
+  pivot_longer(
+    cols=`I`:`IV`,
+    names_to = "TS",
+    values_to = "Pred.Prob"
+  ) %>%
+  pivot_longer(
+    cols=`Prevotella spp.`:`Streptococcus sanguinis` ,
+    names_to="OTU",
+    values_to="Abundance"
+  )
+## plot predicted probabilities across Abundance values for each level of OTU
+## facetted by tumor.stage
+ggplot(dat1, aes(x = Abundance, y = Pred.Prob, color=TS, group=TS, linetype=TS)) +
+  geom_line() + 
+  facet_grid(OTU ~., scales="free")+
+  labs(y="Probability of Tumor Stage",
+       x="Relative Abundance (%)",
+       title="Tumor stage likelihood with bacteria abundance",
+       color="Tumor Stage", linetype="Tumor Stage")+
+  scale_x_continuous(
+    trans=scales::trans_new("root", root, invroot),
+    breaks=c(0, 0.001,0.01, 0.1, 1,10,50),
+    labels = c(0, 0.001,0.01, 0.1, 1,10,50),
+    limits = c(0, 50)
+  )+
+  theme(
+    panel.grid = element_blank()
+  )
+```
+
+
+
+### Model 2: TS ~ OTU + COVARIATES
+
+```{r glm-wgs-m2, fig.height=5, out.width="100%", out.height="100%"}
+
+dat0 <- dat.wgs.wide
+## fit ordered logit model and store results 'm'
+fit <- fit2 <- MASS::polr(tumor.stage ~ 1+ `Fusobacterium nucleatum` + `Streptococcus sanguinis` + `Campylobacter concisus` + `Prevotella spp.` + age.c + female.c + bmi.c + bar.c, data = dat.wgs.wide, Hess=TRUE)
+
+## view a summary of the model
+summary(fit)
+anova(fit2, fit0) # Chi-square difference test
+# obtain approximate p-values
+ctable <- coef(summary(fit))
+p <- pnorm(abs(ctable[, "t value"]), lower.tail = FALSE) * 2
+(ctable <- cbind(ctable, "p value" = p))
+
+# obtain CIs
+(ci <- confint(fit))  # CIs assuming normality
+
+## OR and CI
+exp(cbind(OR = coef(fit), ci))
+
+# predictive data
+pp <- as.data.frame(predict(fit, newdata = dat.wgs.wide, "probs"))
+dat0 <- cbind(dat0, pp)
+
+## melt data set to long for ggplot2
+dat1 <- dat0 %>%
+  pivot_longer(
+    cols=`I`:`IV`,
+    names_to = "TS",
+    values_to = "Pred.Prob"
+  ) %>%
+  pivot_longer(
+    cols=`Prevotella spp.`:`Streptococcus sanguinis` ,
+    names_to="OTU",
+    values_to="Abundance"
+  )
+## plot predicted probabilities across Abundance values for each level of OTU
+## facetted by tumor.stage
+ggplot(dat1, aes(x = Abundance, y = Pred.Prob, color=TS, group=TS, linetype=TS)) +
+  geom_line() + 
+  facet_grid(OTU ~., scales="free")+
+  labs(y="Probability of Tumor Stage",
+       x="Relative Abundance (%)",
+       title="Tumor stage likelihood with bacteria abundance",
+       color="Tumor Stage", linetype="Tumor Stage")+
+  scale_x_continuous(
+    trans=scales::trans_new("root", root, invroot),
+    breaks=c(0, 0.001,0.01, 0.1, 1,10,25),
+    labels = c(0, 0.001,0.01, 0.1, 1,10,25),
+    limits = c(0, 25)
+  )+
+  theme(
+    panel.grid = element_blank()
+  )
+```
+
+
+### Proportional Odds Assumption
+
+```{r pro-odds-test3}
+dat.wgs.wide <- dat.wgs.wide %>%
+  mutate(
+    TI = I(as.numeric(tumor.stage) >= 1),
+    TII = I(as.numeric(tumor.stage) >= 2),
+    TIII = I(as.numeric(tumor.stage) >= 3),
+    TIV = I(as.numeric(tumor.stage) >= 4)
+  )
+apply(dat.wgs.wide[,c('TII','TIII', "TIV")],2, table)
+
+summary(glm(TII ~ 1 + `Fusobacterium nucleatum` + `Streptococcus sanguinis` + `Campylobacter concisus` + `Prevotella spp.`+ age.c + female.c + bmi.c + bar.c, data = dat.wgs.wide, family=binomial(link="logit")))
+
+summary(glm(TIII ~ 1 + `Fusobacterium nucleatum` + `Streptococcus sanguinis` + `Campylobacter concisus` + `Prevotella spp.`+ age.c + female.c + bmi.c + bar.c, data = dat.wgs.wide, family=binomial(link="logit")))
+
+summary(glm(TIV ~ 1 + `Fusobacterium nucleatum` + `Streptococcus sanguinis` + `Campylobacter concisus` + `Prevotella spp.`+ age.c + female.c + bmi.c + bar.c, data = dat.wgs.wide, family=binomial(link="logit")))
 
 
 ```
