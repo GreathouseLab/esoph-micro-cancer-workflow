@@ -128,6 +128,12 @@ mydata <- mydata %>%
 
 ```{r ec-ra}
 
+
+d <- mydata %>%
+  filter(description=="DNA-directed DNA polymerase")
+
+t.test(d$RelAbundance ~ d$tumor.cat)
+
 tb.ra1 <- mydata %>%
   group_by(description) %>%
   summarise(ng = n(),
@@ -141,16 +147,35 @@ tb.ra2m <- mydata %>%
               values_from = M)
 tb.ra2se <- mydata %>%
   group_by(description, tumor.cat) %>%
-  summarise(ng=n(),SE = sd(RelAbundance)/ng) %>%
+  summarise(ng=n(),SE = var(RelAbundance)/ng) %>%
   pivot_wider(id_cols = description,
               names_from = tumor.cat,
               values_from = SE)
+tb.ra2ng <- mydata %>%
+  group_by(description, tumor.cat) %>%
+  summarise(ng=n()) %>%
+  pivot_wider(id_cols = description,
+              names_from = tumor.cat,
+              values_from = ng)
 tb.ra <- left_join(tb.ra1, tb.ra2m)
 tb.ra <- cbind(tb.ra, tb.ra2se[,-1]) 
-colnames(tb.ra) <- c("description", "ng", "Overall Mean", "Overall SE", "Non-Tumor Mean", "Tumor Mean", "Non-Tumor SE", "Tumor SE")
+tb.ra <- cbind(tb.ra, tb.ra2ng[,-1]) 
+
+colnames(tb.ra) <- c("description", "ng", "Overall Mean", "Overall SE", "Non-Tumor Mean", "Tumor Mean", "Non-Tumor SE", "Tumor SE", "Non-Tumor Ng", "Tumor Ng")
 tb.ra <- tb.ra %>%
   arrange(desc(`Overall Mean`))
-tb.ra <- tb.ra[, c("description", "Overall Mean", "Overall SE","Tumor Mean", "Tumor SE", "Non-Tumor Mean", "Non-Tumor SE")]
+tb.ra <- tb.ra[, c("description", "Overall Mean", "Overall SE","Tumor Mean", "Tumor SE","Tumor Ng", "Non-Tumor Mean", "Non-Tumor SE", "Non-Tumor Ng")]
+
+# compute t-test
+tb.ra <- tb.ra %>%
+  mutate(
+    t = (`Tumor Mean` - `Non-Tumor Mean`)/(sqrt(`Tumor SE` + `Non-Tumor SE`)),
+    df = ((`Tumor SE` + `Non-Tumor SE`)**2)/((`Tumor SE`**2)/(`Tumor Ng`-1) + (`Non-Tumor SE`**2)/(`Non-Tumor Ng`-1)),
+    p = pt(q = abs(t), df=df, lower.tail = F),
+    fdr_p = p.adjust(p, method="fdr")
+  )
+
+
 
 kable(tb.ra, format="html", digits=5, caption="EC Data Average Relative Abundance of Each Description (sorted in descending order)") %>%
   kable_styling(full_width = T) %>%
@@ -164,7 +189,7 @@ For the modeling, we used a generalized linear mixed model (GLMM).
 
 First, we looked at the biserial correlation between the abundance of each description and the tumor status.
 
-```{r}
+```{r corplot, warning=F, error=F, message=F, fig.dim=c(7,5), out.height="400px", out.width="100%"}
 
 tb <- mydata %>%
   group_by(description)%>%
@@ -186,7 +211,7 @@ ggplot(tb, aes(x=r))+
 Next, we need the data to be on an interpretable scale.
 First, let's use the raw abundance like scale.
 
-```{r ec-glmm-overview}
+```{r ec-glmm-overview, warning=F, error=F, message=F, fig.dim=c(7,5), out.height="400px", out.width="100%"}
 
 p <- ggplot(mydata, aes(x=Abundance))+
   geom_density()
@@ -209,7 +234,7 @@ p
 Due to the zero-inflation, let's look at how to effectively model this.
 Let's first run models by description so that we can avoid the nesting issue initially. We will come back to this to conduct the final model (it will be more powerful).
 
-```{r glmm-zi, message=F}
+```{r glmm-zi, message=F, eval=F}
 DESCRIPTIONS <- unique(mydata$description)
 i<-1
 dat0 <- mydata %>% filter(description==DESCRIPTIONS[i])
@@ -251,7 +276,7 @@ kable(results.out, format="html", digits=3) %>%
 
 Draft of a plots for these results
 
-```{r glmm-plot1}
+```{r glmm-plot1, eval=F}
 
 res.out2 <- left_join(results.out, tb.ra,by=c("Description"="description")) %>% pivot_longer(
   cols = c("Tumor Mean", "Non-Tumor Mean"),
@@ -278,7 +303,7 @@ p2
 Alternatively, we can model the relative abundance data.
 For this, transform the RA data to be 0-100 instead of 0-1.
 
-```{r glmm-ra, message=F}
+```{r glmm-ra, message=F, eval=F}
 
 
 # set up output object
@@ -317,7 +342,7 @@ kable(results.out, format="html", digits=3) %>%
 
 Draft of a plots for these results
 
-```{r glmm-plot-ra}
+```{r glmm-plot-ra, eval=F}
 
 # based on above
 p <- results.out %>%
@@ -356,5 +381,177 @@ fit0 <- brms::brm(
 # the resulting "hu" parameter is the model for the proportion of zeros estimated
 summary(fit0)
 plot(fit0)
+
+```
+
+
+# Part 2 KO Data
+
+```{r pi-dat-ko}
+
+pi.dat <- readr::read_tsv("data/PICRUST/ko_pred_metagenome_unstrat_descrip.tsv")
+
+pi.dat <- pi.dat %>%
+  pivot_longer(
+    cols=`1.S37.Jun172016`:`99.D01.S37.Jun232016`,
+    names_to = "ID",
+    values_to = "Abundance"
+  )
+d <- as.data.frame(dat.16s)
+mydata <- full_join(pi.dat[,-1], d)
+
+mydata <- mydata %>%
+  mutate(
+    ID.n = as.numeric(as.factor(ID)),
+    description.n = as.numeric(as.factor(description))
+  ) %>%
+  group_by(ID) %>%
+  mutate(RelAbundance = Abundance/sum(Abundance)*100) %>%
+  ungroup()%>%
+  group_by(description)%>%
+  mutate(avgRA = mean(RelAbundance))
+
+```
+
+
+## Relative Abundance
+
+```{r ko-ra}
+
+
+tb.ra1 <- mydata %>%
+  group_by(description) %>%
+  summarise(ng = n(),
+            Overall.M = mean(RelAbundance),
+            Overall.SE = sd(RelAbundance)/ng)
+tb.ra2m <- mydata %>%
+  group_by(description, tumor.cat) %>%
+  summarise(M = mean(RelAbundance)) %>%
+  pivot_wider(id_cols = description,
+              names_from = tumor.cat,
+              values_from = M)
+tb.ra2se <- mydata %>%
+  group_by(description, tumor.cat) %>%
+  summarise(ng=n(),SE = var(RelAbundance)/ng) %>%
+  pivot_wider(id_cols = description,
+              names_from = tumor.cat,
+              values_from = SE)
+tb.ra2ng <- mydata %>%
+  group_by(description, tumor.cat) %>%
+  summarise(ng=n()) %>%
+  pivot_wider(id_cols = description,
+              names_from = tumor.cat,
+              values_from = ng)
+tb.ra <- left_join(tb.ra1, tb.ra2m)
+tb.ra <- cbind(tb.ra, tb.ra2se[,-1]) 
+tb.ra <- cbind(tb.ra, tb.ra2ng[,-1]) 
+
+colnames(tb.ra) <- c("description", "ng", "Overall Mean", "Overall SE", "Non-Tumor Mean", "Tumor Mean", "Non-Tumor SE", "Tumor SE", "Non-Tumor Ng", "Tumor Ng")
+tb.ra <- tb.ra %>%
+  arrange(desc(`Overall Mean`))
+tb.ra <- tb.ra[, c("description", "Overall Mean", "Overall SE","Tumor Mean", "Tumor SE","Tumor Ng", "Non-Tumor Mean", "Non-Tumor SE", "Non-Tumor Ng")]
+
+# compute t-test
+tb.ra <- tb.ra %>%
+  mutate(
+    t = (`Tumor Mean` - `Non-Tumor Mean`)/(sqrt(`Tumor SE` + `Non-Tumor SE`)),
+    df = ((`Tumor SE` + `Non-Tumor SE`)**2)/((`Tumor SE`**2)/(`Tumor Ng`-1) + (`Non-Tumor SE`**2)/(`Non-Tumor Ng`-1)),
+    p = pt(q = abs(t), df=df, lower.tail = F),
+    fdr_p = p.adjust(p, method="fdr")
+  )
+# double check calculations
+d <- mydata %>%
+  filter(description=="ABC-2.A; ABC-2 type transport system ATP-binding protein")
+
+t.test(d$RelAbundance ~ d$tumor.cat)
+
+
+kable(tb.ra, format="html", digits=5, caption="KO Data Average Relative Abundance of Each Description (sorted in descending order)") %>%
+  kable_styling(full_width = T) %>%
+  scroll_box(width = "100%", height="600px")
+
+```
+
+
+
+# Part 3 Pathways Data
+
+```{r pi-dat-pathway}
+
+pi.dat <- readr::read_tsv("data/PICRUST/path_abun_unstrat_descrip.tsv")
+
+pi.dat <- pi.dat %>%
+  pivot_longer(
+    cols=`1.S37.Jun172016`:`99.D01.S37.Jun232016`,
+    names_to = "ID",
+    values_to = "Abundance"
+  )
+d <- as.data.frame(dat.16s)
+mydata <- full_join(pi.dat[,-1], d)
+
+mydata <- mydata %>%
+  mutate(
+    ID.n = as.numeric(as.factor(ID)),
+    description.n = as.numeric(as.factor(description))
+  ) %>%
+  group_by(ID) %>%
+  mutate(RelAbundance = Abundance/sum(Abundance)*100) %>%
+  ungroup()%>%
+  group_by(description)%>%
+  mutate(avgRA = mean(RelAbundance))
+
+```
+
+
+## Relative Abundance
+
+```{r path-ra}
+
+tb.ra1 <- mydata %>%
+  group_by(description) %>%
+  summarise(ng = n(),
+            Overall.M = mean(RelAbundance),
+            Overall.SE = sd(RelAbundance)/ng)
+tb.ra2m <- mydata %>%
+  group_by(description, tumor.cat) %>%
+  summarise(M = mean(RelAbundance)) %>%
+  pivot_wider(id_cols = description,
+              names_from = tumor.cat,
+              values_from = M)
+tb.ra2se <- mydata %>%
+  group_by(description, tumor.cat) %>%
+  summarise(ng=n(),SE = var(RelAbundance)/ng) %>%
+  pivot_wider(id_cols = description,
+              names_from = tumor.cat,
+              values_from = SE)
+tb.ra2ng <- mydata %>%
+  group_by(description, tumor.cat) %>%
+  summarise(ng=n()) %>%
+  pivot_wider(id_cols = description,
+              names_from = tumor.cat,
+              values_from = ng)
+tb.ra <- left_join(tb.ra1, tb.ra2m)
+tb.ra <- cbind(tb.ra, tb.ra2se[,-1]) 
+tb.ra <- cbind(tb.ra, tb.ra2ng[,-1]) 
+
+colnames(tb.ra) <- c("description", "ng", "Overall Mean", "Overall SE", "Non-Tumor Mean", "Tumor Mean", "Non-Tumor SE", "Tumor SE", "Non-Tumor Ng", "Tumor Ng")
+tb.ra <- tb.ra %>%
+  arrange(desc(`Overall Mean`))
+tb.ra <- tb.ra[, c("description", "Overall Mean", "Overall SE","Tumor Mean", "Tumor SE","Tumor Ng", "Non-Tumor Mean", "Non-Tumor SE", "Non-Tumor Ng")]
+
+# compute t-test
+tb.ra <- tb.ra %>%
+  mutate(
+    t = (`Tumor Mean` - `Non-Tumor Mean`)/(sqrt(`Tumor SE` + `Non-Tumor SE`)),
+    df = ((`Tumor SE` + `Non-Tumor SE`)**2)/((`Tumor SE`**2)/(`Tumor Ng`-1) + (`Non-Tumor SE`**2)/(`Non-Tumor Ng`-1)),
+    p = pt(q = abs(t), df=df, lower.tail = F),
+    fdr_p = p.adjust(p, method="fdr")
+  )
+
+
+
+kable(tb.ra, format="html", digits=5, caption="Pathway Data Average Relative Abundance of Each Description (sorted in descending order)") %>%
+  kable_styling(full_width = T) %>%
+  scroll_box(width = "100%", height="600px")
 
 ```
