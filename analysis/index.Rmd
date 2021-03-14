@@ -25,7 +25,8 @@ Welcome to our research website.
 
 *[RNAscope test](data-check-for-RNAscope.html)
 
-*[Boxplots for sample type by abundance](species-sample-type-combined.html)
+Violin plots with abundance of each bacteria across samples with Barretts history.
+*[Violin plots for bacterial abundance by Barretts samples](species-sample-type-combined.html)
 
 The following pages give a variety of heatmaps w/ dendrograms that help describe the differences in OTU abundance across groups.
 
@@ -38,3 +39,7 @@ The following page helps describe the relationship between Fuso (and other OTUs)
 * Is fuso associated with tumor stage in either data set? Does X bacteria predict stage? Multivariable w/ age, sex, BMI, history of Barrett's
 
 *[Ordered Logit Model Results](ordered-logit-model.html)
+
+PICRUSt Analyses
+
+*[PICRUSt Results](picrust-analyses.html)
