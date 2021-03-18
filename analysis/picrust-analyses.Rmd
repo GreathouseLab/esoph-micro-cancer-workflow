@@ -183,13 +183,111 @@ kable(tb.ra, format="html", digits=5, caption="EC Data Average Relative Abundanc
 
 ```
 
+
+```{r ec-full-plot, warning=F, error=F, message=F, fig.dim=c(12,7), out.height="100%", out.width="100%"}
+
+
+plot.dat <- tb.ra %>%
+  arrange(p) %>%
+  slice_head(n=50)%>%
+  mutate(
+    description = fct_reorder(description, `Overall Mean`),
+    description = factor(description, levels = levels(description), ordered=T)
+  ) %>%
+  arrange(description) %>%
+  mutate(
+    id = 1:n(),
+    step = ifelse(id%%2 == 0, 1, 0),
+    Mean_diff = `Tumor Mean` - `Non-Tumor Mean`,
+    diff_se = sqrt(`Tumor SE` + `Non-Tumor SE`),
+    Mean_diff_ll = Mean_diff - qt(0.975, df)*diff_se,
+    Mean_diff_ul = Mean_diff + qt(0.975, df)*diff_se
+  ) %>%
+  pivot_longer(
+    cols=contains("Mean"),
+    names_to = "group",
+    values_to = "mean"
+  )
+
+
+
+p1.d <- plot.dat %>%
+  filter(group %in% c("Tumor Mean","Non-Tumor Mean")) %>%
+  mutate(
+    group = ifelse(group == "Tumor Mean", "Tumor", "Non-Tumor"),
+    col = ifelse(step == 1, "grey90", "white"),
+    h=1, w=Inf
+    
+  )
+p1 <- ggplot()+
+  geom_tile(data = p1.d,
+              aes(y = description, x=0,
+                  height=h, width=w),
+              fill = p1.d$col, color=p1.d$col)+
+    geom_bar(data=p1.d,
+             aes(x=mean, y=description,
+                 group=group, color=group,
+                 fill=group),
+             stat="identity",position = "dodge",
+             alpha = 1)+
+    labs(x="Mean Proportion (%)")+
+    theme_classic()+
+    theme(
+      legend.position = "bottom",
+      plot.margin = unit(c(1,0,1,1), "lines")
+    )
+
+p2.d <- plot.dat %>%
+  filter(group %in% c("Mean_diff", "Mean_diff_ll", "Mean_diff_ul")) %>%
+  pivot_wider(
+    names_from = group,
+    values_from = mean
+  ) %>%
+  mutate(
+    group = ifelse(Mean_diff > 0, "Tumor", "Non-Tumor"),
+    p = sprintf("%.3f", round(p,3)),
+    ll = min(Mean_diff_ll)-0.01,
+    ul = max(Mean_diff_ul)+0.01
+  )
+p2<-ggplot(p2.d, aes(x=Mean_diff, y=description))+
+    geom_tile(data = p1.d,
+              aes(y = description, x=0,
+                  height=h, width=w),
+              fill = p1.d$col, color=p1.d$col)+
+    geom_vline(xintercept = 0, linetype="dashed", alpha=0.5)+
+    geom_segment(aes(x=Mean_diff_ll, y=description, xend=Mean_diff_ul, yend=description))+
+    geom_point(aes(fill=group, color=group))+
+    geom_text(aes(label=p, x=unique(p2.d$ul)+0.1))+
+    coord_cartesian(xlim = c(unique(p2.d$ll), unique(p2.d$ul)),
+                    clip = 'off') +
+    annotate("text", x=unique(p2.d$ul)+0.2,y = 25,
+             angle=90,
+             label="p-value (uncorrected)")+
+    labs(x="Mean Difference in Proportions")+
+    theme_classic()+
+    theme(
+      legend.position = "bottom",
+      axis.title.y = element_blank(),
+      axis.text.y = element_blank(),
+      axis.line.y = element_blank(),
+      axis.ticks.y = element_blank(),
+      plot.margin = unit(c(1,4,1,0), "lines")
+    )
+
+# plot
+p1 + p2 +
+  plot_annotation(title="EC Data: First 50 descriptions with lowest p-value (uncorrected)")
+
+```
+
+
 ## Modeling Difference between Tumor and Non-Tumor
 
 For the modeling, we used a generalized linear mixed model (GLMM).
 
 First, we looked at the biserial correlation between the abundance of each description and the tumor status.
 
-```{r corplot, warning=F, error=F, message=F, fig.dim=c(7,5), out.height="400px", out.width="100%"}
+```{r ec-corplot, warning=F, error=F, message=F, fig.dim=c(7,5), out.height="400px", out.width="100%"}
 
 tb <- mydata %>%
   group_by(description)%>%
@@ -208,10 +306,12 @@ ggplot(tb, aes(x=r))+
 
 ```
 
+
+
 Next, we need the data to be on an interpretable scale.
 First, let's use the raw abundance like scale.
 
-```{r ec-glmm-overview, warning=F, error=F, message=F, fig.dim=c(7,5), out.height="400px", out.width="100%"}
+```{r ec-glm-overview, warning=F, error=F, message=F, fig.dim=c(7,5), out.height="400px", out.width="100%"}
 
 p <- ggplot(mydata, aes(x=Abundance))+
   geom_density()
@@ -221,23 +321,639 @@ mydata <- mydata %>%
   mutate(Abundance.dich=ifelse(Abundance==0, 0, 1))
 table(mydata$Abundance.dich)
 
-# so, there is a general zero-inflation..
-p <- mydata %>%
-  filter(avgRA > 0.5) %>%
-  ggplot(aes(x=Abundance)) +
-    geom_density(adjust=1.5)+
-    facet_wrap(.~description)+
-    labs(title="Descriptions with Average Relative Abundance >= 0.5")
-p
 ```
 
-Due to the zero-inflation, let's look at how to effectively model this.
+
 Let's first run models by description so that we can avoid the nesting issue initially. We will come back to this to conduct the final model (it will be more powerful).
 
-```{r glmm-zi, message=F, eval=F}
+```{r ec-glm, message=F, eval=T}
+
 DESCRIPTIONS <- unique(mydata$description)
 i<-1
 dat0 <- mydata %>% filter(description==DESCRIPTIONS[i])
+
+# quasipossion (approximately negative binom) give an approx. answer.
+fit0 <- glm(
+  Abundance ~ 1 + tumor,
+  data= dat0,
+  family=quasipoisson(link = "log")
+)
+summary(fit0)
+
+```
+
+NExt, let's model the percent relative abundance.
+This will allow us to make inference about the difference average relative abundance.
+Which is a simpler interpretation than trying to model differences in the log relative abundance which will need to be interpreted as the multiplicative relative change.
+
+```{r ec-lm-approx}
+
+
+results.out <- as.data.frame(matrix(ncol=7, nrow=length(DESCRIPTIONS)))
+colnames(results.out) <- c("Description", "Parameter", "Est", "SE", "p", "ll", "ul")
+results.out$Description <-DESCRIPTIONS
+
+i <- 1
+for(i in 1:length(DESCRIPTIONS)){
+#for(i in 1:5){ 
+  dat0 <- mydata %>%
+    filter(description == DESCRIPTIONS[i])%>%
+    mutate(RelAbundance= RelAbundance*100)
+  fit0 <- lm(
+  RelAbundance ~ 1 + tumor,
+  data= dat0
+  #family=quasipoisson(link = "log")
+)
+  fit.sum <- summary(fit0)
+
+  results.out[i, 2] <- "tumor"
+  results.out[i, 3:5] <- fit.sum$coefficients[2, c(1,2,4)]
+  results.out[i, 6:7] <- confint(fit0)[2,]
+  
+}
+
+results.out$fdr.p <- p.adjust(results.out$p, method="fdr")
+
+kable(results.out, format="html", digits=3) %>%
+  kable_styling(full_width = T)%>%
+  scroll_box(width="100%", height="600px")
+
+
+```
+
+
+# Part 2 KO Data
+
+```{r pi-dat-ko}
+
+pi.dat <- readr::read_tsv("data/PICRUST/ko_pred_metagenome_unstrat_descrip.tsv")
+
+pi.dat <- pi.dat %>%
+  pivot_longer(
+    cols=`1.S37.Jun172016`:`99.D01.S37.Jun232016`,
+    names_to = "ID",
+    values_to = "Abundance"
+  )
+d <- as.data.frame(dat.16s)
+mydata <- full_join(pi.dat[,-1], d)
+
+mydata <- mydata %>%
+  mutate(
+    ID.n = as.numeric(as.factor(ID)),
+    description.n = as.numeric(as.factor(description))
+  ) %>%
+  group_by(ID) %>%
+  mutate(RelAbundance = Abundance/sum(Abundance)*100) %>%
+  ungroup()%>%
+  group_by(description)%>%
+  mutate(avgRA = mean(RelAbundance))
+
+```
+
+
+## Relative Abundance
+
+```{r ko-ra}
+
+
+tb.ra1 <- mydata %>%
+  group_by(description) %>%
+  summarise(ng = n(),
+            Overall.M = mean(RelAbundance),
+            Overall.SE = sd(RelAbundance)/ng)
+tb.ra2m <- mydata %>%
+  group_by(description, tumor.cat) %>%
+  summarise(M = mean(RelAbundance)) %>%
+  pivot_wider(id_cols = description,
+              names_from = tumor.cat,
+              values_from = M)
+tb.ra2se <- mydata %>%
+  group_by(description, tumor.cat) %>%
+  summarise(ng=n(),SE = var(RelAbundance)/ng) %>%
+  pivot_wider(id_cols = description,
+              names_from = tumor.cat,
+              values_from = SE)
+tb.ra2ng <- mydata %>%
+  group_by(description, tumor.cat) %>%
+  summarise(ng=n()) %>%
+  pivot_wider(id_cols = description,
+              names_from = tumor.cat,
+              values_from = ng)
+tb.ra <- left_join(tb.ra1, tb.ra2m)
+tb.ra <- cbind(tb.ra, tb.ra2se[,-1]) 
+tb.ra <- cbind(tb.ra, tb.ra2ng[,-1]) 
+
+colnames(tb.ra) <- c("description", "ng", "Overall Mean", "Overall SE", "Non-Tumor Mean", "Tumor Mean", "Non-Tumor SE", "Tumor SE", "Non-Tumor Ng", "Tumor Ng")
+tb.ra <- tb.ra %>%
+  arrange(desc(`Overall Mean`))
+tb.ra <- tb.ra[, c("description", "Overall Mean", "Overall SE","Tumor Mean", "Tumor SE","Tumor Ng", "Non-Tumor Mean", "Non-Tumor SE", "Non-Tumor Ng")]
+
+# compute t-test
+tb.ra <- tb.ra %>%
+  mutate(
+    t = (`Tumor Mean` - `Non-Tumor Mean`)/(sqrt(`Tumor SE` + `Non-Tumor SE`)),
+    df = ((`Tumor SE` + `Non-Tumor SE`)**2)/((`Tumor SE`**2)/(`Tumor Ng`-1) + (`Non-Tumor SE`**2)/(`Non-Tumor Ng`-1)),
+    p = pt(q = abs(t), df=df, lower.tail = F),
+    fdr_p = p.adjust(p, method="fdr")
+  )
+# double check calculations
+d <- mydata %>%
+  filter(description=="ABC-2.A; ABC-2 type transport system ATP-binding protein")
+
+t.test(d$RelAbundance ~ d$tumor.cat)
+
+
+kable(tb.ra, format="html", digits=5, caption="KO Data Average Relative Abundance of Each Description (sorted in descending order)") %>%
+  kable_styling(full_width = T) %>%
+  scroll_box(width = "100%", height="600px")
+
+```
+
+```{r ko-full-plot, warning=F, error=F, message=F, fig.dim=c(12,7), out.height="100%", out.width="100%"}
+
+
+plot.dat <- tb.ra %>%
+  arrange(p) %>%
+  slice_head(n=50)%>%
+  mutate(
+    description = fct_reorder(description, `Overall Mean`),
+    description = factor(description, levels = levels(description), ordered=T)
+  ) %>%
+  arrange(description) %>%
+  mutate(
+    id = 1:n(),
+    step = ifelse(id%%2 == 0, 1, 0),
+    Mean_diff = `Tumor Mean` - `Non-Tumor Mean`,
+    diff_se = sqrt(`Tumor SE` + `Non-Tumor SE`),
+    Mean_diff_ll = Mean_diff - qt(0.975, df)*diff_se,
+    Mean_diff_ul = Mean_diff + qt(0.975, df)*diff_se
+  ) %>%
+  pivot_longer(
+    cols=contains("Mean"),
+    names_to = "group",
+    values_to = "mean"
+  )
+
+
+
+p1.d <- plot.dat %>%
+  filter(group %in% c("Tumor Mean","Non-Tumor Mean")) %>%
+  mutate(
+    group = ifelse(group == "Tumor Mean", "Tumor", "Non-Tumor"),
+    col = ifelse(step == 1, "grey90", "white"),
+    h=1, w=Inf
+    
+  )
+p1 <- ggplot()+
+  geom_tile(data = p1.d,
+              aes(y = description, x=0,
+                  height=h, width=w),
+              fill = p1.d$col, color=p1.d$col)+
+    geom_bar(data=p1.d,
+             aes(x=mean, y=description,
+                 group=group, color=group,
+                 fill=group),
+             stat="identity",position = "dodge",
+             alpha = 1)+
+    labs(x="Mean Proportion (%)")+
+    theme_classic()+
+    theme(
+      legend.position = "bottom",
+      plot.margin = unit(c(1,0,1,1), "lines")
+    )
+p2.d <- plot.dat %>%
+  filter(group %in% c("Mean_diff", "Mean_diff_ll", "Mean_diff_ul")) %>%
+  pivot_wider(
+    names_from = group,
+    values_from = mean
+  ) %>%
+  mutate(
+    group = ifelse(Mean_diff > 0, "Tumor", "Non-Tumor"),
+    p = sprintf("%.3f", round(p,3)),
+    ll = min(Mean_diff_ll)-0.01,
+    ul = max(Mean_diff_ul)+0.01
+  )
+p2<-ggplot(p2.d, aes(x=Mean_diff, y=description))+
+    geom_tile(data = p1.d,
+              aes(y = description, x=0,
+                  height=h, width=w),
+              fill = p1.d$col, color=p1.d$col)+
+    geom_vline(xintercept = 0, linetype="dashed", alpha=0.5)+
+    geom_segment(aes(x=Mean_diff_ll, y=description, xend=Mean_diff_ul, yend=description))+
+    geom_point(aes(fill=group, color=group))+
+    geom_text(aes(label=p, x=unique(ul)+0.1))+
+    coord_cartesian(xlim = c(unique(p2.d$ll), unique(p2.d$ul)),
+                    clip = 'off') +
+    annotate("text", x=unique(p2.d$ul)+0.2,y = 25,
+             angle=90,
+             label="p-value (uncorrected)")+
+    labs(x="Mean Difference in Proportions")+
+    theme_classic()+
+    theme(
+      legend.position = "bottom",
+      axis.title.y = element_blank(),
+      axis.text.y = element_blank(),
+      axis.line.y = element_blank(),
+      axis.ticks.y = element_blank(),
+      plot.margin = unit(c(1,4,1,0), "lines")
+    )
+
+# plot
+p1 + p2+
+  plot_annotation(title="KO Data: First 50 descriptions with lowest p-value (uncorrected)")
+
+```
+
+## Modeling Difference between Tumor and Non-Tumor
+
+For the modeling, we used a generalized linear mixed model (GLMM).
+
+First, we looked at the biserial correlation between the abundance of each description and the tumor status.
+
+```{r ko-corplot, warning=F, error=F, message=F, fig.dim=c(7,5), out.height="400px", out.width="100%"}
+
+tb <- mydata %>%
+  group_by(description)%>%
+  summarise(
+    r = cor(tumor, Abundance)
+  ) %>%
+  mutate(
+    M=mean(r)
+  )
+
+ggplot(tb, aes(x=r))+
+  geom_density()+
+  geom_vline(aes(xintercept = M))+
+  labs(x="Biserial Correlation",title="Relationship between description abundance and tumor (tumor vs. non-tumor)")+
+  theme(panel.grid = element_blank())
+
+```
+
+
+
+Next, we need the data to be on an interpretable scale.
+First, let's use the raw abundance like scale.
+
+```{r ko-glm-overview, warning=F, error=F, message=F, fig.dim=c(7,5), out.height="400px", out.width="100%"}
+
+p <- ggplot(mydata, aes(x=Abundance))+
+  geom_density()
+p
+
+mydata <- mydata %>%
+  mutate(Abundance.dich=ifelse(Abundance==0, 0, 1))
+table(mydata$Abundance.dich)
+
+```
+
+
+Let's first run models by description so that we can avoid the nesting issue initially. We will come back to this to conduct the final model (it will be more powerful).
+
+```{r ko-glm, message=F, eval=T}
+
+DESCRIPTIONS <- unique(mydata$description)
+i<-1
+dat0 <- mydata %>% filter(description==DESCRIPTIONS[i])
+
+# quasipossion (approximately negative binom) give an approx. answer.
+fit0 <- glm(
+  Abundance ~ 1 + tumor,
+  data= dat0,
+  family=quasipoisson(link = "log")
+)
+summary(fit0)
+
+```
+
+NExt, let's model the percent relative abundance.
+This will allow us to make inference about the difference average relative abundance.
+Which is a simpler interpretation than trying to model differences in the log relative abundance which will need to be interpreted as the multiplicative relative change.
+
+```{r ko-lm-approx}
+
+
+results.out <- as.data.frame(matrix(ncol=7, nrow=length(DESCRIPTIONS)))
+colnames(results.out) <- c("Description", "Parameter", "Est", "SE", "p", "ll", "ul")
+results.out$Description <-DESCRIPTIONS
+
+i <- 1
+for(i in 1:length(DESCRIPTIONS)){
+#for(i in 1:5){ 
+  dat0 <- mydata %>%
+    filter(description == DESCRIPTIONS[i])%>%
+    mutate(RelAbundance= RelAbundance*100)
+  fit0 <- lm(
+  RelAbundance ~ 1 + tumor,
+  data= dat0
+  #family=quasipoisson(link = "log")
+)
+  fit.sum <- summary(fit0)
+
+  results.out[i, 2] <- "tumor"
+  results.out[i, 3:5] <- fit.sum$coefficients[2, c(1,2,4)]
+  results.out[i, 6:7] <- confint(fit0)[2,]
+  
+}
+
+results.out$fdr.p <- p.adjust(results.out$p, method="fdr")
+
+kable(results.out, format="html", digits=3) %>%
+  kable_styling(full_width = T)%>%
+  scroll_box(width="100%", height="600px")
+
+
+```
+
+
+
+# Part 3 Pathways Data
+
+```{r pi-dat-pathway}
+
+pi.dat <- readr::read_tsv("data/PICRUST/path_abun_unstrat_descrip.tsv")
+
+pi.dat <- pi.dat %>%
+  pivot_longer(
+    cols=`1.S37.Jun172016`:`99.D01.S37.Jun232016`,
+    names_to = "ID",
+    values_to = "Abundance"
+  )
+d <- as.data.frame(dat.16s)
+mydata <- full_join(pi.dat[,-1], d)
+
+mydata <- mydata %>%
+  mutate(
+    ID.n = as.numeric(as.factor(ID)),
+    description.n = as.numeric(as.factor(description))
+  ) %>%
+  group_by(ID) %>%
+  mutate(RelAbundance = Abundance/sum(Abundance)*100) %>%
+  ungroup()%>%
+  group_by(description)%>%
+  mutate(avgRA = mean(RelAbundance))
+
+```
+
+
+## Relative Abundance
+
+```{r path-ra}
+
+tb.ra1 <- mydata %>%
+  group_by(description) %>%
+  summarise(ng = n(),
+            Overall.M = mean(RelAbundance),
+            Overall.SE = sd(RelAbundance)/ng)
+tb.ra2m <- mydata %>%
+  group_by(description, tumor.cat) %>%
+  summarise(M = mean(RelAbundance)) %>%
+  pivot_wider(id_cols = description,
+              names_from = tumor.cat,
+              values_from = M)
+tb.ra2se <- mydata %>%
+  group_by(description, tumor.cat) %>%
+  summarise(ng=n(),SE = var(RelAbundance)/ng) %>%
+  pivot_wider(id_cols = description,
+              names_from = tumor.cat,
+              values_from = SE)
+tb.ra2ng <- mydata %>%
+  group_by(description, tumor.cat) %>%
+  summarise(ng=n()) %>%
+  pivot_wider(id_cols = description,
+              names_from = tumor.cat,
+              values_from = ng)
+tb.ra <- left_join(tb.ra1, tb.ra2m)
+tb.ra <- cbind(tb.ra, tb.ra2se[,-1]) 
+tb.ra <- cbind(tb.ra, tb.ra2ng[,-1]) 
+
+colnames(tb.ra) <- c("description", "ng", "Overall Mean", "Overall SE", "Non-Tumor Mean", "Tumor Mean", "Non-Tumor SE", "Tumor SE", "Non-Tumor Ng", "Tumor Ng")
+tb.ra <- tb.ra %>%
+  arrange(desc(`Overall Mean`))
+tb.ra <- tb.ra[, c("description", "Overall Mean", "Overall SE","Tumor Mean", "Tumor SE","Tumor Ng", "Non-Tumor Mean", "Non-Tumor SE", "Non-Tumor Ng")]
+
+# compute t-test
+tb.ra <- tb.ra %>%
+  mutate(
+    t = (`Tumor Mean` - `Non-Tumor Mean`)/(sqrt(`Tumor SE` + `Non-Tumor SE`)),
+    df = ((`Tumor SE` + `Non-Tumor SE`)**2)/((`Tumor SE`**2)/(`Tumor Ng`-1) + (`Non-Tumor SE`**2)/(`Non-Tumor Ng`-1)),
+    p = pt(q = abs(t), df=df, lower.tail = F),
+    fdr_p = p.adjust(p, method="fdr")
+  )
+
+
+
+kable(tb.ra, format="html", digits=5, caption="Pathway Data Average Relative Abundance of Each Description (sorted in descending order)") %>%
+  kable_styling(full_width = T) %>%
+  scroll_box(width = "100%", height="600px")
+
+```
+
+
+Let's try a nice bigger plot
+
+```{r path-full-plot, warning=F, error=F, message=F, fig.dim=c(12,7), out.height="100%", out.width="100%"}
+
+
+plot.dat <- tb.ra %>%
+  arrange(p) %>%
+  slice_head(n=50)%>%
+  mutate(
+    description = fct_reorder(description, `Overall Mean`),
+    description = factor(description, levels = levels(description), ordered=T)
+  ) %>%
+  arrange(description) %>%
+  mutate(
+    id = 1:n(),
+    step = ifelse(id%%2 == 0, 1, 0),
+    Mean_diff = `Tumor Mean` - `Non-Tumor Mean`,
+    diff_se = sqrt(`Tumor SE` + `Non-Tumor SE`),
+    Mean_diff_ll = Mean_diff - qt(0.975, df)*diff_se,
+    Mean_diff_ul = Mean_diff + qt(0.975, df)*diff_se
+  ) %>%
+  pivot_longer(
+    cols=contains("Mean"),
+    names_to = "group",
+    values_to = "mean"
+  )
+
+
+
+p1.d <- plot.dat %>%
+  filter(group %in% c("Tumor Mean","Non-Tumor Mean")) %>%
+  mutate(
+    group = ifelse(group == "Tumor Mean", "Tumor", "Non-Tumor"),
+    col = ifelse(step == 1, "grey90", "white"),
+    h=1, w=Inf
+    
+  )
+p1 <- ggplot()+
+  geom_tile(data = p1.d,
+              aes(y = description, x=0,
+                  height=h, width=w),
+              fill = p1.d$col, color=p1.d$col)+
+    geom_bar(data=p1.d,
+             aes(x=mean, y=description,
+                 group=group, color=group,
+                 fill=group),
+             stat="identity",position = "dodge",
+             alpha = 1)+
+    labs(x="Mean Proportion (%)")+
+    theme_classic()+
+    theme(
+      legend.position = "bottom",
+      plot.margin = unit(c(1,0,1,1), "lines")
+    )
+p2.d <- plot.dat %>%
+  filter(group %in% c("Mean_diff", "Mean_diff_ll", "Mean_diff_ul")) %>%
+  pivot_wider(
+    names_from = group,
+    values_from = mean
+  ) %>%
+  mutate(
+    group = ifelse(Mean_diff > 0, "Tumor", "Non-Tumor"),
+    p = sprintf("%.3f", round(p,3)),
+    ll = min(Mean_diff_ll)-0.01,
+    ul = max(Mean_diff_ul)+0.01
+  )
+p2<-ggplot(p2.d, aes(x=Mean_diff, y=description))+
+    geom_tile(data = p1.d,
+              aes(y = description, x=0,
+                  height=h, width=w),
+              fill = p1.d$col, color=p1.d$col)+
+    geom_vline(xintercept = 0, linetype="dashed", alpha=0.5)+
+    geom_segment(aes(x=Mean_diff_ll, y=description, xend=Mean_diff_ul, yend=description))+
+    geom_point(aes(fill=group, color=group))+
+    geom_text(aes(label=p, x=unique(ul)+0.1))+
+    coord_cartesian(xlim = c(unique(p2.d$ll), unique(p2.d$ul)),
+                    clip = 'off') +
+    annotate("text", x=unique(p2.d$ul)+0.2,y = 25,
+             angle=90,
+             label="p-value (uncorrected)")+
+    labs(x="Mean Difference in Proportions")+
+    theme_classic()+
+    theme(
+      legend.position = "bottom",
+      axis.title.y = element_blank(),
+      axis.text.y = element_blank(),
+      axis.line.y = element_blank(),
+      axis.ticks.y = element_blank(),
+      plot.margin = unit(c(1,4,1,0), "lines")
+    )
+
+# plot
+p1 + p2+
+  plot_annotation(title="Path Data: First 50 descriptions with lowest p-value (uncorrected)")
+
+```
+
+## Modeling Difference between Tumor and Non-Tumor
+
+For the modeling, we used a generalized linear mixed model (GLMM).
+
+First, we looked at the biserial correlation between the abundance of each description and the tumor status.
+
+```{r path-corplot, warning=F, error=F, message=F, fig.dim=c(7,5), out.height="400px", out.width="100%"}
+
+tb <- mydata %>%
+  group_by(description)%>%
+  summarise(
+    r = cor(tumor, Abundance)
+  ) %>%
+  mutate(
+    M=mean(r)
+  )
+
+ggplot(tb, aes(x=r))+
+  geom_density()+
+  geom_vline(aes(xintercept = M))+
+  labs(x="Biserial Correlation",title="Relationship between description abundance and tumor (tumor vs. non-tumor)")+
+  theme(panel.grid = element_blank())
+
+```
+
+
+
+Next, we need the data to be on an interpretable scale.
+First, let's use the raw abundance like scale.
+
+```{r path-glmm-overview, warning=F, error=F, message=F, fig.dim=c(7,5), out.height="400px", out.width="100%"}
+
+p <- ggplot(mydata, aes(x=Abundance))+
+  geom_density()
+p
+
+mydata <- mydata %>%
+  mutate(Abundance.dich=ifelse(Abundance==0, 0, 1))
+table(mydata$Abundance.dich)
+
+
+```
+
+
+Let's first run models by description so that we can avoid the nesting issue initially. We will come back to this to conduct the final model (it will be more powerful).
+
+```{r path-glm, message=F, eval=T}
+
+DESCRIPTIONS <- unique(mydata$description)
+i<-1
+dat0 <- mydata %>% filter(description==DESCRIPTIONS[i])
+
+# quasipossion (approximately negative binom) give an approx. answer.
+fit0 <- glm(
+  Abundance ~ 1 + tumor,
+  data= dat0,
+  family=quasipoisson(link = "log")
+)
+summary(fit0)
+
+```
+
+NExt, let's model the percent relative abundance.
+This will allow us to make inference about the difference average relative abundance.
+Which is a simpler interpretation than trying to model differences in the log relative abundance which will need to be interpreted as the multiplicative relative change.
+
+```{r path-lm-approx}
+
+
+results.out <- as.data.frame(matrix(ncol=7, nrow=length(DESCRIPTIONS)))
+colnames(results.out) <- c("Description", "Parameter", "Est", "SE", "p", "ll", "ul")
+results.out$Description <-DESCRIPTIONS
+
+i <- 1
+for(i in 1:length(DESCRIPTIONS)){
+#for(i in 1:5){ 
+  dat0 <- mydata %>%
+    filter(description == DESCRIPTIONS[i])%>%
+    mutate(RelAbundance= RelAbundance*100)
+  fit0 <- lm(
+  RelAbundance ~ 1 + tumor,
+  data= dat0
+  #family=quasipoisson(link = "log")
+)
+  fit.sum <- summary(fit0)
+
+  results.out[i, 2] <- "tumor"
+  results.out[i, 3:5] <- fit.sum$coefficients[2, c(1,2,4)]
+  results.out[i, 6:7] <- confint(fit0)[2,]
+  
+}
+
+results.out$fdr.p <- p.adjust(results.out$p, method="fdr")
+
+kable(results.out, format="html", digits=3) %>%
+  kable_styling(full_width = T)%>%
+  scroll_box(width="100%", height="600px")
+
+
+```
+
+
+
+
+# Misc.
+
+```{r stuff, eval=F}
+
 
 library(brms)
 
@@ -381,177 +1097,5 @@ fit0 <- brms::brm(
 # the resulting "hu" parameter is the model for the proportion of zeros estimated
 summary(fit0)
 plot(fit0)
-
-```
-
-
-# Part 2 KO Data
-
-```{r pi-dat-ko}
-
-pi.dat <- readr::read_tsv("data/PICRUST/ko_pred_metagenome_unstrat_descrip.tsv")
-
-pi.dat <- pi.dat %>%
-  pivot_longer(
-    cols=`1.S37.Jun172016`:`99.D01.S37.Jun232016`,
-    names_to = "ID",
-    values_to = "Abundance"
-  )
-d <- as.data.frame(dat.16s)
-mydata <- full_join(pi.dat[,-1], d)
-
-mydata <- mydata %>%
-  mutate(
-    ID.n = as.numeric(as.factor(ID)),
-    description.n = as.numeric(as.factor(description))
-  ) %>%
-  group_by(ID) %>%
-  mutate(RelAbundance = Abundance/sum(Abundance)*100) %>%
-  ungroup()%>%
-  group_by(description)%>%
-  mutate(avgRA = mean(RelAbundance))
-
-```
-
-
-## Relative Abundance
-
-```{r ko-ra}
-
-
-tb.ra1 <- mydata %>%
-  group_by(description) %>%
-  summarise(ng = n(),
-            Overall.M = mean(RelAbundance),
-            Overall.SE = sd(RelAbundance)/ng)
-tb.ra2m <- mydata %>%
-  group_by(description, tumor.cat) %>%
-  summarise(M = mean(RelAbundance)) %>%
-  pivot_wider(id_cols = description,
-              names_from = tumor.cat,
-              values_from = M)
-tb.ra2se <- mydata %>%
-  group_by(description, tumor.cat) %>%
-  summarise(ng=n(),SE = var(RelAbundance)/ng) %>%
-  pivot_wider(id_cols = description,
-              names_from = tumor.cat,
-              values_from = SE)
-tb.ra2ng <- mydata %>%
-  group_by(description, tumor.cat) %>%
-  summarise(ng=n()) %>%
-  pivot_wider(id_cols = description,
-              names_from = tumor.cat,
-              values_from = ng)
-tb.ra <- left_join(tb.ra1, tb.ra2m)
-tb.ra <- cbind(tb.ra, tb.ra2se[,-1]) 
-tb.ra <- cbind(tb.ra, tb.ra2ng[,-1]) 
-
-colnames(tb.ra) <- c("description", "ng", "Overall Mean", "Overall SE", "Non-Tumor Mean", "Tumor Mean", "Non-Tumor SE", "Tumor SE", "Non-Tumor Ng", "Tumor Ng")
-tb.ra <- tb.ra %>%
-  arrange(desc(`Overall Mean`))
-tb.ra <- tb.ra[, c("description", "Overall Mean", "Overall SE","Tumor Mean", "Tumor SE","Tumor Ng", "Non-Tumor Mean", "Non-Tumor SE", "Non-Tumor Ng")]
-
-# compute t-test
-tb.ra <- tb.ra %>%
-  mutate(
-    t = (`Tumor Mean` - `Non-Tumor Mean`)/(sqrt(`Tumor SE` + `Non-Tumor SE`)),
-    df = ((`Tumor SE` + `Non-Tumor SE`)**2)/((`Tumor SE`**2)/(`Tumor Ng`-1) + (`Non-Tumor SE`**2)/(`Non-Tumor Ng`-1)),
-    p = pt(q = abs(t), df=df, lower.tail = F),
-    fdr_p = p.adjust(p, method="fdr")
-  )
-# double check calculations
-d <- mydata %>%
-  filter(description=="ABC-2.A; ABC-2 type transport system ATP-binding protein")
-
-t.test(d$RelAbundance ~ d$tumor.cat)
-
-
-kable(tb.ra, format="html", digits=5, caption="KO Data Average Relative Abundance of Each Description (sorted in descending order)") %>%
-  kable_styling(full_width = T) %>%
-  scroll_box(width = "100%", height="600px")
-
-```
-
-
-
-# Part 3 Pathways Data
-
-```{r pi-dat-pathway}
-
-pi.dat <- readr::read_tsv("data/PICRUST/path_abun_unstrat_descrip.tsv")
-
-pi.dat <- pi.dat %>%
-  pivot_longer(
-    cols=`1.S37.Jun172016`:`99.D01.S37.Jun232016`,
-    names_to = "ID",
-    values_to = "Abundance"
-  )
-d <- as.data.frame(dat.16s)
-mydata <- full_join(pi.dat[,-1], d)
-
-mydata <- mydata %>%
-  mutate(
-    ID.n = as.numeric(as.factor(ID)),
-    description.n = as.numeric(as.factor(description))
-  ) %>%
-  group_by(ID) %>%
-  mutate(RelAbundance = Abundance/sum(Abundance)*100) %>%
-  ungroup()%>%
-  group_by(description)%>%
-  mutate(avgRA = mean(RelAbundance))
-
-```
-
-
-## Relative Abundance
-
-```{r path-ra}
-
-tb.ra1 <- mydata %>%
-  group_by(description) %>%
-  summarise(ng = n(),
-            Overall.M = mean(RelAbundance),
-            Overall.SE = sd(RelAbundance)/ng)
-tb.ra2m <- mydata %>%
-  group_by(description, tumor.cat) %>%
-  summarise(M = mean(RelAbundance)) %>%
-  pivot_wider(id_cols = description,
-              names_from = tumor.cat,
-              values_from = M)
-tb.ra2se <- mydata %>%
-  group_by(description, tumor.cat) %>%
-  summarise(ng=n(),SE = var(RelAbundance)/ng) %>%
-  pivot_wider(id_cols = description,
-              names_from = tumor.cat,
-              values_from = SE)
-tb.ra2ng <- mydata %>%
-  group_by(description, tumor.cat) %>%
-  summarise(ng=n()) %>%
-  pivot_wider(id_cols = description,
-              names_from = tumor.cat,
-              values_from = ng)
-tb.ra <- left_join(tb.ra1, tb.ra2m)
-tb.ra <- cbind(tb.ra, tb.ra2se[,-1]) 
-tb.ra <- cbind(tb.ra, tb.ra2ng[,-1]) 
-
-colnames(tb.ra) <- c("description", "ng", "Overall Mean", "Overall SE", "Non-Tumor Mean", "Tumor Mean", "Non-Tumor SE", "Tumor SE", "Non-Tumor Ng", "Tumor Ng")
-tb.ra <- tb.ra %>%
-  arrange(desc(`Overall Mean`))
-tb.ra <- tb.ra[, c("description", "Overall Mean", "Overall SE","Tumor Mean", "Tumor SE","Tumor Ng", "Non-Tumor Mean", "Non-Tumor SE", "Non-Tumor Ng")]
-
-# compute t-test
-tb.ra <- tb.ra %>%
-  mutate(
-    t = (`Tumor Mean` - `Non-Tumor Mean`)/(sqrt(`Tumor SE` + `Non-Tumor SE`)),
-    df = ((`Tumor SE` + `Non-Tumor SE`)**2)/((`Tumor SE`**2)/(`Tumor Ng`-1) + (`Non-Tumor SE`**2)/(`Non-Tumor Ng`-1)),
-    p = pt(q = abs(t), df=df, lower.tail = F),
-    fdr_p = p.adjust(p, method="fdr")
-  )
-
-
-
-kable(tb.ra, format="html", digits=5, caption="Pathway Data Average Relative Abundance of Each Description (sorted in descending order)") %>%
-  kable_styling(full_width = T) %>%
-  scroll_box(width = "100%", height="600px")
 
 ```
