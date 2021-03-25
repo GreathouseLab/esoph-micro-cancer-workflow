@@ -22,15 +22,10 @@ Standard error of mean in Non-tumors
 
 GLM differential abundance analysis between Tumor vs Non-tumor (Patient=Fixed effect) 
 
-P-value 
+- P-value 
 
-FDR corrected q-value 
+- DR corrected q-value 
 
-GLMM differential abundance analysis between Tumor vs Non-tumor (Patient=Random Effect) 
-
-P-value 
-
-FDR corrected q-value 
 
 Use file EC_metagenome_out > pred_metagenome_unstrat_descrip to conduct the same analyses as described for A. 
 
@@ -184,7 +179,7 @@ kable(tb.ra, format="html", digits=5, caption="EC Data Average Relative Abundanc
 ```
 
 
-```{r ec-full-plot, warning=F, error=F, message=F, fig.dim=c(12,7), out.height="100%", out.width="100%"}
+```{r ec-full-plot, warning=F, error=F, message=F, fig.dim=c(12,10), out.height="100%", out.width="90%"}
 
 
 plot.dat <- tb.ra %>%
@@ -346,12 +341,12 @@ NExt, let's model the percent relative abundance.
 This will allow us to make inference about the difference average relative abundance.
 Which is a simpler interpretation than trying to model differences in the log relative abundance which will need to be interpreted as the multiplicative relative change.
 
-```{r ec-lm-approx}
+```{r ec-glm-approx}
 
 
-results.out <- as.data.frame(matrix(ncol=7, nrow=length(DESCRIPTIONS)))
-colnames(results.out) <- c("Description", "Parameter", "Est", "SE", "p", "ll", "ul")
-results.out$Description <-DESCRIPTIONS
+results.out <- as.data.frame(matrix(ncol=4, nrow=length(DESCRIPTIONS)))
+colnames(results.out) <- c("description", "Est", "SE", "p")
+#results.out$description <-DESCRIPTIONS
 
 i <- 1
 for(i in 1:length(DESCRIPTIONS)){
@@ -359,25 +354,27 @@ for(i in 1:length(DESCRIPTIONS)){
   dat0 <- mydata %>%
     filter(description == DESCRIPTIONS[i])%>%
     mutate(RelAbundance= RelAbundance*100)
-  fit0 <- lm(
+  fit0 <- glm(
   RelAbundance ~ 1 + tumor,
-  data= dat0
-  #family=quasipoisson(link = "log")
+  data= dat0,
+  family=quasipoisson(link = "log")
 )
   fit.sum <- summary(fit0)
-
-  results.out[i, 2] <- "tumor"
-  results.out[i, 3:5] <- fit.sum$coefficients[2, c(1,2,4)]
-  results.out[i, 6:7] <- confint(fit0)[2,]
-  
+  results.out[i, 1] <- DESCRIPTIONS[i]
+  results.out[i, 2:4] <- fit.sum$coefficients[2, c(1,2,4)]
 }
 
-results.out$fdr.p <- p.adjust(results.out$p, method="fdr")
+results.out$fdr_p <- p.adjust(results.out$p, method="fdr")
 
 kable(results.out, format="html", digits=3) %>%
   kable_styling(full_width = T)%>%
   scroll_box(width="100%", height="600px")
 
+
+# merge with tb.ra for full results table
+full.res <- left_join(tb.ra, results.out, by = "description")
+
+#write.csv(full.res, "output/picrust_ec_data_results.csv", row.names = F)
 
 ```
 
@@ -469,7 +466,7 @@ kable(tb.ra, format="html", digits=5, caption="KO Data Average Relative Abundanc
 
 ```
 
-```{r ko-full-plot, warning=F, error=F, message=F, fig.dim=c(12,7), out.height="100%", out.width="100%"}
+```{r ko-full-plot, warning=F, error=F, message=F, fig.dim=c(12,10), out.height="100%", out.width="90%"}
 
 
 plot.dat <- tb.ra %>%
@@ -629,12 +626,12 @@ NExt, let's model the percent relative abundance.
 This will allow us to make inference about the difference average relative abundance.
 Which is a simpler interpretation than trying to model differences in the log relative abundance which will need to be interpreted as the multiplicative relative change.
 
-```{r ko-lm-approx}
+```{r ko-glm-approx}
 
 
-results.out <- as.data.frame(matrix(ncol=7, nrow=length(DESCRIPTIONS)))
-colnames(results.out) <- c("Description", "Parameter", "Est", "SE", "p", "ll", "ul")
-results.out$Description <-DESCRIPTIONS
+results.out <- as.data.frame(matrix(ncol=4, nrow=length(DESCRIPTIONS)))
+colnames(results.out) <- c("description", "Est", "SE", "p")
+#results.out$description <-DESCRIPTIONS
 
 i <- 1
 for(i in 1:length(DESCRIPTIONS)){
@@ -642,24 +639,27 @@ for(i in 1:length(DESCRIPTIONS)){
   dat0 <- mydata %>%
     filter(description == DESCRIPTIONS[i])%>%
     mutate(RelAbundance= RelAbundance*100)
-  fit0 <- lm(
+  fit0 <- glm(
   RelAbundance ~ 1 + tumor,
-  data= dat0
-  #family=quasipoisson(link = "log")
+  data= dat0,
+  family=quasipoisson(link = "log")
 )
   fit.sum <- summary(fit0)
-
-  results.out[i, 2] <- "tumor"
-  results.out[i, 3:5] <- fit.sum$coefficients[2, c(1,2,4)]
-  results.out[i, 6:7] <- confint(fit0)[2,]
-  
+  results.out[i, 1] <- DESCRIPTIONS[i]
+  results.out[i, 2:4] <- fit.sum$coefficients[2, c(1,2,4)]
 }
 
-results.out$fdr.p <- p.adjust(results.out$p, method="fdr")
+results.out$fdr_p <- p.adjust(results.out$p, method="fdr")
 
 kable(results.out, format="html", digits=3) %>%
   kable_styling(full_width = T)%>%
   scroll_box(width="100%", height="600px")
+
+
+# merge with tb.ra for full results table
+full.res <- left_join(tb.ra, results.out, by = "description")
+
+#write.csv(full.res, "output/picrust_ko_data_results.csv", row.names = F)
 
 
 ```
@@ -751,7 +751,7 @@ kable(tb.ra, format="html", digits=5, caption="Pathway Data Average Relative Abu
 
 Let's try a nice bigger plot
 
-```{r path-full-plot, warning=F, error=F, message=F, fig.dim=c(12,7), out.height="100%", out.width="100%"}
+```{r path-full-plot, warning=F, error=F, message=F, fig.dim=c(12,10), out.height="100%", out.width="90%"}
 
 
 plot.dat <- tb.ra %>%
@@ -912,12 +912,12 @@ NExt, let's model the percent relative abundance.
 This will allow us to make inference about the difference average relative abundance.
 Which is a simpler interpretation than trying to model differences in the log relative abundance which will need to be interpreted as the multiplicative relative change.
 
-```{r path-lm-approx}
+```{r path-glm-approx}
 
 
-results.out <- as.data.frame(matrix(ncol=7, nrow=length(DESCRIPTIONS)))
-colnames(results.out) <- c("Description", "Parameter", "Est", "SE", "p", "ll", "ul")
-results.out$Description <-DESCRIPTIONS
+results.out <- as.data.frame(matrix(ncol=4, nrow=length(DESCRIPTIONS)))
+colnames(results.out) <- c("description", "Est", "SE", "p")
+#results.out$description <-DESCRIPTIONS
 
 i <- 1
 for(i in 1:length(DESCRIPTIONS)){
@@ -925,24 +925,27 @@ for(i in 1:length(DESCRIPTIONS)){
   dat0 <- mydata %>%
     filter(description == DESCRIPTIONS[i])%>%
     mutate(RelAbundance= RelAbundance*100)
-  fit0 <- lm(
+  fit0 <- glm(
   RelAbundance ~ 1 + tumor,
-  data= dat0
-  #family=quasipoisson(link = "log")
+  data= dat0,
+  family=quasipoisson(link = "log")
 )
   fit.sum <- summary(fit0)
-
-  results.out[i, 2] <- "tumor"
-  results.out[i, 3:5] <- fit.sum$coefficients[2, c(1,2,4)]
-  results.out[i, 6:7] <- confint(fit0)[2,]
-  
+  results.out[i, 1] <- DESCRIPTIONS[i]
+  results.out[i, 2:4] <- fit.sum$coefficients[2, c(1,2,4)]
 }
 
-results.out$fdr.p <- p.adjust(results.out$p, method="fdr")
+results.out$fdr_p <- p.adjust(results.out$p, method="fdr")
 
 kable(results.out, format="html", digits=3) %>%
   kable_styling(full_width = T)%>%
   scroll_box(width="100%", height="600px")
+
+
+# merge with tb.ra for full results table
+full.res <- left_join(tb.ra, results.out, by = "description")
+
+#write.csv(full.res, "output/picrust_path_data_results.csv", row.names = F)
 
 
 ```

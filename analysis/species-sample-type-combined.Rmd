@@ -238,7 +238,7 @@ dat.wgs.s <- dat.wgs.s %>%
 
 # Violin Plot Fuso
 
-```{r violin-fuso, warning=F, error=F, message=F, fig.dim=c(7,5), out.height="400px", out.width="100%"}
+```{r violin-fuso, warning=F, error=F, message=F, fig.dim=c(7,5), out.height="100%", out.width="100%"}
 
 # merge datasets by subsetting to specific variables then merging
 analysis.dat <- dat.16s.s %>% 
@@ -285,8 +285,23 @@ invroot<-function(x){
   x**(5)
 }
 
-p <- ggplot(analysis.dat, aes(sample_type, Abund)) +
-  geom_violin(scale="width", adjust=2)+
+# colors
+cols <- c("16SrRNA Tumor (w/ Barrett's history)" = "#C0392B",
+          "16SrRNA Non-tumor (w/ Barrett's history)"= "#336699",
+          "16SrRNA Barrett's (BO)"= "#229667",
+          "RNA-seq Tumor (w/ Barrett's history)"= "#C0392B",
+          "RNA-seq Non-tumor (w/ Barrett's history)"= "#336699",
+          "WGS Non-tumor (w/ Barrett's history)"= "#336699",
+          "WGS Tumor (w/ Barrett's history) " = "#C0392B")
+# "#2C3E50", "#2980B9", "#8E44AD", "#C0392B", "#D35400", "#F39C12", "#F1C40F", "#27AE60", "#196f3e"
+#   mycolors = c()
+#   mycolors$Tissue["T"]   = "#C0392B"
+#   mycolors$Tissue["N"]   = "#336699"
+#   mycolors$Tissue["BO"]  = "#229667"
+
+
+p <- ggplot(analysis.dat, aes(sample_type, Abund, color=sample_type)) +
+  geom_violin(scale="width", adjust=0.5)+
   geom_point(alpha=0.75)+
   scale_y_continuous(
     trans=scales::trans_new("root", root, invroot),
@@ -294,6 +309,7 @@ p <- ggplot(analysis.dat, aes(sample_type, Abund)) +
     labels = c(0, 0.001,0.01, 0.1, 1,10,50, 100),
     limits = c(0, 110)
   )+
+  scale_color_manual(values=cols)+
   annotate(
     "text", x=c(1:7), y=c(rep(110, 7)),
     label=c(paste0(round(tb[1,5], 0),"% (",tb[1,4],"/",tb[1,3],")"), 
@@ -306,7 +322,8 @@ p <- ggplot(analysis.dat, aes(sample_type, Abund)) +
   )+
   labs(x=NULL, y="% Abundance")+
   theme(
-    axis.text.x = element_text(angle=30, hjust=0.95, vjust=0.95)
+    axis.text.x = element_text(angle=30, hjust=0.95, vjust=0.95),
+    legend.position = "none"
   )
 p
 ggsave("output/Barretts_violin-fuso.pdf", p, units = "in", width = 10, height = 6)
