@@ -297,7 +297,7 @@ $(document).ready(function () {
 <div class="tab-content">
 <div id="summary" class="tab-pane fade in active">
 <p>
-<strong>Last updated:</strong> 2021-03-14
+<strong>Last updated:</strong> 2021-04-15
 </p>
 <p>
 <strong>Checks:</strong> <span class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span> 1 <span class="glyphicon glyphicon-exclamation-sign text-danger" aria-hidden="true"></span> 1
@@ -328,16 +328,16 @@ This reproducible <a href="http://rmarkdown.rstudio.com">R Markdown</a> analysis
 <div class="panel panel-default">
 <div class="panel-heading">
 <p class="panel-title">
-<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongRepositoryversionstrongahrefhttpsgithubcomGreathouseLabesophmicrocancerworkflowtreecb5f6e887120e22a690c094f55e0e549f80a640atargetblankcb5f6e8a"> <span class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span> <strong>Repository version:</strong> <a href="https://github.com/GreathouseLab/esoph-micro-cancer-workflow/tree/cb5f6e887120e22a690c094f55e0e549f80a640a" target="_blank">cb5f6e8</a> </a>
+<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongRepositoryversionstrongahrefhttpsgithubcomGreathouseLabesophmicrocancerworkflowtreeb11a4b5cd6b9db9ec2182e826b4a7733a354862ftargetblankb11a4b5a"> <span class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span> <strong>Repository version:</strong> <a href="https://github.com/GreathouseLab/esoph-micro-cancer-workflow/tree/b11a4b5cd6b9db9ec2182e826b4a7733a354862f" target="_blank">b11a4b5</a> </a>
 </p>
 </div>
-<div id="strongRepositoryversionstrongahrefhttpsgithubcomGreathouseLabesophmicrocancerworkflowtreecb5f6e887120e22a690c094f55e0e549f80a640atargetblankcb5f6e8a" class="panel-collapse collapse">
+<div id="strongRepositoryversionstrongahrefhttpsgithubcomGreathouseLabesophmicrocancerworkflowtreeb11a4b5cd6b9db9ec2182e826b4a7733a354862ftargetblankb11a4b5a" class="panel-collapse collapse">
 <div class="panel-body">
 <p>
 Great! You are using Git for version control. Tracking code development and connecting the code version to the results is critical for reproducibility.
 </p>
 <p>
-The results in this page were generated with repository version <a href="https://github.com/GreathouseLab/esoph-micro-cancer-workflow/tree/cb5f6e887120e22a690c094f55e0e549f80a640a" target="_blank">cb5f6e8</a>. See the <em>Past versions</em> tab to see a history of the changes made to the R Markdown and HTML files.
+The results in this page were generated with repository version <a href="https://github.com/GreathouseLab/esoph-micro-cancer-workflow/tree/b11a4b5cd6b9db9ec2182e826b4a7733a354862f" target="_blank">b11a4b5</a>. See the <em>Past versions</em> tab to see a history of the changes made to the R Markdown and HTML files.
 </p>
 <p>
 Note that you need to be careful to ensure that all relevant files for the analysis have been committed to Git prior to generating the results (you can use <code>wflow_publish</code> or <code>wflow_git_commit</code>). workflowr only checks the R Markdown file, but you know if there are other scripts or data files that it depends on. Below is the status of the Git repository when the results were generated:
@@ -348,8 +348,23 @@ Ignored files:
     Ignored:    .Rproj.user/
     Ignored:    data/
 
+Untracked files:
+    Untracked:  analysis/picrust-campy.Rmd
+    Untracked:  analysis/picrust-fuso.Rmd
+    Untracked:  analysis/picrust-prevo.Rmd
+    Untracked:  analysis/picrust-strepto.Rmd
+    Untracked:  code/results-question-1.Rmd
+    Untracked:  code/results-question-2.Rmd
+    Untracked:  code/results-question-3.Rmd
+    Untracked:  output/picrust_ec_stratefied_fuso_data_results.csv
+    Untracked:  output/picrust_ko_stratefied_fuso_data_results.csv
+
 Unstaged changes:
     Modified:   analysis/index.Rmd
+    Modified:   analysis/picrust-analyses.Rmd
+    Deleted:    analysis/results-question-1.Rmd
+    Deleted:    analysis/results-question-2.Rmd
+    Deleted:    analysis/results-question-3.Rmd
 
 </code></pre>
 <p>
@@ -388,6 +403,40 @@ Message
 </tr>
 </thead>
 <tbody>
+<tr>
+<td>
+Rmd
+</td>
+<td>
+<a href="https://github.com/GreathouseLab/esoph-micro-cancer-workflow/blob/929ae0b72cca9ae10b7eb0a43a4bec81d0b1225b/analysis/index.Rmd" target="_blank">929ae0b</a>
+</td>
+<td>
+noah-padgett
+</td>
+<td>
+2021-03-14
+</td>
+<td>
+updated homepage
+</td>
+</tr>
+<tr>
+<td>
+html
+</td>
+<td>
+<a href="https://rawcdn.githack.com/GreathouseLab/esoph-micro-cancer-workflow/929ae0b72cca9ae10b7eb0a43a4bec81d0b1225b/docs/index.html" target="_blank">929ae0b</a>
+</td>
+<td>
+noah-padgett
+</td>
+<td>
+2021-03-14
+</td>
+<td>
+updated homepage
+</td>
+</tr>
 <tr>
 <td>
 Rmd
@@ -770,15 +819,19 @@ initial commit
 </div>
 </div>
 <p>Welcome to our research website.</p>
-<div id="data-pre-processing" class="section level1">
-<h1>Data Pre-Processing</h1>
+<div id="data-pre-processing" class="section level2">
+<h2>Data Pre-Processing</h2>
 <p>*<a href="data_processing_nci_umd.html">NCI-UMD Data Process</a></p>
 <p>*<a href="data_processing_tcga.html">TCGA Data Process</a></p>
 <p>*<a href="ids_abundance_misc.html">Sample IDs with Abundances</a></p>
 <p>*<a href="test-of-replication.html">Testing replication</a></p>
 <p>*<a href="waterfall-plot.html">Waterfall Plots</a></p>
 <p>*<a href="data-check-for-RNAscope.html">RNAscope test</a></p>
-<p>Violin plots with abundance of each bacteria across samples with Barretts history. *<a href="species-sample-type-combined.html">Violin plots for bacterial abundance by Barretts samples</a></p>
+</div>
+<div id="abundance-data" class="section level2">
+<h2>Abundance Data</h2>
+<p>Violin plots with abundance of each bacteria across samples with Barretts history.</p>
+<p>*<a href="species-sample-type-combined.html">Violin plots for bacterial abundance by Barretts samples</a></p>
 <p>The following pages give a variety of heatmaps w/ dendrograms that help describe the differences in OTU abundance across groups.</p>
 <p>*<a href="slide-figures-heatmaps-dendrograms-updates.html">Genera Level Heatmaps with Dendrograms</a></p>
 <p>*<a href="heatmaps-dendrograms-species-level.html">Species Level Heatmaps with Dendrograms</a></p>
@@ -787,8 +840,16 @@ initial commit
 <li>Is fuso associated with tumor stage in either data set? Does X bacteria predict stage? Multivariable w/ age, sex, BMI, history of Barrett’s</li>
 </ul>
 <p>*<a href="ordered-logit-model.html">Ordered Logit Model Results</a></p>
-<p>PICRUSt Analyses</p>
+</div>
+<div id="analyses" class="section level2">
+<h2>Analyses</h2>
+<p>Bag-of-Genes Analyses</p>
 <p>*<a href="picrust-analyses.html">PICRUSt Results</a></p>
+<p>Results Stratified by Taxa</p>
+<p>*<a href="picrust-fuso.html">PICRUSt Results - Fusobacterium nucleatum</a></p>
+<p>*<a href="picrust-strepto.html">PICRUSt Results - Streptococcus sanguinis</a></p>
+<p>*<a href="picrust-campy.html">PICRUSt Results - Campylobacter concisus</a></p>
+<p>*<a href="picrust-prevo.html">PICRUSt Results - Prevotella spp. (genus level only)</a></p>
 </div>
 
 

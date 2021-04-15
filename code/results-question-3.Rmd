@@ -1,0 +1,809 @@
+---
+title: "Results Output for Question 3"
+output:
+  workflowr::wflow_html:
+    toc: true
+editor_options:
+  chunk_output_type: console
+---
+
+# Question 3
+
+```
+Q3: Is fuso associated with tumor stage (pTNM) in either data set? Does X bacteria predict stage? Multivariable w/ age, sex, BMI, history of Barrett's
+```
+
+Add to this analysis:
+
+* Fusobacterium nucleatum
+* Streptococcus sanguinis
+* Campylobacter concisus 
+* Prevotella spp. 
+
+
+TCGA drop "not reported" from tumor stage.
+
+
+```{r data, include=FALSE, echo=FALSE, warning=F, error=F, message=F}
+# load packages
+source("code/load_packages.R")
+
+# get data
+source("code/get_cleaned_data.R")
+
+theme_set(theme_bw())
+# pal = "Sequential"
+# scale_colour_discrete <-  function(palname=pal, ...){
+#   scale_colour_brewer(palette=palname, ...)
+# }
+# scale_fill_discrete <-  function(palname=pal, ...){
+#   scale_fill_brewer(palette=palname, ...)
+# }
+
+knitr::opts_chunk$set(out.width = "225%", out.height = 10)
+
+
+# transform to relative abundances
+# phylo.data.nci.umd <- transform_sample_counts(phylo.data.nci.umd, function(x){x / sum(x)})
+# phylo.data.tcga.RNAseq <- transform_sample_counts(phylo.data.tcga.RNAseq, function(x){x / sum(x)})
+# phylo.data.tcga.WGS <- transform_sample_counts(phylo.data.tcga.WGS, function(x){x / sum(x)})
+
+# melt data down for use
+dat.16s <- psmelt(phylo.data.nci.umd)
+dat.rna <- psmelt(phylo.data.tcga.RNAseq)
+dat.wgs <- psmelt(phylo.data.tcga.WGS)
+
+# fix otu formatting
+dat.rna$otu2 <- "a"
+dat.wgs$otu2 <- "a"
+i <- 1
+for(i in 1:nrow(dat.rna)){
+  dat.rna$otu2[i] <- str_split(dat.rna$OTU[i], ";")[[1]][7]
+}
+for(i in 1:nrow(dat.wgs)){
+  dat.wgs$otu2[i] <- str_split(dat.wgs$OTU[i], ";")[[1]][7]
+}
+
+# set up variables
+dat.16s$sample_type <- 0
+dat.16s$sample_type[dat.16s$tissue=="T" &
+                      dat.16s$Histology=="ADC" &
+                      dat.16s$Barretts. == "Y"] <- "EAC tissues w/ Barretts History"
+dat.16s$sample_type[dat.16s$tissue=="N" &
+                      dat.16s$Histology=="ADC" &
+                      dat.16s$Barretts. == "Y"] <- "EAC-adjacent tissue w/ Barretts History"
+dat.16s$sample_type[dat.16s$tissue=="BO" &
+                      dat.16s$Histology=="Barrets only"&
+                      dat.16s$Barretts. == "Y"] <-"Barretts Only"
+
+
+dat.rna$sample_type <- 0
+dat.rna$sample_type[(dat.rna$morphology=="8140/3" |
+                       dat.rna$morphology=="8480/3") &
+                       dat.rna$SampleType_Level2=="Tumor" &
+                       dat.rna$Barrett.s.Esophagus.Reported=="Yes"] <- "EAC tissues w/ Barretts History"
+dat.rna$sample_type[(dat.rna$morphology=="8140/3" | 
+                       dat.rna$morphology=="8480/3") &
+                       dat.rna$SampleType_Level2=="Normal"&
+                       dat.rna$Barrett.s.Esophagus.Reported=="Yes"] <- "EAC-adjacent tissue w/ Barretts History"
+
+dat.rna$EACcomp <- 0
+dat.rna$EACcomp[(dat.rna$morphology=="8140/3" |
+                       dat.rna$morphology=="8480/3") &
+                       dat.rna$SampleType_Level2=="Tumor" &
+                       dat.rna$Barrett.s.Esophagus.Reported=="Yes"] <- "EAC tissues w/ Barretts History"
+dat.rna$EACcomp[(dat.rna$morphology=="8140/3" |
+                       dat.rna$morphology=="8480/3") &
+                       dat.rna$SampleType_Level2=="Tumor" &
+                       dat.rna$Barrett.s.Esophagus.Reported=="No"] <- "EAC tissues w/o Barretts History"
+
+
+dat.wgs$sample_type <- 0
+dat.wgs$sample_type[(dat.wgs$morphology=="8140/3" |
+                       dat.wgs$morphology=="8480/3") &
+                       dat.wgs$SampleType_Level2=="Tumor" &
+                       dat.wgs$Barrett.s.Esophagus.Reported=="Yes"] <- "EAC tissues w/ Barretts History"
+dat.wgs$sample_type[(dat.wgs$morphology=="8140/3" | 
+                       dat.wgs$morphology=="8480/3") &
+                       dat.wgs$SampleType_Level2=="Normal"&
+                       dat.wgs$Barrett.s.Esophagus.Reported=="Yes"] <- "EAC-adjacent tissue w/ Barretts History"
+
+dat.wgs$EACcomp <- 0
+dat.wgs$EACcomp[(dat.wgs$morphology=="8140/3" |
+                       dat.wgs$morphology=="8480/3") &
+                       dat.wgs$SampleType_Level2=="Tumor" &
+                       dat.wgs$Barrett.s.Esophagus.Reported=="Yes"] <- "EAC tissues w/ Barretts History"
+dat.wgs$EACcomp[(dat.wgs$morphology=="8140/3" |
+                       dat.wgs$morphology=="8480/3") &
+                       dat.wgs$SampleType_Level2=="Tumor" &
+                       dat.wgs$Barrett.s.Esophagus.Reported=="No"] <- "EAC tissues w/o Barretts History"
+
+
+# make tumor vs normal variable
+dat.16s$tumor.cat <- factor(dat.16s$tissue, levels=c("BO", "N", "T"), labels = c("Non-Tumor", "Non-Tumor", "Tumor"))
+dat.rna$tumor.cat <- factor(dat.rna$SampleType_Level2, levels=c("Normal", "Tumor"), labels = c("Non-Tumor", "Tumor"))
+dat.wgs$tumor.cat <- factor(dat.wgs$SampleType_Level2, levels=c("Normal", "Tumor"), labels = c("Non-Tumor", "Tumor"))
+
+# dataset id
+dat.16s$source <- "16s"
+dat.rna$source <- "rna"
+dat.wgs$source <- "wgs"
+
+# plotting ids
+dat.16s$X <- paste0(dat.16s$source, "-", dat.16s$tumor.cat)
+dat.rna$X <- paste0(dat.rna$source, "-", dat.rna$tumor.cat)
+dat.wgs$X <- paste0(dat.wgs$source, "-", dat.wgs$tumor.cat)
+
+# relabel as (0/1) for analysis
+dat.16s$tumor <- as.numeric(factor(dat.16s$tissue, levels=c("BO", "N", "T"), labels = c("Non-Tumor", "Non-Tumor", "Tumor"))) - 1
+dat.rna$tumor <- as.numeric(factor(dat.rna$SampleType_Level2, levels=c("Normal", "Tumor"), labels = c("Non-Tumor", "Tumor"))) - 1
+dat.wgs$tumor <- as.numeric(factor(dat.wgs$SampleType_Level2, levels=c("Normal", "Tumor"), labels = c("Non-Tumor", "Tumor"))) - 1
+
+# presence- absence
+dat.16s$pres <- ifelse(dat.16s$Abundance > 0, 1, 0)
+dat.16s$pres[is.na(dat.16s$pres)] <- 0
+dat.rna$pres <- ifelse(dat.rna$Abundance > 0, 1, 0)
+dat.rna$pres[is.na(dat.rna$pres)] <- 0
+dat.wgs$pres <- ifelse(dat.wgs$Abundance > 0, 1, 0)
+dat.wgs$pres[is.na(dat.wgs$pres)] <- 0
+
+# tumor stage variable
+dat.16s$tumor.stage <- factor(
+  dat.16s$pTNM,
+  levels = c("0", "1", "I", "IIA", "IIB", "III", "IV"),
+  labels = c("0", "1", "I", "II", "II", "III", "IV")
+)
+
+dat.rna[dat.rna == "not reported"] <- NA
+dat.rna$tumor.stage <- factor(
+  dat.rna$tumor_stage,
+  levels = c("stage i", "stage ia", "stage ib", "stage iib", "stage iia", "stage iii", "stage iiia", "stage iiib", "stage iiic", "stage iv", "stage iva"),
+  labels = c("I", "I", "I", "II", "II", "III", "III", "III", "III", "IV", "IV")
+)
+
+dat.wgs[dat.wgs == "not reported"] <- NA
+dat.wgs$tumor.stage <- factor(
+  dat.wgs$tumor_stage,
+  levels = c("stage i", "stage ia", "stage ib", "stage iib", "stage iia", "stage iii", "stage iiia", "stage iiib", "stage iiic", "stage iv", "stage iva"),
+  labels = c("I", "I", "I", "II", "II", "III", "III", "III", "III", "IV", "IV")
+)
+
+
+# subset to fuso. nuc. only
+# Streptococcus sanguinis 
+# Campylobacter concisus
+# Prevotella spp.
+
+dat.16s.s <- filter(
+  dat.16s,
+  OTU %in% c(
+    "Fusobacterium_nucleatum",
+    unique(dat.16s$OTU[dat.16s$OTU %like% "Streptococcus_"]),
+    unique(dat.16s$OTU[dat.16s$OTU %like% "Campylobacter_"]),
+    "Prevotella_melaninogenica")
+)
+dat.rna.s <- filter(
+  dat.rna,
+  otu2 %in% c(
+    "Fusobacterium nucleatum",
+    "Streptococcus sanguinis",
+      "Streptococcus oralis",
+      "Streptococcus mitis", 
+      "Streptococcus pneumoniae", 
+      "Streptococcus parasanguinis", 
+      "Streptococcus salivarius",
+    "Campylobacter concisus",
+    "Prevotella melaninogenica")
+)
+dat.wgs.s <- filter(
+  dat.wgs,
+  otu2 %in% c(
+    "Fusobacterium nucleatum",
+    "Streptococcus sanguinis",
+      "Streptococcus oralis",
+      "Streptococcus mitis", 
+      "Streptococcus pneumoniae", 
+      "Streptococcus parasanguinis", 
+      "Streptococcus salivarius",
+    "Campylobacter concisus",
+    "Prevotella melaninogenica")
+)
+
+# new names
+dat.16s.s$OTU1 <- factor(
+  dat.16s.s$OTU,
+  levels = c(
+    "Fusobacterium_nucleatum",
+    "Streptococcus_dentisani:Streptococcus_infantis:Streptococcus_mitis:Streptococcus_oligofermentans:Streptococcus_oralis:Streptococcus_pneumoniae:Streptococcus_pseudopneumoniae:Streptococcus_sanguinis",
+    "Campylobacter_rectus:Campylobacter_showae",
+    "Prevotella_melaninogenica"
+  ),
+  labels = c(
+    "Fusobacterium nucleatum",
+    "Streptococcus sanguinis",
+    "Campylobacter concisus",
+    "Prevotella melaninogenica"
+  )
+)
+dat.rna.s$OTU1 <- factor(
+  dat.rna.s$otu2,
+  levels = c(
+    "Fusobacterium nucleatum",
+    "Streptococcus sanguinis",
+    "Campylobacter concisus",
+    "Prevotella melaninogenica"),
+  labels = c(
+    "Fusobacterium nucleatum",
+    "Streptococcus sanguinis",
+    "Campylobacter concisus",
+    "Prevotella melaninogenica")
+)
+
+dat.wgs.s$OTU1 <- factor(
+  dat.wgs.s$otu2,
+  levels = c(
+    "Fusobacterium nucleatum",
+    "Streptococcus sanguinis",
+    "Campylobacter concisus",
+    "Prevotella melaninogenica"),
+  labels = c(
+    "Fusobacterium nucleatum",
+    "Streptococcus sanguinis",
+    "Campylobacter concisus",
+    "Prevotella melaninogenica")
+)
+
+# rename bacteria
+dat.16s.s$OTU <- factor(
+  dat.16s.s$OTU,
+  levels = c(
+    "Fusobacterium_nucleatum",
+    "Streptococcus_dentisani:Streptococcus_infantis:Streptococcus_mitis:Streptococcus_oligofermentans:Streptococcus_oralis:Streptococcus_pneumoniae:Streptococcus_pseudopneumoniae:Streptococcus_sanguinis",
+    "Campylobacter_rectus:Campylobacter_showae",
+    "Prevotella_melaninogenica"
+  ),
+  labels = c(
+    "Fusobacterium nucleatum",
+    "Streptococcus spp.",
+    "Campylobacter concisus",
+    "Prevotella melaninogenica"
+  )
+)
+dat.rna.s$OTU <- factor(
+  dat.rna.s$otu2,
+  levels = c(
+    "Fusobacterium nucleatum",
+    "Streptococcus sanguinis",
+      "Streptococcus oralis",
+      "Streptococcus mitis", 
+      "Streptococcus pneumoniae", 
+      "Streptococcus parasanguinis", 
+      "Streptococcus salivarius",
+    "Campylobacter concisus",
+    "Prevotella melaninogenica"),
+  labels = c(
+    "Fusobacterium nucleatum",
+    "Streptococcus spp.",
+      "Streptococcus spp.",
+      "Streptococcus spp.", 
+      "Streptococcus spp.", 
+      "Streptococcus spp.", 
+      "Streptococcus spp.",
+    "Campylobacter concisus",
+    "Prevotella melaninogenica")
+)
+
+dat.wgs.s$OTU <- factor(
+  dat.wgs.s$otu2,
+  levels = c(
+    "Fusobacterium nucleatum",
+    "Streptococcus sanguinis",
+      "Streptococcus oralis",
+      "Streptococcus mitis", 
+      "Streptococcus pneumoniae", 
+      "Streptococcus parasanguinis", 
+      "Streptococcus salivarius",
+    "Campylobacter concisus",
+    "Prevotella melaninogenica"),
+  labels = c(
+    "Fusobacterium nucleatum",
+    "Streptococcus spp.",
+      "Streptococcus spp.",
+      "Streptococcus spp.", 
+      "Streptococcus spp.", 
+      "Streptococcus spp.", 
+      "Streptococcus spp.",
+    "Campylobacter concisus",
+    "Prevotella melaninogenica")
+)
+
+dat.rna$OTU <- dat.rna$otu2
+dat.wgs$OTU <- dat.wgs$otu2
+
+```
+
+
+
+# NCI 16s data
+
+## Double Checking Data
+
+```{r nci-fig1, fig.height=5, out.width="100%", out.height="100%"}
+
+# in long format
+table(dat.16s$tumor.stage)
+# by subject
+dat <- dat.16s %>% filter(OTU == "Fusobacterium_nucleatum")
+table(dat$tumor.stage)
+sum(table(dat$tumor.stage)) # sample size met
+
+
+mean.dat <- dat.16s.s %>%
+  group_by(tumor.stage, OTU) %>%
+  summarize(M = mean(Abundance))
+ggplot(dat.16s.s, aes(x=tumor.stage, y=Abundance))+
+  geom_violin()+
+  geom_jitter(alpha=0.25,width = 0.25)+
+  geom_point(data=mean.dat, aes(x=tumor.stage, y = M), size=2, alpha =0.9, color="red")+
+  labs(x="Tumor Stage", 
+       title="Distribution of abundance across tumor stage",
+       subtitle="Red dot is average abundnace")+
+  scale_y_continuous(trans="pseudo_log")+
+  #  breaks=c(0, 10, 100, 200, 300, 400, 500),
+  #  limits = c(0,500),
+  #  
+  facet_wrap(.~OTU, nrow=1, scales="free")+
+  theme_classic()
+
+```
+
+
+Stage "1" has only 1 unique sample and will be dropped from subsequent analyses.
+And remove NA values.
+
+```{r}
+dat.16s.s <- dat.16s.s %>%
+  filter(tumor.stage != "1")%>%
+  mutate(tumor.stage = droplevels(tumor.stage, exclude=c("1",NA)))
+```
+
+## Multinomial Logistic Regression
+
+### Model 1: TS ~ Abundance
+
+```{r glm-16s-m1}
+
+fit <- nnet::multinom(tumor.stage ~ OTU, data=dat.16s.s)
+summary(fit)
+
+# obtain significance tests
+z <- summary(fit)$coefficients/summary(fit)$standard.errors
+z
+p <- (1 - pnorm(abs(z), 0, 1)) * 2
+p
+## extract the coefficients from the model and exponentiate
+exp(coef(fit)) # interpret as relative risks
+# save fitted logits
+pp <- fitted(fit)
+# preditive data
+dotu <- data.frame(OTU = c("Fusobacterium nucleatum", "Streptococcus spp.", "Campylobacter concisus", "Prevotella melaninogenica"))
+predict(fit, newdata = dotu, "probs") # only TINY differences
+
+## store the predicted probabilities for each value of ses
+pp.otu <-cbind(dotu, predict(fit, newdata = dotu, "probs", se = TRUE))
+
+## calculate the mean probabilities within each level of OTU
+by(pp.otu[, 2:6], pp.otu$OTU, colMeans)
+```
+
+
+
+### Model 2: TS ~ OTU + Abundance
+
+```{r glm-16s-m2, fig.height=5, out.width="100%", out.height="100%"}
+
+fit <- nnet::multinom(tumor.stage ~ OTU + Abundance, data=dat.16s.s)
+summary(fit)
+
+# obtain significance tests
+z <- summary(fit)$coefficients/summary(fit)$standard.errors
+z
+p <- (1 - pnorm(abs(z), 0, 1)) * 2
+p
+## extract the coefficients from the model and exponentiate
+exp(coef(fit)) # interpret as relative risks
+# save fitted logits
+pp <- fitted(fit)
+# predit data
+dotu <- data.frame(OTU = c("Fusobacterium nucleatum", "Streptococcus spp.", "Campylobacter concisus", "Prevotella melaninogenica"), Abundance = mean(dat.16s.s$Abundance))
+predict(fit, newdata = dotu, "probs") # bigger differences
+
+## look at the averaged predicted probabilities for different values of the continuous predictor variable Abundnace within each level of OTU
+dabund <- data.frame(
+  OTU = rep(c("Fusobacterium nucleatum", "Streptococcus spp.", "Campylobacter concisus", "Prevotella melaninogenica"), each = 51),
+  Abundance = rep(seq(0, 500,10), 4)
+)
+pp.abund <-cbind(dabund, predict(fit, newdata = dabund, "probs", se = TRUE))
+
+## calculate the mean probabilities within each level of OTU
+by(pp.abund[, 3:7], pp.abund$OTU, colMeans)
+
+## melt data set to long for ggplot2
+lpp <- melt(pp.abund, id.vars = c("OTU", "Abundance"), value.name = "probability")
+
+## plot predicted probabilities across Abundance values for each level of OTU
+## facetted by tumor.stage
+ggplot(lpp, aes(x = Abundance, y = probability, colour = OTU)) +
+  geom_line() + 
+  facet_grid(variable ~., scales="free")+
+  labs(y="Probability of Tumor Stage",
+       title="Tumor stage likelihood with bacteria abundance and OTU")+
+  theme(
+    panel.grid = element_blank()
+  )
+```
+
+
+### Model 3: TS ~ OTU + Abundance + OTU:Abundnace
+
+```{r glm-16s-m3, fig.height=5, out.width="100%", out.height="100%"}
+
+fit <- nnet::multinom(tumor.stage ~ OTU + Abundance + OTU:Abundance, data=dat.16s.s)
+summary(fit)
+
+# obtain significance tests
+z <- summary(fit)$coefficients/summary(fit)$standard.errors
+z
+p <- (1 - pnorm(abs(z), 0, 1)) * 2
+p
+## extract the coefficients from the model and exponentiate
+exp(coef(fit)) # interpret as relative risks
+# save fitted logits
+pp <- fitted(fit)
+# predit data
+gmeans <- dat.16s.s %>% group_by(OTU) %>% summarise(M = mean(Abundance))
+dotu <- data.frame(OTU = c("Fusobacterium nucleatum", "Streptococcus spp.", "Campylobacter concisus", "Prevotella melaninogenica"), Abundance = gmeans$M)
+predict(fit, newdata = dotu, "probs") # bigger differences
+
+## look at the averaged predicted probabilities for different values of the continuous predictor variable Abundnace within each level of OTU
+dabund <- data.frame(
+  OTU = rep(c("Fusobacterium nucleatum", "Streptococcus spp.", "Campylobacter concisus", "Prevotella melaninogenica"), each = 51),
+  Abundance = rep(seq(0, 500,10), 4)
+)
+pp.abund <-cbind(dabund, predict(fit, newdata = dabund, "probs", se = TRUE))
+
+## calculate the mean probabilities within each level of OTU
+by(pp.abund[, 3:7], pp.abund$OTU, colMeans)
+
+## melt data set to long for ggplot2
+lpp <- melt(pp.abund, id.vars = c("OTU", "Abundance"), value.name = "probability")
+
+## plot predicted probabilities across Abundance values for each level of OTU
+## facetted by tumor.stage
+ggplot(lpp, aes(x = Abundance, y = probability, colour = OTU)) +
+  geom_line() + 
+  facet_grid(variable ~., scales="free")+
+  labs(y="Probability of Tumor Stage",
+       title="Tumor stage likelihood with bacteria abundance and OTU")+
+  theme(
+    panel.grid = element_blank()
+  )
+```
+
+
+
+# TCGA RNAseq data
+
+## Double Checking Data
+
+```{r rna-fig1, fig.height=5, out.width="100%", out.height="100%"}
+
+# in long format
+table(dat.rna$tumor.stage)
+# by subject
+dat <- dat.rna %>% filter(OTU == "Fusobacterium nucleatum")
+table(dat$tumor.stage)
+sum(table(dat$tumor.stage)) # sample size met
+
+dat.rna.s$Abundancej <- dat.rna.s$Abundance+0.01
+mean.dat <- dat.rna.s %>%
+  group_by(tumor.stage, OTU) %>%
+  summarize(M = mean(Abundance))
+ggplot(dat.rna.s, aes(x=tumor.stage, y=Abundancej))+
+  geom_violin()+
+  geom_jitter(alpha=0.25,width = 0.25)+
+  geom_point(data=mean.dat, aes(x=tumor.stage, y = M), size=2, alpha =0.9, color="red")+
+  labs(x="Tumor Stage", 
+       title="Distribution of abundance across tumor stage",
+       subtitle="Red dot is average abundnace")+
+  scale_y_continuous(
+    breaks=c(0, 100, 1000, 10000, 100000, 150000),
+    #limits = c(0,500),
+    trans="pseudo_log")+
+  facet_wrap(.~OTU, nrow=1)+
+  theme_classic()
+```
+
+## Multinomial Logistic Regression
+
+### Model 1: TS ~ Abundance
+
+```{r glm-rna-m1}
+
+fit <- nnet::multinom(tumor.stage ~ OTU, data=dat.rna.s)
+summary(fit)
+
+# obtain significance tests
+z <- summary(fit)$coefficients/summary(fit)$standard.errors
+z
+p <- (1 - pnorm(abs(z), 0, 1)) * 2
+p
+## extract the coefficients from the model and exponentiate
+exp(coef(fit)) # interpret as relative risks
+# save fitted logits
+pp <- fitted(fit)
+# preditive data
+dotu <- data.frame(OTU = c("Fusobacterium nucleatum", "Streptococcus spp.", "Campylobacter concisus", "Prevotella melaninogenica"))
+predict(fit, newdata = dotu, "probs") # only TINY differences
+
+## store the predicted probabilities for each value of ses
+pp.otu <-cbind(dotu, predict(fit, newdata = dotu, "probs", se = TRUE))
+
+## calculate the mean probabilities within each level of OTU
+by(pp.otu[, 2:5], pp.otu$OTU, colMeans)
+```
+
+
+
+### Model 2: TS ~ OTU + Abundance
+
+```{r glm-rna-m2, fig.height=5, out.width="100%", out.height="100%"}
+
+fit <- nnet::multinom(tumor.stage ~ OTU + Abundance, data=dat.rna.s)
+summary(fit)
+
+# obtain significance tests
+z <- summary(fit)$coefficients/summary(fit)$standard.errors
+z
+p <- (1 - pnorm(abs(z), 0, 1)) * 2
+p
+## extract the coefficients from the model and exponentiate
+exp(coef(fit)) # interpret as relative risks
+# save fitted logits
+pp <- fitted(fit)
+# predit data
+dotu <- data.frame(OTU = c("Fusobacterium nucleatum", "Streptococcus spp.", "Campylobacter concisus", "Prevotella melaninogenica"), Abundance = mean(dat.rna.s$Abundance))
+predict(fit, newdata = dotu, "probs") # bigger differences
+
+## look at the averaged predicted probabilities for different values of the continuous predictor variable Abundnace within each level of OTU
+dabund <- data.frame(
+  OTU = rep(c("Fusobacterium nucleatum", "Streptococcus spp.", "Campylobacter concisus", "Prevotella melaninogenica"), each = 51),
+  Abundance = rep(seq(0, 500,10), 4)
+)
+pp.abund <-cbind(dabund, predict(fit, newdata = dabund, "probs", se = TRUE))
+
+## calculate the mean probabilities within each level of OTU
+by(pp.abund[, 3:6], pp.abund$OTU, colMeans)
+
+## melt data set to long for ggplot2
+lpp <- melt(pp.abund, id.vars = c("OTU", "Abundance"), value.name = "probability")
+
+## plot predicted probabilities across Abundance values for each level of OTU
+## facetted by tumor.stage
+ggplot(lpp, aes(x = Abundance, y = probability, colour = OTU)) +
+  geom_line() + 
+  facet_grid(variable ~., scales="free")+
+  labs(y="Probability of Tumor Stage",
+       title="Tumor stage likelihood with bacteria abundance and OTU")+
+  theme(
+    panel.grid = element_blank()
+  )
+```
+
+
+### Model 3: TS ~ OTU + Abundance + OTU:Abundnace
+
+```{r glm-rna-m3, fig.height=5, out.width="100%", out.height="100%"}
+
+fit <- nnet::multinom(tumor.stage ~ OTU + Abundance + OTU:Abundance, data=dat.rna.s)
+summary(fit)
+
+# obtain significance tests
+z <- summary(fit)$coefficients/summary(fit)$standard.errors
+z
+p <- (1 - pnorm(abs(z), 0, 1)) * 2
+p
+## extract the coefficients from the model and exponentiate
+exp(coef(fit)) # interpret as relative risks
+# save fitted logits
+pp <- fitted(fit)
+# predit data
+gmeans <- dat.rna.s %>% group_by(OTU) %>% summarise(M = mean(Abundance))
+dotu <- data.frame(OTU = c("Fusobacterium nucleatum", "Streptococcus spp.", "Campylobacter concisus", "Prevotella melaninogenica"), Abundance = gmeans$M)
+predict(fit, newdata = dotu, "probs") # bigger differences
+
+## look at the averaged predicted probabilities for different values of the continuous predictor variable Abundnace within each level of OTU
+dabund <- data.frame(
+  OTU = rep(c("Fusobacterium nucleatum", "Streptococcus spp.", "Campylobacter concisus", "Prevotella melaninogenica"), each = 51),
+  Abundance = rep(seq(0, 500,10), 4)
+)
+pp.abund <-cbind(dabund, predict(fit, newdata = dabund, "probs", se = TRUE))
+
+## calculate the mean probabilities within each level of OTU
+by(pp.abund[, 3:6], pp.abund$OTU, colMeans)
+
+## melt data set to long for ggplot2
+lpp <- melt(pp.abund, id.vars = c("OTU", "Abundance"), value.name = "probability")
+
+## plot predicted probabilities across Abundance values for each level of OTU
+## facetted by tumor.stage
+ggplot(lpp, aes(x = Abundance, y = probability, colour = OTU)) +
+  geom_line() + 
+  facet_grid(variable ~., scales="free")+
+  labs(y="Probability of Tumor Stage",
+       title="Tumor stage likelihood with bacteria abundance and OTU")+
+  theme(
+    panel.grid = element_blank()
+  )
+```
+
+
+
+# TCGA WGS data
+
+## Double Checking Data
+
+```{r wgs-fig1, fig.height=5, out.width="100%", out.height="100%"}
+
+# in long format
+table(dat.wgs$tumor.stage)
+# by subject
+dat <- dat.wgs %>% filter(OTU == "Fusobacterium nucleatum")
+table(dat$tumor.stage)
+sum(table(dat$tumor.stage)) # sample size met
+
+dat.wgs.s$Abundancej <- dat.wgs.s$Abundance+0.01
+mean.dat <- dat.wgs.s %>%
+  group_by(tumor.stage, OTU) %>%
+  summarize(M = mean(Abundance))
+ggplot(dat.wgs.s, aes(x=tumor.stage, y=Abundancej))+
+  geom_violin()+
+  geom_jitter(alpha=0.25,width = 0.25)+
+  geom_point(data=mean.dat, aes(x=tumor.stage, y = M), size=2, alpha =0.9, color="red")+
+  labs(x="Tumor Stage", 
+       title="Distribution of abundance across tumor stage",
+       subtitle="Red dot is average abundnace")+
+  scale_y_continuous(
+    breaks=c(0, 100, 1000, 10000, 100000),
+    #limits = c(0,500),
+    trans="pseudo_log")+
+  facet_wrap(.~OTU, nrow=1)+
+  theme_classic()
+```
+
+## Multinomial Logistic Regression
+
+### Model 1: TS ~ Abundance
+
+```{r glm-wgs-m1}
+
+fit <- nnet::multinom(tumor.stage ~ OTU, data=dat.wgs.s)
+summary(fit)
+
+# obtain significance tests
+z <- summary(fit)$coefficients/summary(fit)$standard.errors
+z
+p <- (1 - pnorm(abs(z), 0, 1)) * 2
+p
+## extract the coefficients from the model and exponentiate
+exp(coef(fit)) # interpret as relative risks
+# save fitted logits
+pp <- fitted(fit)
+# preditive data
+dotu <- data.frame(OTU = c("Fusobacterium nucleatum", "Streptococcus spp.", "Campylobacter concisus", "Prevotella melaninogenica"))
+predict(fit, newdata = dotu, "probs") # only TINY differences
+
+## store the predicted probabilities for each value of ses
+pp.otu <-cbind(dotu, predict(fit, newdata = dotu, "probs", se = TRUE))
+
+## calculate the mean probabilities within each level of OTU
+by(pp.otu[, 2:5], pp.otu$OTU, colMeans)
+```
+
+
+
+### Model 2: TS ~ OTU + Abundance
+
+```{r glm-wgs-m2, fig.height=5, out.width="100%", out.height="100%"}
+
+fit <- nnet::multinom(tumor.stage ~ OTU + Abundance, data=dat.wgs.s)
+summary(fit)
+
+# obtain significance tests
+z <- summary(fit)$coefficients/summary(fit)$standard.errors
+z
+p <- (1 - pnorm(abs(z), 0, 1)) * 2
+p
+## extract the coefficients from the model and exponentiate
+exp(coef(fit)) # interpret as relative risks
+# save fitted logits
+pp <- fitted(fit)
+# predit data
+dotu <- data.frame(OTU = c("Fusobacterium nucleatum", "Streptococcus spp.", "Campylobacter concisus", "Prevotella melaninogenica"), Abundance = mean(dat.wgs.s$Abundance))
+predict(fit, newdata = dotu, "probs") # bigger differences
+
+## look at the averaged predicted probabilities for different values of the continuous predictor variable Abundnace within each level of OTU
+dabund <- data.frame(
+  OTU = rep(c("Fusobacterium nucleatum", "Streptococcus spp.", "Campylobacter concisus", "Prevotella melaninogenica"), each = 51),
+  Abundance = rep(seq(0, 500,10), 4)
+)
+pp.abund <-cbind(dabund, predict(fit, newdata = dabund, "probs", se = TRUE))
+
+## calculate the mean probabilities within each level of OTU
+by(pp.abund[, 3:6], pp.abund$OTU, colMeans)
+
+## melt data set to long for ggplot2
+lpp <- melt(pp.abund, id.vars = c("OTU", "Abundance"), value.name = "probability")
+
+## plot predicted probabilities across Abundance values for each level of OTU
+## facetted by tumor.stage
+ggplot(lpp, aes(x = Abundance, y = probability, colour = OTU)) +
+  geom_line() + 
+  facet_grid(variable ~., scales="free")+
+  labs(y="Probability of Tumor Stage",
+       title="Tumor stage likelihood with bacteria abundance and OTU")+
+  theme(
+    panel.grid = element_blank()
+  )
+```
+
+
+### Model 3: TS ~ OTU + Abundance + OTU:Abundnace
+
+```{r glm-wgs-m3, fig.height=5, out.width="100%", out.height="100%"}
+
+fit <- nnet::multinom(tumor.stage ~ OTU + Abundance + OTU:Abundance, data=dat.wgs.s)
+summary(fit)
+
+# obtain significance tests
+z <- summary(fit)$coefficients/summary(fit)$standard.errors
+z
+p <- (1 - pnorm(abs(z), 0, 1)) * 2
+p
+## extract the coefficients from the model and exponentiate
+exp(coef(fit)) # interpret as relative risks
+# save fitted logits
+pp <- fitted(fit)
+# predit data
+gmeans <- dat.wgs.s %>% group_by(OTU) %>% summarise(M = mean(Abundance))
+dotu <- data.frame(OTU = c("Fusobacterium nucleatum", "Streptococcus spp.", "Campylobacter concisus", "Prevotella melaninogenica"), Abundance = gmeans$M)
+predict(fit, newdata = dotu, "probs") # bigger differences
+
+## look at the averaged predicted probabilities for different values of the continuous predictor variable Abundnace within each level of OTU
+dabund <- data.frame(
+  OTU = rep(c("Fusobacterium nucleatum", "Streptococcus spp.", "Campylobacter concisus", "Prevotella melaninogenica"), each = 51),
+  Abundance = rep(seq(0, 500,10), 4)
+)
+pp.abund <-cbind(dabund, predict(fit, newdata = dabund, "probs", se = TRUE))
+
+## calculate the mean probabilities within each level of OTU
+by(pp.abund[, 3:6], pp.abund$OTU, colMeans)
+
+## melt data set to long for ggplot2
+lpp <- melt(pp.abund, id.vars = c("OTU", "Abundance"), value.name = "probability")
+
+## plot predicted probabilities across Abundance values for each level of OTU
+## facetted by tumor.stage
+ggplot(lpp, aes(x = Abundance, y = probability, colour = OTU)) +
+  geom_line() + 
+  facet_grid(variable ~., scales="free")+
+  labs(y="Probability of Tumor Stage",
+       title="Tumor stage likelihood with bacteria abundance and OTU")+
+  theme(
+    panel.grid = element_blank()
+  )
+```
+
+
+
+
