@@ -98,10 +98,10 @@ dat.16s$tumor.stage <- factor(
 pi.dat <- readr::read_tsv("data/PICRUST/ec_pred_metagenome_unstrat_descrip.tsv")
 
 # aggregate descriptions to get 1 description per row - unique;y defined.
-pi.dat <- pi.dat %>%
+pi.dat<- pi.dat %>%
   group_by(description) %>%
   summarise(across(`1.S37.Jun172016`:`99.D01.S37.Jun232016`,.fns = mean))
-# transform to long format
+# long format
 pi.dat <- pi.dat %>%
   pivot_longer(
     cols=`1.S37.Jun172016`:`99.D01.S37.Jun232016`,
@@ -110,14 +110,13 @@ pi.dat <- pi.dat %>%
   )
 d <- as.data.frame(dat.16s)
 mydata <- full_join(pi.dat, d)
-
 mydata <- mydata %>%
   mutate(
     ID.n = as.numeric(as.factor(ID)),
     description.n = as.numeric(as.factor(description))
   ) %>%
   group_by(ID) %>%
-  mutate(RelAbundance = ifelse(sum(Abundance, na.rm=T) ==0,0, Abundance/sum(Abundance,na.rm = T)*100)) %>%
+  mutate(RelAbundance = Abundance/sum(Abundance)*100) %>%
   ungroup()%>%
   group_by(description)%>%
   mutate(avgRA = mean(RelAbundance))
@@ -266,7 +265,7 @@ p2<-ggplot(p2.d, aes(x=Mean_diff, y=description))+
     geom_vline(xintercept = 0, linetype="dashed", alpha=0.5)+
     geom_segment(aes(x=Mean_diff_ll, y=description, xend=Mean_diff_ul, yend=description))+
     geom_point(aes(fill=group, color=group))+
-    geom_text(aes(label=p, x=unique(p2.d$ul)+0.1))+
+    geom_text(aes(label=p, x=unique(ul)+0.1))+
     coord_cartesian(xlim = c(unique(p2.d$ll), unique(p2.d$ul)),
                     clip = 'off') +
     annotate("text", x=unique(p2.d$ul)+0.2,y = 25,
@@ -418,7 +417,7 @@ mydata <- mydata %>%
     description.n = as.numeric(as.factor(description))
   ) %>%
   group_by(ID) %>%
-  mutate(RelAbundance = ifelse(sum(Abundance, na.rm=T) ==0,0, Abundance/sum(Abundance,na.rm = T)*100)) %>%
+  mutate(RelAbundance = Abundance/sum(Abundance)*100) %>%
   ungroup()%>%
   group_by(description)%>%
   mutate(avgRA = mean(RelAbundance))
@@ -712,8 +711,7 @@ mydata <- mydata %>%
     description.n = as.numeric(as.factor(description))
   ) %>%
   group_by(ID) %>%
-  mutate(RelAbundance = Abundance/sum(Abundance)*100)%>%
-  #mutate(RelAbundance = ifelse(sum(Abundance, na.rm=T) ==0,0, Abundance/sum(Abundance,na.rm = T)*100)) %>%
+  mutate(RelAbundance = Abundance/sum(Abundance)*100) %>%
   ungroup()%>%
   group_by(description)%>%
   mutate(avgRA = mean(RelAbundance))

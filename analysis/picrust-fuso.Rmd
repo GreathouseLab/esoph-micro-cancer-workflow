@@ -85,6 +85,8 @@ dat.16s$tumor.stage <- factor(
 
 # Part 1 EC Data
 
+
+
 ```{r pi-dat-ec}
 
 # note: must rename function to func (or something else) because "function" is a reserved name in R and can't be used.
@@ -99,13 +101,11 @@ colnames(pi.dat) <- c("func",  colnames(pi.dat)[-c(1)])
 # add descriptions to dataframe
 pi.dat <- left_join(pi.dat, descriptions, by="func")
 pi.dat <- pi.dat[,c(1,161,3:160)]
-
-# aggregate descriptions to get 1 description per row - unique;y defined.
-pi.dat <- pi.dat %>%
+# aggreagate
+pi.dat<- pi.dat %>%
   group_by(description) %>%
   summarise(across(`1.S37.Jun172016`:`99.D01.S37.Jun232016`,.fns = mean))
-
-# make long format
+# long format
 pi.dat <- pi.dat %>%
   pivot_longer(
     cols=`1.S37.Jun172016`:`99.D01.S37.Jun232016`,
@@ -114,14 +114,39 @@ pi.dat <- pi.dat %>%
   )
 d <- as.data.frame(dat.16s)
 mydata <- full_join(pi.dat, d)
-
 mydata <- mydata %>%
   mutate(
     ID.n = as.numeric(as.factor(ID)),
     description.n = as.numeric(as.factor(description))
   ) %>%
+  # group_by(ID) %>%
+  # mutate(RelAbundance = ifelse(sum(Abundance)==0, 0,
+  #                              Abundance/sum(Abundance)*100)) %>%
+  # ungroup()%>%
   group_by(description)%>%
-  mutate(avgA = mean(Abundance))
+  mutate(avgRA = mean(Abundance))
+# # aggregate descriptions to get 1 description per row - unique;y defined.
+# pi.dat <- pi.dat %>%
+#   group_by(description) %>%
+#   summarise(across(`1.S37.Jun172016`:`99.D01.S37.Jun232016`,.fns = mean))
+# 
+# # make long format
+# pi.dat <- pi.dat %>%
+#   pivot_longer(
+#     cols=`1.S37.Jun172016`:`99.D01.S37.Jun232016`,
+#     names_to = "ID",
+#     values_to = "Abundance"
+#   )
+# d <- as.data.frame(dat.16s)
+# mydata <- full_join(pi.dat, d)
+# 
+# mydata <- mydata %>%
+#   mutate(
+#     ID.n = as.numeric(as.factor(ID)),
+#     description.n = as.numeric(as.factor(description))
+#   ) %>%
+#   group_by(description)%>%
+#   mutate(avgA = mean(Abundance))
 
 ```
 
@@ -394,7 +419,7 @@ kable(results.out, format="html", digits=3) %>%
 # merge with tb.ra for full results table
 full.res <- left_join(tb.ra, results.out, by = "description")
 
-write.csv(full.res, "output/picrust_ec_stratefied_fuso_data_results.csv", row.names = F)
+#write.csv(full.res, "output/picrust_ec_stratefied_fuso_data_results.csv", row.names = F)
 
 ```
 
@@ -697,8 +722,7 @@ kable(results.out, format="html", digits=3) %>%
 
 # merge with tb.ra for full results table
 full.res <- left_join(tb.ra, results.out, by = "description")
-
-write.csv(full.res, "output/picrust_ko_stratefied_fuso_data_results.csv", row.names = F)
+#write.csv(full.res, "output/picrust_ko_stratefied_fuso_data_results.csv", row.names = F)
 
 
 ```
