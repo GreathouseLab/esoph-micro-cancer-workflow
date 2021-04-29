@@ -102,7 +102,7 @@ pi.dat <- pi.dat[,c(1,161,3:160)]
 # aggregate descriptions to get 1 description per row - unique;y defined.
 pi.dat <- pi.dat %>%
   group_by(description) %>%
-  summarise(across(`1.S37.Jun172016`:`99.D01.S37.Jun232016`,.fns = mean))
+  summarise(across(`1.S37.Jun172016`:`99.D01.S37.Jun232016`,.fns = sum))
 
 # make long format
 pi.dat <- pi.dat %>%
@@ -119,8 +119,13 @@ mydata <- mydata %>%
     ID.n = as.numeric(as.factor(ID)),
     description.n = as.numeric(as.factor(description))
   ) %>%
+  group_by(ID) %>%
+  mutate(
+    dem = ifelse(sum(Abundance)==0, 1, sum(Abundance)),
+    RelAbundance = Abundance/dem*100) %>%
+  ungroup()%>%
   group_by(description)%>%
-  mutate(avgA = mean(Abundance))
+  mutate(avgRA = mean(RelAbundance))
 
 ```
 
@@ -135,29 +140,29 @@ I needed to change from relative abundance to abundance due to so many individua
 d <- mydata %>%
   filter(description=="DNA-directed DNA polymerase")
 
-t.test(d$Abundance ~ d$tumor.cat)
+t.test(d$RelAbundance ~ d$tumor.cat)
 
 # Run on all descriptions
 tb.ra1 <- mydata %>%
   group_by(description) %>%
   summarise(ng = n(),
-            Overall.M = mean(Abundance),
-            Overall.SE = sd(Abundance)/sqrt(ng))
+            Overall.M = mean(RelAbundance),
+            Overall.SE = sd(RelAbundance)/sqrt(ng))
 tb.ra2m <- mydata %>%
   group_by(description, tumor.cat) %>%
-  summarise(M = mean(Abundance)) %>%
+  summarise(M = mean(RelAbundance)) %>%
   pivot_wider(id_cols = description,
               names_from = tumor.cat,
               values_from = M)
 tb.ra2se <- mydata %>%
   group_by(description, tumor.cat) %>%
-  summarise(ng=n(),SE = sd(Abundance)/sqrt(ng)) %>%
+  summarise(ng=n(),SE = sd(RelAbundance)/sqrt(ng)) %>%
   pivot_wider(id_cols = description,
               names_from = tumor.cat,
               values_from = SE)
 tb.ra2var <- mydata %>%
   group_by(description, tumor.cat) %>%
-  summarise(ng=n(), VAR = var(Abundance)) %>%
+  summarise(ng=n(), VAR = var(RelAbundance)) %>%
   pivot_wider(id_cols = description,
               names_from = tumor.cat,
               values_from = VAR)
@@ -188,7 +193,7 @@ tb.ra <- tb.ra %>%
   )
 
 
-kable(tb.ra, format="html", digits=5, caption="Stratefied EC Data - Prevotella spp. (genus level only): Average Abundance of Each Description (sorted in descending order)") %>%
+kable(tb.ra, format="html", digits=5, caption="Stratefied EC Data - Prevotella spp. (genus level only): Average RelAbundance of Each Description (sorted in descending order)") %>%
   kable_styling(full_width = T) %>%
   scroll_box(width = "100%", height="600px")
 
@@ -199,8 +204,8 @@ kable(tb.ra, format="html", digits=5, caption="Stratefied EC Data - Prevotella s
 
 
 plot.dat <- tb.ra %>%
-  arrange(p) %>%
-  slice_head(n=50)%>%
+  arrange(desc(`Overall Mean`)) %>%
+  slice_head(n=50) %>%
   mutate(
     description = fct_reorder(description, `Overall Mean`),
     description = factor(description, levels = levels(description), ordered=T)
@@ -241,7 +246,7 @@ p1 <- ggplot()+
                  fill=group),
              stat="identity",position = "dodge",
              alpha = 1)+
-    labs(x="Mean Abundance")+
+    labs(x="Mean RelAbundance")+
     theme_classic()+
     theme(
       legend.position = "bottom",
@@ -274,7 +279,7 @@ p2<-ggplot(p2.d, aes(x=Mean_diff, y=description))+
     annotate("text", x=unique(p2.d$ul)+0.2,y = 25,
              angle=90,
              label="p-value (uncorrected)")+
-    labs(x="Mean Difference in Abundance")+
+    labs(x="Mean Difference in RelAbundance")+
     theme_classic()+
     theme(
       legend.position = "bottom",
@@ -287,7 +292,7 @@ p2<-ggplot(p2.d, aes(x=Mean_diff, y=description))+
 
 # plot
 p1 + p2 +
-  plot_annotation(title="Stratefied EC Data - Prevotella spp. (genus level only): First 50 descriptions with lowest p-value (uncorrected)")
+  plot_annotation(title="Stratefied EC Data - Prevotella spp. (genus level only): 50 most abundant descriptions")
 
 ```
 
@@ -410,7 +415,7 @@ pi.dat <- pi.dat[,c(1,161,3:160)]
 # aggregate descriptions to get 1 description per row - unique;y defined.
 pi.dat <- pi.dat %>%
   group_by(description) %>%
-  summarise(across(`X1.S37.Jun172016`:`X99.D01.S37.Jun232016`,.fns = mean))
+  summarise(across(`X1.S37.Jun172016`:`X99.D01.S37.Jun232016`,.fns = sum))
 
 # make long format
 pi.dat <- pi.dat %>%
@@ -431,8 +436,13 @@ mydata <- mydata %>%
     ID.n = as.numeric(as.factor(ID)),
     description.n = as.numeric(as.factor(description))
   ) %>%
+  group_by(ID) %>%
+  mutate(
+    dem = ifelse(sum(Abundance)==0, 1, sum(Abundance)),
+    RelAbundance = Abundance/dem*100) %>%
+  ungroup()%>%
   group_by(description)%>%
-  mutate(avgA = mean(Abundance))
+  mutate(avgRA = mean(RelAbundance))
 
 
 ```
@@ -447,23 +457,23 @@ mydata <- mydata %>%
 tb.ra1 <- mydata %>%
   group_by(description) %>%
   summarise(ng = n(),
-            Overall.M = mean(Abundance),
-            Overall.SE = sd(Abundance)/sqrt(ng))
+            Overall.M = mean(RelAbundance),
+            Overall.SE = sd(RelAbundance)/sqrt(ng))
 tb.ra2m <- mydata %>%
   group_by(description, tumor.cat) %>%
-  summarise(M = mean(Abundance)) %>%
+  summarise(M = mean(RelAbundance)) %>%
   pivot_wider(id_cols = description,
               names_from = tumor.cat,
               values_from = M)
 tb.ra2se <- mydata %>%
   group_by(description, tumor.cat) %>%
-  summarise(ng=n(),SE = sd(Abundance)/sqrt(ng)) %>%
+  summarise(ng=n(),SE = sd(RelAbundance)/sqrt(ng)) %>%
   pivot_wider(id_cols = description,
               names_from = tumor.cat,
               values_from = SE)
 tb.ra2var <- mydata %>%
   group_by(description, tumor.cat) %>%
-  summarise(ng=n(), VAR = var(Abundance)) %>%
+  summarise(ng=n(), VAR = var(RelAbundance)) %>%
   pivot_wider(id_cols = description,
               names_from = tumor.cat,
               values_from = VAR)
@@ -494,7 +504,7 @@ tb.ra <- tb.ra %>%
   )
 
 
-kable(tb.ra, format="html", digits=5, caption="Stratefied KO Data - Prevotella spp. (genus level only): Average Abundance of Each Description (sorted in descending order)") %>%
+kable(tb.ra, format="html", digits=5, caption="Stratefied KO Data - Prevotella spp. (genus level only): Average RelAbundance of Each Description (sorted in descending order)") %>%
   kable_styling(full_width = T) %>%
   scroll_box(width = "100%", height="600px")
 
@@ -505,7 +515,7 @@ kable(tb.ra, format="html", digits=5, caption="Stratefied KO Data - Prevotella s
 
 
 plot.dat <- tb.ra %>%
-  arrange(p) %>%
+  arrange(desc(`Overall Mean`)) %>%
   slice_head(n=50)%>%
   mutate(
     description = fct_reorder(description, `Overall Mean`),
@@ -547,7 +557,7 @@ p1 <- ggplot()+
                  fill=group),
              stat="identity",position = "dodge",
              alpha = 1)+
-    labs(x="Mean Abundance")+
+    labs(x="Mean RelAbundance")+
     theme_classic()+
     theme(
       legend.position = "bottom",
@@ -580,7 +590,7 @@ p2<-ggplot(p2.d, aes(x=Mean_diff, y=description))+
     annotate("text", x=unique(p2.d$ul)+0.2,y = 25,
              angle=90,
              label="p-value (uncorrected)")+
-    labs(x="Mean Difference in Abundance")+
+    labs(x="Mean Difference in RelAbundance")+
     theme_classic()+
     theme(
       legend.position = "bottom",
@@ -593,7 +603,7 @@ p2<-ggplot(p2.d, aes(x=Mean_diff, y=description))+
 
 # plot
 p1 + p2 +
-  plot_annotation(title="Stratefied KO Data - Prevotella spp. (genus level only): First 50 descriptions with lowest p-value (uncorrected)")
+  plot_annotation(title="Stratefied KO Data - Prevotella spp. (genus level only): 50 most abundant descriptions")
 
 ```
 

@@ -100,7 +100,7 @@ pi.dat <- readr::read_tsv("data/PICRUST/ec_pred_metagenome_unstrat_descrip.tsv")
 # aggregate descriptions to get 1 description per row - unique;y defined.
 pi.dat<- pi.dat %>%
   group_by(description) %>%
-  summarise(across(`1.S37.Jun172016`:`99.D01.S37.Jun232016`,.fns = mean))
+  summarise(across(`1.S37.Jun172016`:`99.D01.S37.Jun232016`,.fns = sum))
 # long format
 pi.dat <- pi.dat %>%
   pivot_longer(
@@ -116,7 +116,9 @@ mydata <- mydata %>%
     description.n = as.numeric(as.factor(description))
   ) %>%
   group_by(ID) %>%
-  mutate(RelAbundance = Abundance/sum(Abundance)*100) %>%
+  mutate(
+    dem = ifelse(sum(Abundance)==0, 1, sum(Abundance)),
+    RelAbundance = Abundance/dem*100) %>%
   ungroup()%>%
   group_by(description)%>%
   mutate(avgRA = mean(RelAbundance))
@@ -196,7 +198,7 @@ kable(tb.ra, format="html", digits=5, caption="EC Data Average Relative Abundanc
 
 
 plot.dat <- tb.ra %>%
-  arrange(p) %>%
+  arrange(desc(`Overall Mean`)) %>%
   slice_head(n=50)%>%
   mutate(
     description = fct_reorder(description, `Overall Mean`),
@@ -284,7 +286,7 @@ p2<-ggplot(p2.d, aes(x=Mean_diff, y=description))+
 
 # plot
 p1 + p2 +
-  plot_annotation(title="EC Data: First 50 descriptions with lowest p-value (uncorrected)")
+  plot_annotation(title="EC Data: 50 most abundant descriptions")
 
 ```
 
@@ -387,7 +389,7 @@ kable(results.out, format="html", digits=3) %>%
 # merge with tb.ra for full results table
 full.res <- left_join(tb.ra, results.out, by = "description")
 
-#write.csv(full.res, "output/picrust_ec_data_results.csv", row.names = F)
+write.csv(full.res, "output/picrust_ec_data_results.csv", row.names = F)
 
 ```
 
@@ -400,7 +402,7 @@ pi.dat <- readr::read_tsv("data/PICRUST/ko_pred_metagenome_unstrat_descrip.tsv")
 # aggregate descriptions to get 1 description per row - unique;y defined.
 pi.dat <- pi.dat %>%
   group_by(description) %>%
-  summarise(across(`1.S37.Jun172016`:`99.D01.S37.Jun232016`,.fns = mean))
+  summarise(across(`1.S37.Jun172016`:`99.D01.S37.Jun232016`,.fns = sum))
 # transform to long format
 pi.dat <- pi.dat %>%
   pivot_longer(
@@ -417,7 +419,9 @@ mydata <- mydata %>%
     description.n = as.numeric(as.factor(description))
   ) %>%
   group_by(ID) %>%
-  mutate(RelAbundance = Abundance/sum(Abundance)*100) %>%
+  mutate(
+    dem = ifelse(sum(Abundance)==0, 1, sum(Abundance)),
+    RelAbundance = Abundance/dem*100) %>%
   ungroup()%>%
   group_by(description)%>%
   mutate(avgRA = mean(RelAbundance))
@@ -490,7 +494,7 @@ kable(tb.ra, format="html", digits=5, caption="KO Data Average Relative Abundanc
 
 
 plot.dat <- tb.ra %>%
-  arrange(p) %>%
+  arrange(desc(`Overall Mean`)) %>%
   slice_head(n=50)%>%
   mutate(
     description = fct_reorder(description, `Overall Mean`),
@@ -577,7 +581,7 @@ p2<-ggplot(p2.d, aes(x=Mean_diff, y=description))+
 
 # plot
 p1 + p2+
-  plot_annotation(title="KO Data: First 50 descriptions with lowest p-value (uncorrected)")
+  plot_annotation(title="KO Data: 50 most abundant descriptions")
 
 ```
 
@@ -679,7 +683,7 @@ kable(results.out, format="html", digits=3) %>%
 # merge with tb.ra for full results table
 full.res <- left_join(tb.ra, results.out, by = "description")
 
-#write.csv(full.res, "output/picrust_ko_data_results.csv", row.names = F)
+write.csv(full.res, "output/picrust_ko_data_results.csv", row.names = F)
 
 
 ```
@@ -694,7 +698,7 @@ pi.dat <- readr::read_tsv("data/PICRUST/path_abun_unstrat_descrip.tsv")
 # aggregate descriptions to get 1 description per row - unique;y defined.
 pi.dat <- pi.dat %>%
   group_by(description) %>%
-  summarise(across(`1.S37.Jun172016`:`99.D01.S37.Jun232016`,.fns = mean))
+  summarise(across(`1.S37.Jun172016`:`99.D01.S37.Jun232016`,.fns = sum))
 # transform to long format
 pi.dat <- pi.dat %>%
   pivot_longer(
@@ -711,7 +715,9 @@ mydata <- mydata %>%
     description.n = as.numeric(as.factor(description))
   ) %>%
   group_by(ID) %>%
-  mutate(RelAbundance = Abundance/sum(Abundance)*100) %>%
+  mutate(
+    dem = ifelse(sum(Abundance)==0, 1, sum(Abundance)),
+    RelAbundance = Abundance/dem*100) %>%
   ungroup()%>%
   group_by(description)%>%
   mutate(avgRA = mean(RelAbundance))
@@ -787,7 +793,7 @@ Let's try a nice bigger plot
 
 
 plot.dat <- tb.ra %>%
-  arrange(p) %>%
+  arrange(desc(`Overall Mean`)) %>%
   slice_head(n=50)%>%
   mutate(
     description = fct_reorder(description, `Overall Mean`),
@@ -874,7 +880,7 @@ p2<-ggplot(p2.d, aes(x=Mean_diff, y=description))+
 
 # plot
 p1 + p2+
-  plot_annotation(title="Path Data: First 50 descriptions with lowest p-value (uncorrected)")
+  plot_annotation(title="Path Data: 50 most abundant descriptions")
 
 ```
 
