@@ -194,7 +194,7 @@ kable(tb.ra, format="html", digits=5, caption="EC Data Average Relative Abundanc
 ```
 
 
-```{r ec-full-plot, warning=F, error=F, message=F, fig.dim=c(12,10), out.height="100%", out.width="90%"}
+```{r ec-full-plot, warning=F, error=F, message=F, fig.dim=c(12,10), out.height="100%", out.width="100%"}
 
 
 plot.dat <- tb.ra %>%
@@ -255,7 +255,7 @@ p2.d <- plot.dat %>%
   ) %>%
   mutate(
     group = ifelse(Mean_diff > 0, "Tumor", "Non-Tumor"),
-    p = sprintf("%.3f", round(p,3)),
+    p = sprintf("%.3f", round(fdr_p,3)),
     ll = min(Mean_diff_ll)-0.01,
     ul = max(Mean_diff_ul)+0.01
   )
@@ -267,12 +267,12 @@ p2<-ggplot(p2.d, aes(x=Mean_diff, y=description))+
     geom_vline(xintercept = 0, linetype="dashed", alpha=0.5)+
     geom_segment(aes(x=Mean_diff_ll, y=description, xend=Mean_diff_ul, yend=description))+
     geom_point(aes(fill=group, color=group))+
-    geom_text(aes(label=p, x=unique(ul)+0.1))+
+    geom_text(aes(label=p, x=unique(ul)+0.05))+
     coord_cartesian(xlim = c(unique(p2.d$ll), unique(p2.d$ul)),
                     clip = 'off') +
-    annotate("text", x=unique(p2.d$ul)+0.2,y = 25,
+    annotate("text", x=unique(p2.d$ul)+0.08,y = 25,
              angle=90,
-             label="p-value (uncorrected)")+
+             label="q-value (FDR Corrected p-value)")+
     labs(x="Mean Difference in Proportions")+
     theme_classic()+
     theme(
@@ -285,9 +285,10 @@ p2<-ggplot(p2.d, aes(x=Mean_diff, y=description))+
     )
 
 # plot
-p1 + p2 +
+p <- p1 + p2 +
   plot_annotation(title="EC Data: 50 most abundant descriptions")
-
+p
+ggsave("output/updated-figures-2021-05-20/picrust-EC.pdf",p,units="in", height=12, width=10)
 ```
 
 
@@ -490,7 +491,7 @@ kable(tb.ra, format="html", digits=5, caption="KO Data Average Relative Abundanc
 
 ```
 
-```{r ko-full-plot, warning=F, error=F, message=F, fig.dim=c(12,10), out.height="100%", out.width="90%"}
+```{r ko-full-plot, warning=F, error=F, message=F, fig.dim=c(12,10), out.height="100%", out.width="100%"}
 
 
 plot.dat <- tb.ra %>%
@@ -550,7 +551,7 @@ p2.d <- plot.dat %>%
   ) %>%
   mutate(
     group = ifelse(Mean_diff > 0, "Tumor", "Non-Tumor"),
-    p = sprintf("%.3f", round(p,3)),
+    p = sprintf("%.3f", round(fdr_p,3)),
     ll = min(Mean_diff_ll)-0.01,
     ul = max(Mean_diff_ul)+0.01
   )
@@ -562,12 +563,12 @@ p2<-ggplot(p2.d, aes(x=Mean_diff, y=description))+
     geom_vline(xintercept = 0, linetype="dashed", alpha=0.5)+
     geom_segment(aes(x=Mean_diff_ll, y=description, xend=Mean_diff_ul, yend=description))+
     geom_point(aes(fill=group, color=group))+
-    geom_text(aes(label=p, x=unique(ul)+0.1))+
+    geom_text(aes(label=p, x=unique(ul)+0.03))+
     coord_cartesian(xlim = c(unique(p2.d$ll), unique(p2.d$ul)),
                     clip = 'off') +
-    annotate("text", x=unique(p2.d$ul)+0.2,y = 25,
+    annotate("text", x=unique(p2.d$ul)+0.05,y = 25,
              angle=90,
-             label="p-value (uncorrected)")+
+             label="q-value (FDR Corrected p-value)")+
     labs(x="Mean Difference in Proportions")+
     theme_classic()+
     theme(
@@ -580,9 +581,10 @@ p2<-ggplot(p2.d, aes(x=Mean_diff, y=description))+
     )
 
 # plot
-p1 + p2+
+p <- p1 + p2+
   plot_annotation(title="KO Data: 50 most abundant descriptions")
-
+p
+ggsave("output/updated-figures-2021-05-20/picrust-KO.pdf",p,units="in", height=12, width=10)
 ```
 
 ## Modeling Difference between Tumor and Non-Tumor
@@ -789,7 +791,7 @@ kable(tb.ra, format="html", digits=5, caption="Pathway Data Average Relative Abu
 
 Let's try a nice bigger plot
 
-```{r path-full-plot, warning=F, error=F, message=F, fig.dim=c(12,10), out.height="100%", out.width="90%"}
+```{r path-full-plot, warning=F, error=F, message=F, fig.dim=c(12,10), out.height="100%", out.width="100%"}
 
 
 plot.dat <- tb.ra %>%
@@ -849,7 +851,7 @@ p2.d <- plot.dat %>%
   ) %>%
   mutate(
     group = ifelse(Mean_diff > 0, "Tumor", "Non-Tumor"),
-    p = sprintf("%.3f", round(p,3)),
+    p = sprintf("%.3f", round(fdr_p,3)),
     ll = min(Mean_diff_ll)-0.01,
     ul = max(Mean_diff_ul)+0.01
   )
@@ -861,12 +863,12 @@ p2<-ggplot(p2.d, aes(x=Mean_diff, y=description))+
     geom_vline(xintercept = 0, linetype="dashed", alpha=0.5)+
     geom_segment(aes(x=Mean_diff_ll, y=description, xend=Mean_diff_ul, yend=description))+
     geom_point(aes(fill=group, color=group))+
-    geom_text(aes(label=p, x=unique(ul)+0.1))+
+    geom_text(aes(label=p, x=unique(ul)+0.04))+
     coord_cartesian(xlim = c(unique(p2.d$ll), unique(p2.d$ul)),
                     clip = 'off') +
-    annotate("text", x=unique(p2.d$ul)+0.2,y = 25,
+    annotate("text", x=unique(p2.d$ul)+0.08,y = 25,
              angle=90,
-             label="p-value (uncorrected)")+
+             label="q-value (FDR Corrected p-value)")+
     labs(x="Mean Difference in Proportions")+
     theme_classic()+
     theme(
@@ -879,9 +881,10 @@ p2<-ggplot(p2.d, aes(x=Mean_diff, y=description))+
     )
 
 # plot
-p1 + p2+
+p <- p1 + p2+
   plot_annotation(title="Path Data: 50 most abundant descriptions")
-
+p
+ggsave("output/updated-figures-2021-05-20/picrust-path.pdf",p,units="in", height=12, width=10)
 ```
 
 ## Modeling Difference between Tumor and Non-Tumor

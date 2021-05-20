@@ -262,7 +262,7 @@ p2.d <- plot.dat %>%
   ) %>%
   mutate(
     group = ifelse(Mean_diff > 0, "Tumor", "Non-Tumor"),
-    p = sprintf("%.3f", round(p,3)),
+    p = sprintf("%.3f", round(fdr_p,3)),
     ll = min(Mean_diff_ll)-0.01,
     ul = max(Mean_diff_ul)+0.01
   )
@@ -274,12 +274,12 @@ p2<-ggplot(p2.d, aes(x=Mean_diff, y=description))+
     geom_vline(xintercept = 0, linetype="dashed", alpha=0.5)+
     geom_segment(aes(x=Mean_diff_ll, y=description, xend=Mean_diff_ul, yend=description))+
     geom_point(aes(fill=group, color=group))+
-    geom_text(aes(label=p, x=unique(ul)+0.1))+
+    geom_text(aes(label=p, x=unique(ul)+0.04))+
     coord_cartesian(xlim = c(unique(p2.d$ll), unique(p2.d$ul)),
                     clip = 'off') +
-    annotate("text", x=unique(p2.d$ul)+0.2,y = 25,
+    annotate("text", x=unique(p2.d$ul)+0.08,y = 25,
              angle=90,
-             label="p-value (uncorrected)")+
+             label="q-value (FDR Corrected p-value)")+
     labs(x="Mean Difference in RelAbundance")+
     theme_classic()+
     theme(
@@ -292,9 +292,10 @@ p2<-ggplot(p2.d, aes(x=Mean_diff, y=description))+
     )
 
 # plot
-p1 + p2 +
+p <- p1 + p2 +
   plot_annotation(title="Stratefied EC Data - Streptococcus sanguinis : 50 most abundant descriptions")
-
+p
+ggsave("output/updated-figures-2021-05-20/picrust-strepto-EC.pdf",p,units="in", height=12, width=10)
 ```
 
 
@@ -574,7 +575,7 @@ p2.d <- plot.dat %>%
   ) %>%
   mutate(
     group = ifelse(Mean_diff > 0, "Tumor", "Non-Tumor"),
-    p = sprintf("%.3f", round(p,3)),
+    p = sprintf("%.3f", round(fdr_p,3)),
     ll = min(Mean_diff_ll)-0.01,
     ul = max(Mean_diff_ul)+0.01
   )
@@ -586,12 +587,12 @@ p2<-ggplot(p2.d, aes(x=Mean_diff, y=description))+
     geom_vline(xintercept = 0, linetype="dashed", alpha=0.5)+
     geom_segment(aes(x=Mean_diff_ll, y=description, xend=Mean_diff_ul, yend=description))+
     geom_point(aes(fill=group, color=group))+
-    geom_text(aes(label=p, x=unique(ul)+0.1))+
+    geom_text(aes(label=p, x=unique(ul)+0.025))+
     coord_cartesian(xlim = c(unique(p2.d$ll), unique(p2.d$ul)),
                     clip = 'off') +
-    annotate("text", x=unique(p2.d$ul)+0.2,y = 25,
+    annotate("text", x=unique(p2.d$ul)+0.05,y = 25,
              angle=90,
-             label="p-value (uncorrected)")+
+             label="q-value (FDR Corrected p-value)")+
     labs(x="Mean Difference in RelAbundance")+
     theme_classic()+
     theme(
@@ -604,9 +605,10 @@ p2<-ggplot(p2.d, aes(x=Mean_diff, y=description))+
     )
 
 # plot
-p1 + p2 +
+p <- p1 + p2 +
   plot_annotation(title="Stratefied KO Data - Streptococcus sanguinis : 50 most abundant descriptions")
-
+p
+ggsave("output/updated-figures-2021-05-20/picrust-strepto-KO.pdf",p,units="in", height=12, width=10)
 ```
 
 

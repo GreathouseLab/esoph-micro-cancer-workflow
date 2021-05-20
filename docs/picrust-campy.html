@@ -376,7 +376,7 @@ div.tocify {
 <div class="tab-content">
 <div id="summary" class="tab-pane fade in active">
 <p>
-<strong>Last updated:</strong> 2021-04-29
+<strong>Last updated:</strong> 2021-05-20
 </p>
 <p>
 <strong>Checks:</strong> <span class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span> 6 <span class="glyphicon glyphicon-exclamation-sign text-danger" aria-hidden="true"></span> 1
@@ -467,16 +467,16 @@ This reproducible <a href="http://rmarkdown.rstudio.com">R Markdown</a> analysis
 <div class="panel panel-default">
 <div class="panel-heading">
 <p class="panel-title">
-<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongRepositoryversionstrongahrefhttpsgithubcomGreathouseLabesophmicrocancerworkflowtree2072df5576e3368a42ade6d4bd6bc9ac64e6f23etargetblank2072df5a"> <span class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span> <strong>Repository version:</strong> <a href="https://github.com/GreathouseLab/esoph-micro-cancer-workflow/tree/2072df5576e3368a42ade6d4bd6bc9ac64e6f23e" target="_blank">2072df5</a> </a>
+<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongRepositoryversionstrongahrefhttpsgithubcomGreathouseLabesophmicrocancerworkflowtree5a00a1b880d89ed1d557144741dc17937e713719targetblank5a00a1ba"> <span class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span> <strong>Repository version:</strong> <a href="https://github.com/GreathouseLab/esoph-micro-cancer-workflow/tree/5a00a1b880d89ed1d557144741dc17937e713719" target="_blank">5a00a1b</a> </a>
 </p>
 </div>
-<div id="strongRepositoryversionstrongahrefhttpsgithubcomGreathouseLabesophmicrocancerworkflowtree2072df5576e3368a42ade6d4bd6bc9ac64e6f23etargetblank2072df5a" class="panel-collapse collapse">
+<div id="strongRepositoryversionstrongahrefhttpsgithubcomGreathouseLabesophmicrocancerworkflowtree5a00a1b880d89ed1d557144741dc17937e713719targetblank5a00a1ba" class="panel-collapse collapse">
 <div class="panel-body">
 <p>
 Great! You are using Git for version control. Tracking code development and connecting the code version to the results is critical for reproducibility.
 </p>
 <p>
-The results in this page were generated with repository version <a href="https://github.com/GreathouseLab/esoph-micro-cancer-workflow/tree/2072df5576e3368a42ade6d4bd6bc9ac64e6f23e" target="_blank">2072df5</a>. See the <em>Past versions</em> tab to see a history of the changes made to the R Markdown and HTML files.
+The results in this page were generated with repository version <a href="https://github.com/GreathouseLab/esoph-micro-cancer-workflow/tree/5a00a1b880d89ed1d557144741dc17937e713719" target="_blank">5a00a1b</a>. See the <em>Past versions</em> tab to see a history of the changes made to the R Markdown and HTML files.
 </p>
 <p>
 Note that you need to be careful to ensure that all relevant files for the analysis have been committed to Git prior to generating the results (you can use <code>wflow_publish</code> or <code>wflow_git_commit</code>). workflowr only checks the R Markdown file, but you know if there are other scripts or data files that it depends on. Below is the status of the Git repository when the results were generated:
@@ -487,22 +487,15 @@ Ignored files:
     Ignored:    .Rproj.user/
     Ignored:    data/
 
+Untracked files:
+    Untracked:  output/updated-figures-2021-05-20/
+
 Unstaged changes:
     Modified:   analysis/picrust-analyses.Rmd
     Modified:   analysis/picrust-campy.Rmd
     Modified:   analysis/picrust-fuso.Rmd
     Modified:   analysis/picrust-prevo.Rmd
     Modified:   analysis/picrust-strepto.Rmd
-    Modified:   output/picrust_ec_data_results.csv
-    Modified:   output/picrust_ec_stratefied_campy_data_results.csv
-    Modified:   output/picrust_ec_stratefied_fuso_data_results.csv
-    Modified:   output/picrust_ec_stratefied_prevo_data_results.csv
-    Modified:   output/picrust_ec_stratefied_strepto_data_results.csv
-    Modified:   output/picrust_ko_data_results.csv
-    Modified:   output/picrust_ko_stratefied_campy_data_results.csv
-    Modified:   output/picrust_ko_stratefied_fuso_data_results.csv
-    Modified:   output/picrust_ko_stratefied_prevo_data_results.csv
-    Modified:   output/picrust_ko_stratefied_strepto_data_results.csv
 
 </code></pre>
 <p>
@@ -541,6 +534,40 @@ Message
 </tr>
 </thead>
 <tbody>
+<tr>
+<td>
+Rmd
+</td>
+<td>
+<a href="https://github.com/GreathouseLab/esoph-micro-cancer-workflow/blob/5a00a1b880d89ed1d557144741dc17937e713719/analysis/picrust-campy.Rmd" target="_blank">5a00a1b</a>
+</td>
+<td>
+noah-padgett
+</td>
+<td>
+2021-04-29
+</td>
+<td>
+updated figured and stuff
+</td>
+</tr>
+<tr>
+<td>
+html
+</td>
+<td>
+<a href="https://rawcdn.githack.com/GreathouseLab/esoph-micro-cancer-workflow/5a00a1b880d89ed1d557144741dc17937e713719/docs/picrust-campy.html" target="_blank">5a00a1b</a>
+</td>
+<td>
+noah-padgett
+</td>
+<td>
+2021-04-29
+</td>
+<td>
+updated figured and stuff
+</td>
+</tr>
 <tr>
 <td>
 Rmd
@@ -23946,7 +23973,7 @@ p2.d &lt;- plot.dat %&gt;%
   ) %&gt;%
   mutate(
     group = ifelse(Mean_diff &gt; 0, &quot;Tumor&quot;, &quot;Non-Tumor&quot;),
-    p = sprintf(&quot;%.3f&quot;, round(p,3)),
+    p = sprintf(&quot;%.3f&quot;, round(fdr_p,3)),
     ll = min(Mean_diff_ll)-0.01,
     ul = max(Mean_diff_ul)+0.01
   )
@@ -23958,12 +23985,12 @@ p2&lt;-ggplot(p2.d, aes(x=Mean_diff, y=description))+
     geom_vline(xintercept = 0, linetype=&quot;dashed&quot;, alpha=0.5)+
     geom_segment(aes(x=Mean_diff_ll, y=description, xend=Mean_diff_ul, yend=description))+
     geom_point(aes(fill=group, color=group))+
-    geom_text(aes(label=p, x=unique(ul)+0.1))+
+    geom_text(aes(label=p, x=unique(ul)+0.05))+
     coord_cartesian(xlim = c(unique(p2.d$ll), unique(p2.d$ul)),
                     clip = &#39;off&#39;) +
-    annotate(&quot;text&quot;, x=unique(p2.d$ul)+0.2,y = 25,
+    annotate(&quot;text&quot;, x=unique(p2.d$ul)+0.08,y = 25,
              angle=90,
-             label=&quot;p-value (uncorrected)&quot;)+
+             label=&quot;q-value (FDR Corrected p-value)&quot;)+
     labs(x=&quot;Mean Difference in RelAbundance&quot;)+
     theme_classic()+
     theme(
@@ -23976,9 +24003,11 @@ p2&lt;-ggplot(p2.d, aes(x=Mean_diff, y=description))+
     )
 
 # plot
-p1 + p2 +
-  plot_annotation(title=&quot;Stratefied EC Data - Campylobacter concisus: 50 most abundant descriptions&quot;)</code></pre>
+p &lt;- p1 + p2 +
+  plot_annotation(title=&quot;Stratefied EC Data - Campylobacter concisus: 50 most abundant descriptions&quot;)
+p</code></pre>
 <p><img src="figure/picrust-campy.Rmd/ec-full-plot-1.png" width="90%" height="100%" style="display: block; margin: auto;" /></p>
+<pre class="r"><code>ggsave(&quot;output/updated-figures-2021-05-20/picrust-campy-EC.pdf&quot;,p,units=&quot;in&quot;, height=12, width=10)</code></pre>
 </div>
 <div id="modeling-difference-between-tumor-and-non-tumor" class="section level2">
 <h2>Modeling Difference between Tumor and Non-Tumor</h2>
@@ -23998,12 +24027,12 @@ ggplot(tb, aes(x=r))+
   geom_vline(aes(xintercept = M))+
   labs(x=&quot;Biserial Correlation&quot;,title=&quot;Relationship between description abundance and tumor (tumor vs. non-tumor)&quot;)+
   theme(panel.grid = element_blank())</code></pre>
-<p><img src="figure/picrust-campy.Rmd/ec-corplot-1.png" width="100%" height="400px" style="display: block; margin: auto;" /></p>
+<p><img src="figure/picrust-campy.Rmd/ec-corplot-1.png" width="90%" height="400px" style="display: block; margin: auto;" /></p>
 <p>Next, we need the data to be on an interpretable scale. First, let’s use the raw abundance like scale.</p>
 <pre class="r"><code>p &lt;- ggplot(mydata, aes(x=Abundance))+
   geom_density()
 p</code></pre>
-<p><img src="figure/picrust-campy.Rmd/ec-glm-overview-1.png" width="100%" height="400px" style="display: block; margin: auto;" /></p>
+<p><img src="figure/picrust-campy.Rmd/ec-glm-overview-1.png" width="90%" height="400px" style="display: block; margin: auto;" /></p>
 <pre class="r"><code>mydata &lt;- mydata %&gt;%
   mutate(Abundance.dich=ifelse(Abundance==0, 0, 1))
 table(mydata$Abundance.dich)</code></pre>
@@ -83441,7 +83470,7 @@ p2.d &lt;- plot.dat %&gt;%
   ) %&gt;%
   mutate(
     group = ifelse(Mean_diff &gt; 0, &quot;Tumor&quot;, &quot;Non-Tumor&quot;),
-    p = sprintf(&quot;%.3f&quot;, round(p,3)),
+    p = sprintf(&quot;%.3f&quot;, round(fdr_p,3)),
     ll = min(Mean_diff_ll)-0.01,
     ul = max(Mean_diff_ul)+0.01
   )
@@ -83453,12 +83482,12 @@ p2&lt;-ggplot(p2.d, aes(x=Mean_diff, y=description))+
     geom_vline(xintercept = 0, linetype=&quot;dashed&quot;, alpha=0.5)+
     geom_segment(aes(x=Mean_diff_ll, y=description, xend=Mean_diff_ul, yend=description))+
     geom_point(aes(fill=group, color=group))+
-    geom_text(aes(label=p, x=unique(ul)+0.1))+
+    geom_text(aes(label=p, x=unique(ul)+0.05))+
     coord_cartesian(xlim = c(unique(p2.d$ll), unique(p2.d$ul)),
                     clip = &#39;off&#39;) +
-    annotate(&quot;text&quot;, x=unique(p2.d$ul)+0.2,y = 25,
+    annotate(&quot;text&quot;, x=unique(p2.d$ul)+0.08,y = 25,
              angle=90,
-             label=&quot;p-value (uncorrected)&quot;)+
+             label=&quot;q-value (FDR Corrected p-value)&quot;)+
     labs(x=&quot;Mean Difference in RelAbundance&quot;)+
     theme_classic()+
     theme(
@@ -83471,9 +83500,11 @@ p2&lt;-ggplot(p2.d, aes(x=Mean_diff, y=description))+
     )
 
 # plot
-p1 + p2 +
-  plot_annotation(title=&quot;Stratefied KO Data - Campylobacter concisus: 50 most abundant descriptions&quot;)</code></pre>
-<p><img src="figure/picrust-campy.Rmd/ko-full-plot-1.png" width="90%" height="100%" style="display: block; margin: auto;" /></p>
+p &lt;- p1 + p2 +
+  plot_annotation(title=&quot;Stratefied KO Data - Campylobacter concisus: 50 most abundant descriptions&quot;)
+p</code></pre>
+<p><img src="figure/picrust-campy.Rmd/ko-full-plot-1.png" width="100%" height="100%" style="display: block; margin: auto;" /></p>
+<pre class="r"><code>ggsave(&quot;output/updated-figures-2021-05-20/picrust-campy-KO.pdf&quot;,p,units=&quot;in&quot;, height=12, width=10)</code></pre>
 </div>
 <div id="modeling-difference-between-tumor-and-non-tumor-1" class="section level2">
 <h2>Modeling Difference between Tumor and Non-Tumor</h2>
@@ -83493,12 +83524,12 @@ ggplot(tb, aes(x=r))+
   geom_vline(aes(xintercept = M))+
   labs(x=&quot;Biserial Correlation&quot;,title=&quot;Relationship between description abundance and tumor (tumor vs. non-tumor)&quot;)+
   theme(panel.grid = element_blank())</code></pre>
-<p><img src="figure/picrust-campy.Rmd/ko-corplot-1.png" width="100%" height="400px" style="display: block; margin: auto;" /></p>
+<p><img src="figure/picrust-campy.Rmd/ko-corplot-1.png" width="90%" height="400px" style="display: block; margin: auto;" /></p>
 <p>Next, we need the data to be on an interpretable scale. First, let’s use the raw abundance like scale.</p>
 <pre class="r"><code>p &lt;- ggplot(mydata, aes(x=Abundance))+
   geom_density()
 p</code></pre>
-<p><img src="figure/picrust-campy.Rmd/ko-glm-overview-1.png" width="100%" height="400px" style="display: block; margin: auto;" /></p>
+<p><img src="figure/picrust-campy.Rmd/ko-glm-overview-1.png" width="90%" height="400px" style="display: block; margin: auto;" /></p>
 <pre class="r"><code>mydata &lt;- mydata %&gt;%
   mutate(Abundance.dich=ifelse(Abundance==0, 0, 1))
 table(mydata$Abundance.dich)</code></pre>
