@@ -1,0 +1,454 @@
+---
+title: "Survival Analysis"
+author: "R. Noah Padgett"
+date: "2021-12-18"
+output: html_document
+---
+
+```{r data, include=FALSE, echo=FALSE, warning=F, error=F, message=F}
+# load packages
+source("code/load_packages.R")
+
+# get data
+source("code/get_cleaned_data.R")
+source("code/get_reformatted_data.R")
+
+# settings
+theme_set(theme_bw())
+knitr::opts_chunk$set(out.width="225%", out.height=10)
+options(digits=4)
+
+
+```
+
+# Data
+
+```{r data-2, warning=FALSE, error=F, message=F}
+
+# survival data
+survive_data <- read_xlsx("data/esophagusonly_survival_data.xlsx")
+
+```
+
+
+
+## Summary of Case Counts
+
+```{r}
+
+# Number of participants with Date of Diagnosis Data
+nrow(survive_data) - sum(is.na(survive_data$`date of diagnosis`))
+
+# Number of participants with Date of Surgery Data
+nrow(survive_data) - sum(is.na(survive_data$`surg date`))
+
+table(is.na(survive_data$`date of diagnosis`), is.na(survive_data$`surg date`))
+
+# create new ID - date of diag if available, if not, use date of surg.
+survive_data$date_start <- NA
+survive_data$date_type <- NA 
+for(i in 1:nrow(survive_data)){
+  if(is.na(survive_data$`date of diagnosis`[i]) == F){
+    survive_data$date_start[i] <- paste0(survive_data$`date of diagnosis`[i])
+    survive_data$date_type[i] <- "DateOfDiagnosis"
+  } else {
+    if(is.na(survive_data$`surg date`[i]) == F){
+      survive_data$date_start[i] <- paste0(survive_data$`surg date`[i])
+      survive_data$date_type[i] <- "DateOfSurgery"
+    }
+  }
+}
+survive_data$date_start <- as.Date(survive_data$date_start)
+survive_data$date_type <- factor(survive_data$date_type, levels = c("DateOfDiagnosis", "DateOfSurgery"))
+# compute days survived
+survive_data$days_surv <- difftime(survive_data$`DOD or censor`, survive_data$date_start)
+
+# Status available
+nrow(survive_data) - sum(is.na(survive_data$status))
+table(survive_data$status)
+survive_data$status_observed <- ifelse(survive_data$status == "d", 1, 0)
+table(survive_data$status_observed)
+
+# counts and date data
+# Look at FALSE column for counts of cases we can use in the analysis
+table(survive_data$status, is.na(survive_data$`date of diagnosis`), useNA = "ifany")
+table(survive_data$status, is.na(survive_data$`surg date`), useNA = "ifany")
+```
+
+## Visualize data
+
+```{r viz-dat, fig.dim=c(7,5), out.height="400px", out.width="100%"}
+
+# format data so that we can plot time of surg. to time o 
+plot_dat <- survive_data %>%
+  mutate(
+    time0 = as.Date(date_start),
+    time_odc=as.Date(`DOD or censor`),
+    ID = as.numeric(as.factor(Accession))
+  )
+p <- ggplot(plot_dat) +
+  geom_segment(aes(x=time0,xend=time_odc,y=ID, yend=ID))
+p
+
+plot_dat <- survive_data %>%
+  arrange(desc(days_surv)) %>%
+  mutate(
+    ID = 1:nrow(survive_data)
+  )
+p <- ggplot(plot_dat, aes(color=date_type)) +
+  geom_segment(aes(x=0,xend=days_surv,y=ID, yend=ID))+
+  labs(y="Participant ID", x="Days Survived Passed Diagnosis or Surgery")
+p
+
+```
+
+# Analysis
+
+The specific analysis data depends on which OTU is used as a control variable.
+
+```{r}
+
+
+M <- dat.16s.s %>% 
+  dplyr::group_by(OTU) %>%
+  dplyr::summarize(M=mean(Abundance, na.rm=T),
+            med = median(Abundance, na.rm = T),
+            q3 = quantile(Abundance, 0.6))
+M
+
+# create microbiome indicators
+dat_micro1 <- dat.16s.s %>% 
+  filter(OTU == "Fusobacterium nucleatum") %>%
+  mutate(Fuso_Abund = Abundance,
+         Fuso = ifelse(Abundance > 0, "high", "low")) %>%
+  dplyr::select(accession.number, Fuso, Fuso_Abund, tissue, gender, age, Race, female, BMI.n, BarrettsHist, sample_type, pres, tumor.stage) %>%
+  ungroup()%>%
+  group_by(accession.number) %>%
+  mutate(
+    n = n(),
+    flag = ifelse(n==1 | (n>1 & tissue == "T"), 1, 0)
+  ) %>%
+  filter(flag == 1)
+
+dat_micro2 <- dat.16s.s %>% 
+  filter(OTU == "Streptococcus spp.*") %>%
+  mutate(Strept_Abund = Abundance,
+         Strept = ifelse(Abundance > 21.6, "high", "low")) %>%
+  dplyr::select(accession.number, Strept,  Strept_Abund, tissue) %>%
+  group_by(accession.number) %>%
+  mutate(
+    n = n(),
+    flag = ifelse(n==1 | (n>1 & tissue == "T"), 1, 0)
+  ) %>%
+  filter(flag == 1)
+
+dat_micro3 <- dat.16s.s %>% 
+  filter(OTU == "Campylobacter spp.*") %>%
+  mutate(Campy_Abund = Abundance,
+         Campy = ifelse(Abundance > 0, "high", "low")) %>%
+  dplyr::select(accession.number, Campy, Campy_Abund, tissue) %>%
+  group_by(accession.number) %>%
+  mutate(
+    n = n(),
+    flag = ifelse(n==1 | (n>1 & tissue == "T"), 1, 0)
+  ) %>%
+  filter(flag == 1)
+
+dat_micro4 <- dat.16s.s %>% 
+  filter(OTU == "Prevotella spp.") %>%
+  mutate(Prevo_Abund=Abundance,
+         Prevo = ifelse(Abundance > 1.2, "high", "low")) %>%
+  dplyr::select(accession.number, Prevo, Prevo_Abund, tissue) %>%
+  group_by(accession.number) %>%
+  mutate(
+    n = n(),
+    flag = ifelse(n==1 | (n>1 & tissue == "T"), 1, 0)
+  ) %>%
+  filter(flag == 1)
+# check for microbiome data
+# IF multiple samples from same person, use the cancer sample
+dat_micro <- full_join(dat_micro1[,-1],dat_micro2[,2:4])
+dat_micro <- full_join(dat_micro,dat_micro3[,2:4])
+dat_micro <- full_join(dat_micro,dat_micro4[,2:4])
+
+# subset survival dataset 
+#   => only those with surg date
+sub_dat_survival <- survive_data %>%
+  filter(date_type == "DateOfSurgery") %>%
+  mutate(
+    time0 = as.Date(date_start),
+    time_odc=as.Date(`DOD or censor`),
+    ID = as.numeric(as.factor(Accession)),
+    etime = as.numeric(days_surv)) %>% 
+  #ceiling(as.numeric(days_surv)/30)) %>%
+  dplyr::select(Accession, ID, time0, time_odc, etime, days_surv, status_observed)
+
+# joining survival & 16s data
+full_dat <- inner_join(sub_dat_survival, dat_micro, by=c("Accession"="accession.number")) %>%
+  mutate(
+    Fuso = factor(Fuso, levels=c("low", "high"), ordered=T),
+    Strept = factor(Strept, levels=c("low", "high"), ordered=T),
+    Campy = factor(Campy, levels=c("low", "high"), ordered=T),
+    Prevo = factor(Prevo, levels=c("low", "high"), ordered=T)
+  )
+
+
+
+```
+
+The following analysis is based on the overall survival probability regardless of microbiome information.
+
+```{r load-pack, message=FALSE, warning=FALSE, fig.dim=c(7,5), out.height="400px", out.width="100%"}
+
+library(rms)
+library(survival)
+library(survminer)
+library(lubridate)
+
+# Generate right-censored survival time variable
+full_dat$years <- as.numeric(full_dat$days_surv /365.25)
+units(full_dat$years) <- 'Year'
+full_dat$S <- Surv(full_dat$years , full_dat$status_observed)
+
+# fit null model
+f0 <- survfit(Surv(years, status_observed) ~ 1, data = full_dat)
+ggsurvplot(
+    fit = survfit(Surv(years, status_observed) ~ 1, data = full_dat), 
+    xlab = "Years", 
+    ylab = "Overall survival probability")
+f0 # overall survival time
+summary(f0, times = 1) # survival probability at 1 year
+
+summary(coxph(Surv(years, status_observed) ~ 1, data = full_dat))
+
+# getting the number at risk over years 0:10
+summary(f0, times = c(0:10))
+```
+
+The baseline model above for the survival data shows that time to death after surgery is typically between 1.21 to 3.14 years (median=1.82 years).
+The one year after surgery survival probability is .61 (95% CI, [.54, .76]).
+
+### Fuso
+
+```{r surv-fuso,fig.dim=c(7,5), out.height="400px", out.width="100%"}
+
+f1 <- survfit(Surv(years, status_observed) ~ 1 + Fuso, data = full_dat)
+
+ggsurvplot(
+    fit = survfit(
+      Surv(years, status_observed) ~ 1 + Fuso,
+      data = full_dat,robust = T
+    ),
+    conf.int = T, 
+    xlab = "Years", 
+    ylab = "Overall survival probability")
+f1# overall survival time
+summary(f1, times = 1) # survival probability at 1 year
+
+coxph(Surv(years, status_observed) ~ 1 + I(Fuso == "high"), data = full_dat)
+# getting the number at risk over years 0:10
+summary(f1, times = c(0:10))
+
+
+# compare Fuso groups
+survdiff(Surv(years, status_observed) ~ Fuso, data = full_dat)
+```
+
+The model above for the survival decomposed by Fuso abundance strata (low versus high; i.e., Fuso abundance greater than 0, the median) shows that time to death after surgery is between 1.24 to 5.06 years (median=2.09 years) for low abundance.
+The one year after surgery survival probability is .67 (95% CI, [.55, .81]).
+For individuals with high Fuso abundance, the time to death after surgery is  between 0.90 to 3.15 years (median=1.61 years) for high abundance.
+The one year after surgery survival probability is .60 (95% CI, [.45, .80]).
+
+The LRT comparing the model with Fuso to the baseline model was not significant ($G^2(1)=0.2, p=0.60$). Giving evidence that Fuso (presence (high) versus absence (low)) did not significantly differentiate survival time in this sample.
+
+#### With Covariates
+
+```{r surv-fuso-cov}
+
+f1.1 <- survfit(Surv(years, status_observed) ~ 1 + Fuso + I(age > median(age) )+ female, data = full_dat)
+f1.1# overall survival time
+summary(f1.1, times = 1, extend=T) # survival probability at 1 year
+summary(coxph(Surv(years, status_observed) ~ 1 + I(Fuso == "high") + I(age > median(age)) + female, data = full_dat))
+
+```
+
+
+### Strept
+
+```{r surv-strep, fig.dim=c(7,5), out.height="400px", out.width="100%"}
+
+
+f2 <- survfit(Surv(years, status_observed) ~ 1 + Strept, data = full_dat)
+
+ggsurvplot(
+    fit = survfit(
+      Surv(years, status_observed) ~ 1 + Strept,
+      data = full_dat,robust = T
+    ),
+    conf.int = T, 
+    xlab = "Years", 
+    ylab = "Overall survival probability")
+
+f2# overall survival time
+summary(f2, times = 1) # survival probability at 1 year
+
+summary(coxph(Surv(years, status_observed) ~ I(Strept == "high"), data = full_dat))
+
+# getting the number at risk over years 0:10
+summary(f2, times = c(0:10))
+
+# compare groups
+survdiff(Surv(years, status_observed) ~ Strept, data = full_dat)
+```
+
+The model above for the survival decomposed by Strepto abundance strata (low versus high; i.e., Strepto abundance greater than 0, the median) shows that time to death after surgery is between 0.88 to 5.06 years (median=1.78 years) for low abundance.
+The one year after surgery survival probability is .60 (95% CI, [.46, .79]).
+For individuals with high Strepto abundance, the time to death after surgery is  between 1.15 to 3.99 years (median=1.85 years) for high abundance.
+The one year after surgery survival probability is .67 (95% CI, [.55, .83]).
+
+The LRT comparing the model with Strepto to the baseline model was not significant ($G^2(1)=0.3, p=0.60$). Giving evidence that Strepto (high (greater than 21.6) versus low) did not significantly differentiate survival time in this sample.
+
+#### With covariates
+
+```{r surv-strepto-cov}
+
+f2.1 <- survfit(Surv(years, status_observed) ~ 1 + Strept + I(age > median(age) )+ female, data = full_dat)
+f2.1# overall survival time
+summary(f2.1, times = 1, extend=T) # survival probability at 1 year
+summary(coxph(Surv(years, status_observed) ~ 1 + I(Strept == "high") + I(age > median(age)) + female, data = full_dat))
+
+```
+
+
+### Campy
+
+```{r surv-camp, fig.dim=c(7,5), out.height="400px", out.width="100%"}
+
+f3 <- survfit(Surv(years, status_observed) ~ 1 + Campy, data = full_dat)
+
+ggsurvplot(
+    fit = survfit(
+      Surv(years, status_observed) ~ 1 + Campy,
+      data = full_dat,robust = T
+    ),
+    conf.int = T, 
+    xlab = "Years", 
+    ylab = "Overall survival probability")
+
+f3# overall survival time
+summary(f3, times = 1) # survival probability at 1 year
+
+summary(coxph(Surv(years, status_observed) ~ 1 + I(Campy == "high"), data = full_dat))
+
+# getting the number at risk over years 0:10
+summary(f3, times = c(0:10))
+
+# compare groups
+survdiff(Surv(years, status_observed) ~ Campy, data = full_dat)
+```
+
+The model above for the survival decomposed by Campy abundance strata (low versus high; i.e., Campy abundance greater than 0, the median) shows that time to death after surgery is between 1.44 to 3.17 years (median=1.91 years) for low abundance.
+The one year after surgery survival probability is .67 (95% CI, [.56, .79]).
+For individuals with high Campy abundance, the time to death after surgery is  between 0.72 to 5.06 years (median=1.14 years) for high abundance.
+The one year after surgery survival probability is .53 (95% CI, [.33, .86]).
+
+The LRT comparing the model with Campy to the baseline model was not significant ($G^2(1)=0.8, p=0.40$). Giving evidence that Campy (presence (high) versus absence (low)) did not significantly differentiate survival time in this sample.
+
+#### With Covariates
+
+```{r surv-campy-cov}
+
+f3.1 <- survfit(Surv(years, status_observed) ~ 1 + Campy + I(age > median(age) )+ female, data = full_dat)
+f3.1# overall survival time
+summary(f3.1, times = 1, extend=T) # survival probability at 1 year
+summary(coxph(Surv(years, status_observed) ~ 1 + I(Campy == "high") + I(age > median(age)) + female, data = full_dat))
+
+```
+
+
+### Prevo
+
+```{r surv-prev, fig.dim=c(7,5), out.height="400px", out.width="100%"}
+
+f4 <- survfit(Surv(years, status_observed) ~ 1 + Prevo, data = full_dat)
+
+ggsurvplot(
+    fit = survfit(
+      Surv(years, status_observed) ~ 1 + Prevo,
+      data = full_dat,robust = T
+    ),
+    conf.int = T, 
+    xlab = "Years", 
+    ylab = "Overall survival probability")
+
+f4# overall survival time
+summary(f4, times = 1) # survival probability at 1 year
+
+summary(coxph(Surv(years, status_observed) ~ I(Prevo == "high"), data = full_dat))
+
+# getting the number at risk over years 0:10
+summary(f4, times = c(0:10))
+
+# compare groups
+survdiff(Surv(years, status_observed) ~ Prevo, data = full_dat)
+```
+
+The model above for the survival decomposed by Prevo abundance strata (low versus high; i.e., Prevo abundance greater than 1.2, the median) shows that time to death after surgery is between 1.75 to 5.06 years (median=3.02 years) for low abundance.
+The one year after surgery survival probability is .78 (95% CI, [.65, .91]).
+For individuals with high Prevo abundance, the time to death after surgery is  between 0.70 to 2.83 years (median=0.95 years) for high abundance.
+The one year after surgery survival probability is .47 (95% CI, [.33, .67]).
+
+The LRT comparing the model with Prevo to the baseline model was not significant ($G^2(1)=2.0, p=0.20$). Giving evidence that Prevo (presence (high) versus absence (low)) did not significantly differentiate survival time in this sample.
+
+#### With covariates
+
+```{r surv-prevo-cov}
+
+f4.1 <- survfit(Surv(years, status_observed) ~ 1 + Prevo + I(age > median(age) )+ female, data = full_dat)
+f4.1# overall survival time
+summary(f4.1, times = 1, extend=T) # survival probability at 1 year
+summary(coxph(Surv(years, status_observed) ~ 1 + I(Prevo == "high") + I(age > median(age)) + female, data = full_dat))
+
+```
+
+
+## Combining Microbiome 
+
+```{r surv-combined, fig.dim=c(7,5), out.height="400px", out.width="100%"}
+
+f5 <- survfit(Surv(years, status_observed) ~ 1 + Fuso + Strept + Campy + Prevo, data = full_dat)
+
+ggsurvplot(
+    fit = survfit(
+      Surv(years, status_observed) ~ 1 + Fuso + Strept + Campy + Prevo,
+      data = full_dat,robust = T
+    ),
+    conf.int = T, 
+    xlab = "Years", 
+    ylab = "Overall survival probability")
+
+f5# overall survival time
+summary(f5, times = 1, extend=T) # survival probability at 1 year
+
+summary(coxph(Surv(years, status_observed) ~ I(Fuso == "high")+I(Strept == "high")+I(Campy == "high")+I(Prevo == "high"), data = full_dat))
+
+```
+
+The model above for the survival decomposed by Prevo abundance strata (low versus high; i.e., Prevo abundance greater than 1.2, the median) shows that time to death after surgery is between 1.75 to 5.06 years (median=3.02 years) for low abundance.
+The one year after surgery survival probability is .78 (95% CI, [.65, .91]).
+For individuals with high Prevo abundance, the time to death after surgery is  between 0.70 to 2.83 years (median=0.95 years) for high abundance.
+The one year after surgery survival probability is .47 (95% CI, [.33, .67]).
+
+The LRT comparing the model with Prevo to the baseline model was not significant ($G^2(1)=2.0, p=0.20$). Giving evidence that Prevo (presence (high) versus absence (low)) did not significantly differentiate survival time in this sample.
+
+#### With covariates
+
+```{r surv-combined-cov}
+
+f5.1 <- survfit(Surv(years, status_observed) ~ 1 + Fuso + Strept + Campy + Prevo + I(age > median(age) )+ female, data = full_dat)
+f5.1# overall survival time
+summary(f5.1, times = 1, extend=T) # survival probability at 1 year
+summary(coxph(Surv(years, status_observed) ~ 1 + I(Fuso == "high")+I(Strept == "high")+I(Campy == "high")+I(Prevo == "high") + I(age > median(age)) + female, data = full_dat))
+
+```
+

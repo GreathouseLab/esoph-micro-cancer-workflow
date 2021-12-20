@@ -133,7 +133,6 @@ mydata <- mydata %>%
 
 ## Abundance
 
-I needed to change from relative abundance to abundance due to so many individuals having 0 counts for all descriptions.
 
 ```{r ec-ra}
 

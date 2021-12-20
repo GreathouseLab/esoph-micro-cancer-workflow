@@ -1,5 +1,5 @@
 ---
-title: "Waterfall Plots"
+title: "TCGA Alpha Diversity"
 output:
   workflowr::wflow_html:
     toc: true
@@ -237,106 +237,16 @@ mydata <- full_join(mydata, dat.wgs[,cls])
 ```
 
 
-# Waterfall Plots
-
+# TCGA-RNAseq
 
 ```{r}
 
+phylo.data.tcga.RNAseq@otu_table@.Data[is.na(phylo.data.tcga.RNAseq@otu_table@.Data)] <- 0
 
-plot.dat <- mydata %>%
-  dplyr::group_by(OTU, source, tumor.cat) %>%
-  dplyr::mutate(
-    Abundance = ifelse(is.na(Abundance), 0, Abundance),
-    ordered.x = order(Abundance, decreasing = T,
-                      na.last = T)
-  ) %>%
-  dplyr::ungroup(tumor.cat) %>%
-  dplyr::mutate(
-    ordered.x = ifelse(tumor == 0, ordered.x+sum(tumor), ordered.x),
-    
-  )
-```
-
-## Fusobacterium nucleatum
-
-```{r fuso, out.width="100%", out.height="200%"}
-
-p <-  plot.dat %>%
-  filter(OTU == "Fusobacterium nucleatum")%>%
-  ggplot(aes(x = ordered.x,
-                 y = Abundance,
-                 group = tumor.cat,
-                 color = tumor.cat))+
-  geom_point() + 
-  geom_segment(aes(x=ordered.x,
-                   y=0,
-                   xend=ordered.x,
-                   yend=Abundance))+
-  scale_color_manual(values = c("Non-Tumor"="black", "Tumor"="blue"), name = NULL) +
-  facet_wrap(.~source, scales="free_x")
-p
+plot_richness(
+  phylo.data.tcga.RNAseq,
+  x="SampleType_Level2",
+  measures=c("Shannon"))
 
 ```
 
-## Streptococcus spp.
-
-```{r stre, out.width="100%", out.height="200%"}
-
-p <-  plot.dat %>%
-  filter(OTU == "Streptococcus spp.")%>%
-  ggplot(aes(x = ordered.x,
-                 y = Abundance,
-                 group = tumor.cat,
-                 color = tumor.cat))+
-  geom_point() + 
-  geom_segment(aes(x=ordered.x,
-                   y=0,
-                   xend=ordered.x,
-                   yend=Abundance))+
-  scale_color_manual(values = c("Non-Tumor"="black", "Tumor"="blue"), name = NULL) +
-  facet_wrap(.~source, scales="free_x")
-p
-
-```
-
-## Campylobacter concisus
-
-```{r camp, out.width="100%", out.height="200%"}
-
-p <-  plot.dat %>%
-  filter(OTU == "Campylobacter concisus")%>%
-  ggplot(aes(x = ordered.x,
-                 y = Abundance,
-                 group = tumor.cat,
-                 color = tumor.cat))+
-  geom_point() + 
-  geom_segment(aes(x=ordered.x,
-                   y=0,
-                   xend=ordered.x,
-                   yend=Abundance))+
-  scale_color_manual(values = c("Non-Tumor"="black", "Tumor"="blue"), name = NULL) +
-  facet_wrap(.~source, scales="free_x")
-p
-
-```
-
-## Prevotella melaninogenica
-
-```{r prev, out.width="100%", out.height="200%"}
-
-p <-  plot.dat %>%
-  filter(OTU == "Prevotella melaninogenica")%>%
-  ggplot(aes(x = ordered.x,
-                 y = Abundance,
-                 group = tumor.cat,
-                 color = tumor.cat))+
-  geom_point() + 
-  geom_segment(aes(x=ordered.x,
-                   y=0,
-                   xend=ordered.x,
-                   yend=Abundance))+
-  scale_color_manual(values = c("Non-Tumor"="black", "Tumor"="blue"), name = NULL) +
-  facet_wrap(.~source, scales="free_x")
-p
-
-```

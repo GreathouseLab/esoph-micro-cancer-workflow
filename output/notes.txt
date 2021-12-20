@@ -1,0 +1,17 @@
+ColoCare Study
+
+microbiome data
+@ baseline
+@ 6months
+
+Diet Data
+@ 6months
+
+Clinical Data
+Survival Data
+Reoccurrance
+
+Question:
+
+
+PAM - k-median clustering
