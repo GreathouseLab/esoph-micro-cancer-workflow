@@ -176,12 +176,16 @@ dat_micro <- full_join(dat_micro,dat_micro4[,2:4])
 sub_dat_survival <- survive_data %>%
   filter(date_type == "DateOfSurgery") %>%
   mutate(
+    # revise "survival" to 5 years"
+    # 0 = survived, 1 = died
+    status_observed_5yr = ifelse(as.numeric(days_surv) > 1825, 0, 1),
     time0 = as.Date(date_start),
     time_odc=as.Date(`DOD or censor`),
     ID = as.numeric(as.factor(Accession)),
-    etime = as.numeric(days_surv)) %>% 
-  #ceiling(as.numeric(days_surv)/30)) %>%
-  dplyr::select(Accession, ID, time0, time_odc, etime, days_surv, status_observed)
+    etime = as.numeric(days_surv),
+    etime_5yr = ifelse(as.numeric(days_surv) > 1825, 1825, as.numeric(days_surv))) %>% 
+  dplyr::select(Accession, ID, time0, time_odc, etime,etime_5yr, days_surv, status_observed, status_observed_5yr)
+
 
 # joining survival & 16s data
 full_dat <- inner_join(sub_dat_survival, dat_micro, by=c("Accession"="accession.number")) %>%
@@ -189,7 +193,9 @@ full_dat <- inner_join(sub_dat_survival, dat_micro, by=c("Accession"="accession.
     Fuso = factor(Fuso, levels=c("low", "high"), ordered=T),
     Strept = factor(Strept, levels=c("low", "high"), ordered=T),
     Campy = factor(Campy, levels=c("low", "high"), ordered=T),
-    Prevo = factor(Prevo, levels=c("low", "high"), ordered=T)
+    Prevo = factor(Prevo, levels=c("low", "high"), ordered=T),
+    all_low = ifelse(Fuso == "low" & Strept == "low" & Campy == "low" & Prevo == "low", 1, 0),
+    all_high = ifelse(Fuso == "high" & Strept == "high" & Campy == "high" & Prevo == "high", 1, 0)
   )
 
 
@@ -223,6 +229,7 @@ summary(coxph(Surv(years, status_observed) ~ 1, data = full_dat))
 
 # getting the number at risk over years 0:10
 summary(f0, times = c(0:10))
+
 ```
 
 The baseline model above for the survival data shows that time to death after surgery is typically between 1.21 to 3.14 years (median=1.82 years).
@@ -412,17 +419,36 @@ summary(coxph(Surv(years, status_observed) ~ 1 + I(Prevo == "high") + I(age > me
 ```
 
 
-## Combining Microbiome 
+## Combining Microbiome
+
+
+```{r}
+
+## create all high vs. all low status for microbiome
+full_dat <- full_dat %>%
+  mutate(
+    micro_high = ifelse(Fuso == "high" & Strept == "high" & Campy == "high" & Prevo == "high", 1, 0),
+    micro_low = ifelse(Fuso == "low" & Strept == "low" & Campy == "low" & Prevo == "low", 1, 0)
+  )
+
+table(full_dat$micro_high)
+table(full_dat$micro_low)
+
+
+```
+
+
+So only 2 cases were high on all four microbiome. We will not be able to get much useful information from this. 
+So, I only used the low micro flag.
+
 
 ```{r surv-combined, fig.dim=c(7,5), out.height="400px", out.width="100%"}
 
-f5 <- survfit(Surv(years, status_observed) ~ 1 + Fuso + Strept + Campy + Prevo, data = full_dat)
+
+f5 <- survfit(Surv(years, status_observed) ~ 1 + micro_low, data = full_dat)
 
 ggsurvplot(
-    fit = survfit(
-      Surv(years, status_observed) ~ 1 + Fuso + Strept + Campy + Prevo,
-      data = full_dat,robust = T
-    ),
+    fit = f5,
     conf.int = T, 
     xlab = "Years", 
     ylab = "Overall survival probability")
@@ -430,8 +456,211 @@ ggsurvplot(
 f5# overall survival time
 summary(f5, times = 1, extend=T) # survival probability at 1 year
 
-summary(coxph(Surv(years, status_observed) ~ I(Fuso == "high")+I(Strept == "high")+I(Campy == "high")+I(Prevo == "high"), data = full_dat))
+summary(coxph(Surv(years, status_observed) ~  micro_low, data = full_dat))
 
+```
+
+
+
+#### With covariates
+
+```{r surv-combined-cov}
+
+f5.1 <- survfit(Surv(years, status_observed) ~ 1 +  micro_low + I(age > median(age) )+ female, data = full_dat)
+f5.1# overall survival time
+summary(f5.1, times = 1, extend=T) # survival probability at 1 year
+summary(coxph(Surv(years, status_observed) ~ 1 +  micro_low + I(age > median(age)) + female, data = full_dat))
+
+```
+
+
+# Rerun analyses with 5-year recode
+
+```{r base-5y, message=FALSE, warning=FALSE, fig.dim=c(7,5), out.height="400px", out.width="100%"}
+
+# Generate right-censored survival time variable
+full_dat$years_5y <- as.numeric(full_dat$etime_5yr /365.25)
+units(full_dat$years_5y) <- 'Year'
+full_dat$S_5yr <- Surv(full_dat$years_5y , full_dat$status_observed_5yr)
+
+
+# fit null model
+f0 <- survfit(S_5yr ~ 1, data = full_dat)
+ggsurvplot(
+    fit = f0, 
+    xlab = "Years", 
+    ylab = "Overall survival probability")
+f0 # overall survival time
+summary(f0, times = 1) # survival probability at 1 year
+
+summary(coxph(S_5yr ~ 1, data = full_dat))
+
+# getting the number at risk over years 0:10
+summary(f0,times = 0:5, extend=T)
+
+```
+
+The baseline model above for the survival data shows that time to death after surgery is typically between 1.21 to 3.14 years (median=1.82 years).
+The one year after surgery survival probability is .61 (95% CI, [.54, .76]).
+
+## Fuso
+
+```{r surv-fuso-5y,fig.dim=c(7,5), out.height="400px", out.width="100%"}
+
+f1 <- survfit(S_5yr ~ 1 + Fuso, data = full_dat)
+
+ggsurvplot(
+    fit = f1,
+    conf.int = T, 
+    xlab = "Years", 
+    ylab = "Overall survival probability")
+f1# overall survival time
+summary(f1, times = 1) # survival probability at 1 year
+
+coxph(S_5yr ~ 1 + I(Fuso == "high"), data = full_dat)
+# getting the number at risk over years 0:10
+summary(f1, times = c(0:10))
+
+
+# compare Fuso groups
+survdiff(S_5yr ~ Fuso, data = full_dat)
+```
+
+The model above for the survival decomposed by Fuso abundance strata (low versus high; i.e., Fuso abundance greater than 0, the median) shows that time to death after surgery is at least 1.24 years (median=2.09 years) for low abundance (note that the upper bound did not estimate indicating surival greater than 5 years).
+The one year after surgery survival probability is .67 (95% CI, [.55, .81]).
+For individuals with high Fuso abundance, the time to death after surgery is  between 0.90 to 3.15 years (median=1.61 years) for high abundance.
+The one year after surgery survival probability is .60 (95% CI, [.45, .80]).
+
+In the Cox Proportional Hazards model, high Fuso was not significantly associated with changes in the harzard ($est=0.4, se = 0.3, p = .20, exp(est)=1.4)$).
+The LRT comparing the model with Fuso to the baseline model was not significant ($G^2(1)=0.2, p=0.60$). Giving evidence that Fuso (presence (high) versus absence (low)) did not significantly differentiate survival time in this sample.
+
+### With Covariates
+
+```{r surv-fuso-cov-5y}
+
+f1.1 <- survfit(S_5yr ~ 1 + Fuso + I(age > median(age) )+ female, data = full_dat)
+f1.1# overall survival time
+summary(f1.1, times = 1, extend=T) # survival probability at 1 year
+summary(coxph(S_5yr ~ 1 + I(Fuso == "high") + I(age > median(age)) + female, data = full_dat))
+
+```
+
+
+## Strept
+
+```{r surv-strep-5y, fig.dim=c(7,5), out.height="400px", out.width="100%"}
+
+
+f2 <- survfit(S_5yr ~ 1 + Strept, data = full_dat)
+
+ggsurvplot(
+    fit = f2,
+    conf.int = T, 
+    xlab = "Years", 
+    ylab = "Overall survival probability")
+
+f2# overall survival time
+summary(f2, times = 1) # survival probability at 1 year
+
+summary(coxph(S_5yr ~ I(Strept == "high"), data = full_dat))
+
+# getting the number at risk over years 0:10
+summary(f2, times = c(0:10))
+
+# compare groups
+survdiff(S_5yr ~ Strept, data = full_dat)
+```
+
+The model above for the survival decomposed by Strepto abundance strata (low versus high; i.e., Strepto abundance greater than 0, the median) shows that time to death after surgery is between 0.88 to 5$+$ years (median=1.78 years) for low abundance.
+The one year after surgery survival probability is .60 (95% CI, [.46, .79]).
+For individuals with high Strepto abundance, the time to death after surgery is  between 1.15 to 3.99 years (median=1.85 years) for high abundance.
+The one year after surgery survival probability is .67 (95% CI, [.55, .83]).
+
+The LRT comparing the model with Strepto to the baseline model was not significant ($G^2(1)=0.3, p=0.60$). Giving evidence that Strepto (high (greater than 21.6) versus low) did not significantly differentiate survival time in this sample.
+
+### With covariates
+
+```{r surv-strepto-cov-5y}
+
+f2.1 <- survfit(S_5yr ~ 1 + Strept + I(age > median(age) )+ female, data = full_dat)
+f2.1# overall survival time
+summary(f2.1, times = 1, extend=T) # survival probability at 1 year
+summary(coxph(S_5yr ~ 1 + I(Strept == "high") + I(age > median(age)) + female, data = full_dat))
+
+```
+
+
+## Campy
+
+```{r surv-camp-5y, fig.dim=c(7,5), out.height="400px", out.width="100%"}
+
+f3 <- survfit(S_5yr ~ 1 + Campy, data = full_dat)
+
+ggsurvplot(
+    fit = survfit(
+      S_5yr ~ 1 + Campy,
+      data = full_dat,robust = T
+    ),
+    conf.int = T, 
+    xlab = "Years", 
+    ylab = "Overall survival probability")
+
+f3# overall survival time
+summary(f3, times = 1) # survival probability at 1 year
+
+summary(coxph(S_5yr ~ 1 + I(Campy == "high"), data = full_dat))
+
+# getting the number at risk over years 0:10
+summary(f3, times = c(0:10))
+
+# compare groups
+survdiff(S_5yr ~ Campy, data = full_dat)
+```
+
+The model above for the survival decomposed by Campy abundance strata (low versus high; i.e., Campy abundance greater than 0, the median) shows that time to death after surgery is between 1.44 to 3.17 years (median=1.91 years) for low abundance.
+The one year after surgery survival probability is .67 (95% CI, [.56, .79]).
+For individuals with high Campy abundance, the time to death after surgery is  between 0.72 to 5.06 years (median=1.14 years) for high abundance.
+The one year after surgery survival probability is .53 (95% CI, [.33, .86]).
+
+The LRT comparing the model with Campy to the baseline model was not significant ($G^2(1)=0.8, p=0.40$). Giving evidence that Campy (presence (high) versus absence (low)) did not significantly differentiate survival time in this sample.
+
+### With Covariates
+
+```{r surv-campy-cov-5y}
+
+f3.1 <- survfit(S_5yr ~ 1 + Campy + I(age > median(age) )+ female, data = full_dat)
+f3.1# overall survival time
+summary(f3.1, times = 1, extend=T) # survival probability at 1 year
+summary(coxph(S_5yr ~ 1 + I(Campy == "high") + I(age > median(age)) + female, data = full_dat))
+
+```
+
+
+## Prevo
+
+```{r surv-prev-5y, fig.dim=c(7,5), out.height="400px", out.width="100%"}
+
+f4 <- survfit(S_5yr ~ 1 + Prevo, data = full_dat)
+
+ggsurvplot(
+    fit = survfit(
+      S_5yr ~ 1 + Prevo,
+      data = full_dat,robust = T
+    ),
+    conf.int = T, 
+    xlab = "Years", 
+    ylab = "Overall survival probability")
+
+f4# overall survival time
+summary(f4, times = 1) # survival probability at 1 year
+
+summary(coxph(S_5yr ~ I(Prevo == "high"), data = full_dat))
+
+# getting the number at risk over years 0:10
+summary(f4, times = c(0:10))
+
+# compare groups
+survdiff(S_5yr ~ Prevo, data = full_dat)
 ```
 
 The model above for the survival decomposed by Prevo abundance strata (low versus high; i.e., Prevo abundance greater than 1.2, the median) shows that time to death after surgery is between 1.75 to 5.06 years (median=3.02 years) for low abundance.
@@ -441,14 +670,58 @@ The one year after surgery survival probability is .47 (95% CI, [.33, .67]).
 
 The LRT comparing the model with Prevo to the baseline model was not significant ($G^2(1)=2.0, p=0.20$). Giving evidence that Prevo (presence (high) versus absence (low)) did not significantly differentiate survival time in this sample.
 
+### With covariates
+
+```{r surv-prevo-cov-5y}
+
+f4.1 <- survfit(S_5yr ~ 1 + Prevo + I(age > median(age) )+ female, data = full_dat)
+f4.1# overall survival time
+summary(f4.1, times = 1, extend=T) # survival probability at 1 year
+summary(coxph(S_5yr ~ 1 + I(Prevo == "high") + I(age > median(age)) + female, data = full_dat))
+
+```
+
+
+## Combining Microbiome 
+
+
+```{r surv-combined-low-5y, fig.dim=c(7,5), out.height="400px", out.width="100%"}
+
+f5 <- survfit(S_5yr ~ 1 + micro_low, data = full_dat)
+
+ggsurvplot(
+    fit = f5,
+    conf.int = T, 
+    xlab = "Years", 
+    ylab = "Overall survival probability")
+
+f5 # overall survival time
+summary(f5 , times = 1, extend=T) # survival probability at 1 year
+
+summary(coxph(S_5yr~ micro_low, data = full_dat))
+
+## get the risk events information
+summary(f5 , times = 0:5, extend=T) 
+
+```
+
+The model above for the survival decomposed by whether all microbiome (prevo, fuso, campy, strepto) were classified as ''low'' abundance compared to individuals with at least one high abundance level.
+For the group that is all low, the results shows that time to death after surgery is between 0.88 to 5$+$ years (median=2.91 years).
+The one year after surgery survival probability is .69 (95% CI, [.48, .99]).
+For individuals with at least one high abundance, the time to death after surgery is  between 1.15 to 3.14 years (median=1.75 years).
+The one year after surgery survival probability is .63 (95% CI, [.52, .76]).
+
+In the Cox Proportional Hazards model, being low on all microbiome was not significantly associated with changes in the harzard ($est=-0.11, se = 0.36, p = .75, exp(est)=0.89$).
+The LRT comparing the model with low abundance on all microbiome to the baseline model was not significant ($G^2(1)=0.1, p=0.80$). Giving evidence that Prevo (presence (high) versus absence (low)) did not significantly differentiate survival time in this sample.
+
 #### With covariates
 
-```{r surv-combined-cov}
+```{r surv-combined-cov-highlow}
 
-f5.1 <- survfit(Surv(years, status_observed) ~ 1 + Fuso + Strept + Campy + Prevo + I(age > median(age) )+ female, data = full_dat)
+f5.1 <- survfit(S_5yr ~ 1 + micro_low + I(age > median(age) )+ female, data = full_dat)
 f5.1# overall survival time
 summary(f5.1, times = 1, extend=T) # survival probability at 1 year
-summary(coxph(Surv(years, status_observed) ~ 1 + I(Fuso == "high")+I(Strept == "high")+I(Campy == "high")+I(Prevo == "high") + I(age > median(age)) + female, data = full_dat))
+summary(coxph(S_5yr ~ 1 + micro_low + I(age > median(age)) + female, data = full_dat))
 
 ```
 
