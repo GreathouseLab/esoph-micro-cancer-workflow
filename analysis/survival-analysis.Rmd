@@ -519,7 +519,7 @@ summary(f1, times = 1) # survival probability at 1 year
 
 coxph(S_5yr ~ 1 + I(Fuso == "high"), data = full_dat)
 # getting the number at risk over years 0:10
-summary(f1, times = c(0:10))
+summary(f1, times = c(0:5), extend=T)
 
 
 # compare Fuso groups
@@ -565,7 +565,7 @@ summary(f2, times = 1) # survival probability at 1 year
 summary(coxph(S_5yr ~ I(Strept == "high"), data = full_dat))
 
 # getting the number at risk over years 0:10
-summary(f2, times = c(0:10))
+summary(f2, times = c(0:5), extend=T)
 
 # compare groups
 survdiff(S_5yr ~ Strept, data = full_dat)
@@ -611,7 +611,7 @@ summary(f3, times = 1) # survival probability at 1 year
 summary(coxph(S_5yr ~ 1 + I(Campy == "high"), data = full_dat))
 
 # getting the number at risk over years 0:10
-summary(f3, times = c(0:10))
+summary(f3, times = c(0:5), extend=T)
 
 # compare groups
 survdiff(S_5yr ~ Campy, data = full_dat)
@@ -657,7 +657,7 @@ summary(f4, times = 1) # survival probability at 1 year
 summary(coxph(S_5yr ~ I(Prevo == "high"), data = full_dat))
 
 # getting the number at risk over years 0:10
-summary(f4, times = c(0:10))
+summary(f4, times = c(0:5), extend=T)
 
 # compare groups
 survdiff(S_5yr ~ Prevo, data = full_dat)

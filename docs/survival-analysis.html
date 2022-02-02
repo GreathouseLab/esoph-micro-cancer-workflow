@@ -468,16 +468,16 @@ This reproducible <a href="http://rmarkdown.rstudio.com">R Markdown</a> analysis
 <div class="panel panel-default">
 <div class="panel-heading">
 <p class="panel-title">
-<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongRepositoryversionstrongahrefhttpsgithubcomGreathouseLabesophmicrocancerworkflowtree9b41498052cc058c957b519bd29b7f126ec78a4etargetblank9b41498a"> <span class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span> <strong>Repository version:</strong> <a href="https://github.com/GreathouseLab/esoph-micro-cancer-workflow/tree/9b41498052cc058c957b519bd29b7f126ec78a4e" target="_blank">9b41498</a> </a>
+<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongRepositoryversionstrongahrefhttpsgithubcomGreathouseLabesophmicrocancerworkflowtree0035c59179b451bdaacd89378be1768ab7b60ec1targetblank0035c59a"> <span class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span> <strong>Repository version:</strong> <a href="https://github.com/GreathouseLab/esoph-micro-cancer-workflow/tree/0035c59179b451bdaacd89378be1768ab7b60ec1" target="_blank">0035c59</a> </a>
 </p>
 </div>
-<div id="strongRepositoryversionstrongahrefhttpsgithubcomGreathouseLabesophmicrocancerworkflowtree9b41498052cc058c957b519bd29b7f126ec78a4etargetblank9b41498a" class="panel-collapse collapse">
+<div id="strongRepositoryversionstrongahrefhttpsgithubcomGreathouseLabesophmicrocancerworkflowtree0035c59179b451bdaacd89378be1768ab7b60ec1targetblank0035c59a" class="panel-collapse collapse">
 <div class="panel-body">
 <p>
 Great! You are using Git for version control. Tracking code development and connecting the code version to the results is critical for reproducibility.
 </p>
 <p>
-The results in this page were generated with repository version <a href="https://github.com/GreathouseLab/esoph-micro-cancer-workflow/tree/9b41498052cc058c957b519bd29b7f126ec78a4e" target="_blank">9b41498</a>. See the <em>Past versions</em> tab to see a history of the changes made to the R Markdown and HTML files.
+The results in this page were generated with repository version <a href="https://github.com/GreathouseLab/esoph-micro-cancer-workflow/tree/0035c59179b451bdaacd89378be1768ab7b60ec1" target="_blank">0035c59</a>. See the <em>Past versions</em> tab to see a history of the changes made to the R Markdown and HTML files.
 </p>
 <p>
 Note that you need to be careful to ensure that all relevant files for the analysis have been committed to Git prior to generating the results (you can use <code>wflow_publish</code> or <code>wflow_git_commit</code>). workflowr only checks the R Markdown file, but you know if there are other scripts or data files that it depends on. Below is the status of the Git repository when the results were generated:
@@ -528,6 +528,40 @@ Message
 </tr>
 </thead>
 <tbody>
+<tr>
+<td>
+Rmd
+</td>
+<td>
+<a href="https://github.com/GreathouseLab/esoph-micro-cancer-workflow/blob/0035c59179b451bdaacd89378be1768ab7b60ec1/analysis/survival-analysis.Rmd" target="_blank">0035c59</a>
+</td>
+<td>
+noah-padgett
+</td>
+<td>
+2022-02-02
+</td>
+<td>
+updated survival analysis
+</td>
+</tr>
+<tr>
+<td>
+html
+</td>
+<td>
+<a href="https://rawcdn.githack.com/GreathouseLab/esoph-micro-cancer-workflow/0035c59179b451bdaacd89378be1768ab7b60ec1/docs/survival-analysis.html" target="_blank">0035c59</a>
+</td>
+<td>
+noah-padgett
+</td>
+<td>
+2022-02-02
+</td>
+<td>
+updated survival analysis
+</td>
+</tr>
 <tr>
 <td>
 Rmd
@@ -1820,7 +1854,7 @@ I(Fuso == &quot;high&quot;)TRUE  0.4       1.4      0.3 1 0.2
 Likelihood ratio test=2  on 1 df, p=0.2
 n= 78, number of events= 56 </code></pre>
 <pre class="r"><code># getting the number at risk over years 0:10
-summary(f1, times = c(0:10))</code></pre>
+summary(f1, times = c(0:5), extend=T)</code></pre>
 <pre><code>Call: survfit(formula = S_5yr ~ 1 + Fuso, data = full_dat)
 
                 Fuso=low 
@@ -1830,14 +1864,16 @@ summary(f1, times = c(0:10))</code></pre>
     2     24       8    0.500  0.0722        0.377        0.663
     3     21       3    0.437  0.0716        0.317        0.603
     4     17       4    0.354  0.0690        0.242        0.519
+    5      0       0    0.354  0.0690        0.242        0.519
 
                 Fuso=high 
  time n.risk n.event survival std.err lower 95% CI upper 95% CI
-    0     30       0    1.000  0.0000        1.000        1.000
-    1     18      12    0.600  0.0894        0.448        0.804
-    2     13       5    0.433  0.0905        0.288        0.652
-    3     11       2    0.367  0.0880        0.229        0.587
-    4      7       4    0.233  0.0772        0.122        0.446</code></pre>
+    0     30       0    1.000  0.0000       1.0000        1.000
+    1     18      12    0.600  0.0894       0.4480        0.804
+    2     13       5    0.433  0.0905       0.2878        0.652
+    3     11       2    0.367  0.0880       0.2291        0.587
+    4      7       4    0.233  0.0772       0.1220        0.446
+    5      0       2    0.167  0.0680       0.0749        0.371</code></pre>
 <pre class="r"><code># compare Fuso groups
 survdiff(S_5yr ~ Fuso, data = full_dat)</code></pre>
 <pre><code>Call:
@@ -1998,7 +2034,7 @@ Likelihood ratio test= 0.03  on 1 df,   p=0.9
 Wald test            = 0.03  on 1 df,   p=0.9
 Score (logrank) test = 0.03  on 1 df,   p=0.9</code></pre>
 <pre class="r"><code># getting the number at risk over years 0:10
-summary(f2, times = c(0:10))</code></pre>
+summary(f2, times = c(0:5), extend=T)</code></pre>
 <pre><code>Call: survfit(formula = S_5yr ~ 1 + Strept, data = full_dat)
 
                 Strept=low 
@@ -2008,6 +2044,7 @@ summary(f2, times = c(0:10))</code></pre>
     2     17       4    0.486  0.0845        0.345        0.683
     3     15       2    0.429  0.0836        0.292        0.628
     4     11       4    0.314  0.0785        0.193        0.513
+    5      0       0    0.314  0.0785        0.193        0.513
 
                 Strept=high 
  time n.risk n.event survival std.err lower 95% CI upper 95% CI
@@ -2015,7 +2052,8 @@ summary(f2, times = c(0:10))</code></pre>
     1     29      14    0.674  0.0715        0.548        0.830
     2     20       9    0.465  0.0761        0.338        0.641
     3     17       3    0.395  0.0746        0.273        0.572
-    4     13       4    0.302  0.0700        0.192        0.476</code></pre>
+    4     13       4    0.302  0.0700        0.192        0.476
+    5      0       2    0.256  0.0665        0.154        0.426</code></pre>
 <pre class="r"><code># compare groups
 survdiff(S_5yr ~ Strept, data = full_dat)</code></pre>
 <pre><code>Call:
@@ -2179,7 +2217,7 @@ Likelihood ratio test= 0.72  on 1 df,   p=0.4
 Wald test            = 0.76  on 1 df,   p=0.4
 Score (logrank) test = 0.76  on 1 df,   p=0.4</code></pre>
 <pre class="r"><code># getting the number at risk over years 0:10
-summary(f3, times = c(0:10))</code></pre>
+summary(f3, times = c(0:5), extend=T)</code></pre>
 <pre><code>Call: survfit(formula = S_5yr ~ 1 + Campy, data = full_dat)
 
                 Campy=low 
@@ -2189,14 +2227,16 @@ summary(f3, times = c(0:10))</code></pre>
     2     31      11    0.492  0.0630        0.383        0.632
     3     27       4    0.429  0.0623        0.322        0.570
     4     20       7    0.317  0.0586        0.221        0.456
+    5      0       1    0.302  0.0578        0.207        0.439
 
                 Campy=high 
  time n.risk n.event survival std.err lower 95% CI upper 95% CI
-    0     15       0    1.000   0.000        1.000        1.000
-    1      8       7    0.533   0.129        0.332        0.856
-    2      6       2    0.400   0.126        0.215        0.743
-    3      5       1    0.333   0.122        0.163        0.682
-    4      4       1    0.267   0.114        0.115        0.617</code></pre>
+    0     15       0    1.000   0.000       1.0000        1.000
+    1      8       7    0.533   0.129       0.3322        0.856
+    2      6       2    0.400   0.126       0.2152        0.743
+    3      5       1    0.333   0.122       0.1630        0.682
+    4      4       1    0.267   0.114       0.1152        0.617
+    5      0       1    0.200   0.103       0.0727        0.550</code></pre>
 <pre class="r"><code># compare groups
 survdiff(S_5yr ~ Campy, data = full_dat)</code></pre>
 <pre><code>Call:
@@ -2354,7 +2394,7 @@ Likelihood ratio test= 3.99  on 1 df,   p=0.05
 Wald test            = 4.06  on 1 df,   p=0.04
 Score (logrank) test = 4.16  on 1 df,   p=0.04</code></pre>
 <pre class="r"><code># getting the number at risk over years 0:10
-summary(f4, times = c(0:10))</code></pre>
+summary(f4, times = c(0:5), extend=T)</code></pre>
 <pre><code>Call: survfit(formula = S_5yr ~ 1 + Prevo, data = full_dat)
 
                 Prevo=low 
@@ -2364,6 +2404,7 @@ summary(f4, times = c(0:10))</code></pre>
     2     25       9    0.568  0.0747        0.439        0.735
     3     22       3    0.500  0.0754        0.372        0.672
     4     17       5    0.386  0.0734        0.266        0.561
+    5      0       2    0.341  0.0715        0.226        0.514
 
                 Prevo=high 
  time n.risk n.event survival std.err lower 95% CI upper 95% CI
@@ -2371,7 +2412,8 @@ summary(f4, times = c(0:10))</code></pre>
     1     16      18    0.471  0.0856        0.329        0.672
     2     12       4    0.353  0.0820        0.224        0.556
     3     10       2    0.294  0.0781        0.175        0.495
-    4      7       3    0.206  0.0693        0.106        0.398</code></pre>
+    4      7       3    0.206  0.0693        0.106        0.398
+    5      0       0    0.206  0.0693        0.106        0.398</code></pre>
 <pre class="r"><code># compare groups
 survdiff(S_5yr ~ Prevo, data = full_dat)</code></pre>
 <pre><code>Call:
