@@ -1,0 +1,1590 @@
+---
+title: "Species Barretts Relationships"
+output:
+  workflowr::wflow_html:
+    toc: true
+    code_folding: hide
+editor_options:
+  chunk_output_type: console
+---
+
+
+```{r data, include=FALSE, echo=FALSE, warning=F, error=F, message=F}
+# load packages
+source("code/load_packages.R")
+
+# get data
+source("code/get_cleaned_data.R")
+
+theme_set(theme_bw())
+# pal = "Sequential"
+# scale_colour_discrete <-  function(palname=pal, ...){
+#   scale_colour_brewer(palette=palname, ...)
+# }
+# scale_fill_discrete <-  function(palname=pal, ...){
+#   scale_fill_brewer(palette=palname, ...)
+# }
+
+knitr::opts_chunk$set(out.width = "225%", out.height = 10)
+
+
+# transform to relative abundances
+phylo.data.nci.umd <- transform_sample_counts(phylo.data.nci.umd, function(x){x / sum(x)})
+phylo.data.tcga.RNAseq <- transform_sample_counts(phylo.data.tcga.RNAseq, function(x){x / sum(x)})
+phylo.data.tcga.WGS <- transform_sample_counts(phylo.data.tcga.WGS, function(x){x / sum(x)})
+
+# melt data down for use
+dat.16s <- psmelt(phylo.data.nci.umd)
+dat.rna <- psmelt(phylo.data.tcga.RNAseq)
+dat.wgs <- psmelt(phylo.data.tcga.WGS)
+
+# fix otu formatting
+dat.rna$otu2 <- "a"
+dat.wgs$otu2 <- "a"
+i <- 1
+for(i in 1:nrow(dat.rna)){
+  dat.rna$otu2[i] <- str_split(dat.rna$OTU[i], ";")[[1]][7]
+}
+for(i in 1:nrow(dat.wgs)){
+  dat.wgs$otu2[i] <- str_split(dat.wgs$OTU[i], ";")[[1]][7]
+}
+
+# set up variables
+dat.16s$sample_type <- NA
+dat.16s$sample_type[dat.16s$tissue=="T" &
+                      dat.16s$Histology=="ADC" &
+                      dat.16s$Barretts. == "Y"] <- "16SrRNA Tumor (w/ Barrett's history)"
+dat.16s$sample_type[dat.16s$tissue=="BO" &
+                      dat.16s$Histology=="Barrets only"&
+                      dat.16s$Barretts. == "Y"] <-"16SrRNA Barrett's (BO)"
+dat.16s$sample_type[dat.16s$tissue=="N" &
+                      dat.16s$Histology=="ADC" &
+                      dat.16s$Barretts. == "Y"] <- "16SrRNA Non-tumor (w/ Barrett's history)"
+
+dat.rna$sample_type <- NA
+dat.rna$sample_type[(dat.rna$morphology=="8140/3" |
+                       dat.rna$morphology=="8480/3") &
+                       dat.rna$SampleType_Level2=="Tumor" &
+                       dat.rna$Barrett.s.Esophagus.Reported=="Yes"] <- "RNA-seq Tumor (w/ Barrett's history)"
+dat.rna$sample_type[(dat.rna$morphology=="8140/3" | 
+                       dat.rna$morphology=="8480/3") &
+                       dat.rna$SampleType_Level2=="Normal"&
+                       dat.rna$Barrett.s.Esophagus.Reported=="Yes"] <- "RNA-seq Non-tumor (w/ Barrett's history)"
+
+dat.wgs$sample_type <- NA
+dat.wgs$sample_type[(dat.wgs$morphology=="8140/3" |
+                       dat.wgs$morphology=="8480/3") &
+                       dat.wgs$SampleType_Level2=="Tumor" &
+                       dat.wgs$Barrett.s.Esophagus.Reported=="Yes"] <- "WGS Tumor (w/ Barrett's history) "
+dat.wgs$sample_type[(dat.wgs$morphology=="8140/3" | 
+                       dat.wgs$morphology=="8480/3") &
+                       dat.wgs$SampleType_Level2=="Normal"&
+                       dat.wgs$Barrett.s.Esophagus.Reported=="Yes"] <- "WGS Non-tumor (w/ Barrett's history)"
+
+
+# make tumor vs normal variable
+dat.16s$tumor.cat <- factor(dat.16s$tissue, levels=c("BO", "N", "T"), labels = c("Non-Tumor", "Non-Tumor", "Tumor"))
+dat.rna$tumor.cat <- factor(dat.rna$SampleType_Level2, levels=c("Normal", "Tumor"), labels = c("Non-Tumor", "Tumor"))
+dat.wgs$tumor.cat <- factor(dat.wgs$SampleType_Level2, levels=c("Normal", "Tumor"), labels = c("Non-Tumor", "Tumor"))
+
+# dataset id
+dat.16s$source <- "16s"
+dat.rna$source <- "rna"
+dat.wgs$source <- "wgs"
+
+# plotting ids
+dat.16s$X <- paste0(dat.16s$source, "-", dat.16s$tumor.cat)
+dat.rna$X <- paste0(dat.rna$source, "-", dat.rna$tumor.cat)
+dat.wgs$X <- paste0(dat.wgs$source, "-", dat.wgs$tumor.cat)
+
+# relabel as (0/1) for analysis
+dat.16s$tumor <- as.numeric(factor(dat.16s$tissue, levels=c("BO", "N", "T"), labels = c("Non-Tumor", "Non-Tumor", "Tumor"))) - 1
+dat.rna$tumor <- as.numeric(factor(dat.rna$SampleType_Level2, levels=c("Normal", "Tumor"), labels = c("Non-Tumor", "Tumor"))) - 1
+dat.wgs$tumor <- as.numeric(factor(dat.wgs$SampleType_Level2, levels=c("Normal", "Tumor"), labels = c("Non-Tumor", "Tumor"))) - 1
+
+# presence- absence
+dat.16s$pres <- ifelse(dat.16s$Abundance > 0, 1, 0)
+dat.16s$pres[is.na(dat.16s$pres)] <- 0
+dat.rna$pres <- ifelse(dat.rna$Abundance > 0, 1, 0)
+dat.rna$pres[is.na(dat.rna$pres)] <- 0
+dat.wgs$pres <- ifelse(dat.wgs$Abundance > 0, 1, 0)
+dat.wgs$pres[is.na(dat.wgs$pres)] <- 0
+
+# tumor stage variable
+dat.16s$tumor.stage <- factor(
+  dat.16s$pTNM,
+  levels = c("0", "1", "I", "IIA", "IIB", "III", "IV"),
+  labels = c("0", "1", "I", "II", "II", "III", "IV")
+)
+
+dat.rna[dat.rna == "not reported"] <- NA
+dat.rna$tumor.stage <- factor(
+  dat.rna$tumor_stage,
+  levels = c("stage i", "stage ia", "stage ib", "stage iib", "stage iia", "stage iii", "stage iiia", "stage iiib", "stage iiic", "stage iv", "stage iva"),
+  labels = c("I", "I", "I", "II", "II", "III", "III", "III", "III", "IV", "IV")
+)
+
+dat.wgs[dat.wgs == "not reported"] <- NA
+dat.wgs$tumor.stage <- factor(
+  dat.wgs$tumor_stage,
+  levels = c("stage i", "stage ia", "stage ib", "stage iib", "stage iia", "stage iii", "stage iiia", "stage iiib", "stage iiic", "stage iv", "stage iva"),
+  labels = c("I", "I", "I", "II", "II", "III", "III", "III", "III", "IV", "IV")
+)
+
+
+# Not uniquely identified in 16s
+dat.16s.s <- filter(
+  dat.16s,
+  OTU %in% c(
+    "Fusobacterium_nucleatum",
+    unique(dat.16s$OTU[dat.16s$OTU %like% "Streptococcus_sanguinis"]),
+    unique(dat.16s$OTU[dat.16s$OTU %like% "Campylobacter_"]),
+    unique(dat.16s$OTU[dat.16s$OTU %like% "Prevotella"]))
+)
+dat.rna.s <- filter(
+  dat.rna,
+  otu2 %in% c(
+    "Fusobacterium nucleatum",
+    "Streptococcus sanguinis",
+    "Campylobacter concisus",
+    unique(dat.rna$otu2[dat.rna$otu2 %like% "Prevotella"]))
+)
+dat.wgs.s <- filter(
+  dat.wgs,
+  otu2 %in% c(
+    "Fusobacterium nucleatum",
+    "Streptococcus sanguinis",
+    "Campylobacter concisus",
+    unique(dat.wgs$otu2[dat.wgs$otu2 %like% "Prevotella"]))
+)
+
+# new names -> due to lack of uniqueness
+dat.16s.s$OTU1 <- factor(
+  dat.16s.s$OTU,
+  levels = c(
+    "Fusobacterium_nucleatum",
+    "Streptococcus_dentisani:Streptococcus_infantis:Streptococcus_mitis:Streptococcus_oligofermentans:Streptococcus_oralis:Streptococcus_pneumoniae:Streptococcus_pseudopneumoniae:Streptococcus_sanguinis",
+    "Campylobacter_rectus:Campylobacter_showae",
+    "Prevotella_melaninogenica"
+  ),
+  labels = c(
+    "Fusobacterium nucleatum",
+    "Streptococcus sanguinis",
+    "Campylobacter concisus",
+    "Prevotella spp."
+  )
+)
+dat.rna.s$OTU1 <- factor(
+  dat.rna.s$otu2,
+  levels = c(
+    "Fusobacterium nucleatum",
+    "Streptococcus sanguinis",
+    "Campylobacter concisus",
+    "Prevotella melaninogenica",
+      "Prevotella denticola",
+      "Prevotella intermedia",
+      "Prevotella ruminicola"),
+  labels = c(
+    "Fusobacterium nucleatum",
+    "Streptococcus sanguinis",
+    "Campylobacter concisus",
+    "Prevotella melaninogenica",
+      "Prevotella denticola",
+      "Prevotella intermedia",
+      "Prevotella ruminicola")
+)
+
+dat.wgs.s$OTU1 <- factor(
+  dat.wgs.s$otu2,
+  levels = c(
+    "Fusobacterium nucleatum",
+    "Streptococcus sanguinis",
+    "Campylobacter concisus",
+    "Prevotella melaninogenica",
+      "Prevotella denticola",
+      "Prevotella intermedia",
+      "Prevotella ruminicola"),
+  labels = c(
+    "Fusobacterium nucleatum",
+    "Streptococcus sanguinis",
+    "Campylobacter concisus",
+    "Prevotella melaninogenica",
+      "Prevotella denticola",
+      "Prevotella intermedia",
+      "Prevotella ruminicola")
+)
+
+# rename bacteria/OTU variables
+dat.16s.s$OTU <- dat.16s.s$OTU1
+dat.rna.s$OTU <- dat.rna.s$otu2
+dat.wgs.s$OTU <- dat.wgs.s$otu2
+dat.rna$OTU <- dat.rna$otu2
+dat.wgs$OTU <- dat.wgs$otu2
+
+# fix abundance/OTU in rna and WGS data
+dat.rna.s <- dat.rna.s %>%
+  dplyr::group_by(OTU, ID)%>%
+  mutate(Abundance = mean(Abundance))%>%
+  distinct(OTU, ID, .keep_all = T)
+dat.wgs.s <- dat.wgs.s %>%
+  dplyr::group_by(OTU, ID)%>%
+  mutate(Abundance = mean(Abundance))%>%
+  distinct(OTU, ID, .keep_all = T)
+
+```
+
+
+
+# Histology (+/- Barretts)
+
+```{r}
+#root function
+root<-function(x){
+  x <- ifelse(x < 0, 0, x)
+  x**(0.25)
+}
+#inverse root function
+invroot<-function(x){
+  x**(4)
+}
+DIM <- c(6, 4)
+
+# merge datasets by subsetting to specific variables then merging
+analysis.dat <- dat.16s.s %>% 
+  dplyr::mutate(ID = as.factor(accession.number),
+                Barretts = ifelse(`Barretts.`=="Y",1,0)) %>%
+  dplyr::select(OTU, sample_type, tumor, Abundance, ID, source, Barretts)
+
+dat <- dat.rna.s %>% 
+  dplyr::mutate(Barretts = ifelse(Barrett.s.Esophagus.Reported=="Yes",1,0)) %>%
+  dplyr::select(OTU, sample_type, tumor, Abundance, ID, source, Barretts)
+analysis.dat <- full_join(analysis.dat, dat)
+
+dat <- dat.wgs.s %>% 
+  dplyr::mutate(Barretts = ifelse(Barrett.s.Esophagus.Reported=="Yes",1,0)) %>%
+  dplyr::select(OTU, sample_type, tumor, Abundance, ID, source, Barretts)
+
+analysis.dat <- full_join(analysis.dat, dat) %>%
+  mutate(
+    pres = ifelse(Abundance > 0, 1, 0),
+    Abund = Abundance*100,
+    Tumor = ifelse(tumor==1, "Tumor", "No Tumor"),
+    Barretts = ifelse(Barretts == 1, "Yes", "No")
+  )
+
+p <- analysis.dat %>%
+  filter(!is.na(Barretts), source=="16s")%>%
+  ggplot(aes(x=Barretts, y=Abund))+
+    geom_violin(scale="width", adjust=1)+
+    geom_jitter(alpha=0.5, width = 0.25)+
+    scale_y_continuous(
+      trans=scales::trans_new("root", root, invroot),
+      breaks=c(0, 0.001,0.01, 0.1, 1,10,50, 100),
+      labels = c(0, 0.001,0.01, 0.1, 1,10,50, 100),
+      limits = c(0, 110)
+    ) + 
+    labs(x="Barretts", y="Relative Abundance (%)")+
+    theme_classic()
+p
+ggsave("output/supplemental_figure2C_NCI_combined.pdf", p, units = "in", width = DIM[1], height = DIM[2])
+ggsave("output/supplemental_figure2C_NCI_combined.png", p, units = "in", width = DIM[1], height = DIM[2])
+
+p <- analysis.dat %>%
+  filter(source=="rna", !is.na(Barretts))%>%
+  ggplot(aes(x=Barretts, y=Abund))+
+    geom_violin(scale="width", adjust=1)+
+    geom_jitter(alpha=0.5, width = 0.25)+
+    scale_y_continuous(
+      trans=scales::trans_new("root", root, invroot),
+      breaks=c(0, 0.001,0.01, 0.1, 1,10,50, 100),
+      labels = c(0, 0.001,0.01, 0.1, 1,10,50, 100),
+      limits = c(0, 110)
+    ) + 
+    labs(x="Barretts", y="Relative Abundance (%)")+
+    theme_classic()
+p
+ggsave("output/supplemental_figure2C_tcga_rna_combined.pdf", p, units = "in", width = DIM[1], height = DIM[2])
+ggsave("output/supplemental_figure2C_tcga_rna_combined.png", p, units = "in", width = DIM[1], height = DIM[2])
+
+p <- analysis.dat %>%
+  filter(source=="wgs", !is.na(Barretts))%>%
+  ggplot(aes(x=Barretts, y=Abund))+
+    geom_violin(scale="width", adjust=1)+
+    geom_jitter(alpha=0.5, width = 0.25)+
+    scale_y_continuous(
+      trans=scales::trans_new("root", root, invroot),
+      breaks=c(0, 0.001,0.01, 0.1, 1,10,50, 100),
+      labels = c(0, 0.001,0.01, 0.1, 1,10,50, 100),
+      limits = c(0, 110)
+    ) + 
+    labs(x="Barretts", y="Relative Abundance (%)")+
+    theme_classic()
+p
+ggsave("output/supplemental_figure2C_tcga_wgs_combined.pdf", p, units = "in", width = DIM[1], height = DIM[2])
+ggsave("output/supplemental_figure2C_tcga_wgs_combined.png", p, units = "in", width = DIM[1], height = DIM[2])
+
+
+```
+
+## Subset by Bacterium 
+
+```{r}
+
+# merge datasets by subsetting to specific variables then merging
+analysis.dat <- dat.16s.s %>% 
+  dplyr::mutate(ID = as.factor(accession.number),
+                Barretts = ifelse(`Barretts.`=="Y",1,0)) %>%
+  dplyr::select(OTU, sample_type, tumor, Abundance, ID, source, Barretts)
+
+dat <- dat.rna.s %>% 
+  dplyr::mutate(Barretts = ifelse(Barrett.s.Esophagus.Reported=="Yes",1,0)) %>%
+  dplyr::select(OTU, sample_type, tumor, Abundance, ID, source, Barretts)
+analysis.dat <- full_join(analysis.dat, dat)
+
+dat <- dat.wgs.s %>% 
+  dplyr::mutate(Barretts = ifelse(Barrett.s.Esophagus.Reported=="Yes",1,0)) %>%
+  dplyr::select(OTU, sample_type, tumor, Abundance, ID, source, Barretts)
+
+analysis.dat <- full_join(analysis.dat, dat) %>%
+  mutate(
+    pres = ifelse(Abundance > 0, 1, 0),
+    Abund = Abundance*100,
+    Tumor = ifelse(tumor==1, "Tumor", "No Tumor"),
+    Barretts = ifelse(Barretts == 1, "Yes", "No")
+  )
+
+
+p <- analysis.dat %>%
+  filter(!is.na(Barretts), source=="16s", OTU == "Fusobacterium nucleatum")%>%
+  ggplot(aes(x=Barretts, y=Abund))+
+    geom_violin(scale="width", adjust=1)+
+    geom_jitter(alpha=0.5, width = 0.25)+
+    scale_y_continuous(
+      trans=scales::trans_new("root", root, invroot),
+      breaks=c(0, 0.001,0.01, 0.1, 1,10,50, 100),
+      labels = c(0, 0.001,0.01, 0.1, 1,10,50, 100),
+      limits = c(0, 110)
+    ) + 
+    labs(x="Barretts", y="Relative Abundance (%)")+
+    theme_classic()
+p
+ggsave("output/supplemental_figure2C_NCI_fuso.pdf", p, units = "in", width = DIM[1], height = DIM[2])
+ggsave("output/supplemental_figure2C_NCI_fuso.png", p, units = "in", width = DIM[1], height = DIM[2])
+
+
+p <- analysis.dat %>%
+  filter(!is.na(Barretts), source=="rna", OTU == "Fusobacterium nucleatum")%>%
+  ggplot(aes(x=Barretts, y=Abund))+
+    geom_violin(scale="width", adjust=1)+
+    geom_jitter(alpha=0.5, width = 0.25)+
+    scale_y_continuous(
+      trans=scales::trans_new("root", root, invroot),
+      breaks=c(0, 0.001,0.01, 0.1, 1,10,50, 100),
+      labels = c(0, 0.001,0.01, 0.1, 1,10,50, 100),
+      limits = c(0, 110)
+    ) + 
+    labs(x="Barretts", y="Relative Abundance (%)")+
+    theme_classic()
+p
+ggsave("output/supplemental_figure2C_tcga_rna_fuso.pdf", p, units = "in", width = DIM[1], height = DIM[2])
+ggsave("output/supplemental_figure2C_tcga_rna_fuso.png", p, units = "in", width = DIM[1], height = DIM[2])
+
+
+p <- analysis.dat %>%
+  filter(!is.na(Barretts), source=="wgs", OTU == "Fusobacterium nucleatum")%>%
+  ggplot(aes(x=Barretts, y=Abund))+
+    geom_violin(scale="width", adjust=1)+
+    geom_jitter(alpha=0.5, width = 0.25)+
+    scale_y_continuous(
+      trans=scales::trans_new("root", root, invroot),
+      breaks=c(0, 0.001,0.01, 0.1, 1,10,50, 100),
+      labels = c(0, 0.001,0.01, 0.1, 1,10,50, 100),
+      limits = c(0, 110)
+    ) + 
+    labs(x="Barretts", y="Relative Abundance (%)")+
+    theme_classic()
+p
+ggsave("output/supplemental_figure2C_tcga_wgs_fuso.pdf", p, units = "in", width = DIM[1], height = DIM[2])
+ggsave("output/supplemental_figure2C_tcga_wgs_fuso.png", p, units = "in", width = DIM[1], height = DIM[2])
+
+
+p <- analysis.dat %>%
+  filter(!is.na(Barretts), source=="16s", OTU == "Prevotella melaninogenica" | OTU =="Prevotella spp.")%>%
+  ggplot(aes(x=Barretts, y=Abund))+
+    geom_violin(scale="width", adjust=1)+
+    geom_jitter(alpha=0.5, width = 0.25)+
+    scale_y_continuous(
+      trans=scales::trans_new("root", root, invroot),
+      breaks=c(0, 0.001,0.01, 0.1, 1,10,50, 100),
+      labels = c(0, 0.001,0.01, 0.1, 1,10,50, 100),
+      limits = c(0, 110)
+    ) + 
+    labs(x="Barretts", y="Relative Abundance (%)")+
+    theme_classic()
+p
+ggsave("output/supplemental_figure2C_NCI_prevo.pdf", p, units = "in", width = DIM[1], height = DIM[2])
+ggsave("output/supplemental_figure2C_NCI_prevo.png", p, units = "in", width = DIM[1], height = DIM[2])
+
+
+p <- analysis.dat %>%
+  filter(!is.na(Barretts), source=="rna", OTU == "Prevotella melaninogenica")%>%
+  ggplot(aes(x=Barretts, y=Abund))+
+    geom_violin(scale="width", adjust=1)+
+    geom_jitter(alpha=0.5, width = 0.25)+
+    scale_y_continuous(
+      trans=scales::trans_new("root", root, invroot),
+      breaks=c(0, 0.001,0.01, 0.1, 1,10,50, 100),
+      labels = c(0, 0.001,0.01, 0.1, 1,10,50, 100),
+      limits = c(0, 110)
+    ) + 
+    labs(x="Barretts", y="Relative Abundance (%)")+
+    theme_classic()
+p
+ggsave("output/supplemental_figure2C_tcga_rna_prevo.pdf", p, units = "in", width = DIM[1], height = DIM[2])
+ggsave("output/supplemental_figure2C_tcga_rna_prevo.png", p, units = "in", width = DIM[1], height = DIM[2])
+
+
+p <- analysis.dat %>%
+  filter(!is.na(Barretts), source=="wgs", OTU == "Prevotella melaninogenica")%>%
+  ggplot(aes(x=Barretts, y=Abund))+
+    geom_violin(scale="width", adjust=1)+
+    geom_jitter(alpha=0.5, width = 0.25)+
+    scale_y_continuous(
+      trans=scales::trans_new("root", root, invroot),
+      breaks=c(0, 0.001,0.01, 0.1, 1,10,50, 100),
+      labels = c(0, 0.001,0.01, 0.1, 1,10,50, 100),
+      limits = c(0, 110)
+    ) + 
+    labs(x="Barretts", y="Relative Abundance (%)")+
+    theme_classic()
+p
+ggsave("output/supplemental_figure2C_tcga_wgs_prevo.pdf", p, units = "in", width = DIM[1], height = DIM[2])
+ggsave("output/supplemental_figure2C_tcga_wgs_prevo.png", p, units = "in", width = DIM[1], height = DIM[2])
+
+
+p <- analysis.dat %>%
+  filter(!is.na(Barretts), source=="16s", OTU == "Campylobacter concisus")%>%
+  ggplot(aes(x=Barretts, y=Abund))+
+    geom_violin(scale="width", adjust=1)+
+    geom_jitter(alpha=0.5, width = 0.25)+
+    scale_y_continuous(
+      trans=scales::trans_new("root", root, invroot),
+      breaks=c(0, 0.001,0.01, 0.1, 1,10,50, 100),
+      labels = c(0, 0.001,0.01, 0.1, 1,10,50, 100),
+      limits = c(0, 110)
+    ) + 
+    labs(x="Barretts", y="Relative Abundance (%)")+
+    theme_classic()
+p
+ggsave("output/supplemental_figure2C_NCI_campy.pdf", p, units = "in", width = DIM[1], height = DIM[2])
+ggsave("output/supplemental_figure2C_NCI_campy.png", p, units = "in", width = DIM[1], height = DIM[2])
+
+
+p <- analysis.dat %>%
+  filter(!is.na(Barretts), source=="rna", OTU == "Campylobacter concisus")%>%
+  ggplot(aes(x=Barretts, y=Abund))+
+    geom_violin(scale="width", adjust=1)+
+    geom_jitter(alpha=0.5, width = 0.25)+
+    scale_y_continuous(
+      trans=scales::trans_new("root", root, invroot),
+      breaks=c(0, 0.001,0.01, 0.1, 1,10,50, 100),
+      labels = c(0, 0.001,0.01, 0.1, 1,10,50, 100),
+      limits = c(0, 110)
+    ) + 
+    labs(x="Barretts", y="Relative Abundance (%)")+
+    theme_classic()
+p
+ggsave("output/supplemental_figure2C_tcga_rna_campy.pdf", p, units = "in", width = DIM[1], height = DIM[2])
+ggsave("output/supplemental_figure2C_tcga_rna_campy.png", p, units = "in", width = DIM[1], height = DIM[2])
+
+
+p <- analysis.dat %>%
+  filter(!is.na(Barretts), source=="wgs", OTU == "Campylobacter concisus")%>%
+  ggplot(aes(x=Barretts, y=Abund))+
+    geom_violin(scale="width", adjust=1)+
+    geom_jitter(alpha=0.5, width = 0.25)+
+    scale_y_continuous(
+      trans=scales::trans_new("root", root, invroot),
+      breaks=c(0, 0.001,0.01, 0.1, 1,10,50, 100),
+      labels = c(0, 0.001,0.01, 0.1, 1,10,50, 100),
+      limits = c(0, 110)
+    ) + 
+    labs(x="Barretts", y="Relative Abundance (%)")+
+    theme_classic()
+p
+ggsave("output/supplemental_figure2C_tcga_wgs_campy.pdf", p, units = "in", width = DIM[1], height = DIM[2])
+ggsave("output/supplemental_figure2C_tcga_wgs_campy.png", p, units = "in", width = DIM[1], height = DIM[2])
+
+
+p <- analysis.dat %>%
+  filter(!is.na(Barretts), source=="16s", OTU == "Streptococcus sanguinis")%>%
+  ggplot(aes(x=Barretts, y=Abund))+
+    geom_violin(scale="width", adjust=1)+
+    geom_jitter(alpha=0.5, width = 0.25)+
+    scale_y_continuous(
+      trans=scales::trans_new("root", root, invroot),
+      breaks=c(0, 0.001,0.01, 0.1, 1,10,50, 100),
+      labels = c(0, 0.001,0.01, 0.1, 1,10,50, 100),
+      limits = c(0, 110)
+    ) + 
+    labs(x="Barretts", y="Relative Abundance (%)")+
+    theme_classic()
+p
+ggsave("output/supplemental_figure2C_NCI_strepto.pdf", p, units = "in", width = DIM[1], height = DIM[2])
+ggsave("output/supplemental_figure2C_NCI_strepto.png", p, units = "in", width = DIM[1], height = DIM[2])
+
+
+p <- analysis.dat %>%
+  filter(!is.na(Barretts), source=="rna", OTU == "Streptococcus sanguinis")%>%
+  ggplot(aes(x=Barretts, y=Abund))+
+    geom_violin(scale="width", adjust=1)+
+    geom_jitter(alpha=0.5, width = 0.25)+
+    scale_y_continuous(
+      trans=scales::trans_new("root", root, invroot),
+      breaks=c(0, 0.001,0.01, 0.1, 1,10,50, 100),
+      labels = c(0, 0.001,0.01, 0.1, 1,10,50, 100),
+      limits = c(0, 110)
+    ) + 
+    labs(x="Barretts", y="Relative Abundance (%)")+
+    theme_classic()
+p
+ggsave("output/supplemental_figure2C_tcga_rna_strepto.pdf", p, units = "in", width = DIM[1], height = DIM[2])
+ggsave("output/supplemental_figure2C_tcga_rna_strepto.png", p, units = "in", width = DIM[1], height = DIM[2])
+
+
+p <- analysis.dat %>%
+  filter(!is.na(Barretts), source=="wgs", OTU == "Streptococcus sanguinis")%>%
+  ggplot(aes(x=Barretts, y=Abund))+
+    geom_violin(scale="width", adjust=1)+
+    geom_jitter(alpha=0.5, width = 0.25)+
+    scale_y_continuous(
+      trans=scales::trans_new("root", root, invroot),
+      breaks=c(0, 0.001,0.01, 0.1, 1,10,50, 100),
+      labels = c(0, 0.001,0.01, 0.1, 1,10,50, 100),
+      limits = c(0, 110)
+    ) + 
+    labs(x="Barretts", y="Relative Abundance (%)")+
+    theme_classic()
+p
+ggsave("output/supplemental_figure2C_tcga_wgs_strepto.pdf", p, units = "in", width = DIM[1], height = DIM[2])
+ggsave("output/supplemental_figure2C_tcga_wgs_strepto.png", p, units = "in", width = DIM[1], height = DIM[2])
+
+
+
+```
+
+# Sex
+
+```{r}
+#root function
+root<-function(x){
+  x <- ifelse(x < 0, 0, x)
+  x**(0.25)
+}
+#inverse root function
+invroot<-function(x){
+  x**(4)
+}
+DIM <- c(6, 4)
+
+# merge datasets by subsetting to specific variables then merging
+analysis.dat <- dat.16s.s %>% 
+  dplyr::mutate(ID = as.factor(accession.number),
+                Gender = ifelse(gender=="M","Male","Female")) %>%
+  dplyr::select(OTU, sample_type, tumor, Abundance, ID, source, Gender)
+
+dat <- dat.rna.s %>% 
+  dplyr::mutate(Gender = ifelse(Gender=="male","Male","Female")) %>%
+  dplyr::select(OTU, sample_type, tumor, Abundance, ID, source, Gender)
+analysis.dat <- full_join(analysis.dat, dat)
+
+dat <- dat.wgs.s %>% 
+  dplyr::mutate(Gender = ifelse(Gender=="male","Male","Female")) %>%
+  dplyr::select(OTU, sample_type, tumor, Abundance, ID, source, Gender)
+
+analysis.dat <- full_join(analysis.dat, dat) %>%
+  mutate(
+    pres = ifelse(Abundance > 0, 1, 0),
+    Abund = Abundance*100,
+    Tumor = ifelse(tumor==1, "Tumor", "No Tumor")
+  )
+
+p <- analysis.dat %>%
+  filter(!is.na(Gender), source=="16s")%>%
+  ggplot(aes(x=Gender, y=Abund))+
+    geom_violin(scale="width", adjust=1)+
+    geom_jitter(alpha=0.5, width = 0.25)+
+    scale_y_continuous(
+      trans=scales::trans_new("root", root, invroot),
+      breaks=c(0, 0.001,0.01, 0.1, 1,10,50, 100),
+      labels = c(0, 0.001,0.01, 0.1, 1,10,50, 100),
+      limits = c(0, 110)
+    ) + 
+    labs(x="Gender", y="Relative Abundance (%)")+
+    theme_classic()
+p
+ggsave("output/supplemental_figure2D_NCI_combined.pdf", p, units = "in", width = DIM[1], height = DIM[2])
+ggsave("output/supplemental_figure2D_NCI_combined.png", p, units = "in", width = DIM[1], height = DIM[2])
+
+p <- analysis.dat %>%
+  filter(source=="rna", !is.na(Gender))%>%
+  ggplot(aes(x=Gender, y=Abund))+
+    geom_violin(scale="width", adjust=1)+
+    geom_jitter(alpha=0.5, width = 0.25)+
+    scale_y_continuous(
+      trans=scales::trans_new("root", root, invroot),
+      breaks=c(0, 0.001,0.01, 0.1, 1,10,50, 100),
+      labels = c(0, 0.001,0.01, 0.1, 1,10,50, 100),
+      limits = c(0, 110)
+    ) + 
+    labs(x="Gender", y="Relative Abundance (%)")+
+    theme_classic()
+p
+ggsave("output/supplemental_figure2D_tcga_rna_combined.pdf", p, units = "in", width = DIM[1], height = DIM[2])
+ggsave("output/supplemental_figure2D_tcga_rna_combined.png", p, units = "in", width = DIM[1], height = DIM[2])
+
+p <- analysis.dat %>%
+  filter(source=="wgs", !is.na(Gender))%>%
+  ggplot(aes(x=Gender, y=Abund))+
+    geom_violin(scale="width", adjust=1)+
+    geom_jitter(alpha=0.5, width = 0.25)+
+    scale_y_continuous(
+      trans=scales::trans_new("root", root, invroot),
+      breaks=c(0, 0.001,0.01, 0.1, 1,10,50, 100),
+      labels = c(0, 0.001,0.01, 0.1, 1,10,50, 100),
+      limits = c(0, 110)
+    ) + 
+    labs(x="Gender", y="Relative Abundance (%)")+
+    theme_classic()
+p
+ggsave("output/supplemental_figure2D_tcga_wgs_combined.pdf", p, units = "in", width = DIM[1], height = DIM[2])
+ggsave("output/supplemental_figure2D_tcga_wgs_combined.png", p, units = "in", width = DIM[1], height = DIM[2])
+
+
+```
+
+## Subset by Bacterium 
+
+```{r}
+# merge datasets by subsetting to specific variables then merging
+analysis.dat <- dat.16s.s %>% 
+  dplyr::mutate(ID = as.factor(accession.number),
+                Gender = ifelse(gender=="M","Male","Female")) %>%
+  dplyr::select(OTU, sample_type, tumor, Abundance, ID, source, Gender)
+
+dat <- dat.rna.s %>% 
+  dplyr::mutate(Gender = ifelse(Gender=="male","Male","Female")) %>%
+  dplyr::select(OTU, sample_type, tumor, Abundance, ID, source, Gender)
+analysis.dat <- full_join(analysis.dat, dat)
+
+dat <- dat.wgs.s %>% 
+  dplyr::mutate(Gender = ifelse(Gender=="male","Male","Female")) %>%
+  dplyr::select(OTU, sample_type, tumor, Abundance, ID, source, Gender)
+
+analysis.dat <- full_join(analysis.dat, dat) %>%
+  mutate(
+    pres = ifelse(Abundance > 0, 1, 0),
+    Abund = Abundance*100,
+    Tumor = ifelse(tumor==1, "Tumor", "No Tumor")
+  )
+
+p <- analysis.dat %>%
+  filter(!is.na(Gender), source=="16s", OTU == "Fusobacterium nucleatum")%>%
+  ggplot(aes(x=Gender, y=Abund))+
+    geom_violin(scale="width", adjust=1)+
+    geom_jitter(alpha=0.5, width = 0.25)+
+    scale_y_continuous(
+      trans=scales::trans_new("root", root, invroot),
+      breaks=c(0, 0.001,0.01, 0.1, 1,10,50, 100),
+      labels = c(0, 0.001,0.01, 0.1, 1,10,50, 100),
+      limits = c(0, 110)
+    ) + 
+    labs(x="Gender", y="Relative Abundance (%)")+
+    theme_classic()
+p
+ggsave("output/supplemental_figure2D_NCI_fuso.pdf", p, units = "in", width = DIM[1], height = DIM[2])
+ggsave("output/supplemental_figure2D_NCI_fuso.png", p, units = "in", width = DIM[1], height = DIM[2])
+
+
+p <- analysis.dat %>%
+  filter(!is.na(Gender), source=="rna", OTU == "Fusobacterium nucleatum")%>%
+  ggplot(aes(x=Gender, y=Abund))+
+    geom_violin(scale="width", adjust=1)+
+    geom_jitter(alpha=0.5, width = 0.25)+
+    scale_y_continuous(
+      trans=scales::trans_new("root", root, invroot),
+      breaks=c(0, 0.001,0.01, 0.1, 1,10,50, 100),
+      labels = c(0, 0.001,0.01, 0.1, 1,10,50, 100),
+      limits = c(0, 110)
+    ) + 
+    labs(x="Gender", y="Relative Abundance (%)")+
+    theme_classic()
+p
+ggsave("output/supplemental_figure2D_tcga_rna_fuso.pdf", p, units = "in", width = DIM[1], height = DIM[2])
+ggsave("output/supplemental_figure2D_tcga_rna_fuso.png", p, units = "in", width = DIM[1], height = DIM[2])
+
+
+p <- analysis.dat %>%
+  filter(!is.na(Gender), source=="wgs", OTU == "Fusobacterium nucleatum")%>%
+  ggplot(aes(x=Gender, y=Abund))+
+    geom_violin(scale="width", adjust=1)+
+    geom_jitter(alpha=0.5, width = 0.25)+
+    scale_y_continuous(
+      trans=scales::trans_new("root", root, invroot),
+      breaks=c(0, 0.001,0.01, 0.1, 1,10,50, 100),
+      labels = c(0, 0.001,0.01, 0.1, 1,10,50, 100),
+      limits = c(0, 110)
+    ) + 
+    labs(x="Gender", y="Relative Abundance (%)")+
+    theme_classic()
+p
+ggsave("output/supplemental_figure2D_tcga_wgs_fuso.pdf", p, units = "in", width = DIM[1], height = DIM[2])
+ggsave("output/supplemental_figure2D_tcga_wgs_fuso.png", p, units = "in", width = DIM[1], height = DIM[2])
+
+
+p <- analysis.dat %>%
+  filter(!is.na(Gender), source=="16s", OTU == "Prevotella melaninogenica" | OTU =="Prevotella spp.")%>%
+  ggplot(aes(x=Gender, y=Abund))+
+    geom_violin(scale="width", adjust=1)+
+    geom_jitter(alpha=0.5, width = 0.25)+
+    scale_y_continuous(
+      trans=scales::trans_new("root", root, invroot),
+      breaks=c(0, 0.001,0.01, 0.1, 1,10,50, 100),
+      labels = c(0, 0.001,0.01, 0.1, 1,10,50, 100),
+      limits = c(0, 110)
+    ) + 
+    labs(x="Gender", y="Relative Abundance (%)")+
+    theme_classic()
+p
+ggsave("output/supplemental_figure2D_NCI_prevo.pdf", p, units = "in", width = DIM[1], height = DIM[2])
+ggsave("output/supplemental_figure2D_NCI_prevo.png", p, units = "in", width = DIM[1], height = DIM[2])
+
+
+p <- analysis.dat %>%
+  filter(!is.na(Gender), source=="rna", OTU == "Prevotella melaninogenica")%>%
+  ggplot(aes(x=Gender, y=Abund))+
+    geom_violin(scale="width", adjust=1)+
+    geom_jitter(alpha=0.5, width = 0.25)+
+    scale_y_continuous(
+      trans=scales::trans_new("root", root, invroot),
+      breaks=c(0, 0.001,0.01, 0.1, 1,10,50, 100),
+      labels = c(0, 0.001,0.01, 0.1, 1,10,50, 100),
+      limits = c(0, 110)
+    ) + 
+    labs(x="Gender", y="Relative Abundance (%)")+
+    theme_classic()
+p
+ggsave("output/supplemental_figure2D_tcga_rna_prevo.pdf", p, units = "in", width = DIM[1], height = DIM[2])
+ggsave("output/supplemental_figure2D_tcga_rna_prevo.png", p, units = "in", width = DIM[1], height = DIM[2])
+
+
+p <- analysis.dat %>%
+  filter(!is.na(Gender), source=="wgs", OTU == "Prevotella melaninogenica")%>%
+  ggplot(aes(x=Gender, y=Abund))+
+    geom_violin(scale="width", adjust=1)+
+    geom_jitter(alpha=0.5, width = 0.25)+
+    scale_y_continuous(
+      trans=scales::trans_new("root", root, invroot),
+      breaks=c(0, 0.001,0.01, 0.1, 1,10,50, 100),
+      labels = c(0, 0.001,0.01, 0.1, 1,10,50, 100),
+      limits = c(0, 110)
+    ) + 
+    labs(x="Gender", y="Relative Abundance (%)")+
+    theme_classic()
+p
+ggsave("output/supplemental_figure2D_tcga_wgs_prevo.pdf", p, units = "in", width = DIM[1], height = DIM[2])
+ggsave("output/supplemental_figure2D_tcga_wgs_prevo.png", p, units = "in", width = DIM[1], height = DIM[2])
+
+
+p <- analysis.dat %>%
+  filter(!is.na(Gender), source=="16s", OTU == "Campylobacter concisus")%>%
+  ggplot(aes(x=Gender, y=Abund))+
+    geom_violin(scale="width", adjust=1)+
+    geom_jitter(alpha=0.5, width = 0.25)+
+    scale_y_continuous(
+      trans=scales::trans_new("root", root, invroot),
+      breaks=c(0, 0.001,0.01, 0.1, 1,10,50, 100),
+      labels = c(0, 0.001,0.01, 0.1, 1,10,50, 100),
+      limits = c(0, 110)
+    ) + 
+    labs(x="Gender", y="Relative Abundance (%)")+
+    theme_classic()
+p
+ggsave("output/supplemental_figure2D_NCI_campy.pdf", p, units = "in", width = DIM[1], height = DIM[2])
+ggsave("output/supplemental_figure2D_NCI_campy.png", p, units = "in", width = DIM[1], height = DIM[2])
+
+
+p <- analysis.dat %>%
+  filter(!is.na(Gender), source=="rna", OTU == "Campylobacter concisus")%>%
+  ggplot(aes(x=Gender, y=Abund))+
+    geom_violin(scale="width", adjust=1)+
+    geom_jitter(alpha=0.5, width = 0.25)+
+    scale_y_continuous(
+      trans=scales::trans_new("root", root, invroot),
+      breaks=c(0, 0.001,0.01, 0.1, 1,10,50, 100),
+      labels = c(0, 0.001,0.01, 0.1, 1,10,50, 100),
+      limits = c(0, 110)
+    ) + 
+    labs(x="Gender", y="Relative Abundance (%)")+
+    theme_classic()
+p
+ggsave("output/supplemental_figure2D_tcga_rna_campy.pdf", p, units = "in", width = DIM[1], height = DIM[2])
+ggsave("output/supplemental_figure2D_tcga_rna_campy.png", p, units = "in", width = DIM[1], height = DIM[2])
+
+
+p <- analysis.dat %>%
+  filter(!is.na(Gender), source=="wgs", OTU == "Campylobacter concisus")%>%
+  ggplot(aes(x=Gender, y=Abund))+
+    geom_violin(scale="width", adjust=1)+
+    geom_jitter(alpha=0.5, width = 0.25)+
+    scale_y_continuous(
+      trans=scales::trans_new("root", root, invroot),
+      breaks=c(0, 0.001,0.01, 0.1, 1,10,50, 100),
+      labels = c(0, 0.001,0.01, 0.1, 1,10,50, 100),
+      limits = c(0, 110)
+    ) + 
+    labs(x="Gender", y="Relative Abundance (%)")+
+    theme_classic()
+p
+ggsave("output/supplemental_figure2D_tcga_wgs_campy.pdf", p, units = "in", width = DIM[1], height = DIM[2])
+ggsave("output/supplemental_figure2D_tcga_wgs_campy.png", p, units = "in", width = DIM[1], height = DIM[2])
+
+
+p <- analysis.dat %>%
+  filter(!is.na(Gender), source=="16s", OTU == "Streptococcus sanguinis")%>%
+  ggplot(aes(x=Gender, y=Abund))+
+    geom_violin(scale="width", adjust=1)+
+    geom_jitter(alpha=0.5, width = 0.25)+
+    scale_y_continuous(
+      trans=scales::trans_new("root", root, invroot),
+      breaks=c(0, 0.001,0.01, 0.1, 1,10,50, 100),
+      labels = c(0, 0.001,0.01, 0.1, 1,10,50, 100),
+      limits = c(0, 110)
+    ) + 
+    labs(x="Gender", y="Relative Abundance (%)")+
+    theme_classic()
+p
+ggsave("output/supplemental_figure2D_NCI_strepto.pdf", p, units = "in", width = DIM[1], height = DIM[2])
+ggsave("output/supplemental_figure2D_NCI_strepto.png", p, units = "in", width = DIM[1], height = DIM[2])
+
+
+p <- analysis.dat %>%
+  filter(!is.na(Gender), source=="rna", OTU == "Streptococcus sanguinis")%>%
+  ggplot(aes(x=Gender, y=Abund))+
+    geom_violin(scale="width", adjust=1)+
+    geom_jitter(alpha=0.5, width = 0.25)+
+    scale_y_continuous(
+      trans=scales::trans_new("root", root, invroot),
+      breaks=c(0, 0.001,0.01, 0.1, 1,10,50, 100),
+      labels = c(0, 0.001,0.01, 0.1, 1,10,50, 100),
+      limits = c(0, 110)
+    ) + 
+    labs(x="Gender", y="Relative Abundance (%)")+
+    theme_classic()
+p
+ggsave("output/supplemental_figure2D_tcga_rna_strepto.pdf", p, units = "in", width = DIM[1], height = DIM[2])
+ggsave("output/supplemental_figure2D_tcga_rna_strepto.png", p, units = "in", width = DIM[1], height = DIM[2])
+
+
+p <- analysis.dat %>%
+  filter(!is.na(Gender), source=="wgs", OTU == "Streptococcus sanguinis")%>%
+  ggplot(aes(x=Gender, y=Abund))+
+    geom_violin(scale="width", adjust=1)+
+    geom_jitter(alpha=0.5, width = 0.25)+
+    scale_y_continuous(
+      trans=scales::trans_new("root", root, invroot),
+      breaks=c(0, 0.001,0.01, 0.1, 1,10,50, 100),
+      labels = c(0, 0.001,0.01, 0.1, 1,10,50, 100),
+      limits = c(0, 110)
+    ) + 
+    labs(x="Gender", y="Relative Abundance (%)")+
+    theme_classic()
+p
+ggsave("output/supplemental_figure2D_tcga_wgs_strepto.pdf", p, units = "in", width = DIM[1], height = DIM[2])
+ggsave("output/supplemental_figure2D_tcga_wgs_strepto.png", p, units = "in", width = DIM[1], height = DIM[2])
+
+```
+
+
+# Race
+
+```{r}
+#root function
+root<-function(x){
+  x <- ifelse(x < 0, 0, x)
+  x**(0.25)
+}
+#inverse root function
+invroot<-function(x){
+  x**(4)
+}
+DIM <- c(6, 4)
+
+# merge datasets by subsetting to specific variables then merging
+analysis.dat <- dat.16s.s %>% 
+  dplyr::mutate(ID = as.factor(accession.number)) %>%
+  dplyr::select(OTU, sample_type, tumor, Abundance, ID, source, Race)
+
+dat <- dat.rna.s %>% 
+  dplyr::mutate(Race = race) %>%
+  dplyr::select(OTU, sample_type, tumor, Abundance, ID, source, Race)
+analysis.dat <- full_join(analysis.dat, dat)
+
+dat <- dat.wgs.s %>% 
+  dplyr::mutate(Race = race) %>%
+  dplyr::select(OTU, sample_type, tumor, Abundance, ID, source, Race)
+
+analysis.dat <- full_join(analysis.dat, dat) %>%
+  mutate(
+    pres = ifelse(Abundance > 0, 1, 0),
+    Abund = Abundance*100,
+    Tumor = ifelse(tumor==1, "Tumor", "No Tumor")
+  )
+
+analysis.dat$Race[analysis.dat$Race == "asian"] <- "Asian"
+analysis.dat$Race[analysis.dat$Race == "B"] <- "Black"
+analysis.dat$Race[analysis.dat$Race == "black or african american"] <- "Black"
+analysis.dat$Race[analysis.dat$Race == "H"] <- "Hispanic"
+analysis.dat$Race[analysis.dat$Race == "O"] <- "Other"
+analysis.dat$Race[analysis.dat$Race == "W"] <- "White"
+analysis.dat$Race[analysis.dat$Race == "white"] <- "White"
+
+p <- analysis.dat %>%
+  filter(!is.na(Race), source=="16s")%>%
+  ggplot(aes(x=Race, y=Abund))+
+    geom_violin(scale="width", adjust=1)+
+    geom_jitter(alpha=0.5, width = 0.25)+
+    scale_y_continuous(
+      trans=scales::trans_new("root", root, invroot),
+      breaks=c(0, 0.001,0.01, 0.1, 1,10,50, 100),
+      labels = c(0, 0.001,0.01, 0.1, 1,10,50, 100),
+      limits = c(0, 110)
+    ) + 
+    labs(x="Race", y="Relative Abundance (%)")+
+    theme_classic()
+p
+ggsave("output/supplemental_figure2E_NCI_combined.pdf", p, units = "in", width = DIM[1], height = DIM[2])
+ggsave("output/supplemental_figure2E_NCI_combined.png", p, units = "in", width = DIM[1], height = DIM[2])
+
+p <- analysis.dat %>%
+  filter(source=="rna", !is.na(Race))%>%
+  ggplot(aes(x=Race, y=Abund))+
+    geom_violin(scale="width", adjust=1)+
+    geom_jitter(alpha=0.5, width = 0.25)+
+    scale_y_continuous(
+      trans=scales::trans_new("root", root, invroot),
+      breaks=c(0, 0.001,0.01, 0.1, 1,10,50, 100),
+      labels = c(0, 0.001,0.01, 0.1, 1,10,50, 100),
+      limits = c(0, 110)
+    ) + 
+    labs(x="Race", y="Relative Abundance (%)")+
+    theme_classic()
+p
+ggsave("output/supplemental_figure2E_tcga_rna_combined.pdf", p, units = "in", width = DIM[1], height = DIM[2])
+ggsave("output/supplemental_figure2E_tcga_rna_combined.png", p, units = "in", width = DIM[1], height = DIM[2])
+
+p <- analysis.dat %>%
+  filter(source=="wgs", !is.na(Race))%>%
+  ggplot(aes(x=Race, y=Abund))+
+    geom_violin(scale="width", adjust=1)+
+    geom_jitter(alpha=0.5, width = 0.25)+
+    scale_y_continuous(
+      trans=scales::trans_new("root", root, invroot),
+      breaks=c(0, 0.001,0.01, 0.1, 1,10,50, 100),
+      labels = c(0, 0.001,0.01, 0.1, 1,10,50, 100),
+      limits = c(0, 110)
+    ) + 
+    labs(x="Race", y="Relative Abundance (%)")+
+    theme_classic()
+p
+ggsave("output/supplemental_figure2E_tcga_wgs_combined.pdf", p, units = "in", width = DIM[1], height = DIM[2])
+ggsave("output/supplemental_figure2E_tcga_wgs_combined.png", p, units = "in", width = DIM[1], height = DIM[2])
+
+
+```
+
+## Subset by Bacterium 
+
+```{r}
+# merge datasets by subsetting to specific variables then merging
+analysis.dat <- dat.16s.s %>% 
+  dplyr::mutate(ID = as.factor(accession.number)) %>%
+  dplyr::select(OTU, sample_type, tumor, Abundance, ID, source, Race)
+
+dat <- dat.rna.s %>% 
+  dplyr::mutate(Race = race) %>%
+  dplyr::select(OTU, sample_type, tumor, Abundance, ID, source, Race)
+analysis.dat <- full_join(analysis.dat, dat)
+
+dat <- dat.wgs.s %>% 
+  dplyr::mutate(Race = race) %>%
+  dplyr::select(OTU, sample_type, tumor, Abundance, ID, source, Race)
+
+analysis.dat <- full_join(analysis.dat, dat) %>%
+  mutate(
+    pres = ifelse(Abundance > 0, 1, 0),
+    Abund = Abundance*100,
+    Tumor = ifelse(tumor==1, "Tumor", "No Tumor")
+  )
+
+analysis.dat$Race[analysis.dat$Race == "asian"] <- "Asian"
+analysis.dat$Race[analysis.dat$Race == "B"] <- "Black"
+analysis.dat$Race[analysis.dat$Race == "black or african american"] <- "Black"
+analysis.dat$Race[analysis.dat$Race == "H"] <- "Hispanic"
+analysis.dat$Race[analysis.dat$Race == "O"] <- "Other"
+analysis.dat$Race[analysis.dat$Race == "W"] <- "White"
+analysis.dat$Race[analysis.dat$Race == "white"] <- "White"
+
+p <- analysis.dat %>%
+  filter(!is.na(Race), source=="16s", OTU == "Fusobacterium nucleatum")%>%
+  ggplot(aes(x=Race, y=Abund))+
+    geom_violin(scale="width", adjust=1)+
+    geom_jitter(alpha=0.5, width = 0.25)+
+    scale_y_continuous(
+      trans=scales::trans_new("root", root, invroot),
+      breaks=c(0, 0.001,0.01, 0.1, 1,10,50, 100),
+      labels = c(0, 0.001,0.01, 0.1, 1,10,50, 100),
+      limits = c(0, 110)
+    ) + 
+    labs(x="Race", y="Relative Abundance (%)")+
+    theme_classic()
+p
+ggsave("output/supplemental_figure2E_NCI_fuso.pdf", p, units = "in", width = DIM[1], height = DIM[2])
+ggsave("output/supplemental_figure2E_NCI_fuso.png", p, units = "in", width = DIM[1], height = DIM[2])
+
+
+p <- analysis.dat %>%
+  filter(!is.na(Race), source=="rna", OTU == "Fusobacterium nucleatum")%>%
+  ggplot(aes(x=Race, y=Abund))+
+    geom_violin(scale="width", adjust=1)+
+    geom_jitter(alpha=0.5, width = 0.25)+
+    scale_y_continuous(
+      trans=scales::trans_new("root", root, invroot),
+      breaks=c(0, 0.001,0.01, 0.1, 1,10,50, 100),
+      labels = c(0, 0.001,0.01, 0.1, 1,10,50, 100),
+      limits = c(0, 110)
+    ) + 
+    labs(x="Race", y="Relative Abundance (%)")+
+    theme_classic()
+p
+ggsave("output/supplemental_figure2E_tcga_rna_fuso.pdf", p, units = "in", width = DIM[1], height = DIM[2])
+ggsave("output/supplemental_figure2E_tcga_rna_fuso.png", p, units = "in", width = DIM[1], height = DIM[2])
+
+
+p <- analysis.dat %>%
+  filter(!is.na(Race), source=="wgs", OTU == "Fusobacterium nucleatum")%>%
+  ggplot(aes(x=Race, y=Abund))+
+    geom_violin(scale="width", adjust=1)+
+    geom_jitter(alpha=0.5, width = 0.25)+
+    scale_y_continuous(
+      trans=scales::trans_new("root", root, invroot),
+      breaks=c(0, 0.001,0.01, 0.1, 1,10,50, 100),
+      labels = c(0, 0.001,0.01, 0.1, 1,10,50, 100),
+      limits = c(0, 110)
+    ) + 
+    labs(x="Race", y="Relative Abundance (%)")+
+    theme_classic()
+p
+ggsave("output/supplemental_figure2E_tcga_wgs_fuso.pdf", p, units = "in", width = DIM[1], height = DIM[2])
+ggsave("output/supplemental_figure2E_tcga_wgs_fuso.png", p, units = "in", width = DIM[1], height = DIM[2])
+
+
+p <- analysis.dat %>%
+  filter(!is.na(Race), source=="16s", OTU == "Prevotella melaninogenica" | OTU =="Prevotella spp.")%>%
+  ggplot(aes(x=Race, y=Abund))+
+    geom_violin(scale="width", adjust=1)+
+    geom_jitter(alpha=0.5, width = 0.25)+
+    scale_y_continuous(
+      trans=scales::trans_new("root", root, invroot),
+      breaks=c(0, 0.001,0.01, 0.1, 1,10,50, 100),
+      labels = c(0, 0.001,0.01, 0.1, 1,10,50, 100),
+      limits = c(0, 110)
+    ) + 
+    labs(x="Race", y="Relative Abundance (%)")+
+    theme_classic()
+p
+ggsave("output/supplemental_figure2E_NCI_prevo.pdf", p, units = "in", width = DIM[1], height = DIM[2])
+ggsave("output/supplemental_figure2E_NCI_prevo.png", p, units = "in", width = DIM[1], height = DIM[2])
+
+
+p <- analysis.dat %>%
+  filter(!is.na(Race), source=="rna", OTU == "Prevotella melaninogenica")%>%
+  ggplot(aes(x=Race, y=Abund))+
+    geom_violin(scale="width", adjust=1)+
+    geom_jitter(alpha=0.5, width = 0.25)+
+    scale_y_continuous(
+      trans=scales::trans_new("root", root, invroot),
+      breaks=c(0, 0.001,0.01, 0.1, 1,10,50, 100),
+      labels = c(0, 0.001,0.01, 0.1, 1,10,50, 100),
+      limits = c(0, 110)
+    ) + 
+    labs(x="Race", y="Relative Abundance (%)")+
+    theme_classic()
+p
+ggsave("output/supplemental_figure2E_tcga_rna_prevo.pdf", p, units = "in", width = DIM[1], height = DIM[2])
+ggsave("output/supplemental_figure2E_tcga_rna_prevo.png", p, units = "in", width = DIM[1], height = DIM[2])
+
+
+p <- analysis.dat %>%
+  filter(!is.na(Race), source=="wgs", OTU == "Prevotella melaninogenica")%>%
+  ggplot(aes(x=Race, y=Abund))+
+    geom_violin(scale="width", adjust=1)+
+    geom_jitter(alpha=0.5, width = 0.25)+
+    scale_y_continuous(
+      trans=scales::trans_new("root", root, invroot),
+      breaks=c(0, 0.001,0.01, 0.1, 1,10,50, 100),
+      labels = c(0, 0.001,0.01, 0.1, 1,10,50, 100),
+      limits = c(0, 110)
+    ) + 
+    labs(x="Race", y="Relative Abundance (%)")+
+    theme_classic()
+p
+ggsave("output/supplemental_figure2E_tcga_wgs_prevo.pdf", p, units = "in", width = DIM[1], height = DIM[2])
+ggsave("output/supplemental_figure2E_tcga_wgs_prevo.png", p, units = "in", width = DIM[1], height = DIM[2])
+
+
+p <- analysis.dat %>%
+  filter(!is.na(Race), source=="16s", OTU == "Campylobacter concisus")%>%
+  ggplot(aes(x=Race, y=Abund))+
+    geom_violin(scale="width", adjust=1)+
+    geom_jitter(alpha=0.5, width = 0.25)+
+    scale_y_continuous(
+      trans=scales::trans_new("root", root, invroot),
+      breaks=c(0, 0.001,0.01, 0.1, 1,10,50, 100),
+      labels = c(0, 0.001,0.01, 0.1, 1,10,50, 100),
+      limits = c(0, 110)
+    ) + 
+    labs(x="Race", y="Relative Abundance (%)")+
+    theme_classic()
+p
+ggsave("output/supplemental_figure2E_NCI_campy.pdf", p, units = "in", width = DIM[1], height = DIM[2])
+ggsave("output/supplemental_figure2E_NCI_campy.png", p, units = "in", width = DIM[1], height = DIM[2])
+
+
+p <- analysis.dat %>%
+  filter(!is.na(Race), source=="rna", OTU == "Campylobacter concisus")%>%
+  ggplot(aes(x=Race, y=Abund))+
+    geom_violin(scale="width", adjust=1)+
+    geom_jitter(alpha=0.5, width = 0.25)+
+    scale_y_continuous(
+      trans=scales::trans_new("root", root, invroot),
+      breaks=c(0, 0.001,0.01, 0.1, 1,10,50, 100),
+      labels = c(0, 0.001,0.01, 0.1, 1,10,50, 100),
+      limits = c(0, 110)
+    ) + 
+    labs(x="Race", y="Relative Abundance (%)")+
+    theme_classic()
+p
+ggsave("output/supplemental_figure2E_tcga_rna_campy.pdf", p, units = "in", width = DIM[1], height = DIM[2])
+ggsave("output/supplemental_figure2E_tcga_rna_campy.png", p, units = "in", width = DIM[1], height = DIM[2])
+
+
+p <- analysis.dat %>%
+  filter(!is.na(Race), source=="wgs", OTU == "Campylobacter concisus")%>%
+  ggplot(aes(x=Race, y=Abund))+
+    geom_violin(scale="width", adjust=1)+
+    geom_jitter(alpha=0.5, width = 0.25)+
+    scale_y_continuous(
+      trans=scales::trans_new("root", root, invroot),
+      breaks=c(0, 0.001,0.01, 0.1, 1,10,50, 100),
+      labels = c(0, 0.001,0.01, 0.1, 1,10,50, 100),
+      limits = c(0, 110)
+    ) + 
+    labs(x="Race", y="Relative Abundance (%)")+
+    theme_classic()
+p
+ggsave("output/supplemental_figure2E_tcga_wgs_campy.pdf", p, units = "in", width = DIM[1], height = DIM[2])
+ggsave("output/supplemental_figure2E_tcga_wgs_campy.png", p, units = "in", width = DIM[1], height = DIM[2])
+
+
+p <- analysis.dat %>%
+  filter(!is.na(Race), source=="16s", OTU == "Streptococcus sanguinis")%>%
+  ggplot(aes(x=Race, y=Abund))+
+    geom_violin(scale="width", adjust=1)+
+    geom_jitter(alpha=0.5, width = 0.25)+
+    scale_y_continuous(
+      trans=scales::trans_new("root", root, invroot),
+      breaks=c(0, 0.001,0.01, 0.1, 1,10,50, 100),
+      labels = c(0, 0.001,0.01, 0.1, 1,10,50, 100),
+      limits = c(0, 110)
+    ) + 
+    labs(x="Race", y="Relative Abundance (%)")+
+    theme_classic()
+p
+ggsave("output/supplemental_figure2E_NCI_strepto.pdf", p, units = "in", width = DIM[1], height = DIM[2])
+ggsave("output/supplemental_figure2E_NCI_strepto.png", p, units = "in", width = DIM[1], height = DIM[2])
+
+
+p <- analysis.dat %>%
+  filter(!is.na(Race), source=="rna", OTU == "Streptococcus sanguinis")%>%
+  ggplot(aes(x=Race, y=Abund))+
+    geom_violin(scale="width", adjust=1)+
+    geom_jitter(alpha=0.5, width = 0.25)+
+    scale_y_continuous(
+      trans=scales::trans_new("root", root, invroot),
+      breaks=c(0, 0.001,0.01, 0.1, 1,10,50, 100),
+      labels = c(0, 0.001,0.01, 0.1, 1,10,50, 100),
+      limits = c(0, 110)
+    ) + 
+    labs(x="Race", y="Relative Abundance (%)")+
+    theme_classic()
+p
+ggsave("output/supplemental_figure2E_tcga_rna_strepto.pdf", p, units = "in", width = DIM[1], height = DIM[2])
+ggsave("output/supplemental_figure2E_tcga_rna_strepto.png", p, units = "in", width = DIM[1], height = DIM[2])
+
+
+p <- analysis.dat %>%
+  filter(!is.na(Race), source=="wgs", OTU == "Streptococcus sanguinis")%>%
+  ggplot(aes(x=Race, y=Abund))+
+    geom_violin(scale="width", adjust=1)+
+    geom_jitter(alpha=0.5, width = 0.25)+
+    scale_y_continuous(
+      trans=scales::trans_new("root", root, invroot),
+      breaks=c(0, 0.001,0.01, 0.1, 1,10,50, 100),
+      labels = c(0, 0.001,0.01, 0.1, 1,10,50, 100),
+      limits = c(0, 110)
+    ) + 
+    labs(x="Race", y="Relative Abundance (%)")+
+    theme_classic()
+p
+ggsave("output/supplemental_figure2E_tcga_wgs_strepto.pdf", p, units = "in", width = DIM[1], height = DIM[2])
+ggsave("output/supplemental_figure2E_tcga_wgs_strepto.png", p, units = "in", width = DIM[1], height = DIM[2])
+
+```
+
+# Stage
+
+```{r}
+#root function
+root<-function(x){
+  x <- ifelse(x < 0, 0, x)
+  x**(0.25)
+}
+#inverse root function
+invroot<-function(x){
+  x**(4)
+}
+DIM <- c(6, 4)
+
+# merge datasets by subsetting to specific variables then merging
+analysis.dat <- dat.16s.s %>% 
+  dplyr::mutate(ID = as.factor(accession.number)) %>%
+  dplyr::select(OTU, sample_type, tumor, Abundance, ID, source, tumor.stage)
+
+dat <- dat.rna.s %>% 
+  dplyr::mutate(Race = race) %>%
+  dplyr::select(OTU, sample_type, tumor, Abundance, ID, source, tumor.stage)
+analysis.dat <- full_join(analysis.dat, dat)
+
+dat <- dat.wgs.s %>% 
+  dplyr::mutate(Race = race) %>%
+  dplyr::select(OTU, sample_type, tumor, Abundance, ID, source, tumor.stage)
+
+analysis.dat <- full_join(analysis.dat, dat) %>%
+  mutate(
+    pres = ifelse(Abundance > 0, 1, 0),
+    Abund = Abundance*100,
+    Tumor = ifelse(tumor==1, "Tumor", "No Tumor"),
+    Tumor_Stage = tumor.stage
+  )
+
+#analysis.dat$Tumor_Stage[analysis.dat$Tumor_Stage == "0"] <- ""
+
+p <- analysis.dat %>%
+  filter(!is.na(Tumor_Stage), source=="16s")%>%
+  ggplot(aes(x=Tumor_Stage, y=Abund))+
+    geom_violin(scale="width", adjust=1)+
+    geom_jitter(alpha=0.5, width = 0.25)+
+    scale_y_continuous(
+      trans=scales::trans_new("root", root, invroot),
+      breaks=c(0, 0.001,0.01, 0.1, 1,10,50, 100),
+      labels = c(0, 0.001,0.01, 0.1, 1,10,50, 100),
+      limits = c(0, 110)
+    ) + 
+    labs(x="Tumor_Stage", y="Relative Abundance (%)")+
+    theme_classic()
+p
+ggsave("output/supplemental_figure2F_NCI_combined.pdf", p, units = "in", width = DIM[1], height = DIM[2])
+ggsave("output/supplemental_figure2F_NCI_combined.png", p, units = "in", width = DIM[1], height = DIM[2])
+
+p <- analysis.dat %>%
+  filter(source=="rna", !is.na(Tumor_Stage))%>%
+  ggplot(aes(x=Tumor_Stage, y=Abund))+
+    geom_violin(scale="width", adjust=1)+
+    geom_jitter(alpha=0.5, width = 0.25)+
+    scale_y_continuous(
+      trans=scales::trans_new("root", root, invroot),
+      breaks=c(0, 0.001,0.01, 0.1, 1,10,50, 100),
+      labels = c(0, 0.001,0.01, 0.1, 1,10,50, 100),
+      limits = c(0, 110)
+    ) + 
+    labs(x="Tumor_Stage", y="Relative Abundance (%)")+
+    theme_classic()
+p
+ggsave("output/supplemental_figure2F_tcga_rna_combined.pdf", p, units = "in", width = DIM[1], height = DIM[2])
+ggsave("output/supplemental_figure2F_tcga_rna_combined.png", p, units = "in", width = DIM[1], height = DIM[2])
+
+p <- analysis.dat %>%
+  filter(source=="wgs", !is.na(Tumor_Stage))%>%
+  ggplot(aes(x=Tumor_Stage, y=Abund))+
+    geom_violin(scale="width", adjust=1)+
+    geom_jitter(alpha=0.5, width = 0.25)+
+    scale_y_continuous(
+      trans=scales::trans_new("root", root, invroot),
+      breaks=c(0, 0.001,0.01, 0.1, 1,10,50, 100),
+      labels = c(0, 0.001,0.01, 0.1, 1,10,50, 100),
+      limits = c(0, 110)
+    ) + 
+    labs(x="Tumor_Stage", y="Relative Abundance (%)")+
+    theme_classic()
+p
+ggsave("output/supplemental_figure2F_tcga_wgs_combined.pdf", p, units = "in", width = DIM[1], height = DIM[2])
+ggsave("output/supplemental_figure2F_tcga_wgs_combined.png", p, units = "in", width = DIM[1], height = DIM[2])
+
+
+```
+
+## Subset by Bacterium 
+
+```{r}
+# merge datasets by subsetting to specific variables then merging
+analysis.dat <- dat.16s.s %>% 
+  dplyr::mutate(ID = as.factor(accession.number)) %>%
+  dplyr::select(OTU, sample_type, tumor, Abundance, ID, source, tumor.stage)
+
+dat <- dat.rna.s %>% 
+  dplyr::mutate(Race = race) %>%
+  dplyr::select(OTU, sample_type, tumor, Abundance, ID, source, tumor.stage)
+analysis.dat <- full_join(analysis.dat, dat)
+
+dat <- dat.wgs.s %>% 
+  dplyr::mutate(Race = race) %>%
+  dplyr::select(OTU, sample_type, tumor, Abundance, ID, source, tumor.stage)
+
+analysis.dat <- full_join(analysis.dat, dat) %>%
+  mutate(
+    pres = ifelse(Abundance > 0, 1, 0),
+    Abund = Abundance*100,
+    Tumor = ifelse(tumor==1, "Tumor", "No Tumor"),
+    Tumor_Stage = tumor.stage
+  )
+
+#analysis.dat$Tumor_Stage[analysis.dat$Tumor_Stage == "0"] <- ""
+
+
+p <- analysis.dat %>%
+  filter(!is.na(Tumor_Stage), source=="16s", OTU == "Fusobacterium nucleatum")%>%
+  ggplot(aes(x=Tumor_Stage, y=Abund))+
+    geom_violin(scale="width", adjust=1)+
+    geom_jitter(alpha=0.5, width = 0.25)+
+    scale_y_continuous(
+      trans=scales::trans_new("root", root, invroot),
+      breaks=c(0, 0.001,0.01, 0.1, 1,10,50, 100),
+      labels = c(0, 0.001,0.01, 0.1, 1,10,50, 100),
+      limits = c(0, 110)
+    ) + 
+    labs(x="Tumor_Stage", y="Relative Abundance (%)")+
+    theme_classic()
+p
+ggsave("output/supplemental_figure2F_NCI_fuso.pdf", p, units = "in", width = DIM[1], height = DIM[2])
+ggsave("output/supplemental_figure2F_NCI_fuso.png", p, units = "in", width = DIM[1], height = DIM[2])
+
+
+p <- analysis.dat %>%
+  filter(!is.na(Tumor_Stage), source=="rna", OTU == "Fusobacterium nucleatum")%>%
+  ggplot(aes(x=Tumor_Stage, y=Abund))+
+    geom_violin(scale="width", adjust=1)+
+    geom_jitter(alpha=0.5, width = 0.25)+
+    scale_y_continuous(
+      trans=scales::trans_new("root", root, invroot),
+      breaks=c(0, 0.001,0.01, 0.1, 1,10,50, 100),
+      labels = c(0, 0.001,0.01, 0.1, 1,10,50, 100),
+      limits = c(0, 110)
+    ) + 
+    labs(x="Tumor_Stage", y="Relative Abundance (%)")+
+    theme_classic()
+p
+ggsave("output/supplemental_figure2F_tcga_rna_fuso.pdf", p, units = "in", width = DIM[1], height = DIM[2])
+ggsave("output/supplemental_figure2F_tcga_rna_fuso.png", p, units = "in", width = DIM[1], height = DIM[2])
+
+
+p <- analysis.dat %>%
+  filter(!is.na(Tumor_Stage), source=="wgs", OTU == "Fusobacterium nucleatum")%>%
+  ggplot(aes(x=Tumor_Stage, y=Abund))+
+    geom_violin(scale="width", adjust=1)+
+    geom_jitter(alpha=0.5, width = 0.25)+
+    scale_y_continuous(
+      trans=scales::trans_new("root", root, invroot),
+      breaks=c(0, 0.001,0.01, 0.1, 1,10,50, 100),
+      labels = c(0, 0.001,0.01, 0.1, 1,10,50, 100),
+      limits = c(0, 110)
+    ) + 
+    labs(x="Tumor_Stage", y="Relative Abundance (%)")+
+    theme_classic()
+p
+ggsave("output/supplemental_figure2F_tcga_wgs_fuso.pdf", p, units = "in", width = DIM[1], height = DIM[2])
+ggsave("output/supplemental_figure2F_tcga_wgs_fuso.png", p, units = "in", width = DIM[1], height = DIM[2])
+
+
+p <- analysis.dat %>%
+  filter(!is.na(Tumor_Stage), source=="16s", OTU == "Prevotella melaninogenica" | OTU =="Prevotella spp.")%>%
+  ggplot(aes(x=Tumor_Stage, y=Abund))+
+    geom_violin(scale="width", adjust=1)+
+    geom_jitter(alpha=0.5, width = 0.25)+
+    scale_y_continuous(
+      trans=scales::trans_new("root", root, invroot),
+      breaks=c(0, 0.001,0.01, 0.1, 1,10,50, 100),
+      labels = c(0, 0.001,0.01, 0.1, 1,10,50, 100),
+      limits = c(0, 110)
+    ) + 
+    labs(x="Tumor_Stage", y="Relative Abundance (%)")+
+    theme_classic()
+p
+ggsave("output/supplemental_figure2F_NCI_prevo.pdf", p, units = "in", width = DIM[1], height = DIM[2])
+ggsave("output/supplemental_figure2F_NCI_prevo.png", p, units = "in", width = DIM[1], height = DIM[2])
+
+
+p <- analysis.dat %>%
+  filter(!is.na(Tumor_Stage), source=="rna", OTU == "Prevotella melaninogenica")%>%
+  ggplot(aes(x=Tumor_Stage, y=Abund))+
+    geom_violin(scale="width", adjust=1)+
+    geom_jitter(alpha=0.5, width = 0.25)+
+    scale_y_continuous(
+      trans=scales::trans_new("root", root, invroot),
+      breaks=c(0, 0.001,0.01, 0.1, 1,10,50, 100),
+      labels = c(0, 0.001,0.01, 0.1, 1,10,50, 100),
+      limits = c(0, 110)
+    ) + 
+    labs(x="Tumor_Stage", y="Relative Abundance (%)")+
+    theme_classic()
+p
+ggsave("output/supplemental_figure2F_tcga_rna_prevo.pdf", p, units = "in", width = DIM[1], height = DIM[2])
+ggsave("output/supplemental_figure2F_tcga_rna_prevo.png", p, units = "in", width = DIM[1], height = DIM[2])
+
+
+p <- analysis.dat %>%
+  filter(!is.na(Tumor_Stage), source=="wgs", OTU == "Prevotella melaninogenica")%>%
+  ggplot(aes(x=Tumor_Stage, y=Abund))+
+    geom_violin(scale="width", adjust=1)+
+    geom_jitter(alpha=0.5, width = 0.25)+
+    scale_y_continuous(
+      trans=scales::trans_new("root", root, invroot),
+      breaks=c(0, 0.001,0.01, 0.1, 1,10,50, 100),
+      labels = c(0, 0.001,0.01, 0.1, 1,10,50, 100),
+      limits = c(0, 110)
+    ) + 
+    labs(x="Tumor_Stage", y="Relative Abundance (%)")+
+    theme_classic()
+p
+ggsave("output/supplemental_figure2F_tcga_wgs_prevo.pdf", p, units = "in", width = DIM[1], height = DIM[2])
+ggsave("output/supplemental_figure2F_tcga_wgs_prevo.png", p, units = "in", width = DIM[1], height = DIM[2])
+
+
+p <- analysis.dat %>%
+  filter(!is.na(Tumor_Stage), source=="16s", OTU == "Campylobacter concisus")%>%
+  ggplot(aes(x=Tumor_Stage, y=Abund))+
+    geom_violin(scale="width", adjust=1)+
+    geom_jitter(alpha=0.5, width = 0.25)+
+    scale_y_continuous(
+      trans=scales::trans_new("root", root, invroot),
+      breaks=c(0, 0.001,0.01, 0.1, 1,10,50, 100),
+      labels = c(0, 0.001,0.01, 0.1, 1,10,50, 100),
+      limits = c(0, 110)
+    ) + 
+    labs(x="Tumor_Stage", y="Relative Abundance (%)")+
+    theme_classic()
+p
+ggsave("output/supplemental_figure2F_NCI_campy.pdf", p, units = "in", width = DIM[1], height = DIM[2])
+ggsave("output/supplemental_figure2F_NCI_campy.png", p, units = "in", width = DIM[1], height = DIM[2])
+
+
+p <- analysis.dat %>%
+  filter(!is.na(Tumor_Stage), source=="rna", OTU == "Campylobacter concisus")%>%
+  ggplot(aes(x=Tumor_Stage, y=Abund))+
+    geom_violin(scale="width", adjust=1)+
+    geom_jitter(alpha=0.5, width = 0.25)+
+    scale_y_continuous(
+      trans=scales::trans_new("root", root, invroot),
+      breaks=c(0, 0.001,0.01, 0.1, 1,10,50, 100),
+      labels = c(0, 0.001,0.01, 0.1, 1,10,50, 100),
+      limits = c(0, 110)
+    ) + 
+    labs(x="Tumor_Stage", y="Relative Abundance (%)")+
+    theme_classic()
+p
+ggsave("output/supplemental_figure2F_tcga_rna_campy.pdf", p, units = "in", width = DIM[1], height = DIM[2])
+ggsave("output/supplemental_figure2F_tcga_rna_campy.png", p, units = "in", width = DIM[1], height = DIM[2])
+
+
+p <- analysis.dat %>%
+  filter(!is.na(Tumor_Stage), source=="wgs", OTU == "Campylobacter concisus")%>%
+  ggplot(aes(x=Tumor_Stage, y=Abund))+
+    geom_violin(scale="width", adjust=1)+
+    geom_jitter(alpha=0.5, width = 0.25)+
+    scale_y_continuous(
+      trans=scales::trans_new("root", root, invroot),
+      breaks=c(0, 0.001,0.01, 0.1, 1,10,50, 100),
+      labels = c(0, 0.001,0.01, 0.1, 1,10,50, 100),
+      limits = c(0, 110)
+    ) + 
+    labs(x="Tumor_Stage", y="Relative Abundance (%)")+
+    theme_classic()
+p
+ggsave("output/supplemental_figure2F_tcga_wgs_campy.pdf", p, units = "in", width = DIM[1], height = DIM[2])
+ggsave("output/supplemental_figure2F_tcga_wgs_campy.png", p, units = "in", width = DIM[1], height = DIM[2])
+
+
+p <- analysis.dat %>%
+  filter(!is.na(Tumor_Stage), source=="16s", OTU == "Streptococcus sanguinis")%>%
+  ggplot(aes(x=Tumor_Stage, y=Abund))+
+    geom_violin(scale="width", adjust=1)+
+    geom_jitter(alpha=0.5, width = 0.25)+
+    scale_y_continuous(
+      trans=scales::trans_new("root", root, invroot),
+      breaks=c(0, 0.001,0.01, 0.1, 1,10,50, 100),
+      labels = c(0, 0.001,0.01, 0.1, 1,10,50, 100),
+      limits = c(0, 110)
+    ) + 
+    labs(x="Tumor_Stage", y="Relative Abundance (%)")+
+    theme_classic()
+p
+ggsave("output/supplemental_figure2F_NCI_strepto.pdf", p, units = "in", width = DIM[1], height = DIM[2])
+ggsave("output/supplemental_figure2F_NCI_strepto.png", p, units = "in", width = DIM[1], height = DIM[2])
+
+
+p <- analysis.dat %>%
+  filter(!is.na(Tumor_Stage), source=="rna", OTU == "Streptococcus sanguinis")%>%
+  ggplot(aes(x=Tumor_Stage, y=Abund))+
+    geom_violin(scale="width", adjust=1)+
+    geom_jitter(alpha=0.5, width = 0.25)+
+    scale_y_continuous(
+      trans=scales::trans_new("root", root, invroot),
+      breaks=c(0, 0.001,0.01, 0.1, 1,10,50, 100),
+      labels = c(0, 0.001,0.01, 0.1, 1,10,50, 100),
+      limits = c(0, 110)
+    ) + 
+    labs(x="Tumor_Stage", y="Relative Abundance (%)")+
+    theme_classic()
+p
+ggsave("output/supplemental_figure2F_tcga_rna_strepto.pdf", p, units = "in", width = DIM[1], height = DIM[2])
+ggsave("output/supplemental_figure2F_tcga_rna_strepto.png", p, units = "in", width = DIM[1], height = DIM[2])
+
+
+p <- analysis.dat %>%
+  filter(!is.na(Tumor_Stage), source=="wgs", OTU == "Streptococcus sanguinis")%>%
+  ggplot(aes(x=Tumor_Stage, y=Abund))+
+    geom_violin(scale="width", adjust=1)+
+    geom_jitter(alpha=0.5, width = 0.25)+
+    scale_y_continuous(
+      trans=scales::trans_new("root", root, invroot),
+      breaks=c(0, 0.001,0.01, 0.1, 1,10,50, 100),
+      labels = c(0, 0.001,0.01, 0.1, 1,10,50, 100),
+      limits = c(0, 110)
+    ) + 
+    labs(x="Tumor_Stage", y="Relative Abundance (%)")+
+    theme_classic()
+p
+ggsave("output/supplemental_figure2F_tcga_wgs_strepto.pdf", p, units = "in", width = DIM[1], height = DIM[2])
+ggsave("output/supplemental_figure2F_tcga_wgs_strepto.png", p, units = "in", width = DIM[1], height = DIM[2])
+
+```
