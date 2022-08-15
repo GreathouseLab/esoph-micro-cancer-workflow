@@ -372,7 +372,7 @@ div.tocify {
 <p>
 <button type="button" class="btn btn-default btn-workflowr btn-workflowr-report" data-toggle="collapse" data-target="#workflowr-report">
 <span class="glyphicon glyphicon-list" aria-hidden="true"></span>
-workflowr <span class="glyphicon glyphicon-ok text-success"
+workflowr <span class="glyphicon glyphicon-exclamation-sign text-danger"
 aria-hidden="true"></span>
 </button>
 </p>
@@ -383,8 +383,8 @@ aria-hidden="true"></span>
 </li>
 <li>
 <a data-toggle="tab" href="#checks"> Checks <span
-class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span>
-</a>
+class="glyphicon glyphicon-exclamation-sign text-danger"
+aria-hidden="true"></span> </a>
 </li>
 <li>
 <a data-toggle="tab" href="#versions">Past versions</a>
@@ -397,9 +397,9 @@ class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span>
 </p>
 <p>
 <strong>Checks:</strong> <span
-class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span> 7
+class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span> 6
 <span class="glyphicon glyphicon-exclamation-sign text-danger"
-aria-hidden="true"></span> 0
+aria-hidden="true"></span> 1
 </p>
 <p>
 <strong>Knit directory:</strong>
@@ -423,18 +423,21 @@ versions</em> tab lists the development history.
 <div class="panel panel-default">
 <div class="panel-heading">
 <p class="panel-title">
-<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongRMarkdownfilestronguptodate">
-<span class="glyphicon glyphicon-ok text-success"
-aria-hidden="true"></span> <strong>R Markdown file:</strong> up-to-date
-</a>
+<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongRMarkdownfilestronguncommittedchanges">
+<span class="glyphicon glyphicon-exclamation-sign text-danger"
+aria-hidden="true"></span> <strong>R Markdown file:</strong> uncommitted
+changes </a>
 </p>
 </div>
-<div id="strongRMarkdownfilestronguptodate"
+<div id="strongRMarkdownfilestronguncommittedchanges"
 class="panel-collapse collapse">
 <div class="panel-body">
-<p>Great! Since the R Markdown file has been committed to the Git
-repository, you know the exact version of the code that produced these
-results.</p>
+<p>The R Markdown file has unstaged changes. To know which version of
+the R Markdown file created these results, you’ll want to first commit
+it to the Git repo. If you’re still working on the analysis, you can
+ignore this warning. When you’re finished, you can run
+<code>wflow_publish</code> to commit the R Markdown file and build the
+HTML.</p>
 </div>
 </div>
 </div>
@@ -525,15 +528,15 @@ project makes it easier to run your code on other machines.</p>
 <div class="panel panel-default">
 <div class="panel-heading">
 <p class="panel-title">
-<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongRepositoryversionstrongahrefhttpsgithubcomGreathouseLabesophmicrocancerworkflowtreecb1cd82e4da3ee4e50b943210551fbbd5714350ftargetblankcb1cd82a">
+<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongRepositoryversionstrongahrefhttpsgithubcomGreathouseLabesophmicrocancerworkflowtree72212e095c07ae68d7863738e67a1ee807e21364targetblank72212e0a">
 <span class="glyphicon glyphicon-ok text-success"
 aria-hidden="true"></span> <strong>Repository version:</strong>
-<a href="https://github.com/GreathouseLab/esoph-micro-cancer-workflow/tree/cb1cd82e4da3ee4e50b943210551fbbd5714350f" target="_blank">cb1cd82</a>
+<a href="https://github.com/GreathouseLab/esoph-micro-cancer-workflow/tree/72212e095c07ae68d7863738e67a1ee807e21364" target="_blank">72212e0</a>
 </a>
 </p>
 </div>
 <div
-id="strongRepositoryversionstrongahrefhttpsgithubcomGreathouseLabesophmicrocancerworkflowtreecb1cd82e4da3ee4e50b943210551fbbd5714350ftargetblankcb1cd82a"
+id="strongRepositoryversionstrongahrefhttpsgithubcomGreathouseLabesophmicrocancerworkflowtree72212e095c07ae68d7863738e67a1ee807e21364targetblank72212e0a"
 class="panel-collapse collapse">
 <div class="panel-body">
 <p>
@@ -543,7 +546,7 @@ reproducibility.
 </p>
 <p>
 The results in this page were generated with repository version
-<a href="https://github.com/GreathouseLab/esoph-micro-cancer-workflow/tree/cb1cd82e4da3ee4e50b943210551fbbd5714350f" target="_blank">cb1cd82</a>.
+<a href="https://github.com/GreathouseLab/esoph-micro-cancer-workflow/tree/72212e095c07ae68d7863738e67a1ee807e21364" target="_blank">72212e0</a>.
 See the <em>Past versions</em> tab to see a history of the changes made
 to the R Markdown and HTML files.
 </p>
@@ -563,6 +566,69 @@ Ignored files:
     Ignored:    data.zip
     Ignored:    data/
     Ignored:    output/Supplement Figure 2.zip
+
+Unstaged changes:
+    Modified:   analysis/supplemental_figure2.Rmd
+    Modified:   output/supplemental_figure2C_NCI_campy.pdf
+    Modified:   output/supplemental_figure2C_NCI_combined.pdf
+    Modified:   output/supplemental_figure2C_NCI_fuso.pdf
+    Modified:   output/supplemental_figure2C_NCI_prevo.pdf
+    Modified:   output/supplemental_figure2C_NCI_strepto.pdf
+    Modified:   output/supplemental_figure2C_tcga_rna_campy.pdf
+    Modified:   output/supplemental_figure2C_tcga_rna_combined.pdf
+    Modified:   output/supplemental_figure2C_tcga_rna_fuso.pdf
+    Modified:   output/supplemental_figure2C_tcga_rna_prevo.pdf
+    Modified:   output/supplemental_figure2C_tcga_rna_strepto.pdf
+    Modified:   output/supplemental_figure2C_tcga_wgs_campy.pdf
+    Modified:   output/supplemental_figure2C_tcga_wgs_combined.pdf
+    Modified:   output/supplemental_figure2C_tcga_wgs_fuso.pdf
+    Modified:   output/supplemental_figure2C_tcga_wgs_prevo.pdf
+    Modified:   output/supplemental_figure2C_tcga_wgs_strepto.pdf
+    Modified:   output/supplemental_figure2D_NCI_campy.pdf
+    Modified:   output/supplemental_figure2D_NCI_combined.pdf
+    Modified:   output/supplemental_figure2D_NCI_fuso.pdf
+    Modified:   output/supplemental_figure2D_NCI_prevo.pdf
+    Modified:   output/supplemental_figure2D_NCI_strepto.pdf
+    Modified:   output/supplemental_figure2D_tcga_rna_campy.pdf
+    Modified:   output/supplemental_figure2D_tcga_rna_combined.pdf
+    Modified:   output/supplemental_figure2D_tcga_rna_fuso.pdf
+    Modified:   output/supplemental_figure2D_tcga_rna_prevo.pdf
+    Modified:   output/supplemental_figure2D_tcga_rna_strepto.pdf
+    Modified:   output/supplemental_figure2D_tcga_wgs_campy.pdf
+    Modified:   output/supplemental_figure2D_tcga_wgs_combined.pdf
+    Modified:   output/supplemental_figure2D_tcga_wgs_fuso.pdf
+    Modified:   output/supplemental_figure2D_tcga_wgs_prevo.pdf
+    Modified:   output/supplemental_figure2D_tcga_wgs_strepto.pdf
+    Modified:   output/supplemental_figure2E_NCI_campy.pdf
+    Modified:   output/supplemental_figure2E_NCI_combined.pdf
+    Modified:   output/supplemental_figure2E_NCI_fuso.pdf
+    Modified:   output/supplemental_figure2E_NCI_prevo.pdf
+    Modified:   output/supplemental_figure2E_NCI_strepto.pdf
+    Modified:   output/supplemental_figure2E_tcga_rna_campy.pdf
+    Modified:   output/supplemental_figure2E_tcga_rna_combined.pdf
+    Modified:   output/supplemental_figure2E_tcga_rna_fuso.pdf
+    Modified:   output/supplemental_figure2E_tcga_rna_prevo.pdf
+    Modified:   output/supplemental_figure2E_tcga_rna_strepto.pdf
+    Modified:   output/supplemental_figure2E_tcga_wgs_campy.pdf
+    Modified:   output/supplemental_figure2E_tcga_wgs_combined.pdf
+    Modified:   output/supplemental_figure2E_tcga_wgs_fuso.pdf
+    Modified:   output/supplemental_figure2E_tcga_wgs_prevo.pdf
+    Modified:   output/supplemental_figure2E_tcga_wgs_strepto.pdf
+    Modified:   output/supplemental_figure2F_NCI_campy.pdf
+    Modified:   output/supplemental_figure2F_NCI_combined.pdf
+    Modified:   output/supplemental_figure2F_NCI_fuso.pdf
+    Modified:   output/supplemental_figure2F_NCI_prevo.pdf
+    Modified:   output/supplemental_figure2F_NCI_strepto.pdf
+    Modified:   output/supplemental_figure2F_tcga_rna_campy.pdf
+    Modified:   output/supplemental_figure2F_tcga_rna_combined.pdf
+    Modified:   output/supplemental_figure2F_tcga_rna_fuso.pdf
+    Modified:   output/supplemental_figure2F_tcga_rna_prevo.pdf
+    Modified:   output/supplemental_figure2F_tcga_rna_strepto.pdf
+    Modified:   output/supplemental_figure2F_tcga_wgs_campy.pdf
+    Modified:   output/supplemental_figure2F_tcga_wgs_combined.pdf
+    Modified:   output/supplemental_figure2F_tcga_wgs_fuso.pdf
+    Modified:   output/supplemental_figure2F_tcga_wgs_prevo.pdf
+    Modified:   output/supplemental_figure2F_tcga_wgs_strepto.pdf
 
 </code></pre>
 <p>
@@ -608,6 +674,23 @@ Message
 </tr>
 </thead>
 <tbody>
+<tr>
+<td>
+html
+</td>
+<td>
+<a href="https://rawcdn.githack.com/GreathouseLab/esoph-micro-cancer-workflow/72212e095c07ae68d7863738e67a1ee807e21364/docs/supplemental_figure2.html" target="_blank">72212e0</a>
+</td>
+<td>
+noah-padgett
+</td>
+<td>
+2022-08-15
+</td>
+<td>
+Update website to include supp fig 2
+</td>
+</tr>
 <tr>
 <td>
 Rmd
@@ -685,7 +768,7 @@ analysis.dat &lt;- full_join(analysis.dat, dat) %&gt;%
     theme_classic()
 p</code></pre>
 <pre><code>Warning: Removed 120 rows containing missing values (geom_point).</code></pre>
-<p><img src="figure/supplemental_figure2.Rmd/unnamed-chunk-1-1.png" width="225%" height="10" style="display: block; margin: auto;" /></p>
+<p><img src="figure/supplemental_figure2.Rmd/unnamed-chunk-1-1.png" width="600px" height="400px" style="display: block; margin: auto;" /></p>
 <pre class="r"><code>ggsave(&quot;output/supplemental_figure2C_NCI_combined.pdf&quot;, p, units = &quot;in&quot;, width = DIM[1], height = DIM[2])</code></pre>
 <pre><code>Warning: Removed 137 rows containing missing values (geom_point).</code></pre>
 <pre class="r"><code>ggsave(&quot;output/supplemental_figure2C_NCI_combined.png&quot;, p, units = &quot;in&quot;, width = DIM[1], height = DIM[2])</code></pre>
@@ -706,7 +789,7 @@ p</code></pre>
 p</code></pre>
 <pre><code>Warning: Removed 749 rows containing non-finite values (stat_ydensity).</code></pre>
 <pre><code>Warning: Removed 828 rows containing missing values (geom_point).</code></pre>
-<p><img src="figure/supplemental_figure2.Rmd/unnamed-chunk-1-2.png" width="225%" height="10" style="display: block; margin: auto;" /></p>
+<p><img src="figure/supplemental_figure2.Rmd/unnamed-chunk-1-2.png" width="600px" height="400px" style="display: block; margin: auto;" /></p>
 <pre class="r"><code>ggsave(&quot;output/supplemental_figure2C_tcga_rna_combined.pdf&quot;, p, units = &quot;in&quot;, width = DIM[1], height = DIM[2])</code></pre>
 <pre><code>Warning: Removed 749 rows containing non-finite values (stat_ydensity).</code></pre>
 <pre><code>Warning: Removed 822 rows containing missing values (geom_point).</code></pre>
@@ -729,7 +812,7 @@ p</code></pre>
 p</code></pre>
 <pre><code>Warning: Removed 112 rows containing non-finite values (stat_ydensity).</code></pre>
 <pre><code>Warning: Removed 321 rows containing missing values (geom_point).</code></pre>
-<p><img src="figure/supplemental_figure2.Rmd/unnamed-chunk-1-3.png" width="225%" height="10" style="display: block; margin: auto;" /></p>
+<p><img src="figure/supplemental_figure2.Rmd/unnamed-chunk-1-3.png" width="600px" height="400px" style="display: block; margin: auto;" /></p>
 <pre class="r"><code>ggsave(&quot;output/supplemental_figure2C_tcga_wgs_combined.pdf&quot;, p, units = &quot;in&quot;, width = DIM[1], height = DIM[2])</code></pre>
 <pre><code>Warning: Removed 112 rows containing non-finite values (stat_ydensity).</code></pre>
 <pre><code>Warning: Removed 304 rows containing missing values (geom_point).</code></pre>
@@ -778,7 +861,7 @@ analysis.dat &lt;- full_join(analysis.dat, dat) %&gt;%
     theme_classic()
 p</code></pre>
 <pre><code>Warning: Removed 44 rows containing missing values (geom_point).</code></pre>
-<p><img src="figure/supplemental_figure2.Rmd/unnamed-chunk-2-1.png" width="225%" height="10" style="display: block; margin: auto;" /></p>
+<p><img src="figure/supplemental_figure2.Rmd/unnamed-chunk-2-1.png" width="600px" height="400px" style="display: block; margin: auto;" /></p>
 <pre class="r"><code>ggsave(&quot;output/supplemental_figure2C_NCI_fuso.pdf&quot;, p, units = &quot;in&quot;, width = DIM[1], height = DIM[2])</code></pre>
 <pre><code>Warning: Removed 40 rows containing missing values (geom_point).</code></pre>
 <pre class="r"><code>ggsave(&quot;output/supplemental_figure2C_NCI_fuso.png&quot;, p, units = &quot;in&quot;, width = DIM[1], height = DIM[2])</code></pre>
@@ -799,7 +882,7 @@ p</code></pre>
 p</code></pre>
 <pre><code>Warning: Removed 107 rows containing non-finite values (stat_ydensity).</code></pre>
 <pre><code>Warning: Removed 112 rows containing missing values (geom_point).</code></pre>
-<p><img src="figure/supplemental_figure2.Rmd/unnamed-chunk-2-2.png" width="225%" height="10" style="display: block; margin: auto;" /></p>
+<p><img src="figure/supplemental_figure2.Rmd/unnamed-chunk-2-2.png" width="600px" height="400px" style="display: block; margin: auto;" /></p>
 <pre class="r"><code>ggsave(&quot;output/supplemental_figure2C_tcga_rna_fuso.pdf&quot;, p, units = &quot;in&quot;, width = DIM[1], height = DIM[2])</code></pre>
 <pre><code>Warning: Removed 107 rows containing non-finite values (stat_ydensity).</code></pre>
 <pre><code>Warning: Removed 109 rows containing missing values (geom_point).</code></pre>
@@ -822,7 +905,7 @@ Removed 109 rows containing missing values (geom_point).</code></pre>
 p</code></pre>
 <pre><code>Warning: Removed 16 rows containing non-finite values (stat_ydensity).</code></pre>
 <pre><code>Warning: Removed 42 rows containing missing values (geom_point).</code></pre>
-<p><img src="figure/supplemental_figure2.Rmd/unnamed-chunk-2-3.png" width="225%" height="10" style="display: block; margin: auto;" /></p>
+<p><img src="figure/supplemental_figure2.Rmd/unnamed-chunk-2-3.png" width="600px" height="400px" style="display: block; margin: auto;" /></p>
 <pre class="r"><code>ggsave(&quot;output/supplemental_figure2C_tcga_wgs_fuso.pdf&quot;, p, units = &quot;in&quot;, width = DIM[1], height = DIM[2])</code></pre>
 <pre><code>Warning: Removed 16 rows containing non-finite values (stat_ydensity).</code></pre>
 <pre><code>Warning: Removed 30 rows containing missing values (geom_point).</code></pre>
@@ -844,7 +927,7 @@ p</code></pre>
     theme_classic()
 p</code></pre>
 <pre><code>Warning: Removed 22 rows containing missing values (geom_point).</code></pre>
-<p><img src="figure/supplemental_figure2.Rmd/unnamed-chunk-2-4.png" width="225%" height="10" style="display: block; margin: auto;" /></p>
+<p><img src="figure/supplemental_figure2.Rmd/unnamed-chunk-2-4.png" width="600px" height="400px" style="display: block; margin: auto;" /></p>
 <pre class="r"><code>ggsave(&quot;output/supplemental_figure2C_NCI_prevo.pdf&quot;, p, units = &quot;in&quot;, width = DIM[1], height = DIM[2])</code></pre>
 <pre><code>Warning: Removed 16 rows containing missing values (geom_point).</code></pre>
 <pre class="r"><code>ggsave(&quot;output/supplemental_figure2C_NCI_prevo.png&quot;, p, units = &quot;in&quot;, width = DIM[1], height = DIM[2])</code></pre>
@@ -865,7 +948,7 @@ p</code></pre>
 p</code></pre>
 <pre><code>Warning: Removed 107 rows containing non-finite values (stat_ydensity).</code></pre>
 <pre><code>Warning: Removed 109 rows containing missing values (geom_point).</code></pre>
-<p><img src="figure/supplemental_figure2.Rmd/unnamed-chunk-2-5.png" width="225%" height="10" style="display: block; margin: auto;" /></p>
+<p><img src="figure/supplemental_figure2.Rmd/unnamed-chunk-2-5.png" width="600px" height="400px" style="display: block; margin: auto;" /></p>
 <pre class="r"><code>ggsave(&quot;output/supplemental_figure2C_tcga_rna_prevo.pdf&quot;, p, units = &quot;in&quot;, width = DIM[1], height = DIM[2])</code></pre>
 <pre><code>Warning: Removed 107 rows containing non-finite values (stat_ydensity).</code></pre>
 <pre><code>Warning: Removed 111 rows containing missing values (geom_point).</code></pre>
@@ -888,7 +971,7 @@ p</code></pre>
 p</code></pre>
 <pre><code>Warning: Removed 16 rows containing non-finite values (stat_ydensity).</code></pre>
 <pre><code>Warning: Removed 31 rows containing missing values (geom_point).</code></pre>
-<p><img src="figure/supplemental_figure2.Rmd/unnamed-chunk-2-6.png" width="225%" height="10" style="display: block; margin: auto;" /></p>
+<p><img src="figure/supplemental_figure2.Rmd/unnamed-chunk-2-6.png" width="600px" height="400px" style="display: block; margin: auto;" /></p>
 <pre class="r"><code>ggsave(&quot;output/supplemental_figure2C_tcga_wgs_prevo.pdf&quot;, p, units = &quot;in&quot;, width = DIM[1], height = DIM[2])</code></pre>
 <pre><code>Warning: Removed 16 rows containing non-finite values (stat_ydensity).</code></pre>
 <pre><code>Warning: Removed 33 rows containing missing values (geom_point).</code></pre>
@@ -910,7 +993,7 @@ Removed 33 rows containing missing values (geom_point).</code></pre>
     theme_classic()
 p</code></pre>
 <pre><code>Warning: Removed 70 rows containing missing values (geom_point).</code></pre>
-<p><img src="figure/supplemental_figure2.Rmd/unnamed-chunk-2-7.png" width="225%" height="10" style="display: block; margin: auto;" /></p>
+<p><img src="figure/supplemental_figure2.Rmd/unnamed-chunk-2-7.png" width="600px" height="400px" style="display: block; margin: auto;" /></p>
 <pre class="r"><code>ggsave(&quot;output/supplemental_figure2C_NCI_campy.pdf&quot;, p, units = &quot;in&quot;, width = DIM[1], height = DIM[2])</code></pre>
 <pre><code>Warning: Removed 67 rows containing missing values (geom_point).</code></pre>
 <pre class="r"><code>ggsave(&quot;output/supplemental_figure2C_NCI_campy.png&quot;, p, units = &quot;in&quot;, width = DIM[1], height = DIM[2])</code></pre>
@@ -931,7 +1014,7 @@ p</code></pre>
 p</code></pre>
 <pre><code>Warning: Removed 107 rows containing non-finite values (stat_ydensity).</code></pre>
 <pre><code>Warning: Removed 134 rows containing missing values (geom_point).</code></pre>
-<p><img src="figure/supplemental_figure2.Rmd/unnamed-chunk-2-8.png" width="225%" height="10" style="display: block; margin: auto;" /></p>
+<p><img src="figure/supplemental_figure2.Rmd/unnamed-chunk-2-8.png" width="600px" height="400px" style="display: block; margin: auto;" /></p>
 <pre class="r"><code>ggsave(&quot;output/supplemental_figure2C_tcga_rna_campy.pdf&quot;, p, units = &quot;in&quot;, width = DIM[1], height = DIM[2])</code></pre>
 <pre><code>Warning: Removed 107 rows containing non-finite values (stat_ydensity).</code></pre>
 <pre><code>Warning: Removed 132 rows containing missing values (geom_point).</code></pre>
@@ -954,7 +1037,7 @@ p</code></pre>
 p</code></pre>
 <pre><code>Warning: Removed 16 rows containing non-finite values (stat_ydensity).</code></pre>
 <pre><code>Warning: Removed 52 rows containing missing values (geom_point).</code></pre>
-<p><img src="figure/supplemental_figure2.Rmd/unnamed-chunk-2-9.png" width="225%" height="10" style="display: block; margin: auto;" /></p>
+<p><img src="figure/supplemental_figure2.Rmd/unnamed-chunk-2-9.png" width="600px" height="400px" style="display: block; margin: auto;" /></p>
 <pre class="r"><code>ggsave(&quot;output/supplemental_figure2C_tcga_wgs_campy.pdf&quot;, p, units = &quot;in&quot;, width = DIM[1], height = DIM[2])</code></pre>
 <pre><code>Warning: Removed 16 rows containing non-finite values (stat_ydensity).</code></pre>
 <pre><code>Warning: Removed 42 rows containing missing values (geom_point).</code></pre>
@@ -976,7 +1059,7 @@ p</code></pre>
     theme_classic()
 p</code></pre>
 <pre><code>Warning: Removed 3 rows containing missing values (geom_point).</code></pre>
-<p><img src="figure/supplemental_figure2.Rmd/unnamed-chunk-2-10.png" width="225%" height="10" style="display: block; margin: auto;" /></p>
+<p><img src="figure/supplemental_figure2.Rmd/unnamed-chunk-2-10.png" width="600px" height="400px" style="display: block; margin: auto;" /></p>
 <pre class="r"><code>ggsave(&quot;output/supplemental_figure2C_NCI_strepto.pdf&quot;, p, units = &quot;in&quot;, width = DIM[1], height = DIM[2])</code></pre>
 <pre><code>Warning: Removed 4 rows containing missing values (geom_point).</code></pre>
 <pre class="r"><code>ggsave(&quot;output/supplemental_figure2C_NCI_strepto.png&quot;, p, units = &quot;in&quot;, width = DIM[1], height = DIM[2])</code></pre>
@@ -997,7 +1080,7 @@ p</code></pre>
 p</code></pre>
 <pre><code>Warning: Removed 107 rows containing non-finite values (stat_ydensity).</code></pre>
 <pre><code>Warning: Removed 111 rows containing missing values (geom_point).</code></pre>
-<p><img src="figure/supplemental_figure2.Rmd/unnamed-chunk-2-11.png" width="225%" height="10" style="display: block; margin: auto;" /></p>
+<p><img src="figure/supplemental_figure2.Rmd/unnamed-chunk-2-11.png" width="600px" height="400px" style="display: block; margin: auto;" /></p>
 <pre class="r"><code>ggsave(&quot;output/supplemental_figure2C_tcga_rna_strepto.pdf&quot;, p, units = &quot;in&quot;, width = DIM[1], height = DIM[2])</code></pre>
 <pre><code>Warning: Removed 107 rows containing non-finite values (stat_ydensity).</code></pre>
 <pre><code>Warning: Removed 110 rows containing missing values (geom_point).</code></pre>
@@ -1020,7 +1103,7 @@ p</code></pre>
 p</code></pre>
 <pre><code>Warning: Removed 16 rows containing non-finite values (stat_ydensity).</code></pre>
 <pre><code>Warning: Removed 45 rows containing missing values (geom_point).</code></pre>
-<p><img src="figure/supplemental_figure2.Rmd/unnamed-chunk-2-12.png" width="225%" height="10" style="display: block; margin: auto;" /></p>
+<p><img src="figure/supplemental_figure2.Rmd/unnamed-chunk-2-12.png" width="600px" height="400px" style="display: block; margin: auto;" /></p>
 <pre class="r"><code>ggsave(&quot;output/supplemental_figure2C_tcga_wgs_strepto.pdf&quot;, p, units = &quot;in&quot;, width = DIM[1], height = DIM[2])</code></pre>
 <pre><code>Warning: Removed 16 rows containing non-finite values (stat_ydensity).</code></pre>
 <pre><code>Warning: Removed 41 rows containing missing values (geom_point).</code></pre>
@@ -1081,7 +1164,7 @@ analysis.dat &lt;- full_join(analysis.dat, dat) %&gt;%
     theme_classic()
 p</code></pre>
 <pre><code>Warning: Removed 122 rows containing missing values (geom_point).</code></pre>
-<p><img src="figure/supplemental_figure2.Rmd/unnamed-chunk-3-1.png" width="225%" height="10" style="display: block; margin: auto;" /></p>
+<p><img src="figure/supplemental_figure2.Rmd/unnamed-chunk-3-1.png" width="600px" height="400px" style="display: block; margin: auto;" /></p>
 <pre class="r"><code>ggsave(&quot;output/supplemental_figure2D_NCI_combined.pdf&quot;, p, units = &quot;in&quot;, width = DIM[1], height = DIM[2])</code></pre>
 <pre><code>Warning: Removed 137 rows containing missing values (geom_point).</code></pre>
 <pre class="r"><code>ggsave(&quot;output/supplemental_figure2D_NCI_combined.png&quot;, p, units = &quot;in&quot;, width = DIM[1], height = DIM[2])</code></pre>
@@ -1102,7 +1185,7 @@ p</code></pre>
 p</code></pre>
 <pre><code>Warning: Removed 749 rows containing non-finite values (stat_ydensity).</code></pre>
 <pre><code>Warning: Removed 817 rows containing missing values (geom_point).</code></pre>
-<p><img src="figure/supplemental_figure2.Rmd/unnamed-chunk-3-2.png" width="225%" height="10" style="display: block; margin: auto;" /></p>
+<p><img src="figure/supplemental_figure2.Rmd/unnamed-chunk-3-2.png" width="600px" height="400px" style="display: block; margin: auto;" /></p>
 <pre class="r"><code>ggsave(&quot;output/supplemental_figure2D_tcga_rna_combined.pdf&quot;, p, units = &quot;in&quot;, width = DIM[1], height = DIM[2])</code></pre>
 <pre><code>Warning: Removed 749 rows containing non-finite values (stat_ydensity).</code></pre>
 <pre><code>Warning: Removed 840 rows containing missing values (geom_point).</code></pre>
@@ -1125,7 +1208,7 @@ p</code></pre>
 p</code></pre>
 <pre><code>Warning: Removed 112 rows containing non-finite values (stat_ydensity).</code></pre>
 <pre><code>Warning: Removed 322 rows containing missing values (geom_point).</code></pre>
-<p><img src="figure/supplemental_figure2.Rmd/unnamed-chunk-3-3.png" width="225%" height="10" style="display: block; margin: auto;" /></p>
+<p><img src="figure/supplemental_figure2.Rmd/unnamed-chunk-3-3.png" width="600px" height="400px" style="display: block; margin: auto;" /></p>
 <pre class="r"><code>ggsave(&quot;output/supplemental_figure2D_tcga_wgs_combined.pdf&quot;, p, units = &quot;in&quot;, width = DIM[1], height = DIM[2])</code></pre>
 <pre><code>Warning: Removed 112 rows containing non-finite values (stat_ydensity).</code></pre>
 <pre><code>Warning: Removed 305 rows containing missing values (geom_point).</code></pre>
@@ -1173,7 +1256,7 @@ analysis.dat &lt;- full_join(analysis.dat, dat) %&gt;%
     theme_classic()
 p</code></pre>
 <pre><code>Warning: Removed 39 rows containing missing values (geom_point).</code></pre>
-<p><img src="figure/supplemental_figure2.Rmd/unnamed-chunk-4-1.png" width="225%" height="10" style="display: block; margin: auto;" /></p>
+<p><img src="figure/supplemental_figure2.Rmd/unnamed-chunk-4-1.png" width="600px" height="400px" style="display: block; margin: auto;" /></p>
 <pre class="r"><code>ggsave(&quot;output/supplemental_figure2D_NCI_fuso.pdf&quot;, p, units = &quot;in&quot;, width = DIM[1], height = DIM[2])</code></pre>
 <pre><code>Warning: Removed 39 rows containing missing values (geom_point).</code></pre>
 <pre class="r"><code>ggsave(&quot;output/supplemental_figure2D_NCI_fuso.png&quot;, p, units = &quot;in&quot;, width = DIM[1], height = DIM[2])</code></pre>
@@ -1194,7 +1277,7 @@ p</code></pre>
 p</code></pre>
 <pre><code>Warning: Removed 107 rows containing non-finite values (stat_ydensity).</code></pre>
 <pre><code>Warning: Removed 112 rows containing missing values (geom_point).</code></pre>
-<p><img src="figure/supplemental_figure2.Rmd/unnamed-chunk-4-2.png" width="225%" height="10" style="display: block; margin: auto;" /></p>
+<p><img src="figure/supplemental_figure2.Rmd/unnamed-chunk-4-2.png" width="600px" height="400px" style="display: block; margin: auto;" /></p>
 <pre class="r"><code>ggsave(&quot;output/supplemental_figure2D_tcga_rna_fuso.pdf&quot;, p, units = &quot;in&quot;, width = DIM[1], height = DIM[2])</code></pre>
 <pre><code>Warning: Removed 107 rows containing non-finite values (stat_ydensity).</code></pre>
 <pre><code>Warning: Removed 111 rows containing missing values (geom_point).</code></pre>
@@ -1217,7 +1300,7 @@ p</code></pre>
 p</code></pre>
 <pre><code>Warning: Removed 16 rows containing non-finite values (stat_ydensity).</code></pre>
 <pre><code>Warning: Removed 42 rows containing missing values (geom_point).</code></pre>
-<p><img src="figure/supplemental_figure2.Rmd/unnamed-chunk-4-3.png" width="225%" height="10" style="display: block; margin: auto;" /></p>
+<p><img src="figure/supplemental_figure2.Rmd/unnamed-chunk-4-3.png" width="600px" height="400px" style="display: block; margin: auto;" /></p>
 <pre class="r"><code>ggsave(&quot;output/supplemental_figure2D_tcga_wgs_fuso.pdf&quot;, p, units = &quot;in&quot;, width = DIM[1], height = DIM[2])</code></pre>
 <pre><code>Warning: Removed 16 rows containing non-finite values (stat_ydensity).</code></pre>
 <pre><code>Warning: Removed 34 rows containing missing values (geom_point).</code></pre>
@@ -1239,7 +1322,7 @@ p</code></pre>
     theme_classic()
 p</code></pre>
 <pre><code>Warning: Removed 26 rows containing missing values (geom_point).</code></pre>
-<p><img src="figure/supplemental_figure2.Rmd/unnamed-chunk-4-4.png" width="225%" height="10" style="display: block; margin: auto;" /></p>
+<p><img src="figure/supplemental_figure2.Rmd/unnamed-chunk-4-4.png" width="600px" height="400px" style="display: block; margin: auto;" /></p>
 <pre class="r"><code>ggsave(&quot;output/supplemental_figure2D_NCI_prevo.pdf&quot;, p, units = &quot;in&quot;, width = DIM[1], height = DIM[2])</code></pre>
 <pre><code>Warning: Removed 22 rows containing missing values (geom_point).</code></pre>
 <pre class="r"><code>ggsave(&quot;output/supplemental_figure2D_NCI_prevo.png&quot;, p, units = &quot;in&quot;, width = DIM[1], height = DIM[2])</code></pre>
@@ -1260,7 +1343,7 @@ p</code></pre>
 p</code></pre>
 <pre><code>Warning: Removed 107 rows containing non-finite values (stat_ydensity).</code></pre>
 <pre><code>Warning: Removed 111 rows containing missing values (geom_point).</code></pre>
-<p><img src="figure/supplemental_figure2.Rmd/unnamed-chunk-4-5.png" width="225%" height="10" style="display: block; margin: auto;" /></p>
+<p><img src="figure/supplemental_figure2.Rmd/unnamed-chunk-4-5.png" width="600px" height="400px" style="display: block; margin: auto;" /></p>
 <pre class="r"><code>ggsave(&quot;output/supplemental_figure2D_tcga_rna_prevo.pdf&quot;, p, units = &quot;in&quot;, width = DIM[1], height = DIM[2])</code></pre>
 <pre><code>Warning: Removed 107 rows containing non-finite values (stat_ydensity).</code></pre>
 <pre><code>Warning: Removed 110 rows containing missing values (geom_point).</code></pre>
@@ -1283,7 +1366,7 @@ Removed 110 rows containing missing values (geom_point).</code></pre>
 p</code></pre>
 <pre><code>Warning: Removed 16 rows containing non-finite values (stat_ydensity).</code></pre>
 <pre><code>Warning: Removed 29 rows containing missing values (geom_point).</code></pre>
-<p><img src="figure/supplemental_figure2.Rmd/unnamed-chunk-4-6.png" width="225%" height="10" style="display: block; margin: auto;" /></p>
+<p><img src="figure/supplemental_figure2.Rmd/unnamed-chunk-4-6.png" width="600px" height="400px" style="display: block; margin: auto;" /></p>
 <pre class="r"><code>ggsave(&quot;output/supplemental_figure2D_tcga_wgs_prevo.pdf&quot;, p, units = &quot;in&quot;, width = DIM[1], height = DIM[2])</code></pre>
 <pre><code>Warning: Removed 16 rows containing non-finite values (stat_ydensity).</code></pre>
 <pre><code>Warning: Removed 32 rows containing missing values (geom_point).</code></pre>
@@ -1305,7 +1388,7 @@ p</code></pre>
     theme_classic()
 p</code></pre>
 <pre><code>Warning: Removed 62 rows containing missing values (geom_point).</code></pre>
-<p><img src="figure/supplemental_figure2.Rmd/unnamed-chunk-4-7.png" width="225%" height="10" style="display: block; margin: auto;" /></p>
+<p><img src="figure/supplemental_figure2.Rmd/unnamed-chunk-4-7.png" width="600px" height="400px" style="display: block; margin: auto;" /></p>
 <pre class="r"><code>ggsave(&quot;output/supplemental_figure2D_NCI_campy.pdf&quot;, p, units = &quot;in&quot;, width = DIM[1], height = DIM[2])</code></pre>
 <pre><code>Warning: Removed 63 rows containing missing values (geom_point).</code></pre>
 <pre class="r"><code>ggsave(&quot;output/supplemental_figure2D_NCI_campy.png&quot;, p, units = &quot;in&quot;, width = DIM[1], height = DIM[2])</code></pre>
@@ -1326,7 +1409,7 @@ p</code></pre>
 p</code></pre>
 <pre><code>Warning: Removed 107 rows containing non-finite values (stat_ydensity).</code></pre>
 <pre><code>Warning: Removed 123 rows containing missing values (geom_point).</code></pre>
-<p><img src="figure/supplemental_figure2.Rmd/unnamed-chunk-4-8.png" width="225%" height="10" style="display: block; margin: auto;" /></p>
+<p><img src="figure/supplemental_figure2.Rmd/unnamed-chunk-4-8.png" width="600px" height="400px" style="display: block; margin: auto;" /></p>
 <pre class="r"><code>ggsave(&quot;output/supplemental_figure2D_tcga_rna_campy.pdf&quot;, p, units = &quot;in&quot;, width = DIM[1], height = DIM[2])</code></pre>
 <pre><code>Warning: Removed 107 rows containing non-finite values (stat_ydensity).</code></pre>
 <pre><code>Warning: Removed 134 rows containing missing values (geom_point).</code></pre>
@@ -1349,7 +1432,7 @@ p</code></pre>
 p</code></pre>
 <pre><code>Warning: Removed 16 rows containing non-finite values (stat_ydensity).</code></pre>
 <pre><code>Warning: Removed 41 rows containing missing values (geom_point).</code></pre>
-<p><img src="figure/supplemental_figure2.Rmd/unnamed-chunk-4-9.png" width="225%" height="10" style="display: block; margin: auto;" /></p>
+<p><img src="figure/supplemental_figure2.Rmd/unnamed-chunk-4-9.png" width="600px" height="400px" style="display: block; margin: auto;" /></p>
 <pre class="r"><code>ggsave(&quot;output/supplemental_figure2D_tcga_wgs_campy.pdf&quot;, p, units = &quot;in&quot;, width = DIM[1], height = DIM[2])</code></pre>
 <pre><code>Warning: Removed 16 rows containing non-finite values (stat_ydensity).</code></pre>
 <pre><code>Warning: Removed 48 rows containing missing values (geom_point).</code></pre>
@@ -1371,7 +1454,7 @@ Removed 48 rows containing missing values (geom_point).</code></pre>
     theme_classic()
 p</code></pre>
 <pre><code>Warning: Removed 5 rows containing missing values (geom_point).</code></pre>
-<p><img src="figure/supplemental_figure2.Rmd/unnamed-chunk-4-10.png" width="225%" height="10" style="display: block; margin: auto;" /></p>
+<p><img src="figure/supplemental_figure2.Rmd/unnamed-chunk-4-10.png" width="600px" height="400px" style="display: block; margin: auto;" /></p>
 <pre class="r"><code>ggsave(&quot;output/supplemental_figure2D_NCI_strepto.pdf&quot;, p, units = &quot;in&quot;, width = DIM[1], height = DIM[2])</code></pre>
 <pre><code>Warning: Removed 5 rows containing missing values (geom_point).</code></pre>
 <pre class="r"><code>ggsave(&quot;output/supplemental_figure2D_NCI_strepto.png&quot;, p, units = &quot;in&quot;, width = DIM[1], height = DIM[2])</code></pre>
@@ -1392,7 +1475,7 @@ p</code></pre>
 p</code></pre>
 <pre><code>Warning: Removed 107 rows containing non-finite values (stat_ydensity).</code></pre>
 <pre><code>Warning: Removed 108 rows containing missing values (geom_point).</code></pre>
-<p><img src="figure/supplemental_figure2.Rmd/unnamed-chunk-4-11.png" width="225%" height="10" style="display: block; margin: auto;" /></p>
+<p><img src="figure/supplemental_figure2.Rmd/unnamed-chunk-4-11.png" width="600px" height="400px" style="display: block; margin: auto;" /></p>
 <pre class="r"><code>ggsave(&quot;output/supplemental_figure2D_tcga_rna_strepto.pdf&quot;, p, units = &quot;in&quot;, width = DIM[1], height = DIM[2])</code></pre>
 <pre><code>Warning: Removed 107 rows containing non-finite values (stat_ydensity).</code></pre>
 <pre><code>Warning: Removed 111 rows containing missing values (geom_point).</code></pre>
@@ -1415,7 +1498,7 @@ p</code></pre>
 p</code></pre>
 <pre><code>Warning: Removed 16 rows containing non-finite values (stat_ydensity).</code></pre>
 <pre><code>Warning: Removed 49 rows containing missing values (geom_point).</code></pre>
-<p><img src="figure/supplemental_figure2.Rmd/unnamed-chunk-4-12.png" width="225%" height="10" style="display: block; margin: auto;" /></p>
+<p><img src="figure/supplemental_figure2.Rmd/unnamed-chunk-4-12.png" width="600px" height="400px" style="display: block; margin: auto;" /></p>
 <pre class="r"><code>ggsave(&quot;output/supplemental_figure2D_tcga_wgs_strepto.pdf&quot;, p, units = &quot;in&quot;, width = DIM[1], height = DIM[2])</code></pre>
 <pre><code>Warning: Removed 16 rows containing non-finite values (stat_ydensity).</code></pre>
 <pre><code>Warning: Removed 46 rows containing missing values (geom_point).</code></pre>
@@ -1483,7 +1566,7 @@ p &lt;- analysis.dat %&gt;%
     theme_classic()
 p</code></pre>
 <pre><code>Warning: Removed 132 rows containing missing values (geom_point).</code></pre>
-<p><img src="figure/supplemental_figure2.Rmd/unnamed-chunk-5-1.png" width="225%" height="10" style="display: block; margin: auto;" /></p>
+<p><img src="figure/supplemental_figure2.Rmd/unnamed-chunk-5-1.png" width="600px" height="400px" style="display: block; margin: auto;" /></p>
 <pre class="r"><code>ggsave(&quot;output/supplemental_figure2E_NCI_combined.pdf&quot;, p, units = &quot;in&quot;, width = DIM[1], height = DIM[2])</code></pre>
 <pre><code>Warning: Removed 141 rows containing missing values (geom_point).</code></pre>
 <pre class="r"><code>ggsave(&quot;output/supplemental_figure2E_NCI_combined.png&quot;, p, units = &quot;in&quot;, width = DIM[1], height = DIM[2])</code></pre>
@@ -1504,7 +1587,7 @@ p</code></pre>
 p</code></pre>
 <pre><code>Warning: Removed 651 rows containing non-finite values (stat_ydensity).</code></pre>
 <pre><code>Warning: Removed 714 rows containing missing values (geom_point).</code></pre>
-<p><img src="figure/supplemental_figure2.Rmd/unnamed-chunk-5-2.png" width="225%" height="10" style="display: block; margin: auto;" /></p>
+<p><img src="figure/supplemental_figure2.Rmd/unnamed-chunk-5-2.png" width="600px" height="400px" style="display: block; margin: auto;" /></p>
 <pre class="r"><code>ggsave(&quot;output/supplemental_figure2E_tcga_rna_combined.pdf&quot;, p, units = &quot;in&quot;, width = DIM[1], height = DIM[2])</code></pre>
 <pre><code>Warning: Removed 651 rows containing non-finite values (stat_ydensity).</code></pre>
 <pre><code>Warning: Removed 712 rows containing missing values (geom_point).</code></pre>
@@ -1527,7 +1610,7 @@ p</code></pre>
 p</code></pre>
 <pre><code>Warning: Removed 112 rows containing non-finite values (stat_ydensity).</code></pre>
 <pre><code>Warning: Removed 305 rows containing missing values (geom_point).</code></pre>
-<p><img src="figure/supplemental_figure2.Rmd/unnamed-chunk-5-3.png" width="225%" height="10" style="display: block; margin: auto;" /></p>
+<p><img src="figure/supplemental_figure2.Rmd/unnamed-chunk-5-3.png" width="600px" height="400px" style="display: block; margin: auto;" /></p>
 <pre class="r"><code>ggsave(&quot;output/supplemental_figure2E_tcga_wgs_combined.pdf&quot;, p, units = &quot;in&quot;, width = DIM[1], height = DIM[2])</code></pre>
 <pre><code>Warning: Removed 112 rows containing non-finite values (stat_ydensity).</code></pre>
 <pre><code>Warning: Removed 309 rows containing missing values (geom_point).</code></pre>
@@ -1582,7 +1665,7 @@ p &lt;- analysis.dat %&gt;%
     theme_classic()
 p</code></pre>
 <pre><code>Warning: Removed 46 rows containing missing values (geom_point).</code></pre>
-<p><img src="figure/supplemental_figure2.Rmd/unnamed-chunk-6-1.png" width="225%" height="10" style="display: block; margin: auto;" /></p>
+<p><img src="figure/supplemental_figure2.Rmd/unnamed-chunk-6-1.png" width="600px" height="400px" style="display: block; margin: auto;" /></p>
 <pre class="r"><code>ggsave(&quot;output/supplemental_figure2E_NCI_fuso.pdf&quot;, p, units = &quot;in&quot;, width = DIM[1], height = DIM[2])</code></pre>
 <pre><code>Warning: Removed 36 rows containing missing values (geom_point).</code></pre>
 <pre class="r"><code>ggsave(&quot;output/supplemental_figure2E_NCI_fuso.png&quot;, p, units = &quot;in&quot;, width = DIM[1], height = DIM[2])</code></pre>
@@ -1604,7 +1687,7 @@ p</code></pre>
 <pre><code>Warning: Removed 93 rows containing non-finite values (stat_ydensity).</code></pre>
 <pre><code>Warning: Groups with fewer than two data points have been dropped.</code></pre>
 <pre><code>Warning: Removed 96 rows containing missing values (geom_point).</code></pre>
-<p><img src="figure/supplemental_figure2.Rmd/unnamed-chunk-6-2.png" width="225%" height="10" style="display: block; margin: auto;" /></p>
+<p><img src="figure/supplemental_figure2.Rmd/unnamed-chunk-6-2.png" width="600px" height="400px" style="display: block; margin: auto;" /></p>
 <pre class="r"><code>ggsave(&quot;output/supplemental_figure2E_tcga_rna_fuso.pdf&quot;, p, units = &quot;in&quot;, width = DIM[1], height = DIM[2])</code></pre>
 <pre><code>Warning: Removed 93 rows containing non-finite values (stat_ydensity).</code></pre>
 <pre><code>Warning: Groups with fewer than two data points have been dropped.</code></pre>
@@ -1629,7 +1712,7 @@ p</code></pre>
 p</code></pre>
 <pre><code>Warning: Removed 16 rows containing non-finite values (stat_ydensity).</code></pre>
 <pre><code>Warning: Removed 37 rows containing missing values (geom_point).</code></pre>
-<p><img src="figure/supplemental_figure2.Rmd/unnamed-chunk-6-3.png" width="225%" height="10" style="display: block; margin: auto;" /></p>
+<p><img src="figure/supplemental_figure2.Rmd/unnamed-chunk-6-3.png" width="600px" height="400px" style="display: block; margin: auto;" /></p>
 <pre class="r"><code>ggsave(&quot;output/supplemental_figure2E_tcga_wgs_fuso.pdf&quot;, p, units = &quot;in&quot;, width = DIM[1], height = DIM[2])</code></pre>
 <pre><code>Warning: Removed 16 rows containing non-finite values (stat_ydensity).</code></pre>
 <pre><code>Warning: Removed 39 rows containing missing values (geom_point).</code></pre>
@@ -1651,7 +1734,7 @@ p</code></pre>
     theme_classic()
 p</code></pre>
 <pre><code>Warning: Removed 21 rows containing missing values (geom_point).</code></pre>
-<p><img src="figure/supplemental_figure2.Rmd/unnamed-chunk-6-4.png" width="225%" height="10" style="display: block; margin: auto;" /></p>
+<p><img src="figure/supplemental_figure2.Rmd/unnamed-chunk-6-4.png" width="600px" height="400px" style="display: block; margin: auto;" /></p>
 <pre class="r"><code>ggsave(&quot;output/supplemental_figure2E_NCI_prevo.pdf&quot;, p, units = &quot;in&quot;, width = DIM[1], height = DIM[2])</code></pre>
 <pre><code>Warning: Removed 21 rows containing missing values (geom_point).</code></pre>
 <pre class="r"><code>ggsave(&quot;output/supplemental_figure2E_NCI_prevo.png&quot;, p, units = &quot;in&quot;, width = DIM[1], height = DIM[2])</code></pre>
@@ -1673,7 +1756,7 @@ p</code></pre>
 <pre><code>Warning: Removed 93 rows containing non-finite values (stat_ydensity).</code></pre>
 <pre><code>Warning: Groups with fewer than two data points have been dropped.</code></pre>
 <pre><code>Warning: Removed 98 rows containing missing values (geom_point).</code></pre>
-<p><img src="figure/supplemental_figure2.Rmd/unnamed-chunk-6-5.png" width="225%" height="10" style="display: block; margin: auto;" /></p>
+<p><img src="figure/supplemental_figure2.Rmd/unnamed-chunk-6-5.png" width="600px" height="400px" style="display: block; margin: auto;" /></p>
 <pre class="r"><code>ggsave(&quot;output/supplemental_figure2E_tcga_rna_prevo.pdf&quot;, p, units = &quot;in&quot;, width = DIM[1], height = DIM[2])</code></pre>
 <pre><code>Warning: Removed 93 rows containing non-finite values (stat_ydensity).</code></pre>
 <pre><code>Warning: Groups with fewer than two data points have been dropped.</code></pre>
@@ -1698,7 +1781,7 @@ p</code></pre>
 p</code></pre>
 <pre><code>Warning: Removed 16 rows containing non-finite values (stat_ydensity).</code></pre>
 <pre><code>Warning: Removed 36 rows containing missing values (geom_point).</code></pre>
-<p><img src="figure/supplemental_figure2.Rmd/unnamed-chunk-6-6.png" width="225%" height="10" style="display: block; margin: auto;" /></p>
+<p><img src="figure/supplemental_figure2.Rmd/unnamed-chunk-6-6.png" width="600px" height="400px" style="display: block; margin: auto;" /></p>
 <pre class="r"><code>ggsave(&quot;output/supplemental_figure2E_tcga_wgs_prevo.pdf&quot;, p, units = &quot;in&quot;, width = DIM[1], height = DIM[2])</code></pre>
 <pre><code>Warning: Removed 16 rows containing non-finite values (stat_ydensity).</code></pre>
 <pre><code>Warning: Removed 35 rows containing missing values (geom_point).</code></pre>
@@ -1720,7 +1803,7 @@ p</code></pre>
     theme_classic()
 p</code></pre>
 <pre><code>Warning: Removed 59 rows containing missing values (geom_point).</code></pre>
-<p><img src="figure/supplemental_figure2.Rmd/unnamed-chunk-6-7.png" width="225%" height="10" style="display: block; margin: auto;" /></p>
+<p><img src="figure/supplemental_figure2.Rmd/unnamed-chunk-6-7.png" width="600px" height="400px" style="display: block; margin: auto;" /></p>
 <pre class="r"><code>ggsave(&quot;output/supplemental_figure2E_NCI_campy.pdf&quot;, p, units = &quot;in&quot;, width = DIM[1], height = DIM[2])</code></pre>
 <pre><code>Warning: Removed 59 rows containing missing values (geom_point).</code></pre>
 <pre class="r"><code>ggsave(&quot;output/supplemental_figure2E_NCI_campy.png&quot;, p, units = &quot;in&quot;, width = DIM[1], height = DIM[2])</code></pre>
@@ -1742,7 +1825,7 @@ p</code></pre>
 <pre><code>Warning: Removed 93 rows containing non-finite values (stat_ydensity).</code></pre>
 <pre><code>Warning: Groups with fewer than two data points have been dropped.</code></pre>
 <pre><code>Warning: Removed 108 rows containing missing values (geom_point).</code></pre>
-<p><img src="figure/supplemental_figure2.Rmd/unnamed-chunk-6-8.png" width="225%" height="10" style="display: block; margin: auto;" /></p>
+<p><img src="figure/supplemental_figure2.Rmd/unnamed-chunk-6-8.png" width="600px" height="400px" style="display: block; margin: auto;" /></p>
 <pre class="r"><code>ggsave(&quot;output/supplemental_figure2E_tcga_rna_campy.pdf&quot;, p, units = &quot;in&quot;, width = DIM[1], height = DIM[2])</code></pre>
 <pre><code>Warning: Removed 93 rows containing non-finite values (stat_ydensity).</code></pre>
 <pre><code>Warning: Groups with fewer than two data points have been dropped.</code></pre>
@@ -1767,7 +1850,7 @@ p</code></pre>
 p</code></pre>
 <pre><code>Warning: Removed 16 rows containing non-finite values (stat_ydensity).</code></pre>
 <pre><code>Warning: Removed 47 rows containing missing values (geom_point).</code></pre>
-<p><img src="figure/supplemental_figure2.Rmd/unnamed-chunk-6-9.png" width="225%" height="10" style="display: block; margin: auto;" /></p>
+<p><img src="figure/supplemental_figure2.Rmd/unnamed-chunk-6-9.png" width="600px" height="400px" style="display: block; margin: auto;" /></p>
 <pre class="r"><code>ggsave(&quot;output/supplemental_figure2E_tcga_wgs_campy.pdf&quot;, p, units = &quot;in&quot;, width = DIM[1], height = DIM[2])</code></pre>
 <pre><code>Warning: Removed 16 rows containing non-finite values (stat_ydensity).</code></pre>
 <pre><code>Warning: Removed 52 rows containing missing values (geom_point).</code></pre>
@@ -1789,7 +1872,7 @@ p</code></pre>
     theme_classic()
 p</code></pre>
 <pre><code>Warning: Removed 2 rows containing missing values (geom_point).</code></pre>
-<p><img src="figure/supplemental_figure2.Rmd/unnamed-chunk-6-10.png" width="225%" height="10" style="display: block; margin: auto;" /></p>
+<p><img src="figure/supplemental_figure2.Rmd/unnamed-chunk-6-10.png" width="600px" height="400px" style="display: block; margin: auto;" /></p>
 <pre class="r"><code>ggsave(&quot;output/supplemental_figure2E_NCI_strepto.pdf&quot;, p, units = &quot;in&quot;, width = DIM[1], height = DIM[2])</code></pre>
 <pre><code>Warning: Removed 1 rows containing missing values (geom_point).</code></pre>
 <pre class="r"><code>ggsave(&quot;output/supplemental_figure2E_NCI_strepto.png&quot;, p, units = &quot;in&quot;, width = DIM[1], height = DIM[2])</code></pre>
@@ -1811,7 +1894,7 @@ p</code></pre>
 <pre><code>Warning: Removed 93 rows containing non-finite values (stat_ydensity).</code></pre>
 <pre><code>Warning: Groups with fewer than two data points have been dropped.</code></pre>
 <pre><code>Warning: Removed 99 rows containing missing values (geom_point).</code></pre>
-<p><img src="figure/supplemental_figure2.Rmd/unnamed-chunk-6-11.png" width="225%" height="10" style="display: block; margin: auto;" /></p>
+<p><img src="figure/supplemental_figure2.Rmd/unnamed-chunk-6-11.png" width="600px" height="400px" style="display: block; margin: auto;" /></p>
 <pre class="r"><code>ggsave(&quot;output/supplemental_figure2E_tcga_rna_strepto.pdf&quot;, p, units = &quot;in&quot;, width = DIM[1], height = DIM[2])</code></pre>
 <pre><code>Warning: Removed 93 rows containing non-finite values (stat_ydensity).</code></pre>
 <pre><code>Warning: Groups with fewer than two data points have been dropped.</code></pre>
@@ -1836,7 +1919,7 @@ p</code></pre>
 p</code></pre>
 <pre><code>Warning: Removed 16 rows containing non-finite values (stat_ydensity).</code></pre>
 <pre><code>Warning: Removed 48 rows containing missing values (geom_point).</code></pre>
-<p><img src="figure/supplemental_figure2.Rmd/unnamed-chunk-6-12.png" width="225%" height="10" style="display: block; margin: auto;" /></p>
+<p><img src="figure/supplemental_figure2.Rmd/unnamed-chunk-6-12.png" width="600px" height="400px" style="display: block; margin: auto;" /></p>
 <pre class="r"><code>ggsave(&quot;output/supplemental_figure2E_tcga_wgs_strepto.pdf&quot;, p, units = &quot;in&quot;, width = DIM[1], height = DIM[2])</code></pre>
 <pre><code>Warning: Removed 16 rows containing non-finite values (stat_ydensity).</code></pre>
 <pre><code>Warning: Removed 51 rows containing missing values (geom_point).</code></pre>
@@ -1899,7 +1982,7 @@ p &lt;- analysis.dat %&gt;%
     theme_classic()
 p</code></pre>
 <pre><code>Warning: Removed 127 rows containing missing values (geom_point).</code></pre>
-<p><img src="figure/supplemental_figure2.Rmd/unnamed-chunk-7-1.png" width="225%" height="10" style="display: block; margin: auto;" /></p>
+<p><img src="figure/supplemental_figure2.Rmd/unnamed-chunk-7-1.png" width="600px" height="400px" style="display: block; margin: auto;" /></p>
 <pre class="r"><code>ggsave(&quot;output/supplemental_figure2F_NCI_combined.pdf&quot;, p, units = &quot;in&quot;, width = DIM[1], height = DIM[2])</code></pre>
 <pre><code>Warning: Removed 126 rows containing missing values (geom_point).</code></pre>
 <pre class="r"><code>ggsave(&quot;output/supplemental_figure2F_NCI_combined.png&quot;, p, units = &quot;in&quot;, width = DIM[1], height = DIM[2])</code></pre>
@@ -1920,7 +2003,7 @@ p</code></pre>
 p</code></pre>
 <pre><code>Warning: Removed 658 rows containing non-finite values (stat_ydensity).</code></pre>
 <pre><code>Warning: Removed 728 rows containing missing values (geom_point).</code></pre>
-<p><img src="figure/supplemental_figure2.Rmd/unnamed-chunk-7-2.png" width="225%" height="10" style="display: block; margin: auto;" /></p>
+<p><img src="figure/supplemental_figure2.Rmd/unnamed-chunk-7-2.png" width="600px" height="400px" style="display: block; margin: auto;" /></p>
 <pre class="r"><code>ggsave(&quot;output/supplemental_figure2F_tcga_rna_combined.pdf&quot;, p, units = &quot;in&quot;, width = DIM[1], height = DIM[2])</code></pre>
 <pre><code>Warning: Removed 658 rows containing non-finite values (stat_ydensity).</code></pre>
 <pre><code>Warning: Removed 730 rows containing missing values (geom_point).</code></pre>
@@ -1943,7 +2026,7 @@ p</code></pre>
 p</code></pre>
 <pre><code>Warning: Removed 98 rows containing non-finite values (stat_ydensity).</code></pre>
 <pre><code>Warning: Removed 276 rows containing missing values (geom_point).</code></pre>
-<p><img src="figure/supplemental_figure2.Rmd/unnamed-chunk-7-3.png" width="225%" height="10" style="display: block; margin: auto;" /></p>
+<p><img src="figure/supplemental_figure2.Rmd/unnamed-chunk-7-3.png" width="600px" height="400px" style="display: block; margin: auto;" /></p>
 <pre class="r"><code>ggsave(&quot;output/supplemental_figure2F_tcga_wgs_combined.pdf&quot;, p, units = &quot;in&quot;, width = DIM[1], height = DIM[2])</code></pre>
 <pre><code>Warning: Removed 98 rows containing non-finite values (stat_ydensity).</code></pre>
 <pre><code>Warning: Removed 282 rows containing missing values (geom_point).</code></pre>
@@ -1995,7 +2078,7 @@ p &lt;- analysis.dat %&gt;%
 p</code></pre>
 <pre><code>Warning: Groups with fewer than two data points have been dropped.</code></pre>
 <pre><code>Warning: Removed 46 rows containing missing values (geom_point).</code></pre>
-<p><img src="figure/supplemental_figure2.Rmd/unnamed-chunk-8-1.png" width="225%" height="10" style="display: block; margin: auto;" /></p>
+<p><img src="figure/supplemental_figure2.Rmd/unnamed-chunk-8-1.png" width="600px" height="400px" style="display: block; margin: auto;" /></p>
 <pre class="r"><code>ggsave(&quot;output/supplemental_figure2F_NCI_fuso.pdf&quot;, p, units = &quot;in&quot;, width = DIM[1], height = DIM[2])</code></pre>
 <pre><code>Warning: Groups with fewer than two data points have been dropped.
 Removed 46 rows containing missing values (geom_point).</code></pre>
@@ -2018,7 +2101,7 @@ Removed 46 rows containing missing values (geom_point).</code></pre>
 p</code></pre>
 <pre><code>Warning: Removed 94 rows containing non-finite values (stat_ydensity).</code></pre>
 <pre><code>Warning: Removed 97 rows containing missing values (geom_point).</code></pre>
-<p><img src="figure/supplemental_figure2.Rmd/unnamed-chunk-8-2.png" width="225%" height="10" style="display: block; margin: auto;" /></p>
+<p><img src="figure/supplemental_figure2.Rmd/unnamed-chunk-8-2.png" width="600px" height="400px" style="display: block; margin: auto;" /></p>
 <pre class="r"><code>ggsave(&quot;output/supplemental_figure2F_tcga_rna_fuso.pdf&quot;, p, units = &quot;in&quot;, width = DIM[1], height = DIM[2])</code></pre>
 <pre><code>Warning: Removed 94 rows containing non-finite values (stat_ydensity).
 Removed 97 rows containing missing values (geom_point).</code></pre>
@@ -2041,7 +2124,7 @@ Removed 97 rows containing missing values (geom_point).</code></pre>
 p</code></pre>
 <pre><code>Warning: Removed 14 rows containing non-finite values (stat_ydensity).</code></pre>
 <pre><code>Warning: Removed 38 rows containing missing values (geom_point).</code></pre>
-<p><img src="figure/supplemental_figure2.Rmd/unnamed-chunk-8-3.png" width="225%" height="10" style="display: block; margin: auto;" /></p>
+<p><img src="figure/supplemental_figure2.Rmd/unnamed-chunk-8-3.png" width="600px" height="400px" style="display: block; margin: auto;" /></p>
 <pre class="r"><code>ggsave(&quot;output/supplemental_figure2F_tcga_wgs_fuso.pdf&quot;, p, units = &quot;in&quot;, width = DIM[1], height = DIM[2])</code></pre>
 <pre><code>Warning: Removed 14 rows containing non-finite values (stat_ydensity).</code></pre>
 <pre><code>Warning: Removed 35 rows containing missing values (geom_point).</code></pre>
@@ -2064,7 +2147,7 @@ p</code></pre>
 p</code></pre>
 <pre><code>Warning: Groups with fewer than two data points have been dropped.</code></pre>
 <pre><code>Warning: Removed 20 rows containing missing values (geom_point).</code></pre>
-<p><img src="figure/supplemental_figure2.Rmd/unnamed-chunk-8-4.png" width="225%" height="10" style="display: block; margin: auto;" /></p>
+<p><img src="figure/supplemental_figure2.Rmd/unnamed-chunk-8-4.png" width="600px" height="400px" style="display: block; margin: auto;" /></p>
 <pre class="r"><code>ggsave(&quot;output/supplemental_figure2F_NCI_prevo.pdf&quot;, p, units = &quot;in&quot;, width = DIM[1], height = DIM[2])</code></pre>
 <pre><code>Warning: Groups with fewer than two data points have been dropped.</code></pre>
 <pre><code>Warning: Removed 18 rows containing missing values (geom_point).</code></pre>
@@ -2087,7 +2170,7 @@ p</code></pre>
 p</code></pre>
 <pre><code>Warning: Removed 94 rows containing non-finite values (stat_ydensity).</code></pre>
 <pre><code>Warning: Removed 97 rows containing missing values (geom_point).</code></pre>
-<p><img src="figure/supplemental_figure2.Rmd/unnamed-chunk-8-5.png" width="225%" height="10" style="display: block; margin: auto;" /></p>
+<p><img src="figure/supplemental_figure2.Rmd/unnamed-chunk-8-5.png" width="600px" height="400px" style="display: block; margin: auto;" /></p>
 <pre class="r"><code>ggsave(&quot;output/supplemental_figure2F_tcga_rna_prevo.pdf&quot;, p, units = &quot;in&quot;, width = DIM[1], height = DIM[2])</code></pre>
 <pre><code>Warning: Removed 94 rows containing non-finite values (stat_ydensity).</code></pre>
 <pre><code>Warning: Removed 96 rows containing missing values (geom_point).</code></pre>
@@ -2110,7 +2193,7 @@ p</code></pre>
 p</code></pre>
 <pre><code>Warning: Removed 14 rows containing non-finite values (stat_ydensity).</code></pre>
 <pre><code>Warning: Removed 31 rows containing missing values (geom_point).</code></pre>
-<p><img src="figure/supplemental_figure2.Rmd/unnamed-chunk-8-6.png" width="225%" height="10" style="display: block; margin: auto;" /></p>
+<p><img src="figure/supplemental_figure2.Rmd/unnamed-chunk-8-6.png" width="600px" height="400px" style="display: block; margin: auto;" /></p>
 <pre class="r"><code>ggsave(&quot;output/supplemental_figure2F_tcga_wgs_prevo.pdf&quot;, p, units = &quot;in&quot;, width = DIM[1], height = DIM[2])</code></pre>
 <pre><code>Warning: Removed 14 rows containing non-finite values (stat_ydensity).</code></pre>
 <pre><code>Warning: Removed 29 rows containing missing values (geom_point).</code></pre>
@@ -2133,7 +2216,7 @@ p</code></pre>
 p</code></pre>
 <pre><code>Warning: Groups with fewer than two data points have been dropped.</code></pre>
 <pre><code>Warning: Removed 66 rows containing missing values (geom_point).</code></pre>
-<p><img src="figure/supplemental_figure2.Rmd/unnamed-chunk-8-7.png" width="225%" height="10" style="display: block; margin: auto;" /></p>
+<p><img src="figure/supplemental_figure2.Rmd/unnamed-chunk-8-7.png" width="600px" height="400px" style="display: block; margin: auto;" /></p>
 <pre class="r"><code>ggsave(&quot;output/supplemental_figure2F_NCI_campy.pdf&quot;, p, units = &quot;in&quot;, width = DIM[1], height = DIM[2])</code></pre>
 <pre><code>Warning: Groups with fewer than two data points have been dropped.</code></pre>
 <pre><code>Warning: Removed 57 rows containing missing values (geom_point).</code></pre>
@@ -2156,7 +2239,7 @@ p</code></pre>
 p</code></pre>
 <pre><code>Warning: Removed 94 rows containing non-finite values (stat_ydensity).</code></pre>
 <pre><code>Warning: Removed 112 rows containing missing values (geom_point).</code></pre>
-<p><img src="figure/supplemental_figure2.Rmd/unnamed-chunk-8-8.png" width="225%" height="10" style="display: block; margin: auto;" /></p>
+<p><img src="figure/supplemental_figure2.Rmd/unnamed-chunk-8-8.png" width="600px" height="400px" style="display: block; margin: auto;" /></p>
 <pre class="r"><code>ggsave(&quot;output/supplemental_figure2F_tcga_rna_campy.pdf&quot;, p, units = &quot;in&quot;, width = DIM[1], height = DIM[2])</code></pre>
 <pre><code>Warning: Removed 94 rows containing non-finite values (stat_ydensity).</code></pre>
 <pre><code>Warning: Removed 118 rows containing missing values (geom_point).</code></pre>
@@ -2179,7 +2262,7 @@ p</code></pre>
 p</code></pre>
 <pre><code>Warning: Removed 14 rows containing non-finite values (stat_ydensity).</code></pre>
 <pre><code>Warning: Removed 39 rows containing missing values (geom_point).</code></pre>
-<p><img src="figure/supplemental_figure2.Rmd/unnamed-chunk-8-9.png" width="225%" height="10" style="display: block; margin: auto;" /></p>
+<p><img src="figure/supplemental_figure2.Rmd/unnamed-chunk-8-9.png" width="600px" height="400px" style="display: block; margin: auto;" /></p>
 <pre class="r"><code>ggsave(&quot;output/supplemental_figure2F_tcga_wgs_campy.pdf&quot;, p, units = &quot;in&quot;, width = DIM[1], height = DIM[2])</code></pre>
 <pre><code>Warning: Removed 14 rows containing non-finite values (stat_ydensity).</code></pre>
 <pre><code>Warning: Removed 41 rows containing missing values (geom_point).</code></pre>
@@ -2202,7 +2285,7 @@ p</code></pre>
 p</code></pre>
 <pre><code>Warning: Groups with fewer than two data points have been dropped.</code></pre>
 <pre><code>Warning: Removed 6 rows containing missing values (geom_point).</code></pre>
-<p><img src="figure/supplemental_figure2.Rmd/unnamed-chunk-8-10.png" width="225%" height="10" style="display: block; margin: auto;" /></p>
+<p><img src="figure/supplemental_figure2.Rmd/unnamed-chunk-8-10.png" width="600px" height="400px" style="display: block; margin: auto;" /></p>
 <pre class="r"><code>ggsave(&quot;output/supplemental_figure2F_NCI_strepto.pdf&quot;, p, units = &quot;in&quot;, width = DIM[1], height = DIM[2])</code></pre>
 <pre><code>Warning: Groups with fewer than two data points have been dropped.</code></pre>
 <pre><code>Warning: Removed 4 rows containing missing values (geom_point).</code></pre>
@@ -2225,7 +2308,7 @@ Removed 4 rows containing missing values (geom_point).</code></pre>
 p</code></pre>
 <pre><code>Warning: Removed 94 rows containing non-finite values (stat_ydensity).</code></pre>
 <pre><code>Warning: Removed 97 rows containing missing values (geom_point).</code></pre>
-<p><img src="figure/supplemental_figure2.Rmd/unnamed-chunk-8-11.png" width="225%" height="10" style="display: block; margin: auto;" /></p>
+<p><img src="figure/supplemental_figure2.Rmd/unnamed-chunk-8-11.png" width="600px" height="400px" style="display: block; margin: auto;" /></p>
 <pre class="r"><code>ggsave(&quot;output/supplemental_figure2F_tcga_rna_strepto.pdf&quot;, p, units = &quot;in&quot;, width = DIM[1], height = DIM[2])</code></pre>
 <pre><code>Warning: Removed 94 rows containing non-finite values (stat_ydensity).</code></pre>
 <pre><code>Warning: Removed 96 rows containing missing values (geom_point).</code></pre>
@@ -2248,7 +2331,7 @@ Removed 96 rows containing missing values (geom_point).</code></pre>
 p</code></pre>
 <pre><code>Warning: Removed 14 rows containing non-finite values (stat_ydensity).</code></pre>
 <pre><code>Warning: Removed 45 rows containing missing values (geom_point).</code></pre>
-<p><img src="figure/supplemental_figure2.Rmd/unnamed-chunk-8-12.png" width="225%" height="10" style="display: block; margin: auto;" /></p>
+<p><img src="figure/supplemental_figure2.Rmd/unnamed-chunk-8-12.png" width="600px" height="400px" style="display: block; margin: auto;" /></p>
 <pre class="r"><code>ggsave(&quot;output/supplemental_figure2F_tcga_wgs_strepto.pdf&quot;, p, units = &quot;in&quot;, width = DIM[1], height = DIM[2])</code></pre>
 <pre><code>Warning: Removed 14 rows containing non-finite values (stat_ydensity).</code></pre>
 <pre><code>Warning: Removed 42 rows containing missing values (geom_point).</code></pre>

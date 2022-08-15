@@ -237,7 +237,7 @@ dat.wgs.s <- dat.wgs.s %>%
 
 # Histology (+/- Barretts)
 
-```{r}
+```{r out.width="600px", out.height="400px"}
 #root function
 root<-function(x){
   x <- ifelse(x < 0, 0, x)
@@ -328,7 +328,7 @@ ggsave("output/supplemental_figure2C_tcga_wgs_combined.png", p, units = "in", wi
 
 ## Subset by Bacterium 
 
-```{r}
+```{r out.width="600px", out.height="400px"}
 
 # merge datasets by subsetting to specific variables then merging
 analysis.dat <- dat.16s.s %>% 
@@ -575,7 +575,7 @@ ggsave("output/supplemental_figure2C_tcga_wgs_strepto.png", p, units = "in", wid
 
 # Sex
 
-```{r}
+```{r out.width="600px", out.height="400px"}
 #root function
 root<-function(x){
   x <- ifelse(x < 0, 0, x)
@@ -665,7 +665,7 @@ ggsave("output/supplemental_figure2D_tcga_wgs_combined.png", p, units = "in", wi
 
 ## Subset by Bacterium 
 
-```{r}
+```{r out.width="600px", out.height="400px"}
 # merge datasets by subsetting to specific variables then merging
 analysis.dat <- dat.16s.s %>% 
   dplyr::mutate(ID = as.factor(accession.number),
@@ -908,7 +908,7 @@ ggsave("output/supplemental_figure2D_tcga_wgs_strepto.png", p, units = "in", wid
 
 # Race
 
-```{r}
+```{r out.width="600px", out.height="400px"}
 #root function
 root<-function(x){
   x <- ifelse(x < 0, 0, x)
@@ -1005,7 +1005,7 @@ ggsave("output/supplemental_figure2E_tcga_wgs_combined.png", p, units = "in", wi
 
 ## Subset by Bacterium 
 
-```{r}
+```{r out.width="600px", out.height="400px"}
 # merge datasets by subsetting to specific variables then merging
 analysis.dat <- dat.16s.s %>% 
   dplyr::mutate(ID = as.factor(accession.number)) %>%
@@ -1254,7 +1254,7 @@ ggsave("output/supplemental_figure2E_tcga_wgs_strepto.png", p, units = "in", wid
 
 # Stage
 
-```{r}
+```{r out.width="600px", out.height="400px"}
 #root function
 root<-function(x){
   x <- ifelse(x < 0, 0, x)
@@ -1346,7 +1346,7 @@ ggsave("output/supplemental_figure2F_tcga_wgs_combined.png", p, units = "in", wi
 
 ## Subset by Bacterium 
 
-```{r}
+```{r out.width="600px", out.height="400px"}
 # merge datasets by subsetting to specific variables then merging
 analysis.dat <- dat.16s.s %>% 
   dplyr::mutate(ID = as.factor(accession.number)) %>%
