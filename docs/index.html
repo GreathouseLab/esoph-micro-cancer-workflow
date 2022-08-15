@@ -13,8 +13,8 @@
 
 <title>Esophogus-Microbiome-Cancer</title>
 
-<script src="site_libs/header-attrs-2.7/header-attrs.js"></script>
-<script src="site_libs/jquery-1.11.3/jquery.min.js"></script>
+<script src="site_libs/header-attrs-2.14/header-attrs.js"></script>
+<script src="site_libs/jquery-3.6.0/jquery-3.6.0.min.js"></script>
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <link href="site_libs/bootstrap-3.3.5/css/cosmo.min.css" rel="stylesheet" />
 <script src="site_libs/bootstrap-3.3.5/js/bootstrap.min.js"></script>
@@ -33,7 +33,7 @@
 <link href="site_libs/highlightjs-9.12.0/textmate.css" rel="stylesheet" />
 <script src="site_libs/highlightjs-9.12.0/highlight.js"></script>
 
-<link rel="icon" href="https://github.com/workflowr/workflowr-assets/raw/master/img/reproducible.png">
+<link rel="icon" href="https://github.com/workflowr/workflowr-assets/raw/main/img/reproducible.png">
 <!-- Add a small amount of space between sections. -->
 <style type="text/css">
 div.section {
@@ -70,6 +70,7 @@ if (window.hljs) {
 
 
 
+
 <style type = "text/css">
 .main-container {
   max-width: 940px;
@@ -90,6 +91,9 @@ button.code-folding-btn:focus {
 }
 summary {
   display: list-item;
+}
+details > summary > p:only-child {
+  display: inline;
 }
 pre code {
   padding: 0;
@@ -242,7 +246,7 @@ $(document).ready(function () {
 <div class="navbar navbar-default  navbar-fixed-top" role="navigation">
   <div class="container">
     <div class="navbar-header">
-      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar">
+      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-bs-toggle="collapse" data-target="#navbar" data-bs-target="#navbar">
         <span class="icon-bar"></span>
         <span class="icon-bar"></span>
         <span class="icon-bar"></span>
@@ -279,7 +283,9 @@ $(document).ready(function () {
 
 <p>
 <button type="button" class="btn btn-default btn-workflowr btn-workflowr-report" data-toggle="collapse" data-target="#workflowr-report">
-<span class="glyphicon glyphicon-list" aria-hidden="true"></span> workflowr <span class="glyphicon glyphicon-exclamation-sign text-danger" aria-hidden="true"></span>
+<span class="glyphicon glyphicon-list" aria-hidden="true"></span>
+workflowr <span class="glyphicon glyphicon-exclamation-sign text-danger"
+aria-hidden="true"></span>
 </button>
 </p>
 <div id="workflowr-report" class="collapse">
@@ -288,7 +294,9 @@ $(document).ready(function () {
 <a data-toggle="tab" href="#summary">Summary</a>
 </li>
 <li>
-<a data-toggle="tab" href="#checks"> Checks <span class="glyphicon glyphicon-exclamation-sign text-danger" aria-hidden="true"></span> </a>
+<a data-toggle="tab" href="#checks"> Checks <span
+class="glyphicon glyphicon-exclamation-sign text-danger"
+aria-hidden="true"></span> </a>
 </li>
 <li>
 <a data-toggle="tab" href="#versions">Past versions</a>
@@ -297,17 +305,28 @@ $(document).ready(function () {
 <div class="tab-content">
 <div id="summary" class="tab-pane fade in active">
 <p>
-<strong>Last updated:</strong> 2021-10-14
+<strong>Last updated:</strong> 2022-08-15
 </p>
 <p>
-<strong>Checks:</strong> <span class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span> 1 <span class="glyphicon glyphicon-exclamation-sign text-danger" aria-hidden="true"></span> 1
+<strong>Checks:</strong> <span
+class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span> 1
+<span class="glyphicon glyphicon-exclamation-sign text-danger"
+aria-hidden="true"></span> 1
 </p>
 <p>
-<strong>Knit directory:</strong> <code>esoph-micro-cancer-workflow/</code> <span class="glyphicon glyphicon-question-sign" aria-hidden="true" title="This is the local directory in which the code in this file was executed."> </span>
+<strong>Knit directory:</strong>
+<code>esoph-micro-cancer-workflow/</code> <span
+class="glyphicon glyphicon-question-sign" aria-hidden="true"
+title="This is the local directory in which the code in this file was executed.">
+</span>
 </p>
 <p>
-This reproducible <a href="http://rmarkdown.rstudio.com">R Markdown</a> analysis was created with <a
-  href="https://github.com/jdblischak/workflowr">workflowr</a> (version 1.6.2). The <em>Checks</em> tab describes the reproducibility checks that were applied when the results were created. The <em>Past versions</em> tab lists the development history.
+This reproducible <a href="https://rmarkdown.rstudio.com">R Markdown</a>
+analysis was created with <a
+  href="https://github.com/workflowr/workflowr">workflowr</a> (version
+1.7.0). The <em>Checks</em> tab describes the reproducibility checks
+that were applied when the results were created. The <em>Past
+versions</em> tab lists the development history.
 </p>
 <hr>
 </div>
@@ -316,50 +335,194 @@ This reproducible <a href="http://rmarkdown.rstudio.com">R Markdown</a> analysis
 <div class="panel panel-default">
 <div class="panel-heading">
 <p class="panel-title">
-<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongRMarkdownfilestronguncommittedchanges"> <span class="glyphicon glyphicon-exclamation-sign text-danger" aria-hidden="true"></span> <strong>R Markdown file:</strong> uncommitted changes </a>
+<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongRMarkdownfilestronguncommittedchanges">
+<span class="glyphicon glyphicon-exclamation-sign text-danger"
+aria-hidden="true"></span> <strong>R Markdown file:</strong> uncommitted
+changes </a>
 </p>
 </div>
-<div id="strongRMarkdownfilestronguncommittedchanges" class="panel-collapse collapse">
+<div id="strongRMarkdownfilestronguncommittedchanges"
+class="panel-collapse collapse">
 <div class="panel-body">
-<p>The R Markdown file has unstaged changes. To know which version of the R Markdown file created these results, you’ll want to first commit it to the Git repo. If you’re still working on the analysis, you can ignore this warning. When you’re finished, you can run <code>wflow_publish</code> to commit the R Markdown file and build the HTML.</p>
+<p>The R Markdown file has unstaged changes. To know which version of
+the R Markdown file created these results, you’ll want to first commit
+it to the Git repo. If you’re still working on the analysis, you can
+ignore this warning. When you’re finished, you can run
+<code>wflow_publish</code> to commit the R Markdown file and build the
+HTML.</p>
 </div>
 </div>
 </div>
 <div class="panel panel-default">
 <div class="panel-heading">
 <p class="panel-title">
-<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongRepositoryversionstrongahrefhttpsgithubcomGreathouseLabesophmicrocancerworkflowtreef6487301b6960ff3a65df77f11a7843a5affa0adtargetblankf648730a"> <span class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span> <strong>Repository version:</strong> <a href="https://github.com/GreathouseLab/esoph-micro-cancer-workflow/tree/f6487301b6960ff3a65df77f11a7843a5affa0ad" target="_blank">f648730</a> </a>
+<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongRepositoryversionstrongahrefhttpsgithubcomGreathouseLabesophmicrocancerworkflowtreecb1cd82e4da3ee4e50b943210551fbbd5714350ftargetblankcb1cd82a">
+<span class="glyphicon glyphicon-ok text-success"
+aria-hidden="true"></span> <strong>Repository version:</strong>
+<a href="https://github.com/GreathouseLab/esoph-micro-cancer-workflow/tree/cb1cd82e4da3ee4e50b943210551fbbd5714350f" target="_blank">cb1cd82</a>
+</a>
 </p>
 </div>
-<div id="strongRepositoryversionstrongahrefhttpsgithubcomGreathouseLabesophmicrocancerworkflowtreef6487301b6960ff3a65df77f11a7843a5affa0adtargetblankf648730a" class="panel-collapse collapse">
+<div
+id="strongRepositoryversionstrongahrefhttpsgithubcomGreathouseLabesophmicrocancerworkflowtreecb1cd82e4da3ee4e50b943210551fbbd5714350ftargetblankcb1cd82a"
+class="panel-collapse collapse">
 <div class="panel-body">
 <p>
-Great! You are using Git for version control. Tracking code development and connecting the code version to the results is critical for reproducibility.
+Great! You are using Git for version control. Tracking code development
+and connecting the code version to the results is critical for
+reproducibility.
 </p>
 <p>
-The results in this page were generated with repository version <a href="https://github.com/GreathouseLab/esoph-micro-cancer-workflow/tree/f6487301b6960ff3a65df77f11a7843a5affa0ad" target="_blank">f648730</a>. See the <em>Past versions</em> tab to see a history of the changes made to the R Markdown and HTML files.
+The results in this page were generated with repository version
+<a href="https://github.com/GreathouseLab/esoph-micro-cancer-workflow/tree/cb1cd82e4da3ee4e50b943210551fbbd5714350f" target="_blank">cb1cd82</a>.
+See the <em>Past versions</em> tab to see a history of the changes made
+to the R Markdown and HTML files.
 </p>
 <p>
-Note that you need to be careful to ensure that all relevant files for the analysis have been committed to Git prior to generating the results (you can use <code>wflow_publish</code> or <code>wflow_git_commit</code>). workflowr only checks the R Markdown file, but you know if there are other scripts or data files that it depends on. Below is the status of the Git repository when the results were generated:
+Note that you need to be careful to ensure that all relevant files for
+the analysis have been committed to Git prior to generating the results
+(you can use <code>wflow_publish</code> or
+<code>wflow_git_commit</code>). workflowr only checks the R Markdown
+file, but you know if there are other scripts or data files that it
+depends on. Below is the status of the Git repository when the results
+were generated:
 </p>
 <pre><code>
 Ignored files:
     Ignored:    .Rhistory
     Ignored:    .Rproj.user/
+    Ignored:    data.zip
     Ignored:    data/
-
-Untracked files:
-    Untracked:  analysis/survival-analysis.Rmd
-    Untracked:  code/survival_analysis_test.R
+    Ignored:    output/Supplement Figure 2.zip
 
 Unstaged changes:
     Modified:   analysis/index.Rmd
-    Modified:   analysis/picrust-campy.Rmd
-    Modified:   analysis/waterfall-plot.Rmd
+    Modified:   output/supplemental_figure2C_NCI_campy.pdf
+    Modified:   output/supplemental_figure2C_NCI_campy.png
+    Modified:   output/supplemental_figure2C_NCI_combined.pdf
+    Modified:   output/supplemental_figure2C_NCI_combined.png
+    Modified:   output/supplemental_figure2C_NCI_fuso.pdf
+    Modified:   output/supplemental_figure2C_NCI_fuso.png
+    Modified:   output/supplemental_figure2C_NCI_prevo.pdf
+    Modified:   output/supplemental_figure2C_NCI_prevo.png
+    Modified:   output/supplemental_figure2C_NCI_strepto.pdf
+    Modified:   output/supplemental_figure2C_NCI_strepto.png
+    Modified:   output/supplemental_figure2C_tcga_rna_campy.pdf
+    Modified:   output/supplemental_figure2C_tcga_rna_campy.png
+    Modified:   output/supplemental_figure2C_tcga_rna_combined.pdf
+    Modified:   output/supplemental_figure2C_tcga_rna_combined.png
+    Modified:   output/supplemental_figure2C_tcga_rna_fuso.pdf
+    Modified:   output/supplemental_figure2C_tcga_rna_fuso.png
+    Modified:   output/supplemental_figure2C_tcga_rna_prevo.pdf
+    Modified:   output/supplemental_figure2C_tcga_rna_prevo.png
+    Modified:   output/supplemental_figure2C_tcga_rna_strepto.pdf
+    Modified:   output/supplemental_figure2C_tcga_rna_strepto.png
+    Modified:   output/supplemental_figure2C_tcga_wgs_campy.pdf
+    Modified:   output/supplemental_figure2C_tcga_wgs_campy.png
+    Modified:   output/supplemental_figure2C_tcga_wgs_combined.pdf
+    Modified:   output/supplemental_figure2C_tcga_wgs_combined.png
+    Modified:   output/supplemental_figure2C_tcga_wgs_fuso.pdf
+    Modified:   output/supplemental_figure2C_tcga_wgs_fuso.png
+    Modified:   output/supplemental_figure2C_tcga_wgs_prevo.pdf
+    Modified:   output/supplemental_figure2C_tcga_wgs_prevo.png
+    Modified:   output/supplemental_figure2C_tcga_wgs_strepto.pdf
+    Modified:   output/supplemental_figure2C_tcga_wgs_strepto.png
+    Modified:   output/supplemental_figure2D_NCI_campy.pdf
+    Modified:   output/supplemental_figure2D_NCI_campy.png
+    Modified:   output/supplemental_figure2D_NCI_combined.pdf
+    Modified:   output/supplemental_figure2D_NCI_combined.png
+    Modified:   output/supplemental_figure2D_NCI_fuso.pdf
+    Modified:   output/supplemental_figure2D_NCI_fuso.png
+    Modified:   output/supplemental_figure2D_NCI_prevo.pdf
+    Modified:   output/supplemental_figure2D_NCI_prevo.png
+    Modified:   output/supplemental_figure2D_NCI_strepto.pdf
+    Modified:   output/supplemental_figure2D_NCI_strepto.png
+    Modified:   output/supplemental_figure2D_tcga_rna_campy.pdf
+    Modified:   output/supplemental_figure2D_tcga_rna_campy.png
+    Modified:   output/supplemental_figure2D_tcga_rna_combined.pdf
+    Modified:   output/supplemental_figure2D_tcga_rna_combined.png
+    Modified:   output/supplemental_figure2D_tcga_rna_fuso.pdf
+    Modified:   output/supplemental_figure2D_tcga_rna_fuso.png
+    Modified:   output/supplemental_figure2D_tcga_rna_prevo.pdf
+    Modified:   output/supplemental_figure2D_tcga_rna_prevo.png
+    Modified:   output/supplemental_figure2D_tcga_rna_strepto.pdf
+    Modified:   output/supplemental_figure2D_tcga_rna_strepto.png
+    Modified:   output/supplemental_figure2D_tcga_wgs_campy.pdf
+    Modified:   output/supplemental_figure2D_tcga_wgs_campy.png
+    Modified:   output/supplemental_figure2D_tcga_wgs_combined.pdf
+    Modified:   output/supplemental_figure2D_tcga_wgs_combined.png
+    Modified:   output/supplemental_figure2D_tcga_wgs_fuso.pdf
+    Modified:   output/supplemental_figure2D_tcga_wgs_fuso.png
+    Modified:   output/supplemental_figure2D_tcga_wgs_prevo.pdf
+    Modified:   output/supplemental_figure2D_tcga_wgs_prevo.png
+    Modified:   output/supplemental_figure2D_tcga_wgs_strepto.pdf
+    Modified:   output/supplemental_figure2D_tcga_wgs_strepto.png
+    Modified:   output/supplemental_figure2E_NCI_campy.pdf
+    Modified:   output/supplemental_figure2E_NCI_campy.png
+    Modified:   output/supplemental_figure2E_NCI_combined.pdf
+    Modified:   output/supplemental_figure2E_NCI_combined.png
+    Modified:   output/supplemental_figure2E_NCI_fuso.pdf
+    Modified:   output/supplemental_figure2E_NCI_fuso.png
+    Modified:   output/supplemental_figure2E_NCI_prevo.pdf
+    Modified:   output/supplemental_figure2E_NCI_prevo.png
+    Modified:   output/supplemental_figure2E_NCI_strepto.pdf
+    Modified:   output/supplemental_figure2E_NCI_strepto.png
+    Modified:   output/supplemental_figure2E_tcga_rna_campy.pdf
+    Modified:   output/supplemental_figure2E_tcga_rna_campy.png
+    Modified:   output/supplemental_figure2E_tcga_rna_combined.pdf
+    Modified:   output/supplemental_figure2E_tcga_rna_combined.png
+    Modified:   output/supplemental_figure2E_tcga_rna_fuso.pdf
+    Modified:   output/supplemental_figure2E_tcga_rna_fuso.png
+    Modified:   output/supplemental_figure2E_tcga_rna_prevo.pdf
+    Modified:   output/supplemental_figure2E_tcga_rna_prevo.png
+    Modified:   output/supplemental_figure2E_tcga_rna_strepto.pdf
+    Modified:   output/supplemental_figure2E_tcga_rna_strepto.png
+    Modified:   output/supplemental_figure2E_tcga_wgs_campy.pdf
+    Modified:   output/supplemental_figure2E_tcga_wgs_campy.png
+    Modified:   output/supplemental_figure2E_tcga_wgs_combined.pdf
+    Modified:   output/supplemental_figure2E_tcga_wgs_combined.png
+    Modified:   output/supplemental_figure2E_tcga_wgs_fuso.pdf
+    Modified:   output/supplemental_figure2E_tcga_wgs_fuso.png
+    Modified:   output/supplemental_figure2E_tcga_wgs_prevo.pdf
+    Modified:   output/supplemental_figure2E_tcga_wgs_prevo.png
+    Modified:   output/supplemental_figure2E_tcga_wgs_strepto.pdf
+    Modified:   output/supplemental_figure2E_tcga_wgs_strepto.png
+    Modified:   output/supplemental_figure2F_NCI_campy.pdf
+    Modified:   output/supplemental_figure2F_NCI_campy.png
+    Modified:   output/supplemental_figure2F_NCI_combined.pdf
+    Modified:   output/supplemental_figure2F_NCI_combined.png
+    Modified:   output/supplemental_figure2F_NCI_fuso.pdf
+    Modified:   output/supplemental_figure2F_NCI_fuso.png
+    Modified:   output/supplemental_figure2F_NCI_prevo.pdf
+    Modified:   output/supplemental_figure2F_NCI_prevo.png
+    Modified:   output/supplemental_figure2F_NCI_strepto.pdf
+    Modified:   output/supplemental_figure2F_NCI_strepto.png
+    Modified:   output/supplemental_figure2F_tcga_rna_campy.pdf
+    Modified:   output/supplemental_figure2F_tcga_rna_campy.png
+    Modified:   output/supplemental_figure2F_tcga_rna_combined.pdf
+    Modified:   output/supplemental_figure2F_tcga_rna_combined.png
+    Modified:   output/supplemental_figure2F_tcga_rna_fuso.pdf
+    Modified:   output/supplemental_figure2F_tcga_rna_fuso.png
+    Modified:   output/supplemental_figure2F_tcga_rna_prevo.pdf
+    Modified:   output/supplemental_figure2F_tcga_rna_prevo.png
+    Modified:   output/supplemental_figure2F_tcga_rna_strepto.pdf
+    Modified:   output/supplemental_figure2F_tcga_rna_strepto.png
+    Modified:   output/supplemental_figure2F_tcga_wgs_campy.pdf
+    Modified:   output/supplemental_figure2F_tcga_wgs_campy.png
+    Modified:   output/supplemental_figure2F_tcga_wgs_combined.pdf
+    Modified:   output/supplemental_figure2F_tcga_wgs_combined.png
+    Modified:   output/supplemental_figure2F_tcga_wgs_fuso.pdf
+    Modified:   output/supplemental_figure2F_tcga_wgs_fuso.png
+    Modified:   output/supplemental_figure2F_tcga_wgs_prevo.pdf
+    Modified:   output/supplemental_figure2F_tcga_wgs_prevo.png
+    Modified:   output/supplemental_figure2F_tcga_wgs_strepto.pdf
+    Modified:   output/supplemental_figure2F_tcga_wgs_strepto.png
 
 </code></pre>
 <p>
-Note that any generated files, e.g. HTML, png, CSS, etc., are not included in this status report because it is ok for generated content to have uncommitted changes.
+Note that any generated files, e.g. HTML, png, CSS, etc., are not
+included in this status report because it is ok for generated content to
+have uncommitted changes.
 </p>
 </div>
 </div>
@@ -370,7 +533,11 @@ Note that any generated files, e.g. HTML, png, CSS, etc., are not included in t
 <div id="versions" class="tab-pane fade">
 
 <p>
-These are the previous versions of the repository in which changes were made to the R Markdown (<code>analysis/index.Rmd</code>) and HTML (<code>docs/index.html</code>) files. If you’ve configured a remote Git repository (see <code>?wflow_git_remote</code>), click on the hyperlinks in the table below to view the files as they were in that past version.
+These are the previous versions of the repository in which changes were
+made to the R Markdown (<code>analysis/index.Rmd</code>) and HTML
+(<code>docs/index.html</code>) files. If you’ve configured a remote Git
+repository (see <code>?wflow_git_remote</code>), click on the hyperlinks
+in the table below to view the files as they were in that past version.
 </p>
 <div class="table-responsive">
 <table class="table table-condensed table-hover">
@@ -394,6 +561,40 @@ Message
 </tr>
 </thead>
 <tbody>
+<tr>
+<td>
+Rmd
+</td>
+<td>
+<a href="https://github.com/GreathouseLab/esoph-micro-cancer-workflow/blob/9b41498052cc058c957b519bd29b7f126ec78a4e/analysis/index.Rmd" target="_blank">9b41498</a>
+</td>
+<td>
+noah-padgett
+</td>
+<td>
+2021-12-19
+</td>
+<td>
+updated survival aanalyses
+</td>
+</tr>
+<tr>
+<td>
+html
+</td>
+<td>
+<a href="https://rawcdn.githack.com/GreathouseLab/esoph-micro-cancer-workflow/9b41498052cc058c957b519bd29b7f126ec78a4e/docs/index.html" target="_blank">9b41498</a>
+</td>
+<td>
+noah-padgett
+</td>
+<td>
+2021-12-19
+</td>
+<td>
+updated survival aanalyses
+</td>
+</tr>
 <tr>
 <td>
 html
@@ -861,6 +1062,13 @@ initial commit
 </div>
 </div>
 <p>Welcome to our research website.</p>
+<div id="supplemental-figure-2-parts" class="section level2">
+<h2>Supplemental Figure 2 Parts</h2>
+<ul>
+<li><a href="supplemental_figure2.html">Supplemental Figure 2 Parts
+c-F</a></li>
+</ul>
+</div>
 <div id="data-pre-processing" class="section level2">
 <h2>Data Pre-Processing</h2>
 <p>*<a href="data_processing_nci_umd.html">NCI-UMD Data Process</a></p>
@@ -872,26 +1080,39 @@ initial commit
 </div>
 <div id="abundance-data" class="section level2">
 <h2>Abundance Data</h2>
-<p>Violin plots with abundance of each bacteria across samples with Barretts history.</p>
-<p>*<a href="species-sample-type-combined.html">Violin plots for bacterial abundance by Barretts samples</a></p>
-<p>The following pages give a variety of heatmaps w/ dendrograms that help describe the differences in OTU abundance across groups.</p>
-<p>*<a href="slide-figures-heatmaps-dendrograms-updates.html">Genera Level Heatmaps with Dendrograms</a></p>
-<p>*<a href="heatmaps-dendrograms-species-level.html">Species Level Heatmaps with Dendrograms</a></p>
-<p>The following page helps describe the relationship between Fuso (and other OTUs) and tumor stage.</p>
+<p>Violin plots with abundance of each bacteria across samples with
+Barretts history.</p>
+<p>*<a href="species-sample-type-combined.html">Violin plots for
+bacterial abundance by Barretts samples</a></p>
+<p>The following pages give a variety of heatmaps w/ dendrograms that
+help describe the differences in OTU abundance across groups.</p>
+<p>*<a href="slide-figures-heatmaps-dendrograms-updates.html">Genera
+Level Heatmaps with Dendrograms</a></p>
+<p>*<a href="heatmaps-dendrograms-species-level.html">Species Level
+Heatmaps with Dendrograms</a></p>
+<p>The following page helps describe the relationship between Fuso (and
+other OTUs) and tumor stage.</p>
 <ul>
-<li>Is fuso associated with tumor stage in either data set? Does X bacteria predict stage? Multivariable w/ age, sex, BMI, history of Barrett’s</li>
+<li>Is fuso associated with tumor stage in either data set? Does X
+bacteria predict stage? Multivariable w/ age, sex, BMI, history of
+Barrett’s</li>
 </ul>
-<p>*<a href="ordered-logit-model.html">Ordered Logit Model Results</a></p>
+<p>*<a href="ordered-logit-model.html">Ordered Logit Model
+Results</a></p>
 </div>
 <div id="analyses" class="section level2">
 <h2>Analyses</h2>
 <p>Bag-of-Genes Analyses</p>
 <p>*<a href="picrust-analyses.html">PICRUSt Results</a></p>
 <p>Results Stratified by Taxa</p>
-<p>*<a href="picrust-fuso.html">PICRUSt Results - Fusobacterium nucleatum</a></p>
-<p>*<a href="picrust-strepto.html">PICRUSt Results - Streptococcus sanguinis</a></p>
-<p>*<a href="picrust-campy.html">PICRUSt Results - Campylobacter concisus</a></p>
-<p>*<a href="picrust-prevo.html">PICRUSt Results - Prevotella spp. (genus level only)</a></p>
+<p>*<a href="picrust-fuso.html">PICRUSt Results - Fusobacterium
+nucleatum</a></p>
+<p>*<a href="picrust-strepto.html">PICRUSt Results - Streptococcus
+sanguinis</a></p>
+<p>*<a href="picrust-campy.html">PICRUSt Results - Campylobacter
+concisus</a></p>
+<p>*<a href="picrust-prevo.html">PICRUSt Results - Prevotella spp.
+(genus level only)</a></p>
 <p>Survival Analysis</p>
 <p>*<a href="survival-analysis.html">Survival Analysis Results</a></p>
 </div>
@@ -899,7 +1120,7 @@ initial commit
 
 <!-- Adjust MathJax settings so that all math formulae are shown using
 TeX fonts only; see
-http://docs.mathjax.org/en/latest/configuration.html.  This will make
+https://docs.mathjax.org/en/latest/web/configuration.html. This will make
 the presentation more consistent at the cost of the webpage sometimes
 taking slightly longer to load. Note that this only works because the
 footer is added to webpages before the MathJax javascript. -->

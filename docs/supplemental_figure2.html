@@ -1,0 +1,2432 @@
+<!DOCTYPE html>
+
+<html>
+
+<head>
+
+<meta charset="utf-8" />
+<meta name="generator" content="pandoc" />
+<meta http-equiv="X-UA-Compatible" content="IE=EDGE" />
+
+
+
+
+<title>Species Barretts Relationships</title>
+
+<script src="site_libs/header-attrs-2.14/header-attrs.js"></script>
+<script src="site_libs/jquery-3.6.0/jquery-3.6.0.min.js"></script>
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<link href="site_libs/bootstrap-3.3.5/css/cosmo.min.css" rel="stylesheet" />
+<script src="site_libs/bootstrap-3.3.5/js/bootstrap.min.js"></script>
+<script src="site_libs/bootstrap-3.3.5/shim/html5shiv.min.js"></script>
+<script src="site_libs/bootstrap-3.3.5/shim/respond.min.js"></script>
+<style>h1 {font-size: 34px;}
+       h1.title {font-size: 38px;}
+       h2 {font-size: 30px;}
+       h3 {font-size: 24px;}
+       h4 {font-size: 18px;}
+       h5 {font-size: 16px;}
+       h6 {font-size: 12px;}
+       code {color: inherit; background-color: rgba(0, 0, 0, 0.04);}
+       pre:not([class]) { background-color: white }</style>
+<script src="site_libs/jqueryui-1.11.4/jquery-ui.min.js"></script>
+<link href="site_libs/tocify-1.9.1/jquery.tocify.css" rel="stylesheet" />
+<script src="site_libs/tocify-1.9.1/jquery.tocify.js"></script>
+<script src="site_libs/navigation-1.1/tabsets.js"></script>
+<script src="site_libs/navigation-1.1/codefolding.js"></script>
+<link href="site_libs/highlightjs-9.12.0/textmate.css" rel="stylesheet" />
+<script src="site_libs/highlightjs-9.12.0/highlight.js"></script>
+
+<link rel="icon" href="https://github.com/workflowr/workflowr-assets/raw/main/img/reproducible.png">
+<!-- Add a small amount of space between sections. -->
+<style type="text/css">
+div.section {
+  padding-top: 12px;
+}
+</style>
+
+
+
+<style type="text/css">
+  code{white-space: pre-wrap;}
+  span.smallcaps{font-variant: small-caps;}
+  span.underline{text-decoration: underline;}
+  div.column{display: inline-block; vertical-align: top; width: 50%;}
+  div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+  ul.task-list{list-style: none;}
+    </style>
+
+<style type="text/css">code{white-space: pre;}</style>
+<script type="text/javascript">
+if (window.hljs) {
+  hljs.configure({languages: []});
+  hljs.initHighlightingOnLoad();
+  if (document.readyState && document.readyState === "complete") {
+    window.setTimeout(function() { hljs.initHighlighting(); }, 0);
+  }
+}
+</script>
+
+
+
+
+
+
+
+
+
+<style type = "text/css">
+.main-container {
+  max-width: 940px;
+  margin-left: auto;
+  margin-right: auto;
+}
+img {
+  max-width:100%;
+}
+.tabbed-pane {
+  padding-top: 12px;
+}
+.html-widget {
+  margin-bottom: 20px;
+}
+button.code-folding-btn:focus {
+  outline: none;
+}
+summary {
+  display: list-item;
+}
+details > summary > p:only-child {
+  display: inline;
+}
+pre code {
+  padding: 0;
+}
+</style>
+
+
+<style type="text/css">
+.dropdown-submenu {
+  position: relative;
+}
+.dropdown-submenu>.dropdown-menu {
+  top: 0;
+  left: 100%;
+  margin-top: -6px;
+  margin-left: -1px;
+  border-radius: 0 6px 6px 6px;
+}
+.dropdown-submenu:hover>.dropdown-menu {
+  display: block;
+}
+.dropdown-submenu>a:after {
+  display: block;
+  content: " ";
+  float: right;
+  width: 0;
+  height: 0;
+  border-color: transparent;
+  border-style: solid;
+  border-width: 5px 0 5px 5px;
+  border-left-color: #cccccc;
+  margin-top: 5px;
+  margin-right: -10px;
+}
+.dropdown-submenu:hover>a:after {
+  border-left-color: #adb5bd;
+}
+.dropdown-submenu.pull-left {
+  float: none;
+}
+.dropdown-submenu.pull-left>.dropdown-menu {
+  left: -100%;
+  margin-left: 10px;
+  border-radius: 6px 0 6px 6px;
+}
+</style>
+
+<script type="text/javascript">
+// manage active state of menu based on current page
+$(document).ready(function () {
+  // active menu anchor
+  href = window.location.pathname
+  href = href.substr(href.lastIndexOf('/') + 1)
+  if (href === "")
+    href = "index.html";
+  var menuAnchor = $('a[href="' + href + '"]');
+
+  // mark it active
+  menuAnchor.tab('show');
+
+  // if it's got a parent navbar menu mark it active as well
+  menuAnchor.closest('li.dropdown').addClass('active');
+
+  // Navbar adjustments
+  var navHeight = $(".navbar").first().height() + 15;
+  var style = document.createElement('style');
+  var pt = "padding-top: " + navHeight + "px; ";
+  var mt = "margin-top: -" + navHeight + "px; ";
+  var css = "";
+  // offset scroll position for anchor links (for fixed navbar)
+  for (var i = 1; i <= 6; i++) {
+    css += ".section h" + i + "{ " + pt + mt + "}\n";
+  }
+  style.innerHTML = "body {" + pt + "padding-bottom: 40px; }\n" + css;
+  document.head.appendChild(style);
+});
+</script>
+
+<!-- tabsets -->
+
+<style type="text/css">
+.tabset-dropdown > .nav-tabs {
+  display: inline-table;
+  max-height: 500px;
+  min-height: 44px;
+  overflow-y: auto;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+}
+
+.tabset-dropdown > .nav-tabs > li.active:before {
+  content: "";
+  font-family: 'Glyphicons Halflings';
+  display: inline-block;
+  padding: 10px;
+  border-right: 1px solid #ddd;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open > li.active:before {
+  content: "&#xe258;";
+  border: none;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open:before {
+  content: "";
+  font-family: 'Glyphicons Halflings';
+  display: inline-block;
+  padding: 10px;
+  border-right: 1px solid #ddd;
+}
+
+.tabset-dropdown > .nav-tabs > li.active {
+  display: block;
+}
+
+.tabset-dropdown > .nav-tabs > li > a,
+.tabset-dropdown > .nav-tabs > li > a:focus,
+.tabset-dropdown > .nav-tabs > li > a:hover {
+  border: none;
+  display: inline-block;
+  border-radius: 4px;
+  background-color: transparent;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open > li {
+  display: block;
+  float: none;
+}
+
+.tabset-dropdown > .nav-tabs > li {
+  display: none;
+}
+</style>
+
+<!-- code folding -->
+<style type="text/css">
+.code-folding-btn { margin-bottom: 4px; }
+</style>
+
+
+
+<style type="text/css">
+
+#TOC {
+  margin: 25px 0px 20px 0px;
+}
+@media (max-width: 768px) {
+#TOC {
+  position: relative;
+  width: 100%;
+}
+}
+
+@media print {
+.toc-content {
+  /* see https://github.com/w3c/csswg-drafts/issues/4434 */
+  float: right;
+}
+}
+
+.toc-content {
+  padding-left: 30px;
+  padding-right: 40px;
+}
+
+div.main-container {
+  max-width: 1200px;
+}
+
+div.tocify {
+  width: 20%;
+  max-width: 260px;
+  max-height: 85%;
+}
+
+@media (min-width: 768px) and (max-width: 991px) {
+  div.tocify {
+    width: 25%;
+  }
+}
+
+@media (max-width: 767px) {
+  div.tocify {
+    width: 100%;
+    max-width: none;
+  }
+}
+
+.tocify ul, .tocify li {
+  line-height: 20px;
+}
+
+.tocify-subheader .tocify-item {
+  font-size: 0.90em;
+}
+
+.tocify .list-group-item {
+  border-radius: 0px;
+}
+
+
+</style>
+
+
+
+</head>
+
+<body>
+
+
+<div class="container-fluid main-container">
+
+
+<!-- setup 3col/9col grid for toc_float and main content  -->
+<div class="row">
+<div class="col-xs-12 col-sm-4 col-md-3">
+<div id="TOC" class="tocify">
+</div>
+</div>
+
+<div class="toc-content col-xs-12 col-sm-8 col-md-9">
+
+
+
+
+<div class="navbar navbar-default  navbar-fixed-top" role="navigation">
+  <div class="container">
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-bs-toggle="collapse" data-target="#navbar" data-bs-target="#navbar">
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+      <a class="navbar-brand" href="index.html">esoph-micro-cancer</a>
+    </div>
+    <div id="navbar" class="navbar-collapse collapse">
+      <ul class="nav navbar-nav">
+        <li>
+  <a href="index.html">Home</a>
+</li>
+<li>
+  <a href="about.html">About</a>
+</li>
+<li>
+  <a href="license.html">License</a>
+</li>
+      </ul>
+      <ul class="nav navbar-nav navbar-right">
+        
+      </ul>
+    </div><!--/.nav-collapse -->
+  </div><!--/.container -->
+</div><!--/.navbar -->
+
+<div id="header">
+
+<div class="btn-group pull-right float-right">
+<button type="button" class="btn btn-default btn-xs btn-secondary btn-sm dropdown-toggle" data-toggle="dropdown" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><span>Code</span> <span class="caret"></span></button>
+<ul class="dropdown-menu dropdown-menu-right" style="min-width: 50px;">
+<li><a id="rmd-show-all-code" href="#">Show All Code</a></li>
+<li><a id="rmd-hide-all-code" href="#">Hide All Code</a></li>
+</ul>
+</div>
+
+
+
+<h1 class="title toc-ignore">Species Barretts Relationships</h1>
+
+</div>
+
+
+<p>
+<button type="button" class="btn btn-default btn-workflowr btn-workflowr-report" data-toggle="collapse" data-target="#workflowr-report">
+<span class="glyphicon glyphicon-list" aria-hidden="true"></span>
+workflowr <span class="glyphicon glyphicon-ok text-success"
+aria-hidden="true"></span>
+</button>
+</p>
+<div id="workflowr-report" class="collapse">
+<ul class="nav nav-tabs">
+<li class="active">
+<a data-toggle="tab" href="#summary">Summary</a>
+</li>
+<li>
+<a data-toggle="tab" href="#checks"> Checks <span
+class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span>
+</a>
+</li>
+<li>
+<a data-toggle="tab" href="#versions">Past versions</a>
+</li>
+</ul>
+<div class="tab-content">
+<div id="summary" class="tab-pane fade in active">
+<p>
+<strong>Last updated:</strong> 2022-08-15
+</p>
+<p>
+<strong>Checks:</strong> <span
+class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span> 7
+<span class="glyphicon glyphicon-exclamation-sign text-danger"
+aria-hidden="true"></span> 0
+</p>
+<p>
+<strong>Knit directory:</strong>
+<code>esoph-micro-cancer-workflow/</code> <span
+class="glyphicon glyphicon-question-sign" aria-hidden="true"
+title="This is the local directory in which the code in this file was executed.">
+</span>
+</p>
+<p>
+This reproducible <a href="https://rmarkdown.rstudio.com">R Markdown</a>
+analysis was created with <a
+  href="https://github.com/workflowr/workflowr">workflowr</a> (version
+1.7.0). The <em>Checks</em> tab describes the reproducibility checks
+that were applied when the results were created. The <em>Past
+versions</em> tab lists the development history.
+</p>
+<hr>
+</div>
+<div id="checks" class="tab-pane fade">
+<div id="workflowr-checks" class="panel-group">
+<div class="panel panel-default">
+<div class="panel-heading">
+<p class="panel-title">
+<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongRMarkdownfilestronguptodate">
+<span class="glyphicon glyphicon-ok text-success"
+aria-hidden="true"></span> <strong>R Markdown file:</strong> up-to-date
+</a>
+</p>
+</div>
+<div id="strongRMarkdownfilestronguptodate"
+class="panel-collapse collapse">
+<div class="panel-body">
+<p>Great! Since the R Markdown file has been committed to the Git
+repository, you know the exact version of the code that produced these
+results.</p>
+</div>
+</div>
+</div>
+<div class="panel panel-default">
+<div class="panel-heading">
+<p class="panel-title">
+<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongEnvironmentstrongempty">
+<span class="glyphicon glyphicon-ok text-success"
+aria-hidden="true"></span> <strong>Environment:</strong> empty </a>
+</p>
+</div>
+<div id="strongEnvironmentstrongempty" class="panel-collapse collapse">
+<div class="panel-body">
+<p>Great job! The global environment was empty. Objects defined in the
+global environment can affect the analysis in your R Markdown file in
+unknown ways. For reproduciblity it’s best to always run the code in an
+empty environment.</p>
+</div>
+</div>
+</div>
+<div class="panel panel-default">
+<div class="panel-heading">
+<p class="panel-title">
+<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongSeedstrongcodesetseed20200916code">
+<span class="glyphicon glyphicon-ok text-success"
+aria-hidden="true"></span> <strong>Seed:</strong>
+<code>set.seed(20200916)</code> </a>
+</p>
+</div>
+<div id="strongSeedstrongcodesetseed20200916code"
+class="panel-collapse collapse">
+<div class="panel-body">
+<p>The command <code>set.seed(20200916)</code> was run prior to running
+the code in the R Markdown file. Setting a seed ensures that any results
+that rely on randomness, e.g. subsampling or permutations, are
+reproducible.</p>
+</div>
+</div>
+</div>
+<div class="panel panel-default">
+<div class="panel-heading">
+<p class="panel-title">
+<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongSessioninformationstrongrecorded">
+<span class="glyphicon glyphicon-ok text-success"
+aria-hidden="true"></span> <strong>Session information:</strong>
+recorded </a>
+</p>
+</div>
+<div id="strongSessioninformationstrongrecorded"
+class="panel-collapse collapse">
+<div class="panel-body">
+<p>Great job! Recording the operating system, R version, and package
+versions is critical for reproducibility.</p>
+</div>
+</div>
+</div>
+<div class="panel panel-default">
+<div class="panel-heading">
+<p class="panel-title">
+<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongCachestrongnone">
+<span class="glyphicon glyphicon-ok text-success"
+aria-hidden="true"></span> <strong>Cache:</strong> none </a>
+</p>
+</div>
+<div id="strongCachestrongnone" class="panel-collapse collapse">
+<div class="panel-body">
+<p>Nice! There were no cached chunks for this analysis, so you can be
+confident that you successfully produced the results during this
+run.</p>
+</div>
+</div>
+</div>
+<div class="panel panel-default">
+<div class="panel-heading">
+<p class="panel-title">
+<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongFilepathsstrongrelative">
+<span class="glyphicon glyphicon-ok text-success"
+aria-hidden="true"></span> <strong>File paths:</strong> relative </a>
+</p>
+</div>
+<div id="strongFilepathsstrongrelative" class="panel-collapse collapse">
+<div class="panel-body">
+<p>Great job! Using relative paths to the files within your workflowr
+project makes it easier to run your code on other machines.</p>
+</div>
+</div>
+</div>
+<div class="panel panel-default">
+<div class="panel-heading">
+<p class="panel-title">
+<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongRepositoryversionstrongahrefhttpsgithubcomGreathouseLabesophmicrocancerworkflowtreecb1cd82e4da3ee4e50b943210551fbbd5714350ftargetblankcb1cd82a">
+<span class="glyphicon glyphicon-ok text-success"
+aria-hidden="true"></span> <strong>Repository version:</strong>
+<a href="https://github.com/GreathouseLab/esoph-micro-cancer-workflow/tree/cb1cd82e4da3ee4e50b943210551fbbd5714350f" target="_blank">cb1cd82</a>
+</a>
+</p>
+</div>
+<div
+id="strongRepositoryversionstrongahrefhttpsgithubcomGreathouseLabesophmicrocancerworkflowtreecb1cd82e4da3ee4e50b943210551fbbd5714350ftargetblankcb1cd82a"
+class="panel-collapse collapse">
+<div class="panel-body">
+<p>
+Great! You are using Git for version control. Tracking code development
+and connecting the code version to the results is critical for
+reproducibility.
+</p>
+<p>
+The results in this page were generated with repository version
+<a href="https://github.com/GreathouseLab/esoph-micro-cancer-workflow/tree/cb1cd82e4da3ee4e50b943210551fbbd5714350f" target="_blank">cb1cd82</a>.
+See the <em>Past versions</em> tab to see a history of the changes made
+to the R Markdown and HTML files.
+</p>
+<p>
+Note that you need to be careful to ensure that all relevant files for
+the analysis have been committed to Git prior to generating the results
+(you can use <code>wflow_publish</code> or
+<code>wflow_git_commit</code>). workflowr only checks the R Markdown
+file, but you know if there are other scripts or data files that it
+depends on. Below is the status of the Git repository when the results
+were generated:
+</p>
+<pre><code>
+Ignored files:
+    Ignored:    .Rhistory
+    Ignored:    .Rproj.user/
+    Ignored:    data.zip
+    Ignored:    data/
+    Ignored:    output/Supplement Figure 2.zip
+
+</code></pre>
+<p>
+Note that any generated files, e.g. HTML, png, CSS, etc., are not
+included in this status report because it is ok for generated content to
+have uncommitted changes.
+</p>
+</div>
+</div>
+</div>
+</div>
+<hr>
+</div>
+<div id="versions" class="tab-pane fade">
+
+<p>
+These are the previous versions of the repository in which changes were
+made to the R Markdown (<code>analysis/supplemental_figure2.Rmd</code>)
+and HTML (<code>docs/supplemental_figure2.html</code>) files. If you’ve
+configured a remote Git repository (see <code>?wflow_git_remote</code>),
+click on the hyperlinks in the table below to view the files as they
+were in that past version.
+</p>
+<div class="table-responsive">
+<table class="table table-condensed table-hover">
+<thead>
+<tr>
+<th>
+File
+</th>
+<th>
+Version
+</th>
+<th>
+Author
+</th>
+<th>
+Date
+</th>
+<th>
+Message
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>
+Rmd
+</td>
+<td>
+<a href="https://github.com/GreathouseLab/esoph-micro-cancer-workflow/blob/cb1cd82e4da3ee4e50b943210551fbbd5714350f/analysis/supplemental_figure2.Rmd" target="_blank">cb1cd82</a>
+</td>
+<td>
+noah-padgett
+</td>
+<td>
+2022-08-15
+</td>
+<td>
+Updated sup figure 2 parts
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+<hr>
+</div>
+</div>
+</div>
+<div id="histology---barretts" class="section level1">
+<h1>Histology (+/- Barretts)</h1>
+<pre class="r"><code>#root function
+root&lt;-function(x){
+  x &lt;- ifelse(x &lt; 0, 0, x)
+  x**(0.25)
+}
+#inverse root function
+invroot&lt;-function(x){
+  x**(4)
+}
+DIM &lt;- c(6, 4)
+
+# merge datasets by subsetting to specific variables then merging
+analysis.dat &lt;- dat.16s.s %&gt;% 
+  dplyr::mutate(ID = as.factor(accession.number),
+                Barretts = ifelse(`Barretts.`==&quot;Y&quot;,1,0)) %&gt;%
+  dplyr::select(OTU, sample_type, tumor, Abundance, ID, source, Barretts)
+
+dat &lt;- dat.rna.s %&gt;% 
+  dplyr::mutate(Barretts = ifelse(Barrett.s.Esophagus.Reported==&quot;Yes&quot;,1,0)) %&gt;%
+  dplyr::select(OTU, sample_type, tumor, Abundance, ID, source, Barretts)
+analysis.dat &lt;- full_join(analysis.dat, dat)</code></pre>
+<pre><code>Joining, by = c(&quot;OTU&quot;, &quot;sample_type&quot;, &quot;tumor&quot;, &quot;Abundance&quot;, &quot;ID&quot;, &quot;source&quot;,
+&quot;Barretts&quot;)</code></pre>
+<pre class="r"><code>dat &lt;- dat.wgs.s %&gt;% 
+  dplyr::mutate(Barretts = ifelse(Barrett.s.Esophagus.Reported==&quot;Yes&quot;,1,0)) %&gt;%
+  dplyr::select(OTU, sample_type, tumor, Abundance, ID, source, Barretts)
+
+analysis.dat &lt;- full_join(analysis.dat, dat) %&gt;%
+  mutate(
+    pres = ifelse(Abundance &gt; 0, 1, 0),
+    Abund = Abundance*100,
+    Tumor = ifelse(tumor==1, &quot;Tumor&quot;, &quot;No Tumor&quot;),
+    Barretts = ifelse(Barretts == 1, &quot;Yes&quot;, &quot;No&quot;)
+  )</code></pre>
+<pre><code>Joining, by = c(&quot;OTU&quot;, &quot;sample_type&quot;, &quot;tumor&quot;, &quot;Abundance&quot;, &quot;ID&quot;, &quot;source&quot;,
+&quot;Barretts&quot;)</code></pre>
+<pre class="r"><code>p &lt;- analysis.dat %&gt;%
+  filter(!is.na(Barretts), source==&quot;16s&quot;)%&gt;%
+  ggplot(aes(x=Barretts, y=Abund))+
+    geom_violin(scale=&quot;width&quot;, adjust=1)+
+    geom_jitter(alpha=0.5, width = 0.25)+
+    scale_y_continuous(
+      trans=scales::trans_new(&quot;root&quot;, root, invroot),
+      breaks=c(0, 0.001,0.01, 0.1, 1,10,50, 100),
+      labels = c(0, 0.001,0.01, 0.1, 1,10,50, 100),
+      limits = c(0, 110)
+    ) + 
+    labs(x=&quot;Barretts&quot;, y=&quot;Relative Abundance (%)&quot;)+
+    theme_classic()
+p</code></pre>
+<pre><code>Warning: Removed 120 rows containing missing values (geom_point).</code></pre>
+<p><img src="figure/supplemental_figure2.Rmd/unnamed-chunk-1-1.png" width="225%" height="10" style="display: block; margin: auto;" /></p>
+<pre class="r"><code>ggsave(&quot;output/supplemental_figure2C_NCI_combined.pdf&quot;, p, units = &quot;in&quot;, width = DIM[1], height = DIM[2])</code></pre>
+<pre><code>Warning: Removed 137 rows containing missing values (geom_point).</code></pre>
+<pre class="r"><code>ggsave(&quot;output/supplemental_figure2C_NCI_combined.png&quot;, p, units = &quot;in&quot;, width = DIM[1], height = DIM[2])</code></pre>
+<pre><code>Warning: Removed 127 rows containing missing values (geom_point).</code></pre>
+<pre class="r"><code>p &lt;- analysis.dat %&gt;%
+  filter(source==&quot;rna&quot;, !is.na(Barretts))%&gt;%
+  ggplot(aes(x=Barretts, y=Abund))+
+    geom_violin(scale=&quot;width&quot;, adjust=1)+
+    geom_jitter(alpha=0.5, width = 0.25)+
+    scale_y_continuous(
+      trans=scales::trans_new(&quot;root&quot;, root, invroot),
+      breaks=c(0, 0.001,0.01, 0.1, 1,10,50, 100),
+      labels = c(0, 0.001,0.01, 0.1, 1,10,50, 100),
+      limits = c(0, 110)
+    ) + 
+    labs(x=&quot;Barretts&quot;, y=&quot;Relative Abundance (%)&quot;)+
+    theme_classic()
+p</code></pre>
+<pre><code>Warning: Removed 749 rows containing non-finite values (stat_ydensity).</code></pre>
+<pre><code>Warning: Removed 828 rows containing missing values (geom_point).</code></pre>
+<p><img src="figure/supplemental_figure2.Rmd/unnamed-chunk-1-2.png" width="225%" height="10" style="display: block; margin: auto;" /></p>
+<pre class="r"><code>ggsave(&quot;output/supplemental_figure2C_tcga_rna_combined.pdf&quot;, p, units = &quot;in&quot;, width = DIM[1], height = DIM[2])</code></pre>
+<pre><code>Warning: Removed 749 rows containing non-finite values (stat_ydensity).</code></pre>
+<pre><code>Warning: Removed 822 rows containing missing values (geom_point).</code></pre>
+<pre class="r"><code>ggsave(&quot;output/supplemental_figure2C_tcga_rna_combined.png&quot;, p, units = &quot;in&quot;, width = DIM[1], height = DIM[2])</code></pre>
+<pre><code>Warning: Removed 749 rows containing non-finite values (stat_ydensity).</code></pre>
+<pre><code>Warning: Removed 818 rows containing missing values (geom_point).</code></pre>
+<pre class="r"><code>p &lt;- analysis.dat %&gt;%
+  filter(source==&quot;wgs&quot;, !is.na(Barretts))%&gt;%
+  ggplot(aes(x=Barretts, y=Abund))+
+    geom_violin(scale=&quot;width&quot;, adjust=1)+
+    geom_jitter(alpha=0.5, width = 0.25)+
+    scale_y_continuous(
+      trans=scales::trans_new(&quot;root&quot;, root, invroot),
+      breaks=c(0, 0.001,0.01, 0.1, 1,10,50, 100),
+      labels = c(0, 0.001,0.01, 0.1, 1,10,50, 100),
+      limits = c(0, 110)
+    ) + 
+    labs(x=&quot;Barretts&quot;, y=&quot;Relative Abundance (%)&quot;)+
+    theme_classic()
+p</code></pre>
+<pre><code>Warning: Removed 112 rows containing non-finite values (stat_ydensity).</code></pre>
+<pre><code>Warning: Removed 321 rows containing missing values (geom_point).</code></pre>
+<p><img src="figure/supplemental_figure2.Rmd/unnamed-chunk-1-3.png" width="225%" height="10" style="display: block; margin: auto;" /></p>
+<pre class="r"><code>ggsave(&quot;output/supplemental_figure2C_tcga_wgs_combined.pdf&quot;, p, units = &quot;in&quot;, width = DIM[1], height = DIM[2])</code></pre>
+<pre><code>Warning: Removed 112 rows containing non-finite values (stat_ydensity).</code></pre>
+<pre><code>Warning: Removed 304 rows containing missing values (geom_point).</code></pre>
+<pre class="r"><code>ggsave(&quot;output/supplemental_figure2C_tcga_wgs_combined.png&quot;, p, units = &quot;in&quot;, width = DIM[1], height = DIM[2])</code></pre>
+<pre><code>Warning: Removed 112 rows containing non-finite values (stat_ydensity).</code></pre>
+<pre><code>Warning: Removed 337 rows containing missing values (geom_point).</code></pre>
+<div id="subset-by-bacterium" class="section level2">
+<h2>Subset by Bacterium</h2>
+<pre class="r"><code># merge datasets by subsetting to specific variables then merging
+analysis.dat &lt;- dat.16s.s %&gt;% 
+  dplyr::mutate(ID = as.factor(accession.number),
+                Barretts = ifelse(`Barretts.`==&quot;Y&quot;,1,0)) %&gt;%
+  dplyr::select(OTU, sample_type, tumor, Abundance, ID, source, Barretts)
+
+dat &lt;- dat.rna.s %&gt;% 
+  dplyr::mutate(Barretts = ifelse(Barrett.s.Esophagus.Reported==&quot;Yes&quot;,1,0)) %&gt;%
+  dplyr::select(OTU, sample_type, tumor, Abundance, ID, source, Barretts)
+analysis.dat &lt;- full_join(analysis.dat, dat)</code></pre>
+<pre><code>Joining, by = c(&quot;OTU&quot;, &quot;sample_type&quot;, &quot;tumor&quot;, &quot;Abundance&quot;, &quot;ID&quot;, &quot;source&quot;,
+&quot;Barretts&quot;)</code></pre>
+<pre class="r"><code>dat &lt;- dat.wgs.s %&gt;% 
+  dplyr::mutate(Barretts = ifelse(Barrett.s.Esophagus.Reported==&quot;Yes&quot;,1,0)) %&gt;%
+  dplyr::select(OTU, sample_type, tumor, Abundance, ID, source, Barretts)
+
+analysis.dat &lt;- full_join(analysis.dat, dat) %&gt;%
+  mutate(
+    pres = ifelse(Abundance &gt; 0, 1, 0),
+    Abund = Abundance*100,
+    Tumor = ifelse(tumor==1, &quot;Tumor&quot;, &quot;No Tumor&quot;),
+    Barretts = ifelse(Barretts == 1, &quot;Yes&quot;, &quot;No&quot;)
+  )</code></pre>
+<pre><code>Joining, by = c(&quot;OTU&quot;, &quot;sample_type&quot;, &quot;tumor&quot;, &quot;Abundance&quot;, &quot;ID&quot;, &quot;source&quot;,
+&quot;Barretts&quot;)</code></pre>
+<pre class="r"><code>p &lt;- analysis.dat %&gt;%
+  filter(!is.na(Barretts), source==&quot;16s&quot;, OTU == &quot;Fusobacterium nucleatum&quot;)%&gt;%
+  ggplot(aes(x=Barretts, y=Abund))+
+    geom_violin(scale=&quot;width&quot;, adjust=1)+
+    geom_jitter(alpha=0.5, width = 0.25)+
+    scale_y_continuous(
+      trans=scales::trans_new(&quot;root&quot;, root, invroot),
+      breaks=c(0, 0.001,0.01, 0.1, 1,10,50, 100),
+      labels = c(0, 0.001,0.01, 0.1, 1,10,50, 100),
+      limits = c(0, 110)
+    ) + 
+    labs(x=&quot;Barretts&quot;, y=&quot;Relative Abundance (%)&quot;)+
+    theme_classic()
+p</code></pre>
+<pre><code>Warning: Removed 44 rows containing missing values (geom_point).</code></pre>
+<p><img src="figure/supplemental_figure2.Rmd/unnamed-chunk-2-1.png" width="225%" height="10" style="display: block; margin: auto;" /></p>
+<pre class="r"><code>ggsave(&quot;output/supplemental_figure2C_NCI_fuso.pdf&quot;, p, units = &quot;in&quot;, width = DIM[1], height = DIM[2])</code></pre>
+<pre><code>Warning: Removed 40 rows containing missing values (geom_point).</code></pre>
+<pre class="r"><code>ggsave(&quot;output/supplemental_figure2C_NCI_fuso.png&quot;, p, units = &quot;in&quot;, width = DIM[1], height = DIM[2])</code></pre>
+<pre><code>Warning: Removed 45 rows containing missing values (geom_point).</code></pre>
+<pre class="r"><code>p &lt;- analysis.dat %&gt;%
+  filter(!is.na(Barretts), source==&quot;rna&quot;, OTU == &quot;Fusobacterium nucleatum&quot;)%&gt;%
+  ggplot(aes(x=Barretts, y=Abund))+
+    geom_violin(scale=&quot;width&quot;, adjust=1)+
+    geom_jitter(alpha=0.5, width = 0.25)+
+    scale_y_continuous(
+      trans=scales::trans_new(&quot;root&quot;, root, invroot),
+      breaks=c(0, 0.001,0.01, 0.1, 1,10,50, 100),
+      labels = c(0, 0.001,0.01, 0.1, 1,10,50, 100),
+      limits = c(0, 110)
+    ) + 
+    labs(x=&quot;Barretts&quot;, y=&quot;Relative Abundance (%)&quot;)+
+    theme_classic()
+p</code></pre>
+<pre><code>Warning: Removed 107 rows containing non-finite values (stat_ydensity).</code></pre>
+<pre><code>Warning: Removed 112 rows containing missing values (geom_point).</code></pre>
+<p><img src="figure/supplemental_figure2.Rmd/unnamed-chunk-2-2.png" width="225%" height="10" style="display: block; margin: auto;" /></p>
+<pre class="r"><code>ggsave(&quot;output/supplemental_figure2C_tcga_rna_fuso.pdf&quot;, p, units = &quot;in&quot;, width = DIM[1], height = DIM[2])</code></pre>
+<pre><code>Warning: Removed 107 rows containing non-finite values (stat_ydensity).</code></pre>
+<pre><code>Warning: Removed 109 rows containing missing values (geom_point).</code></pre>
+<pre class="r"><code>ggsave(&quot;output/supplemental_figure2C_tcga_rna_fuso.png&quot;, p, units = &quot;in&quot;, width = DIM[1], height = DIM[2])</code></pre>
+<pre><code>Warning: Removed 107 rows containing non-finite values (stat_ydensity).
+Removed 109 rows containing missing values (geom_point).</code></pre>
+<pre class="r"><code>p &lt;- analysis.dat %&gt;%
+  filter(!is.na(Barretts), source==&quot;wgs&quot;, OTU == &quot;Fusobacterium nucleatum&quot;)%&gt;%
+  ggplot(aes(x=Barretts, y=Abund))+
+    geom_violin(scale=&quot;width&quot;, adjust=1)+
+    geom_jitter(alpha=0.5, width = 0.25)+
+    scale_y_continuous(
+      trans=scales::trans_new(&quot;root&quot;, root, invroot),
+      breaks=c(0, 0.001,0.01, 0.1, 1,10,50, 100),
+      labels = c(0, 0.001,0.01, 0.1, 1,10,50, 100),
+      limits = c(0, 110)
+    ) + 
+    labs(x=&quot;Barretts&quot;, y=&quot;Relative Abundance (%)&quot;)+
+    theme_classic()
+p</code></pre>
+<pre><code>Warning: Removed 16 rows containing non-finite values (stat_ydensity).</code></pre>
+<pre><code>Warning: Removed 42 rows containing missing values (geom_point).</code></pre>
+<p><img src="figure/supplemental_figure2.Rmd/unnamed-chunk-2-3.png" width="225%" height="10" style="display: block; margin: auto;" /></p>
+<pre class="r"><code>ggsave(&quot;output/supplemental_figure2C_tcga_wgs_fuso.pdf&quot;, p, units = &quot;in&quot;, width = DIM[1], height = DIM[2])</code></pre>
+<pre><code>Warning: Removed 16 rows containing non-finite values (stat_ydensity).</code></pre>
+<pre><code>Warning: Removed 30 rows containing missing values (geom_point).</code></pre>
+<pre class="r"><code>ggsave(&quot;output/supplemental_figure2C_tcga_wgs_fuso.png&quot;, p, units = &quot;in&quot;, width = DIM[1], height = DIM[2])</code></pre>
+<pre><code>Warning: Removed 16 rows containing non-finite values (stat_ydensity).</code></pre>
+<pre><code>Warning: Removed 36 rows containing missing values (geom_point).</code></pre>
+<pre class="r"><code>p &lt;- analysis.dat %&gt;%
+  filter(!is.na(Barretts), source==&quot;16s&quot;, OTU == &quot;Prevotella melaninogenica&quot; | OTU ==&quot;Prevotella spp.&quot;)%&gt;%
+  ggplot(aes(x=Barretts, y=Abund))+
+    geom_violin(scale=&quot;width&quot;, adjust=1)+
+    geom_jitter(alpha=0.5, width = 0.25)+
+    scale_y_continuous(
+      trans=scales::trans_new(&quot;root&quot;, root, invroot),
+      breaks=c(0, 0.001,0.01, 0.1, 1,10,50, 100),
+      labels = c(0, 0.001,0.01, 0.1, 1,10,50, 100),
+      limits = c(0, 110)
+    ) + 
+    labs(x=&quot;Barretts&quot;, y=&quot;Relative Abundance (%)&quot;)+
+    theme_classic()
+p</code></pre>
+<pre><code>Warning: Removed 22 rows containing missing values (geom_point).</code></pre>
+<p><img src="figure/supplemental_figure2.Rmd/unnamed-chunk-2-4.png" width="225%" height="10" style="display: block; margin: auto;" /></p>
+<pre class="r"><code>ggsave(&quot;output/supplemental_figure2C_NCI_prevo.pdf&quot;, p, units = &quot;in&quot;, width = DIM[1], height = DIM[2])</code></pre>
+<pre><code>Warning: Removed 16 rows containing missing values (geom_point).</code></pre>
+<pre class="r"><code>ggsave(&quot;output/supplemental_figure2C_NCI_prevo.png&quot;, p, units = &quot;in&quot;, width = DIM[1], height = DIM[2])</code></pre>
+<pre><code>Warning: Removed 25 rows containing missing values (geom_point).</code></pre>
+<pre class="r"><code>p &lt;- analysis.dat %&gt;%
+  filter(!is.na(Barretts), source==&quot;rna&quot;, OTU == &quot;Prevotella melaninogenica&quot;)%&gt;%
+  ggplot(aes(x=Barretts, y=Abund))+
+    geom_violin(scale=&quot;width&quot;, adjust=1)+
+    geom_jitter(alpha=0.5, width = 0.25)+
+    scale_y_continuous(
+      trans=scales::trans_new(&quot;root&quot;, root, invroot),
+      breaks=c(0, 0.001,0.01, 0.1, 1,10,50, 100),
+      labels = c(0, 0.001,0.01, 0.1, 1,10,50, 100),
+      limits = c(0, 110)
+    ) + 
+    labs(x=&quot;Barretts&quot;, y=&quot;Relative Abundance (%)&quot;)+
+    theme_classic()
+p</code></pre>
+<pre><code>Warning: Removed 107 rows containing non-finite values (stat_ydensity).</code></pre>
+<pre><code>Warning: Removed 109 rows containing missing values (geom_point).</code></pre>
+<p><img src="figure/supplemental_figure2.Rmd/unnamed-chunk-2-5.png" width="225%" height="10" style="display: block; margin: auto;" /></p>
+<pre class="r"><code>ggsave(&quot;output/supplemental_figure2C_tcga_rna_prevo.pdf&quot;, p, units = &quot;in&quot;, width = DIM[1], height = DIM[2])</code></pre>
+<pre><code>Warning: Removed 107 rows containing non-finite values (stat_ydensity).</code></pre>
+<pre><code>Warning: Removed 111 rows containing missing values (geom_point).</code></pre>
+<pre class="r"><code>ggsave(&quot;output/supplemental_figure2C_tcga_rna_prevo.png&quot;, p, units = &quot;in&quot;, width = DIM[1], height = DIM[2])</code></pre>
+<pre><code>Warning: Removed 107 rows containing non-finite values (stat_ydensity).</code></pre>
+<pre><code>Warning: Removed 109 rows containing missing values (geom_point).</code></pre>
+<pre class="r"><code>p &lt;- analysis.dat %&gt;%
+  filter(!is.na(Barretts), source==&quot;wgs&quot;, OTU == &quot;Prevotella melaninogenica&quot;)%&gt;%
+  ggplot(aes(x=Barretts, y=Abund))+
+    geom_violin(scale=&quot;width&quot;, adjust=1)+
+    geom_jitter(alpha=0.5, width = 0.25)+
+    scale_y_continuous(
+      trans=scales::trans_new(&quot;root&quot;, root, invroot),
+      breaks=c(0, 0.001,0.01, 0.1, 1,10,50, 100),
+      labels = c(0, 0.001,0.01, 0.1, 1,10,50, 100),
+      limits = c(0, 110)
+    ) + 
+    labs(x=&quot;Barretts&quot;, y=&quot;Relative Abundance (%)&quot;)+
+    theme_classic()
+p</code></pre>
+<pre><code>Warning: Removed 16 rows containing non-finite values (stat_ydensity).</code></pre>
+<pre><code>Warning: Removed 31 rows containing missing values (geom_point).</code></pre>
+<p><img src="figure/supplemental_figure2.Rmd/unnamed-chunk-2-6.png" width="225%" height="10" style="display: block; margin: auto;" /></p>
+<pre class="r"><code>ggsave(&quot;output/supplemental_figure2C_tcga_wgs_prevo.pdf&quot;, p, units = &quot;in&quot;, width = DIM[1], height = DIM[2])</code></pre>
+<pre><code>Warning: Removed 16 rows containing non-finite values (stat_ydensity).</code></pre>
+<pre><code>Warning: Removed 33 rows containing missing values (geom_point).</code></pre>
+<pre class="r"><code>ggsave(&quot;output/supplemental_figure2C_tcga_wgs_prevo.png&quot;, p, units = &quot;in&quot;, width = DIM[1], height = DIM[2])</code></pre>
+<pre><code>Warning: Removed 16 rows containing non-finite values (stat_ydensity).
+Removed 33 rows containing missing values (geom_point).</code></pre>
+<pre class="r"><code>p &lt;- analysis.dat %&gt;%
+  filter(!is.na(Barretts), source==&quot;16s&quot;, OTU == &quot;Campylobacter concisus&quot;)%&gt;%
+  ggplot(aes(x=Barretts, y=Abund))+
+    geom_violin(scale=&quot;width&quot;, adjust=1)+
+    geom_jitter(alpha=0.5, width = 0.25)+
+    scale_y_continuous(
+      trans=scales::trans_new(&quot;root&quot;, root, invroot),
+      breaks=c(0, 0.001,0.01, 0.1, 1,10,50, 100),
+      labels = c(0, 0.001,0.01, 0.1, 1,10,50, 100),
+      limits = c(0, 110)
+    ) + 
+    labs(x=&quot;Barretts&quot;, y=&quot;Relative Abundance (%)&quot;)+
+    theme_classic()
+p</code></pre>
+<pre><code>Warning: Removed 70 rows containing missing values (geom_point).</code></pre>
+<p><img src="figure/supplemental_figure2.Rmd/unnamed-chunk-2-7.png" width="225%" height="10" style="display: block; margin: auto;" /></p>
+<pre class="r"><code>ggsave(&quot;output/supplemental_figure2C_NCI_campy.pdf&quot;, p, units = &quot;in&quot;, width = DIM[1], height = DIM[2])</code></pre>
+<pre><code>Warning: Removed 67 rows containing missing values (geom_point).</code></pre>
+<pre class="r"><code>ggsave(&quot;output/supplemental_figure2C_NCI_campy.png&quot;, p, units = &quot;in&quot;, width = DIM[1], height = DIM[2])</code></pre>
+<pre><code>Warning: Removed 65 rows containing missing values (geom_point).</code></pre>
+<pre class="r"><code>p &lt;- analysis.dat %&gt;%
+  filter(!is.na(Barretts), source==&quot;rna&quot;, OTU == &quot;Campylobacter concisus&quot;)%&gt;%
+  ggplot(aes(x=Barretts, y=Abund))+
+    geom_violin(scale=&quot;width&quot;, adjust=1)+
+    geom_jitter(alpha=0.5, width = 0.25)+
+    scale_y_continuous(
+      trans=scales::trans_new(&quot;root&quot;, root, invroot),
+      breaks=c(0, 0.001,0.01, 0.1, 1,10,50, 100),
+      labels = c(0, 0.001,0.01, 0.1, 1,10,50, 100),
+      limits = c(0, 110)
+    ) + 
+    labs(x=&quot;Barretts&quot;, y=&quot;Relative Abundance (%)&quot;)+
+    theme_classic()
+p</code></pre>
+<pre><code>Warning: Removed 107 rows containing non-finite values (stat_ydensity).</code></pre>
+<pre><code>Warning: Removed 134 rows containing missing values (geom_point).</code></pre>
+<p><img src="figure/supplemental_figure2.Rmd/unnamed-chunk-2-8.png" width="225%" height="10" style="display: block; margin: auto;" /></p>
+<pre class="r"><code>ggsave(&quot;output/supplemental_figure2C_tcga_rna_campy.pdf&quot;, p, units = &quot;in&quot;, width = DIM[1], height = DIM[2])</code></pre>
+<pre><code>Warning: Removed 107 rows containing non-finite values (stat_ydensity).</code></pre>
+<pre><code>Warning: Removed 132 rows containing missing values (geom_point).</code></pre>
+<pre class="r"><code>ggsave(&quot;output/supplemental_figure2C_tcga_rna_campy.png&quot;, p, units = &quot;in&quot;, width = DIM[1], height = DIM[2])</code></pre>
+<pre><code>Warning: Removed 107 rows containing non-finite values (stat_ydensity).</code></pre>
+<pre><code>Warning: Removed 125 rows containing missing values (geom_point).</code></pre>
+<pre class="r"><code>p &lt;- analysis.dat %&gt;%
+  filter(!is.na(Barretts), source==&quot;wgs&quot;, OTU == &quot;Campylobacter concisus&quot;)%&gt;%
+  ggplot(aes(x=Barretts, y=Abund))+
+    geom_violin(scale=&quot;width&quot;, adjust=1)+
+    geom_jitter(alpha=0.5, width = 0.25)+
+    scale_y_continuous(
+      trans=scales::trans_new(&quot;root&quot;, root, invroot),
+      breaks=c(0, 0.001,0.01, 0.1, 1,10,50, 100),
+      labels = c(0, 0.001,0.01, 0.1, 1,10,50, 100),
+      limits = c(0, 110)
+    ) + 
+    labs(x=&quot;Barretts&quot;, y=&quot;Relative Abundance (%)&quot;)+
+    theme_classic()
+p</code></pre>
+<pre><code>Warning: Removed 16 rows containing non-finite values (stat_ydensity).</code></pre>
+<pre><code>Warning: Removed 52 rows containing missing values (geom_point).</code></pre>
+<p><img src="figure/supplemental_figure2.Rmd/unnamed-chunk-2-9.png" width="225%" height="10" style="display: block; margin: auto;" /></p>
+<pre class="r"><code>ggsave(&quot;output/supplemental_figure2C_tcga_wgs_campy.pdf&quot;, p, units = &quot;in&quot;, width = DIM[1], height = DIM[2])</code></pre>
+<pre><code>Warning: Removed 16 rows containing non-finite values (stat_ydensity).</code></pre>
+<pre><code>Warning: Removed 42 rows containing missing values (geom_point).</code></pre>
+<pre class="r"><code>ggsave(&quot;output/supplemental_figure2C_tcga_wgs_campy.png&quot;, p, units = &quot;in&quot;, width = DIM[1], height = DIM[2])</code></pre>
+<pre><code>Warning: Removed 16 rows containing non-finite values (stat_ydensity).</code></pre>
+<pre><code>Warning: Removed 49 rows containing missing values (geom_point).</code></pre>
+<pre class="r"><code>p &lt;- analysis.dat %&gt;%
+  filter(!is.na(Barretts), source==&quot;16s&quot;, OTU == &quot;Streptococcus sanguinis&quot;)%&gt;%
+  ggplot(aes(x=Barretts, y=Abund))+
+    geom_violin(scale=&quot;width&quot;, adjust=1)+
+    geom_jitter(alpha=0.5, width = 0.25)+
+    scale_y_continuous(
+      trans=scales::trans_new(&quot;root&quot;, root, invroot),
+      breaks=c(0, 0.001,0.01, 0.1, 1,10,50, 100),
+      labels = c(0, 0.001,0.01, 0.1, 1,10,50, 100),
+      limits = c(0, 110)
+    ) + 
+    labs(x=&quot;Barretts&quot;, y=&quot;Relative Abundance (%)&quot;)+
+    theme_classic()
+p</code></pre>
+<pre><code>Warning: Removed 3 rows containing missing values (geom_point).</code></pre>
+<p><img src="figure/supplemental_figure2.Rmd/unnamed-chunk-2-10.png" width="225%" height="10" style="display: block; margin: auto;" /></p>
+<pre class="r"><code>ggsave(&quot;output/supplemental_figure2C_NCI_strepto.pdf&quot;, p, units = &quot;in&quot;, width = DIM[1], height = DIM[2])</code></pre>
+<pre><code>Warning: Removed 4 rows containing missing values (geom_point).</code></pre>
+<pre class="r"><code>ggsave(&quot;output/supplemental_figure2C_NCI_strepto.png&quot;, p, units = &quot;in&quot;, width = DIM[1], height = DIM[2])</code></pre>
+<pre><code>Warning: Removed 6 rows containing missing values (geom_point).</code></pre>
+<pre class="r"><code>p &lt;- analysis.dat %&gt;%
+  filter(!is.na(Barretts), source==&quot;rna&quot;, OTU == &quot;Streptococcus sanguinis&quot;)%&gt;%
+  ggplot(aes(x=Barretts, y=Abund))+
+    geom_violin(scale=&quot;width&quot;, adjust=1)+
+    geom_jitter(alpha=0.5, width = 0.25)+
+    scale_y_continuous(
+      trans=scales::trans_new(&quot;root&quot;, root, invroot),
+      breaks=c(0, 0.001,0.01, 0.1, 1,10,50, 100),
+      labels = c(0, 0.001,0.01, 0.1, 1,10,50, 100),
+      limits = c(0, 110)
+    ) + 
+    labs(x=&quot;Barretts&quot;, y=&quot;Relative Abundance (%)&quot;)+
+    theme_classic()
+p</code></pre>
+<pre><code>Warning: Removed 107 rows containing non-finite values (stat_ydensity).</code></pre>
+<pre><code>Warning: Removed 111 rows containing missing values (geom_point).</code></pre>
+<p><img src="figure/supplemental_figure2.Rmd/unnamed-chunk-2-11.png" width="225%" height="10" style="display: block; margin: auto;" /></p>
+<pre class="r"><code>ggsave(&quot;output/supplemental_figure2C_tcga_rna_strepto.pdf&quot;, p, units = &quot;in&quot;, width = DIM[1], height = DIM[2])</code></pre>
+<pre><code>Warning: Removed 107 rows containing non-finite values (stat_ydensity).</code></pre>
+<pre><code>Warning: Removed 110 rows containing missing values (geom_point).</code></pre>
+<pre class="r"><code>ggsave(&quot;output/supplemental_figure2C_tcga_rna_strepto.png&quot;, p, units = &quot;in&quot;, width = DIM[1], height = DIM[2])</code></pre>
+<pre><code>Warning: Removed 107 rows containing non-finite values (stat_ydensity).</code></pre>
+<pre><code>Warning: Removed 111 rows containing missing values (geom_point).</code></pre>
+<pre class="r"><code>p &lt;- analysis.dat %&gt;%
+  filter(!is.na(Barretts), source==&quot;wgs&quot;, OTU == &quot;Streptococcus sanguinis&quot;)%&gt;%
+  ggplot(aes(x=Barretts, y=Abund))+
+    geom_violin(scale=&quot;width&quot;, adjust=1)+
+    geom_jitter(alpha=0.5, width = 0.25)+
+    scale_y_continuous(
+      trans=scales::trans_new(&quot;root&quot;, root, invroot),
+      breaks=c(0, 0.001,0.01, 0.1, 1,10,50, 100),
+      labels = c(0, 0.001,0.01, 0.1, 1,10,50, 100),
+      limits = c(0, 110)
+    ) + 
+    labs(x=&quot;Barretts&quot;, y=&quot;Relative Abundance (%)&quot;)+
+    theme_classic()
+p</code></pre>
+<pre><code>Warning: Removed 16 rows containing non-finite values (stat_ydensity).</code></pre>
+<pre><code>Warning: Removed 45 rows containing missing values (geom_point).</code></pre>
+<p><img src="figure/supplemental_figure2.Rmd/unnamed-chunk-2-12.png" width="225%" height="10" style="display: block; margin: auto;" /></p>
+<pre class="r"><code>ggsave(&quot;output/supplemental_figure2C_tcga_wgs_strepto.pdf&quot;, p, units = &quot;in&quot;, width = DIM[1], height = DIM[2])</code></pre>
+<pre><code>Warning: Removed 16 rows containing non-finite values (stat_ydensity).</code></pre>
+<pre><code>Warning: Removed 41 rows containing missing values (geom_point).</code></pre>
+<pre class="r"><code>ggsave(&quot;output/supplemental_figure2C_tcga_wgs_strepto.png&quot;, p, units = &quot;in&quot;, width = DIM[1], height = DIM[2])</code></pre>
+<pre><code>Warning: Removed 16 rows containing non-finite values (stat_ydensity).</code></pre>
+<pre><code>Warning: Removed 45 rows containing missing values (geom_point).</code></pre>
+</div>
+</div>
+<div id="sex" class="section level1">
+<h1>Sex</h1>
+<pre class="r"><code>#root function
+root&lt;-function(x){
+  x &lt;- ifelse(x &lt; 0, 0, x)
+  x**(0.25)
+}
+#inverse root function
+invroot&lt;-function(x){
+  x**(4)
+}
+DIM &lt;- c(6, 4)
+
+# merge datasets by subsetting to specific variables then merging
+analysis.dat &lt;- dat.16s.s %&gt;% 
+  dplyr::mutate(ID = as.factor(accession.number),
+                Gender = ifelse(gender==&quot;M&quot;,&quot;Male&quot;,&quot;Female&quot;)) %&gt;%
+  dplyr::select(OTU, sample_type, tumor, Abundance, ID, source, Gender)
+
+dat &lt;- dat.rna.s %&gt;% 
+  dplyr::mutate(Gender = ifelse(Gender==&quot;male&quot;,&quot;Male&quot;,&quot;Female&quot;)) %&gt;%
+  dplyr::select(OTU, sample_type, tumor, Abundance, ID, source, Gender)
+analysis.dat &lt;- full_join(analysis.dat, dat)</code></pre>
+<pre><code>Joining, by = c(&quot;OTU&quot;, &quot;sample_type&quot;, &quot;tumor&quot;, &quot;Abundance&quot;, &quot;ID&quot;, &quot;source&quot;,
+&quot;Gender&quot;)</code></pre>
+<pre class="r"><code>dat &lt;- dat.wgs.s %&gt;% 
+  dplyr::mutate(Gender = ifelse(Gender==&quot;male&quot;,&quot;Male&quot;,&quot;Female&quot;)) %&gt;%
+  dplyr::select(OTU, sample_type, tumor, Abundance, ID, source, Gender)
+
+analysis.dat &lt;- full_join(analysis.dat, dat) %&gt;%
+  mutate(
+    pres = ifelse(Abundance &gt; 0, 1, 0),
+    Abund = Abundance*100,
+    Tumor = ifelse(tumor==1, &quot;Tumor&quot;, &quot;No Tumor&quot;)
+  )</code></pre>
+<pre><code>Joining, by = c(&quot;OTU&quot;, &quot;sample_type&quot;, &quot;tumor&quot;, &quot;Abundance&quot;, &quot;ID&quot;, &quot;source&quot;,
+&quot;Gender&quot;)</code></pre>
+<pre class="r"><code>p &lt;- analysis.dat %&gt;%
+  filter(!is.na(Gender), source==&quot;16s&quot;)%&gt;%
+  ggplot(aes(x=Gender, y=Abund))+
+    geom_violin(scale=&quot;width&quot;, adjust=1)+
+    geom_jitter(alpha=0.5, width = 0.25)+
+    scale_y_continuous(
+      trans=scales::trans_new(&quot;root&quot;, root, invroot),
+      breaks=c(0, 0.001,0.01, 0.1, 1,10,50, 100),
+      labels = c(0, 0.001,0.01, 0.1, 1,10,50, 100),
+      limits = c(0, 110)
+    ) + 
+    labs(x=&quot;Gender&quot;, y=&quot;Relative Abundance (%)&quot;)+
+    theme_classic()
+p</code></pre>
+<pre><code>Warning: Removed 122 rows containing missing values (geom_point).</code></pre>
+<p><img src="figure/supplemental_figure2.Rmd/unnamed-chunk-3-1.png" width="225%" height="10" style="display: block; margin: auto;" /></p>
+<pre class="r"><code>ggsave(&quot;output/supplemental_figure2D_NCI_combined.pdf&quot;, p, units = &quot;in&quot;, width = DIM[1], height = DIM[2])</code></pre>
+<pre><code>Warning: Removed 137 rows containing missing values (geom_point).</code></pre>
+<pre class="r"><code>ggsave(&quot;output/supplemental_figure2D_NCI_combined.png&quot;, p, units = &quot;in&quot;, width = DIM[1], height = DIM[2])</code></pre>
+<pre><code>Warning: Removed 129 rows containing missing values (geom_point).</code></pre>
+<pre class="r"><code>p &lt;- analysis.dat %&gt;%
+  filter(source==&quot;rna&quot;, !is.na(Gender))%&gt;%
+  ggplot(aes(x=Gender, y=Abund))+
+    geom_violin(scale=&quot;width&quot;, adjust=1)+
+    geom_jitter(alpha=0.5, width = 0.25)+
+    scale_y_continuous(
+      trans=scales::trans_new(&quot;root&quot;, root, invroot),
+      breaks=c(0, 0.001,0.01, 0.1, 1,10,50, 100),
+      labels = c(0, 0.001,0.01, 0.1, 1,10,50, 100),
+      limits = c(0, 110)
+    ) + 
+    labs(x=&quot;Gender&quot;, y=&quot;Relative Abundance (%)&quot;)+
+    theme_classic()
+p</code></pre>
+<pre><code>Warning: Removed 749 rows containing non-finite values (stat_ydensity).</code></pre>
+<pre><code>Warning: Removed 817 rows containing missing values (geom_point).</code></pre>
+<p><img src="figure/supplemental_figure2.Rmd/unnamed-chunk-3-2.png" width="225%" height="10" style="display: block; margin: auto;" /></p>
+<pre class="r"><code>ggsave(&quot;output/supplemental_figure2D_tcga_rna_combined.pdf&quot;, p, units = &quot;in&quot;, width = DIM[1], height = DIM[2])</code></pre>
+<pre><code>Warning: Removed 749 rows containing non-finite values (stat_ydensity).</code></pre>
+<pre><code>Warning: Removed 840 rows containing missing values (geom_point).</code></pre>
+<pre class="r"><code>ggsave(&quot;output/supplemental_figure2D_tcga_rna_combined.png&quot;, p, units = &quot;in&quot;, width = DIM[1], height = DIM[2])</code></pre>
+<pre><code>Warning: Removed 749 rows containing non-finite values (stat_ydensity).</code></pre>
+<pre><code>Warning: Removed 823 rows containing missing values (geom_point).</code></pre>
+<pre class="r"><code>p &lt;- analysis.dat %&gt;%
+  filter(source==&quot;wgs&quot;, !is.na(Gender))%&gt;%
+  ggplot(aes(x=Gender, y=Abund))+
+    geom_violin(scale=&quot;width&quot;, adjust=1)+
+    geom_jitter(alpha=0.5, width = 0.25)+
+    scale_y_continuous(
+      trans=scales::trans_new(&quot;root&quot;, root, invroot),
+      breaks=c(0, 0.001,0.01, 0.1, 1,10,50, 100),
+      labels = c(0, 0.001,0.01, 0.1, 1,10,50, 100),
+      limits = c(0, 110)
+    ) + 
+    labs(x=&quot;Gender&quot;, y=&quot;Relative Abundance (%)&quot;)+
+    theme_classic()
+p</code></pre>
+<pre><code>Warning: Removed 112 rows containing non-finite values (stat_ydensity).</code></pre>
+<pre><code>Warning: Removed 322 rows containing missing values (geom_point).</code></pre>
+<p><img src="figure/supplemental_figure2.Rmd/unnamed-chunk-3-3.png" width="225%" height="10" style="display: block; margin: auto;" /></p>
+<pre class="r"><code>ggsave(&quot;output/supplemental_figure2D_tcga_wgs_combined.pdf&quot;, p, units = &quot;in&quot;, width = DIM[1], height = DIM[2])</code></pre>
+<pre><code>Warning: Removed 112 rows containing non-finite values (stat_ydensity).</code></pre>
+<pre><code>Warning: Removed 305 rows containing missing values (geom_point).</code></pre>
+<pre class="r"><code>ggsave(&quot;output/supplemental_figure2D_tcga_wgs_combined.png&quot;, p, units = &quot;in&quot;, width = DIM[1], height = DIM[2])</code></pre>
+<pre><code>Warning: Removed 112 rows containing non-finite values (stat_ydensity).</code></pre>
+<pre><code>Warning: Removed 314 rows containing missing values (geom_point).</code></pre>
+<div id="subset-by-bacterium-1" class="section level2">
+<h2>Subset by Bacterium</h2>
+<pre class="r"><code># merge datasets by subsetting to specific variables then merging
+analysis.dat &lt;- dat.16s.s %&gt;% 
+  dplyr::mutate(ID = as.factor(accession.number),
+                Gender = ifelse(gender==&quot;M&quot;,&quot;Male&quot;,&quot;Female&quot;)) %&gt;%
+  dplyr::select(OTU, sample_type, tumor, Abundance, ID, source, Gender)
+
+dat &lt;- dat.rna.s %&gt;% 
+  dplyr::mutate(Gender = ifelse(Gender==&quot;male&quot;,&quot;Male&quot;,&quot;Female&quot;)) %&gt;%
+  dplyr::select(OTU, sample_type, tumor, Abundance, ID, source, Gender)
+analysis.dat &lt;- full_join(analysis.dat, dat)</code></pre>
+<pre><code>Joining, by = c(&quot;OTU&quot;, &quot;sample_type&quot;, &quot;tumor&quot;, &quot;Abundance&quot;, &quot;ID&quot;, &quot;source&quot;,
+&quot;Gender&quot;)</code></pre>
+<pre class="r"><code>dat &lt;- dat.wgs.s %&gt;% 
+  dplyr::mutate(Gender = ifelse(Gender==&quot;male&quot;,&quot;Male&quot;,&quot;Female&quot;)) %&gt;%
+  dplyr::select(OTU, sample_type, tumor, Abundance, ID, source, Gender)
+
+analysis.dat &lt;- full_join(analysis.dat, dat) %&gt;%
+  mutate(
+    pres = ifelse(Abundance &gt; 0, 1, 0),
+    Abund = Abundance*100,
+    Tumor = ifelse(tumor==1, &quot;Tumor&quot;, &quot;No Tumor&quot;)
+  )</code></pre>
+<pre><code>Joining, by = c(&quot;OTU&quot;, &quot;sample_type&quot;, &quot;tumor&quot;, &quot;Abundance&quot;, &quot;ID&quot;, &quot;source&quot;,
+&quot;Gender&quot;)</code></pre>
+<pre class="r"><code>p &lt;- analysis.dat %&gt;%
+  filter(!is.na(Gender), source==&quot;16s&quot;, OTU == &quot;Fusobacterium nucleatum&quot;)%&gt;%
+  ggplot(aes(x=Gender, y=Abund))+
+    geom_violin(scale=&quot;width&quot;, adjust=1)+
+    geom_jitter(alpha=0.5, width = 0.25)+
+    scale_y_continuous(
+      trans=scales::trans_new(&quot;root&quot;, root, invroot),
+      breaks=c(0, 0.001,0.01, 0.1, 1,10,50, 100),
+      labels = c(0, 0.001,0.01, 0.1, 1,10,50, 100),
+      limits = c(0, 110)
+    ) + 
+    labs(x=&quot;Gender&quot;, y=&quot;Relative Abundance (%)&quot;)+
+    theme_classic()
+p</code></pre>
+<pre><code>Warning: Removed 39 rows containing missing values (geom_point).</code></pre>
+<p><img src="figure/supplemental_figure2.Rmd/unnamed-chunk-4-1.png" width="225%" height="10" style="display: block; margin: auto;" /></p>
+<pre class="r"><code>ggsave(&quot;output/supplemental_figure2D_NCI_fuso.pdf&quot;, p, units = &quot;in&quot;, width = DIM[1], height = DIM[2])</code></pre>
+<pre><code>Warning: Removed 39 rows containing missing values (geom_point).</code></pre>
+<pre class="r"><code>ggsave(&quot;output/supplemental_figure2D_NCI_fuso.png&quot;, p, units = &quot;in&quot;, width = DIM[1], height = DIM[2])</code></pre>
+<pre><code>Warning: Removed 39 rows containing missing values (geom_point).</code></pre>
+<pre class="r"><code>p &lt;- analysis.dat %&gt;%
+  filter(!is.na(Gender), source==&quot;rna&quot;, OTU == &quot;Fusobacterium nucleatum&quot;)%&gt;%
+  ggplot(aes(x=Gender, y=Abund))+
+    geom_violin(scale=&quot;width&quot;, adjust=1)+
+    geom_jitter(alpha=0.5, width = 0.25)+
+    scale_y_continuous(
+      trans=scales::trans_new(&quot;root&quot;, root, invroot),
+      breaks=c(0, 0.001,0.01, 0.1, 1,10,50, 100),
+      labels = c(0, 0.001,0.01, 0.1, 1,10,50, 100),
+      limits = c(0, 110)
+    ) + 
+    labs(x=&quot;Gender&quot;, y=&quot;Relative Abundance (%)&quot;)+
+    theme_classic()
+p</code></pre>
+<pre><code>Warning: Removed 107 rows containing non-finite values (stat_ydensity).</code></pre>
+<pre><code>Warning: Removed 112 rows containing missing values (geom_point).</code></pre>
+<p><img src="figure/supplemental_figure2.Rmd/unnamed-chunk-4-2.png" width="225%" height="10" style="display: block; margin: auto;" /></p>
+<pre class="r"><code>ggsave(&quot;output/supplemental_figure2D_tcga_rna_fuso.pdf&quot;, p, units = &quot;in&quot;, width = DIM[1], height = DIM[2])</code></pre>
+<pre><code>Warning: Removed 107 rows containing non-finite values (stat_ydensity).</code></pre>
+<pre><code>Warning: Removed 111 rows containing missing values (geom_point).</code></pre>
+<pre class="r"><code>ggsave(&quot;output/supplemental_figure2D_tcga_rna_fuso.png&quot;, p, units = &quot;in&quot;, width = DIM[1], height = DIM[2])</code></pre>
+<pre><code>Warning: Removed 107 rows containing non-finite values (stat_ydensity).</code></pre>
+<pre><code>Warning: Removed 110 rows containing missing values (geom_point).</code></pre>
+<pre class="r"><code>p &lt;- analysis.dat %&gt;%
+  filter(!is.na(Gender), source==&quot;wgs&quot;, OTU == &quot;Fusobacterium nucleatum&quot;)%&gt;%
+  ggplot(aes(x=Gender, y=Abund))+
+    geom_violin(scale=&quot;width&quot;, adjust=1)+
+    geom_jitter(alpha=0.5, width = 0.25)+
+    scale_y_continuous(
+      trans=scales::trans_new(&quot;root&quot;, root, invroot),
+      breaks=c(0, 0.001,0.01, 0.1, 1,10,50, 100),
+      labels = c(0, 0.001,0.01, 0.1, 1,10,50, 100),
+      limits = c(0, 110)
+    ) + 
+    labs(x=&quot;Gender&quot;, y=&quot;Relative Abundance (%)&quot;)+
+    theme_classic()
+p</code></pre>
+<pre><code>Warning: Removed 16 rows containing non-finite values (stat_ydensity).</code></pre>
+<pre><code>Warning: Removed 42 rows containing missing values (geom_point).</code></pre>
+<p><img src="figure/supplemental_figure2.Rmd/unnamed-chunk-4-3.png" width="225%" height="10" style="display: block; margin: auto;" /></p>
+<pre class="r"><code>ggsave(&quot;output/supplemental_figure2D_tcga_wgs_fuso.pdf&quot;, p, units = &quot;in&quot;, width = DIM[1], height = DIM[2])</code></pre>
+<pre><code>Warning: Removed 16 rows containing non-finite values (stat_ydensity).</code></pre>
+<pre><code>Warning: Removed 34 rows containing missing values (geom_point).</code></pre>
+<pre class="r"><code>ggsave(&quot;output/supplemental_figure2D_tcga_wgs_fuso.png&quot;, p, units = &quot;in&quot;, width = DIM[1], height = DIM[2])</code></pre>
+<pre><code>Warning: Removed 16 rows containing non-finite values (stat_ydensity).</code></pre>
+<pre><code>Warning: Removed 41 rows containing missing values (geom_point).</code></pre>
+<pre class="r"><code>p &lt;- analysis.dat %&gt;%
+  filter(!is.na(Gender), source==&quot;16s&quot;, OTU == &quot;Prevotella melaninogenica&quot; | OTU ==&quot;Prevotella spp.&quot;)%&gt;%
+  ggplot(aes(x=Gender, y=Abund))+
+    geom_violin(scale=&quot;width&quot;, adjust=1)+
+    geom_jitter(alpha=0.5, width = 0.25)+
+    scale_y_continuous(
+      trans=scales::trans_new(&quot;root&quot;, root, invroot),
+      breaks=c(0, 0.001,0.01, 0.1, 1,10,50, 100),
+      labels = c(0, 0.001,0.01, 0.1, 1,10,50, 100),
+      limits = c(0, 110)
+    ) + 
+    labs(x=&quot;Gender&quot;, y=&quot;Relative Abundance (%)&quot;)+
+    theme_classic()
+p</code></pre>
+<pre><code>Warning: Removed 26 rows containing missing values (geom_point).</code></pre>
+<p><img src="figure/supplemental_figure2.Rmd/unnamed-chunk-4-4.png" width="225%" height="10" style="display: block; margin: auto;" /></p>
+<pre class="r"><code>ggsave(&quot;output/supplemental_figure2D_NCI_prevo.pdf&quot;, p, units = &quot;in&quot;, width = DIM[1], height = DIM[2])</code></pre>
+<pre><code>Warning: Removed 22 rows containing missing values (geom_point).</code></pre>
+<pre class="r"><code>ggsave(&quot;output/supplemental_figure2D_NCI_prevo.png&quot;, p, units = &quot;in&quot;, width = DIM[1], height = DIM[2])</code></pre>
+<pre><code>Warning: Removed 19 rows containing missing values (geom_point).</code></pre>
+<pre class="r"><code>p &lt;- analysis.dat %&gt;%
+  filter(!is.na(Gender), source==&quot;rna&quot;, OTU == &quot;Prevotella melaninogenica&quot;)%&gt;%
+  ggplot(aes(x=Gender, y=Abund))+
+    geom_violin(scale=&quot;width&quot;, adjust=1)+
+    geom_jitter(alpha=0.5, width = 0.25)+
+    scale_y_continuous(
+      trans=scales::trans_new(&quot;root&quot;, root, invroot),
+      breaks=c(0, 0.001,0.01, 0.1, 1,10,50, 100),
+      labels = c(0, 0.001,0.01, 0.1, 1,10,50, 100),
+      limits = c(0, 110)
+    ) + 
+    labs(x=&quot;Gender&quot;, y=&quot;Relative Abundance (%)&quot;)+
+    theme_classic()
+p</code></pre>
+<pre><code>Warning: Removed 107 rows containing non-finite values (stat_ydensity).</code></pre>
+<pre><code>Warning: Removed 111 rows containing missing values (geom_point).</code></pre>
+<p><img src="figure/supplemental_figure2.Rmd/unnamed-chunk-4-5.png" width="225%" height="10" style="display: block; margin: auto;" /></p>
+<pre class="r"><code>ggsave(&quot;output/supplemental_figure2D_tcga_rna_prevo.pdf&quot;, p, units = &quot;in&quot;, width = DIM[1], height = DIM[2])</code></pre>
+<pre><code>Warning: Removed 107 rows containing non-finite values (stat_ydensity).</code></pre>
+<pre><code>Warning: Removed 110 rows containing missing values (geom_point).</code></pre>
+<pre class="r"><code>ggsave(&quot;output/supplemental_figure2D_tcga_rna_prevo.png&quot;, p, units = &quot;in&quot;, width = DIM[1], height = DIM[2])</code></pre>
+<pre><code>Warning: Removed 107 rows containing non-finite values (stat_ydensity).
+Removed 110 rows containing missing values (geom_point).</code></pre>
+<pre class="r"><code>p &lt;- analysis.dat %&gt;%
+  filter(!is.na(Gender), source==&quot;wgs&quot;, OTU == &quot;Prevotella melaninogenica&quot;)%&gt;%
+  ggplot(aes(x=Gender, y=Abund))+
+    geom_violin(scale=&quot;width&quot;, adjust=1)+
+    geom_jitter(alpha=0.5, width = 0.25)+
+    scale_y_continuous(
+      trans=scales::trans_new(&quot;root&quot;, root, invroot),
+      breaks=c(0, 0.001,0.01, 0.1, 1,10,50, 100),
+      labels = c(0, 0.001,0.01, 0.1, 1,10,50, 100),
+      limits = c(0, 110)
+    ) + 
+    labs(x=&quot;Gender&quot;, y=&quot;Relative Abundance (%)&quot;)+
+    theme_classic()
+p</code></pre>
+<pre><code>Warning: Removed 16 rows containing non-finite values (stat_ydensity).</code></pre>
+<pre><code>Warning: Removed 29 rows containing missing values (geom_point).</code></pre>
+<p><img src="figure/supplemental_figure2.Rmd/unnamed-chunk-4-6.png" width="225%" height="10" style="display: block; margin: auto;" /></p>
+<pre class="r"><code>ggsave(&quot;output/supplemental_figure2D_tcga_wgs_prevo.pdf&quot;, p, units = &quot;in&quot;, width = DIM[1], height = DIM[2])</code></pre>
+<pre><code>Warning: Removed 16 rows containing non-finite values (stat_ydensity).</code></pre>
+<pre><code>Warning: Removed 32 rows containing missing values (geom_point).</code></pre>
+<pre class="r"><code>ggsave(&quot;output/supplemental_figure2D_tcga_wgs_prevo.png&quot;, p, units = &quot;in&quot;, width = DIM[1], height = DIM[2])</code></pre>
+<pre><code>Warning: Removed 16 rows containing non-finite values (stat_ydensity).</code></pre>
+<pre><code>Warning: Removed 36 rows containing missing values (geom_point).</code></pre>
+<pre class="r"><code>p &lt;- analysis.dat %&gt;%
+  filter(!is.na(Gender), source==&quot;16s&quot;, OTU == &quot;Campylobacter concisus&quot;)%&gt;%
+  ggplot(aes(x=Gender, y=Abund))+
+    geom_violin(scale=&quot;width&quot;, adjust=1)+
+    geom_jitter(alpha=0.5, width = 0.25)+
+    scale_y_continuous(
+      trans=scales::trans_new(&quot;root&quot;, root, invroot),
+      breaks=c(0, 0.001,0.01, 0.1, 1,10,50, 100),
+      labels = c(0, 0.001,0.01, 0.1, 1,10,50, 100),
+      limits = c(0, 110)
+    ) + 
+    labs(x=&quot;Gender&quot;, y=&quot;Relative Abundance (%)&quot;)+
+    theme_classic()
+p</code></pre>
+<pre><code>Warning: Removed 62 rows containing missing values (geom_point).</code></pre>
+<p><img src="figure/supplemental_figure2.Rmd/unnamed-chunk-4-7.png" width="225%" height="10" style="display: block; margin: auto;" /></p>
+<pre class="r"><code>ggsave(&quot;output/supplemental_figure2D_NCI_campy.pdf&quot;, p, units = &quot;in&quot;, width = DIM[1], height = DIM[2])</code></pre>
+<pre><code>Warning: Removed 63 rows containing missing values (geom_point).</code></pre>
+<pre class="r"><code>ggsave(&quot;output/supplemental_figure2D_NCI_campy.png&quot;, p, units = &quot;in&quot;, width = DIM[1], height = DIM[2])</code></pre>
+<pre><code>Warning: Removed 65 rows containing missing values (geom_point).</code></pre>
+<pre class="r"><code>p &lt;- analysis.dat %&gt;%
+  filter(!is.na(Gender), source==&quot;rna&quot;, OTU == &quot;Campylobacter concisus&quot;)%&gt;%
+  ggplot(aes(x=Gender, y=Abund))+
+    geom_violin(scale=&quot;width&quot;, adjust=1)+
+    geom_jitter(alpha=0.5, width = 0.25)+
+    scale_y_continuous(
+      trans=scales::trans_new(&quot;root&quot;, root, invroot),
+      breaks=c(0, 0.001,0.01, 0.1, 1,10,50, 100),
+      labels = c(0, 0.001,0.01, 0.1, 1,10,50, 100),
+      limits = c(0, 110)
+    ) + 
+    labs(x=&quot;Gender&quot;, y=&quot;Relative Abundance (%)&quot;)+
+    theme_classic()
+p</code></pre>
+<pre><code>Warning: Removed 107 rows containing non-finite values (stat_ydensity).</code></pre>
+<pre><code>Warning: Removed 123 rows containing missing values (geom_point).</code></pre>
+<p><img src="figure/supplemental_figure2.Rmd/unnamed-chunk-4-8.png" width="225%" height="10" style="display: block; margin: auto;" /></p>
+<pre class="r"><code>ggsave(&quot;output/supplemental_figure2D_tcga_rna_campy.pdf&quot;, p, units = &quot;in&quot;, width = DIM[1], height = DIM[2])</code></pre>
+<pre><code>Warning: Removed 107 rows containing non-finite values (stat_ydensity).</code></pre>
+<pre><code>Warning: Removed 134 rows containing missing values (geom_point).</code></pre>
+<pre class="r"><code>ggsave(&quot;output/supplemental_figure2D_tcga_rna_campy.png&quot;, p, units = &quot;in&quot;, width = DIM[1], height = DIM[2])</code></pre>
+<pre><code>Warning: Removed 107 rows containing non-finite values (stat_ydensity).</code></pre>
+<pre><code>Warning: Removed 129 rows containing missing values (geom_point).</code></pre>
+<pre class="r"><code>p &lt;- analysis.dat %&gt;%
+  filter(!is.na(Gender), source==&quot;wgs&quot;, OTU == &quot;Campylobacter concisus&quot;)%&gt;%
+  ggplot(aes(x=Gender, y=Abund))+
+    geom_violin(scale=&quot;width&quot;, adjust=1)+
+    geom_jitter(alpha=0.5, width = 0.25)+
+    scale_y_continuous(
+      trans=scales::trans_new(&quot;root&quot;, root, invroot),
+      breaks=c(0, 0.001,0.01, 0.1, 1,10,50, 100),
+      labels = c(0, 0.001,0.01, 0.1, 1,10,50, 100),
+      limits = c(0, 110)
+    ) + 
+    labs(x=&quot;Gender&quot;, y=&quot;Relative Abundance (%)&quot;)+
+    theme_classic()
+p</code></pre>
+<pre><code>Warning: Removed 16 rows containing non-finite values (stat_ydensity).</code></pre>
+<pre><code>Warning: Removed 41 rows containing missing values (geom_point).</code></pre>
+<p><img src="figure/supplemental_figure2.Rmd/unnamed-chunk-4-9.png" width="225%" height="10" style="display: block; margin: auto;" /></p>
+<pre class="r"><code>ggsave(&quot;output/supplemental_figure2D_tcga_wgs_campy.pdf&quot;, p, units = &quot;in&quot;, width = DIM[1], height = DIM[2])</code></pre>
+<pre><code>Warning: Removed 16 rows containing non-finite values (stat_ydensity).</code></pre>
+<pre><code>Warning: Removed 48 rows containing missing values (geom_point).</code></pre>
+<pre class="r"><code>ggsave(&quot;output/supplemental_figure2D_tcga_wgs_campy.png&quot;, p, units = &quot;in&quot;, width = DIM[1], height = DIM[2])</code></pre>
+<pre><code>Warning: Removed 16 rows containing non-finite values (stat_ydensity).
+Removed 48 rows containing missing values (geom_point).</code></pre>
+<pre class="r"><code>p &lt;- analysis.dat %&gt;%
+  filter(!is.na(Gender), source==&quot;16s&quot;, OTU == &quot;Streptococcus sanguinis&quot;)%&gt;%
+  ggplot(aes(x=Gender, y=Abund))+
+    geom_violin(scale=&quot;width&quot;, adjust=1)+
+    geom_jitter(alpha=0.5, width = 0.25)+
+    scale_y_continuous(
+      trans=scales::trans_new(&quot;root&quot;, root, invroot),
+      breaks=c(0, 0.001,0.01, 0.1, 1,10,50, 100),
+      labels = c(0, 0.001,0.01, 0.1, 1,10,50, 100),
+      limits = c(0, 110)
+    ) + 
+    labs(x=&quot;Gender&quot;, y=&quot;Relative Abundance (%)&quot;)+
+    theme_classic()
+p</code></pre>
+<pre><code>Warning: Removed 5 rows containing missing values (geom_point).</code></pre>
+<p><img src="figure/supplemental_figure2.Rmd/unnamed-chunk-4-10.png" width="225%" height="10" style="display: block; margin: auto;" /></p>
+<pre class="r"><code>ggsave(&quot;output/supplemental_figure2D_NCI_strepto.pdf&quot;, p, units = &quot;in&quot;, width = DIM[1], height = DIM[2])</code></pre>
+<pre><code>Warning: Removed 5 rows containing missing values (geom_point).</code></pre>
+<pre class="r"><code>ggsave(&quot;output/supplemental_figure2D_NCI_strepto.png&quot;, p, units = &quot;in&quot;, width = DIM[1], height = DIM[2])</code></pre>
+<pre><code>Warning: Removed 2 rows containing missing values (geom_point).</code></pre>
+<pre class="r"><code>p &lt;- analysis.dat %&gt;%
+  filter(!is.na(Gender), source==&quot;rna&quot;, OTU == &quot;Streptococcus sanguinis&quot;)%&gt;%
+  ggplot(aes(x=Gender, y=Abund))+
+    geom_violin(scale=&quot;width&quot;, adjust=1)+
+    geom_jitter(alpha=0.5, width = 0.25)+
+    scale_y_continuous(
+      trans=scales::trans_new(&quot;root&quot;, root, invroot),
+      breaks=c(0, 0.001,0.01, 0.1, 1,10,50, 100),
+      labels = c(0, 0.001,0.01, 0.1, 1,10,50, 100),
+      limits = c(0, 110)
+    ) + 
+    labs(x=&quot;Gender&quot;, y=&quot;Relative Abundance (%)&quot;)+
+    theme_classic()
+p</code></pre>
+<pre><code>Warning: Removed 107 rows containing non-finite values (stat_ydensity).</code></pre>
+<pre><code>Warning: Removed 108 rows containing missing values (geom_point).</code></pre>
+<p><img src="figure/supplemental_figure2.Rmd/unnamed-chunk-4-11.png" width="225%" height="10" style="display: block; margin: auto;" /></p>
+<pre class="r"><code>ggsave(&quot;output/supplemental_figure2D_tcga_rna_strepto.pdf&quot;, p, units = &quot;in&quot;, width = DIM[1], height = DIM[2])</code></pre>
+<pre><code>Warning: Removed 107 rows containing non-finite values (stat_ydensity).</code></pre>
+<pre><code>Warning: Removed 111 rows containing missing values (geom_point).</code></pre>
+<pre class="r"><code>ggsave(&quot;output/supplemental_figure2D_tcga_rna_strepto.png&quot;, p, units = &quot;in&quot;, width = DIM[1], height = DIM[2])</code></pre>
+<pre><code>Warning: Removed 107 rows containing non-finite values (stat_ydensity).</code></pre>
+<pre><code>Warning: Removed 109 rows containing missing values (geom_point).</code></pre>
+<pre class="r"><code>p &lt;- analysis.dat %&gt;%
+  filter(!is.na(Gender), source==&quot;wgs&quot;, OTU == &quot;Streptococcus sanguinis&quot;)%&gt;%
+  ggplot(aes(x=Gender, y=Abund))+
+    geom_violin(scale=&quot;width&quot;, adjust=1)+
+    geom_jitter(alpha=0.5, width = 0.25)+
+    scale_y_continuous(
+      trans=scales::trans_new(&quot;root&quot;, root, invroot),
+      breaks=c(0, 0.001,0.01, 0.1, 1,10,50, 100),
+      labels = c(0, 0.001,0.01, 0.1, 1,10,50, 100),
+      limits = c(0, 110)
+    ) + 
+    labs(x=&quot;Gender&quot;, y=&quot;Relative Abundance (%)&quot;)+
+    theme_classic()
+p</code></pre>
+<pre><code>Warning: Removed 16 rows containing non-finite values (stat_ydensity).</code></pre>
+<pre><code>Warning: Removed 49 rows containing missing values (geom_point).</code></pre>
+<p><img src="figure/supplemental_figure2.Rmd/unnamed-chunk-4-12.png" width="225%" height="10" style="display: block; margin: auto;" /></p>
+<pre class="r"><code>ggsave(&quot;output/supplemental_figure2D_tcga_wgs_strepto.pdf&quot;, p, units = &quot;in&quot;, width = DIM[1], height = DIM[2])</code></pre>
+<pre><code>Warning: Removed 16 rows containing non-finite values (stat_ydensity).</code></pre>
+<pre><code>Warning: Removed 46 rows containing missing values (geom_point).</code></pre>
+<pre class="r"><code>ggsave(&quot;output/supplemental_figure2D_tcga_wgs_strepto.png&quot;, p, units = &quot;in&quot;, width = DIM[1], height = DIM[2])</code></pre>
+<pre><code>Warning: Removed 16 rows containing non-finite values (stat_ydensity).</code></pre>
+<pre><code>Warning: Removed 45 rows containing missing values (geom_point).</code></pre>
+</div>
+</div>
+<div id="race" class="section level1">
+<h1>Race</h1>
+<pre class="r"><code>#root function
+root&lt;-function(x){
+  x &lt;- ifelse(x &lt; 0, 0, x)
+  x**(0.25)
+}
+#inverse root function
+invroot&lt;-function(x){
+  x**(4)
+}
+DIM &lt;- c(6, 4)
+
+# merge datasets by subsetting to specific variables then merging
+analysis.dat &lt;- dat.16s.s %&gt;% 
+  dplyr::mutate(ID = as.factor(accession.number)) %&gt;%
+  dplyr::select(OTU, sample_type, tumor, Abundance, ID, source, Race)
+
+dat &lt;- dat.rna.s %&gt;% 
+  dplyr::mutate(Race = race) %&gt;%
+  dplyr::select(OTU, sample_type, tumor, Abundance, ID, source, Race)
+analysis.dat &lt;- full_join(analysis.dat, dat)</code></pre>
+<pre><code>Joining, by = c(&quot;OTU&quot;, &quot;sample_type&quot;, &quot;tumor&quot;, &quot;Abundance&quot;, &quot;ID&quot;, &quot;source&quot;,
+&quot;Race&quot;)</code></pre>
+<pre class="r"><code>dat &lt;- dat.wgs.s %&gt;% 
+  dplyr::mutate(Race = race) %&gt;%
+  dplyr::select(OTU, sample_type, tumor, Abundance, ID, source, Race)
+
+analysis.dat &lt;- full_join(analysis.dat, dat) %&gt;%
+  mutate(
+    pres = ifelse(Abundance &gt; 0, 1, 0),
+    Abund = Abundance*100,
+    Tumor = ifelse(tumor==1, &quot;Tumor&quot;, &quot;No Tumor&quot;)
+  )</code></pre>
+<pre><code>Joining, by = c(&quot;OTU&quot;, &quot;sample_type&quot;, &quot;tumor&quot;, &quot;Abundance&quot;, &quot;ID&quot;, &quot;source&quot;,
+&quot;Race&quot;)</code></pre>
+<pre class="r"><code>analysis.dat$Race[analysis.dat$Race == &quot;asian&quot;] &lt;- &quot;Asian&quot;
+analysis.dat$Race[analysis.dat$Race == &quot;B&quot;] &lt;- &quot;Black&quot;
+analysis.dat$Race[analysis.dat$Race == &quot;black or african american&quot;] &lt;- &quot;Black&quot;
+analysis.dat$Race[analysis.dat$Race == &quot;H&quot;] &lt;- &quot;Hispanic&quot;
+analysis.dat$Race[analysis.dat$Race == &quot;O&quot;] &lt;- &quot;Other&quot;
+analysis.dat$Race[analysis.dat$Race == &quot;W&quot;] &lt;- &quot;White&quot;
+analysis.dat$Race[analysis.dat$Race == &quot;white&quot;] &lt;- &quot;White&quot;
+
+p &lt;- analysis.dat %&gt;%
+  filter(!is.na(Race), source==&quot;16s&quot;)%&gt;%
+  ggplot(aes(x=Race, y=Abund))+
+    geom_violin(scale=&quot;width&quot;, adjust=1)+
+    geom_jitter(alpha=0.5, width = 0.25)+
+    scale_y_continuous(
+      trans=scales::trans_new(&quot;root&quot;, root, invroot),
+      breaks=c(0, 0.001,0.01, 0.1, 1,10,50, 100),
+      labels = c(0, 0.001,0.01, 0.1, 1,10,50, 100),
+      limits = c(0, 110)
+    ) + 
+    labs(x=&quot;Race&quot;, y=&quot;Relative Abundance (%)&quot;)+
+    theme_classic()
+p</code></pre>
+<pre><code>Warning: Removed 132 rows containing missing values (geom_point).</code></pre>
+<p><img src="figure/supplemental_figure2.Rmd/unnamed-chunk-5-1.png" width="225%" height="10" style="display: block; margin: auto;" /></p>
+<pre class="r"><code>ggsave(&quot;output/supplemental_figure2E_NCI_combined.pdf&quot;, p, units = &quot;in&quot;, width = DIM[1], height = DIM[2])</code></pre>
+<pre><code>Warning: Removed 141 rows containing missing values (geom_point).</code></pre>
+<pre class="r"><code>ggsave(&quot;output/supplemental_figure2E_NCI_combined.png&quot;, p, units = &quot;in&quot;, width = DIM[1], height = DIM[2])</code></pre>
+<pre><code>Warning: Removed 136 rows containing missing values (geom_point).</code></pre>
+<pre class="r"><code>p &lt;- analysis.dat %&gt;%
+  filter(source==&quot;rna&quot;, !is.na(Race))%&gt;%
+  ggplot(aes(x=Race, y=Abund))+
+    geom_violin(scale=&quot;width&quot;, adjust=1)+
+    geom_jitter(alpha=0.5, width = 0.25)+
+    scale_y_continuous(
+      trans=scales::trans_new(&quot;root&quot;, root, invroot),
+      breaks=c(0, 0.001,0.01, 0.1, 1,10,50, 100),
+      labels = c(0, 0.001,0.01, 0.1, 1,10,50, 100),
+      limits = c(0, 110)
+    ) + 
+    labs(x=&quot;Race&quot;, y=&quot;Relative Abundance (%)&quot;)+
+    theme_classic()
+p</code></pre>
+<pre><code>Warning: Removed 651 rows containing non-finite values (stat_ydensity).</code></pre>
+<pre><code>Warning: Removed 714 rows containing missing values (geom_point).</code></pre>
+<p><img src="figure/supplemental_figure2.Rmd/unnamed-chunk-5-2.png" width="225%" height="10" style="display: block; margin: auto;" /></p>
+<pre class="r"><code>ggsave(&quot;output/supplemental_figure2E_tcga_rna_combined.pdf&quot;, p, units = &quot;in&quot;, width = DIM[1], height = DIM[2])</code></pre>
+<pre><code>Warning: Removed 651 rows containing non-finite values (stat_ydensity).</code></pre>
+<pre><code>Warning: Removed 712 rows containing missing values (geom_point).</code></pre>
+<pre class="r"><code>ggsave(&quot;output/supplemental_figure2E_tcga_rna_combined.png&quot;, p, units = &quot;in&quot;, width = DIM[1], height = DIM[2])</code></pre>
+<pre><code>Warning: Removed 651 rows containing non-finite values (stat_ydensity).</code></pre>
+<pre><code>Warning: Removed 725 rows containing missing values (geom_point).</code></pre>
+<pre class="r"><code>p &lt;- analysis.dat %&gt;%
+  filter(source==&quot;wgs&quot;, !is.na(Race))%&gt;%
+  ggplot(aes(x=Race, y=Abund))+
+    geom_violin(scale=&quot;width&quot;, adjust=1)+
+    geom_jitter(alpha=0.5, width = 0.25)+
+    scale_y_continuous(
+      trans=scales::trans_new(&quot;root&quot;, root, invroot),
+      breaks=c(0, 0.001,0.01, 0.1, 1,10,50, 100),
+      labels = c(0, 0.001,0.01, 0.1, 1,10,50, 100),
+      limits = c(0, 110)
+    ) + 
+    labs(x=&quot;Race&quot;, y=&quot;Relative Abundance (%)&quot;)+
+    theme_classic()
+p</code></pre>
+<pre><code>Warning: Removed 112 rows containing non-finite values (stat_ydensity).</code></pre>
+<pre><code>Warning: Removed 305 rows containing missing values (geom_point).</code></pre>
+<p><img src="figure/supplemental_figure2.Rmd/unnamed-chunk-5-3.png" width="225%" height="10" style="display: block; margin: auto;" /></p>
+<pre class="r"><code>ggsave(&quot;output/supplemental_figure2E_tcga_wgs_combined.pdf&quot;, p, units = &quot;in&quot;, width = DIM[1], height = DIM[2])</code></pre>
+<pre><code>Warning: Removed 112 rows containing non-finite values (stat_ydensity).</code></pre>
+<pre><code>Warning: Removed 309 rows containing missing values (geom_point).</code></pre>
+<pre class="r"><code>ggsave(&quot;output/supplemental_figure2E_tcga_wgs_combined.png&quot;, p, units = &quot;in&quot;, width = DIM[1], height = DIM[2])</code></pre>
+<pre><code>Warning: Removed 112 rows containing non-finite values (stat_ydensity).</code></pre>
+<pre><code>Warning: Removed 316 rows containing missing values (geom_point).</code></pre>
+<div id="subset-by-bacterium-2" class="section level2">
+<h2>Subset by Bacterium</h2>
+<pre class="r"><code># merge datasets by subsetting to specific variables then merging
+analysis.dat &lt;- dat.16s.s %&gt;% 
+  dplyr::mutate(ID = as.factor(accession.number)) %&gt;%
+  dplyr::select(OTU, sample_type, tumor, Abundance, ID, source, Race)
+
+dat &lt;- dat.rna.s %&gt;% 
+  dplyr::mutate(Race = race) %&gt;%
+  dplyr::select(OTU, sample_type, tumor, Abundance, ID, source, Race)
+analysis.dat &lt;- full_join(analysis.dat, dat)</code></pre>
+<pre><code>Joining, by = c(&quot;OTU&quot;, &quot;sample_type&quot;, &quot;tumor&quot;, &quot;Abundance&quot;, &quot;ID&quot;, &quot;source&quot;,
+&quot;Race&quot;)</code></pre>
+<pre class="r"><code>dat &lt;- dat.wgs.s %&gt;% 
+  dplyr::mutate(Race = race) %&gt;%
+  dplyr::select(OTU, sample_type, tumor, Abundance, ID, source, Race)
+
+analysis.dat &lt;- full_join(analysis.dat, dat) %&gt;%
+  mutate(
+    pres = ifelse(Abundance &gt; 0, 1, 0),
+    Abund = Abundance*100,
+    Tumor = ifelse(tumor==1, &quot;Tumor&quot;, &quot;No Tumor&quot;)
+  )</code></pre>
+<pre><code>Joining, by = c(&quot;OTU&quot;, &quot;sample_type&quot;, &quot;tumor&quot;, &quot;Abundance&quot;, &quot;ID&quot;, &quot;source&quot;,
+&quot;Race&quot;)</code></pre>
+<pre class="r"><code>analysis.dat$Race[analysis.dat$Race == &quot;asian&quot;] &lt;- &quot;Asian&quot;
+analysis.dat$Race[analysis.dat$Race == &quot;B&quot;] &lt;- &quot;Black&quot;
+analysis.dat$Race[analysis.dat$Race == &quot;black or african american&quot;] &lt;- &quot;Black&quot;
+analysis.dat$Race[analysis.dat$Race == &quot;H&quot;] &lt;- &quot;Hispanic&quot;
+analysis.dat$Race[analysis.dat$Race == &quot;O&quot;] &lt;- &quot;Other&quot;
+analysis.dat$Race[analysis.dat$Race == &quot;W&quot;] &lt;- &quot;White&quot;
+analysis.dat$Race[analysis.dat$Race == &quot;white&quot;] &lt;- &quot;White&quot;
+
+p &lt;- analysis.dat %&gt;%
+  filter(!is.na(Race), source==&quot;16s&quot;, OTU == &quot;Fusobacterium nucleatum&quot;)%&gt;%
+  ggplot(aes(x=Race, y=Abund))+
+    geom_violin(scale=&quot;width&quot;, adjust=1)+
+    geom_jitter(alpha=0.5, width = 0.25)+
+    scale_y_continuous(
+      trans=scales::trans_new(&quot;root&quot;, root, invroot),
+      breaks=c(0, 0.001,0.01, 0.1, 1,10,50, 100),
+      labels = c(0, 0.001,0.01, 0.1, 1,10,50, 100),
+      limits = c(0, 110)
+    ) + 
+    labs(x=&quot;Race&quot;, y=&quot;Relative Abundance (%)&quot;)+
+    theme_classic()
+p</code></pre>
+<pre><code>Warning: Removed 46 rows containing missing values (geom_point).</code></pre>
+<p><img src="figure/supplemental_figure2.Rmd/unnamed-chunk-6-1.png" width="225%" height="10" style="display: block; margin: auto;" /></p>
+<pre class="r"><code>ggsave(&quot;output/supplemental_figure2E_NCI_fuso.pdf&quot;, p, units = &quot;in&quot;, width = DIM[1], height = DIM[2])</code></pre>
+<pre><code>Warning: Removed 36 rows containing missing values (geom_point).</code></pre>
+<pre class="r"><code>ggsave(&quot;output/supplemental_figure2E_NCI_fuso.png&quot;, p, units = &quot;in&quot;, width = DIM[1], height = DIM[2])</code></pre>
+<pre><code>Warning: Removed 44 rows containing missing values (geom_point).</code></pre>
+<pre class="r"><code>p &lt;- analysis.dat %&gt;%
+  filter(!is.na(Race), source==&quot;rna&quot;, OTU == &quot;Fusobacterium nucleatum&quot;)%&gt;%
+  ggplot(aes(x=Race, y=Abund))+
+    geom_violin(scale=&quot;width&quot;, adjust=1)+
+    geom_jitter(alpha=0.5, width = 0.25)+
+    scale_y_continuous(
+      trans=scales::trans_new(&quot;root&quot;, root, invroot),
+      breaks=c(0, 0.001,0.01, 0.1, 1,10,50, 100),
+      labels = c(0, 0.001,0.01, 0.1, 1,10,50, 100),
+      limits = c(0, 110)
+    ) + 
+    labs(x=&quot;Race&quot;, y=&quot;Relative Abundance (%)&quot;)+
+    theme_classic()
+p</code></pre>
+<pre><code>Warning: Removed 93 rows containing non-finite values (stat_ydensity).</code></pre>
+<pre><code>Warning: Groups with fewer than two data points have been dropped.</code></pre>
+<pre><code>Warning: Removed 96 rows containing missing values (geom_point).</code></pre>
+<p><img src="figure/supplemental_figure2.Rmd/unnamed-chunk-6-2.png" width="225%" height="10" style="display: block; margin: auto;" /></p>
+<pre class="r"><code>ggsave(&quot;output/supplemental_figure2E_tcga_rna_fuso.pdf&quot;, p, units = &quot;in&quot;, width = DIM[1], height = DIM[2])</code></pre>
+<pre><code>Warning: Removed 93 rows containing non-finite values (stat_ydensity).</code></pre>
+<pre><code>Warning: Groups with fewer than two data points have been dropped.</code></pre>
+<pre><code>Warning: Removed 96 rows containing missing values (geom_point).</code></pre>
+<pre class="r"><code>ggsave(&quot;output/supplemental_figure2E_tcga_rna_fuso.png&quot;, p, units = &quot;in&quot;, width = DIM[1], height = DIM[2])</code></pre>
+<pre><code>Warning: Removed 93 rows containing non-finite values (stat_ydensity).</code></pre>
+<pre><code>Warning: Groups with fewer than two data points have been dropped.</code></pre>
+<pre><code>Warning: Removed 96 rows containing missing values (geom_point).</code></pre>
+<pre class="r"><code>p &lt;- analysis.dat %&gt;%
+  filter(!is.na(Race), source==&quot;wgs&quot;, OTU == &quot;Fusobacterium nucleatum&quot;)%&gt;%
+  ggplot(aes(x=Race, y=Abund))+
+    geom_violin(scale=&quot;width&quot;, adjust=1)+
+    geom_jitter(alpha=0.5, width = 0.25)+
+    scale_y_continuous(
+      trans=scales::trans_new(&quot;root&quot;, root, invroot),
+      breaks=c(0, 0.001,0.01, 0.1, 1,10,50, 100),
+      labels = c(0, 0.001,0.01, 0.1, 1,10,50, 100),
+      limits = c(0, 110)
+    ) + 
+    labs(x=&quot;Race&quot;, y=&quot;Relative Abundance (%)&quot;)+
+    theme_classic()
+p</code></pre>
+<pre><code>Warning: Removed 16 rows containing non-finite values (stat_ydensity).</code></pre>
+<pre><code>Warning: Removed 37 rows containing missing values (geom_point).</code></pre>
+<p><img src="figure/supplemental_figure2.Rmd/unnamed-chunk-6-3.png" width="225%" height="10" style="display: block; margin: auto;" /></p>
+<pre class="r"><code>ggsave(&quot;output/supplemental_figure2E_tcga_wgs_fuso.pdf&quot;, p, units = &quot;in&quot;, width = DIM[1], height = DIM[2])</code></pre>
+<pre><code>Warning: Removed 16 rows containing non-finite values (stat_ydensity).</code></pre>
+<pre><code>Warning: Removed 39 rows containing missing values (geom_point).</code></pre>
+<pre class="r"><code>ggsave(&quot;output/supplemental_figure2E_tcga_wgs_fuso.png&quot;, p, units = &quot;in&quot;, width = DIM[1], height = DIM[2])</code></pre>
+<pre><code>Warning: Removed 16 rows containing non-finite values (stat_ydensity).</code></pre>
+<pre><code>Warning: Removed 38 rows containing missing values (geom_point).</code></pre>
+<pre class="r"><code>p &lt;- analysis.dat %&gt;%
+  filter(!is.na(Race), source==&quot;16s&quot;, OTU == &quot;Prevotella melaninogenica&quot; | OTU ==&quot;Prevotella spp.&quot;)%&gt;%
+  ggplot(aes(x=Race, y=Abund))+
+    geom_violin(scale=&quot;width&quot;, adjust=1)+
+    geom_jitter(alpha=0.5, width = 0.25)+
+    scale_y_continuous(
+      trans=scales::trans_new(&quot;root&quot;, root, invroot),
+      breaks=c(0, 0.001,0.01, 0.1, 1,10,50, 100),
+      labels = c(0, 0.001,0.01, 0.1, 1,10,50, 100),
+      limits = c(0, 110)
+    ) + 
+    labs(x=&quot;Race&quot;, y=&quot;Relative Abundance (%)&quot;)+
+    theme_classic()
+p</code></pre>
+<pre><code>Warning: Removed 21 rows containing missing values (geom_point).</code></pre>
+<p><img src="figure/supplemental_figure2.Rmd/unnamed-chunk-6-4.png" width="225%" height="10" style="display: block; margin: auto;" /></p>
+<pre class="r"><code>ggsave(&quot;output/supplemental_figure2E_NCI_prevo.pdf&quot;, p, units = &quot;in&quot;, width = DIM[1], height = DIM[2])</code></pre>
+<pre><code>Warning: Removed 21 rows containing missing values (geom_point).</code></pre>
+<pre class="r"><code>ggsave(&quot;output/supplemental_figure2E_NCI_prevo.png&quot;, p, units = &quot;in&quot;, width = DIM[1], height = DIM[2])</code></pre>
+<pre><code>Warning: Removed 25 rows containing missing values (geom_point).</code></pre>
+<pre class="r"><code>p &lt;- analysis.dat %&gt;%
+  filter(!is.na(Race), source==&quot;rna&quot;, OTU == &quot;Prevotella melaninogenica&quot;)%&gt;%
+  ggplot(aes(x=Race, y=Abund))+
+    geom_violin(scale=&quot;width&quot;, adjust=1)+
+    geom_jitter(alpha=0.5, width = 0.25)+
+    scale_y_continuous(
+      trans=scales::trans_new(&quot;root&quot;, root, invroot),
+      breaks=c(0, 0.001,0.01, 0.1, 1,10,50, 100),
+      labels = c(0, 0.001,0.01, 0.1, 1,10,50, 100),
+      limits = c(0, 110)
+    ) + 
+    labs(x=&quot;Race&quot;, y=&quot;Relative Abundance (%)&quot;)+
+    theme_classic()
+p</code></pre>
+<pre><code>Warning: Removed 93 rows containing non-finite values (stat_ydensity).</code></pre>
+<pre><code>Warning: Groups with fewer than two data points have been dropped.</code></pre>
+<pre><code>Warning: Removed 98 rows containing missing values (geom_point).</code></pre>
+<p><img src="figure/supplemental_figure2.Rmd/unnamed-chunk-6-5.png" width="225%" height="10" style="display: block; margin: auto;" /></p>
+<pre class="r"><code>ggsave(&quot;output/supplemental_figure2E_tcga_rna_prevo.pdf&quot;, p, units = &quot;in&quot;, width = DIM[1], height = DIM[2])</code></pre>
+<pre><code>Warning: Removed 93 rows containing non-finite values (stat_ydensity).</code></pre>
+<pre><code>Warning: Groups with fewer than two data points have been dropped.</code></pre>
+<pre><code>Warning: Removed 97 rows containing missing values (geom_point).</code></pre>
+<pre class="r"><code>ggsave(&quot;output/supplemental_figure2E_tcga_rna_prevo.png&quot;, p, units = &quot;in&quot;, width = DIM[1], height = DIM[2])</code></pre>
+<pre><code>Warning: Removed 93 rows containing non-finite values (stat_ydensity).</code></pre>
+<pre><code>Warning: Groups with fewer than two data points have been dropped.</code></pre>
+<pre><code>Warning: Removed 97 rows containing missing values (geom_point).</code></pre>
+<pre class="r"><code>p &lt;- analysis.dat %&gt;%
+  filter(!is.na(Race), source==&quot;wgs&quot;, OTU == &quot;Prevotella melaninogenica&quot;)%&gt;%
+  ggplot(aes(x=Race, y=Abund))+
+    geom_violin(scale=&quot;width&quot;, adjust=1)+
+    geom_jitter(alpha=0.5, width = 0.25)+
+    scale_y_continuous(
+      trans=scales::trans_new(&quot;root&quot;, root, invroot),
+      breaks=c(0, 0.001,0.01, 0.1, 1,10,50, 100),
+      labels = c(0, 0.001,0.01, 0.1, 1,10,50, 100),
+      limits = c(0, 110)
+    ) + 
+    labs(x=&quot;Race&quot;, y=&quot;Relative Abundance (%)&quot;)+
+    theme_classic()
+p</code></pre>
+<pre><code>Warning: Removed 16 rows containing non-finite values (stat_ydensity).</code></pre>
+<pre><code>Warning: Removed 36 rows containing missing values (geom_point).</code></pre>
+<p><img src="figure/supplemental_figure2.Rmd/unnamed-chunk-6-6.png" width="225%" height="10" style="display: block; margin: auto;" /></p>
+<pre class="r"><code>ggsave(&quot;output/supplemental_figure2E_tcga_wgs_prevo.pdf&quot;, p, units = &quot;in&quot;, width = DIM[1], height = DIM[2])</code></pre>
+<pre><code>Warning: Removed 16 rows containing non-finite values (stat_ydensity).</code></pre>
+<pre><code>Warning: Removed 35 rows containing missing values (geom_point).</code></pre>
+<pre class="r"><code>ggsave(&quot;output/supplemental_figure2E_tcga_wgs_prevo.png&quot;, p, units = &quot;in&quot;, width = DIM[1], height = DIM[2])</code></pre>
+<pre><code>Warning: Removed 16 rows containing non-finite values (stat_ydensity).</code></pre>
+<pre><code>Warning: Removed 34 rows containing missing values (geom_point).</code></pre>
+<pre class="r"><code>p &lt;- analysis.dat %&gt;%
+  filter(!is.na(Race), source==&quot;16s&quot;, OTU == &quot;Campylobacter concisus&quot;)%&gt;%
+  ggplot(aes(x=Race, y=Abund))+
+    geom_violin(scale=&quot;width&quot;, adjust=1)+
+    geom_jitter(alpha=0.5, width = 0.25)+
+    scale_y_continuous(
+      trans=scales::trans_new(&quot;root&quot;, root, invroot),
+      breaks=c(0, 0.001,0.01, 0.1, 1,10,50, 100),
+      labels = c(0, 0.001,0.01, 0.1, 1,10,50, 100),
+      limits = c(0, 110)
+    ) + 
+    labs(x=&quot;Race&quot;, y=&quot;Relative Abundance (%)&quot;)+
+    theme_classic()
+p</code></pre>
+<pre><code>Warning: Removed 59 rows containing missing values (geom_point).</code></pre>
+<p><img src="figure/supplemental_figure2.Rmd/unnamed-chunk-6-7.png" width="225%" height="10" style="display: block; margin: auto;" /></p>
+<pre class="r"><code>ggsave(&quot;output/supplemental_figure2E_NCI_campy.pdf&quot;, p, units = &quot;in&quot;, width = DIM[1], height = DIM[2])</code></pre>
+<pre><code>Warning: Removed 59 rows containing missing values (geom_point).</code></pre>
+<pre class="r"><code>ggsave(&quot;output/supplemental_figure2E_NCI_campy.png&quot;, p, units = &quot;in&quot;, width = DIM[1], height = DIM[2])</code></pre>
+<pre><code>Warning: Removed 69 rows containing missing values (geom_point).</code></pre>
+<pre class="r"><code>p &lt;- analysis.dat %&gt;%
+  filter(!is.na(Race), source==&quot;rna&quot;, OTU == &quot;Campylobacter concisus&quot;)%&gt;%
+  ggplot(aes(x=Race, y=Abund))+
+    geom_violin(scale=&quot;width&quot;, adjust=1)+
+    geom_jitter(alpha=0.5, width = 0.25)+
+    scale_y_continuous(
+      trans=scales::trans_new(&quot;root&quot;, root, invroot),
+      breaks=c(0, 0.001,0.01, 0.1, 1,10,50, 100),
+      labels = c(0, 0.001,0.01, 0.1, 1,10,50, 100),
+      limits = c(0, 110)
+    ) + 
+    labs(x=&quot;Race&quot;, y=&quot;Relative Abundance (%)&quot;)+
+    theme_classic()
+p</code></pre>
+<pre><code>Warning: Removed 93 rows containing non-finite values (stat_ydensity).</code></pre>
+<pre><code>Warning: Groups with fewer than two data points have been dropped.</code></pre>
+<pre><code>Warning: Removed 108 rows containing missing values (geom_point).</code></pre>
+<p><img src="figure/supplemental_figure2.Rmd/unnamed-chunk-6-8.png" width="225%" height="10" style="display: block; margin: auto;" /></p>
+<pre class="r"><code>ggsave(&quot;output/supplemental_figure2E_tcga_rna_campy.pdf&quot;, p, units = &quot;in&quot;, width = DIM[1], height = DIM[2])</code></pre>
+<pre><code>Warning: Removed 93 rows containing non-finite values (stat_ydensity).</code></pre>
+<pre><code>Warning: Groups with fewer than two data points have been dropped.</code></pre>
+<pre><code>Warning: Removed 113 rows containing missing values (geom_point).</code></pre>
+<pre class="r"><code>ggsave(&quot;output/supplemental_figure2E_tcga_rna_campy.png&quot;, p, units = &quot;in&quot;, width = DIM[1], height = DIM[2])</code></pre>
+<pre><code>Warning: Removed 93 rows containing non-finite values (stat_ydensity).</code></pre>
+<pre><code>Warning: Groups with fewer than two data points have been dropped.</code></pre>
+<pre><code>Warning: Removed 114 rows containing missing values (geom_point).</code></pre>
+<pre class="r"><code>p &lt;- analysis.dat %&gt;%
+  filter(!is.na(Race), source==&quot;wgs&quot;, OTU == &quot;Campylobacter concisus&quot;)%&gt;%
+  ggplot(aes(x=Race, y=Abund))+
+    geom_violin(scale=&quot;width&quot;, adjust=1)+
+    geom_jitter(alpha=0.5, width = 0.25)+
+    scale_y_continuous(
+      trans=scales::trans_new(&quot;root&quot;, root, invroot),
+      breaks=c(0, 0.001,0.01, 0.1, 1,10,50, 100),
+      labels = c(0, 0.001,0.01, 0.1, 1,10,50, 100),
+      limits = c(0, 110)
+    ) + 
+    labs(x=&quot;Race&quot;, y=&quot;Relative Abundance (%)&quot;)+
+    theme_classic()
+p</code></pre>
+<pre><code>Warning: Removed 16 rows containing non-finite values (stat_ydensity).</code></pre>
+<pre><code>Warning: Removed 47 rows containing missing values (geom_point).</code></pre>
+<p><img src="figure/supplemental_figure2.Rmd/unnamed-chunk-6-9.png" width="225%" height="10" style="display: block; margin: auto;" /></p>
+<pre class="r"><code>ggsave(&quot;output/supplemental_figure2E_tcga_wgs_campy.pdf&quot;, p, units = &quot;in&quot;, width = DIM[1], height = DIM[2])</code></pre>
+<pre><code>Warning: Removed 16 rows containing non-finite values (stat_ydensity).</code></pre>
+<pre><code>Warning: Removed 52 rows containing missing values (geom_point).</code></pre>
+<pre class="r"><code>ggsave(&quot;output/supplemental_figure2E_tcga_wgs_campy.png&quot;, p, units = &quot;in&quot;, width = DIM[1], height = DIM[2])</code></pre>
+<pre><code>Warning: Removed 16 rows containing non-finite values (stat_ydensity).</code></pre>
+<pre><code>Warning: Removed 46 rows containing missing values (geom_point).</code></pre>
+<pre class="r"><code>p &lt;- analysis.dat %&gt;%
+  filter(!is.na(Race), source==&quot;16s&quot;, OTU == &quot;Streptococcus sanguinis&quot;)%&gt;%
+  ggplot(aes(x=Race, y=Abund))+
+    geom_violin(scale=&quot;width&quot;, adjust=1)+
+    geom_jitter(alpha=0.5, width = 0.25)+
+    scale_y_continuous(
+      trans=scales::trans_new(&quot;root&quot;, root, invroot),
+      breaks=c(0, 0.001,0.01, 0.1, 1,10,50, 100),
+      labels = c(0, 0.001,0.01, 0.1, 1,10,50, 100),
+      limits = c(0, 110)
+    ) + 
+    labs(x=&quot;Race&quot;, y=&quot;Relative Abundance (%)&quot;)+
+    theme_classic()
+p</code></pre>
+<pre><code>Warning: Removed 2 rows containing missing values (geom_point).</code></pre>
+<p><img src="figure/supplemental_figure2.Rmd/unnamed-chunk-6-10.png" width="225%" height="10" style="display: block; margin: auto;" /></p>
+<pre class="r"><code>ggsave(&quot;output/supplemental_figure2E_NCI_strepto.pdf&quot;, p, units = &quot;in&quot;, width = DIM[1], height = DIM[2])</code></pre>
+<pre><code>Warning: Removed 1 rows containing missing values (geom_point).</code></pre>
+<pre class="r"><code>ggsave(&quot;output/supplemental_figure2E_NCI_strepto.png&quot;, p, units = &quot;in&quot;, width = DIM[1], height = DIM[2])</code></pre>
+<pre><code>Warning: Removed 6 rows containing missing values (geom_point).</code></pre>
+<pre class="r"><code>p &lt;- analysis.dat %&gt;%
+  filter(!is.na(Race), source==&quot;rna&quot;, OTU == &quot;Streptococcus sanguinis&quot;)%&gt;%
+  ggplot(aes(x=Race, y=Abund))+
+    geom_violin(scale=&quot;width&quot;, adjust=1)+
+    geom_jitter(alpha=0.5, width = 0.25)+
+    scale_y_continuous(
+      trans=scales::trans_new(&quot;root&quot;, root, invroot),
+      breaks=c(0, 0.001,0.01, 0.1, 1,10,50, 100),
+      labels = c(0, 0.001,0.01, 0.1, 1,10,50, 100),
+      limits = c(0, 110)
+    ) + 
+    labs(x=&quot;Race&quot;, y=&quot;Relative Abundance (%)&quot;)+
+    theme_classic()
+p</code></pre>
+<pre><code>Warning: Removed 93 rows containing non-finite values (stat_ydensity).</code></pre>
+<pre><code>Warning: Groups with fewer than two data points have been dropped.</code></pre>
+<pre><code>Warning: Removed 99 rows containing missing values (geom_point).</code></pre>
+<p><img src="figure/supplemental_figure2.Rmd/unnamed-chunk-6-11.png" width="225%" height="10" style="display: block; margin: auto;" /></p>
+<pre class="r"><code>ggsave(&quot;output/supplemental_figure2E_tcga_rna_strepto.pdf&quot;, p, units = &quot;in&quot;, width = DIM[1], height = DIM[2])</code></pre>
+<pre><code>Warning: Removed 93 rows containing non-finite values (stat_ydensity).</code></pre>
+<pre><code>Warning: Groups with fewer than two data points have been dropped.</code></pre>
+<pre><code>Warning: Removed 97 rows containing missing values (geom_point).</code></pre>
+<pre class="r"><code>ggsave(&quot;output/supplemental_figure2E_tcga_rna_strepto.png&quot;, p, units = &quot;in&quot;, width = DIM[1], height = DIM[2])</code></pre>
+<pre><code>Warning: Removed 93 rows containing non-finite values (stat_ydensity).</code></pre>
+<pre><code>Warning: Groups with fewer than two data points have been dropped.</code></pre>
+<pre><code>Warning: Removed 99 rows containing missing values (geom_point).</code></pre>
+<pre class="r"><code>p &lt;- analysis.dat %&gt;%
+  filter(!is.na(Race), source==&quot;wgs&quot;, OTU == &quot;Streptococcus sanguinis&quot;)%&gt;%
+  ggplot(aes(x=Race, y=Abund))+
+    geom_violin(scale=&quot;width&quot;, adjust=1)+
+    geom_jitter(alpha=0.5, width = 0.25)+
+    scale_y_continuous(
+      trans=scales::trans_new(&quot;root&quot;, root, invroot),
+      breaks=c(0, 0.001,0.01, 0.1, 1,10,50, 100),
+      labels = c(0, 0.001,0.01, 0.1, 1,10,50, 100),
+      limits = c(0, 110)
+    ) + 
+    labs(x=&quot;Race&quot;, y=&quot;Relative Abundance (%)&quot;)+
+    theme_classic()
+p</code></pre>
+<pre><code>Warning: Removed 16 rows containing non-finite values (stat_ydensity).</code></pre>
+<pre><code>Warning: Removed 48 rows containing missing values (geom_point).</code></pre>
+<p><img src="figure/supplemental_figure2.Rmd/unnamed-chunk-6-12.png" width="225%" height="10" style="display: block; margin: auto;" /></p>
+<pre class="r"><code>ggsave(&quot;output/supplemental_figure2E_tcga_wgs_strepto.pdf&quot;, p, units = &quot;in&quot;, width = DIM[1], height = DIM[2])</code></pre>
+<pre><code>Warning: Removed 16 rows containing non-finite values (stat_ydensity).</code></pre>
+<pre><code>Warning: Removed 51 rows containing missing values (geom_point).</code></pre>
+<pre class="r"><code>ggsave(&quot;output/supplemental_figure2E_tcga_wgs_strepto.png&quot;, p, units = &quot;in&quot;, width = DIM[1], height = DIM[2])</code></pre>
+<pre><code>Warning: Removed 16 rows containing non-finite values (stat_ydensity).</code></pre>
+<pre><code>Warning: Removed 50 rows containing missing values (geom_point).</code></pre>
+</div>
+</div>
+<div id="stage" class="section level1">
+<h1>Stage</h1>
+<pre class="r"><code>#root function
+root&lt;-function(x){
+  x &lt;- ifelse(x &lt; 0, 0, x)
+  x**(0.25)
+}
+#inverse root function
+invroot&lt;-function(x){
+  x**(4)
+}
+DIM &lt;- c(6, 4)
+
+# merge datasets by subsetting to specific variables then merging
+analysis.dat &lt;- dat.16s.s %&gt;% 
+  dplyr::mutate(ID = as.factor(accession.number)) %&gt;%
+  dplyr::select(OTU, sample_type, tumor, Abundance, ID, source, tumor.stage)
+
+dat &lt;- dat.rna.s %&gt;% 
+  dplyr::mutate(Race = race) %&gt;%
+  dplyr::select(OTU, sample_type, tumor, Abundance, ID, source, tumor.stage)
+analysis.dat &lt;- full_join(analysis.dat, dat)</code></pre>
+<pre><code>Joining, by = c(&quot;OTU&quot;, &quot;sample_type&quot;, &quot;tumor&quot;, &quot;Abundance&quot;, &quot;ID&quot;, &quot;source&quot;,
+&quot;tumor.stage&quot;)</code></pre>
+<pre class="r"><code>dat &lt;- dat.wgs.s %&gt;% 
+  dplyr::mutate(Race = race) %&gt;%
+  dplyr::select(OTU, sample_type, tumor, Abundance, ID, source, tumor.stage)
+
+analysis.dat &lt;- full_join(analysis.dat, dat) %&gt;%
+  mutate(
+    pres = ifelse(Abundance &gt; 0, 1, 0),
+    Abund = Abundance*100,
+    Tumor = ifelse(tumor==1, &quot;Tumor&quot;, &quot;No Tumor&quot;),
+    Tumor_Stage = tumor.stage
+  )</code></pre>
+<pre><code>Joining, by = c(&quot;OTU&quot;, &quot;sample_type&quot;, &quot;tumor&quot;, &quot;Abundance&quot;, &quot;ID&quot;, &quot;source&quot;,
+&quot;tumor.stage&quot;)</code></pre>
+<pre class="r"><code>#analysis.dat$Tumor_Stage[analysis.dat$Tumor_Stage == &quot;0&quot;] &lt;- &quot;&quot;
+
+p &lt;- analysis.dat %&gt;%
+  filter(!is.na(Tumor_Stage), source==&quot;16s&quot;)%&gt;%
+  ggplot(aes(x=Tumor_Stage, y=Abund))+
+    geom_violin(scale=&quot;width&quot;, adjust=1)+
+    geom_jitter(alpha=0.5, width = 0.25)+
+    scale_y_continuous(
+      trans=scales::trans_new(&quot;root&quot;, root, invroot),
+      breaks=c(0, 0.001,0.01, 0.1, 1,10,50, 100),
+      labels = c(0, 0.001,0.01, 0.1, 1,10,50, 100),
+      limits = c(0, 110)
+    ) + 
+    labs(x=&quot;Tumor_Stage&quot;, y=&quot;Relative Abundance (%)&quot;)+
+    theme_classic()
+p</code></pre>
+<pre><code>Warning: Removed 127 rows containing missing values (geom_point).</code></pre>
+<p><img src="figure/supplemental_figure2.Rmd/unnamed-chunk-7-1.png" width="225%" height="10" style="display: block; margin: auto;" /></p>
+<pre class="r"><code>ggsave(&quot;output/supplemental_figure2F_NCI_combined.pdf&quot;, p, units = &quot;in&quot;, width = DIM[1], height = DIM[2])</code></pre>
+<pre><code>Warning: Removed 126 rows containing missing values (geom_point).</code></pre>
+<pre class="r"><code>ggsave(&quot;output/supplemental_figure2F_NCI_combined.png&quot;, p, units = &quot;in&quot;, width = DIM[1], height = DIM[2])</code></pre>
+<pre><code>Warning: Removed 129 rows containing missing values (geom_point).</code></pre>
+<pre class="r"><code>p &lt;- analysis.dat %&gt;%
+  filter(source==&quot;rna&quot;, !is.na(Tumor_Stage))%&gt;%
+  ggplot(aes(x=Tumor_Stage, y=Abund))+
+    geom_violin(scale=&quot;width&quot;, adjust=1)+
+    geom_jitter(alpha=0.5, width = 0.25)+
+    scale_y_continuous(
+      trans=scales::trans_new(&quot;root&quot;, root, invroot),
+      breaks=c(0, 0.001,0.01, 0.1, 1,10,50, 100),
+      labels = c(0, 0.001,0.01, 0.1, 1,10,50, 100),
+      limits = c(0, 110)
+    ) + 
+    labs(x=&quot;Tumor_Stage&quot;, y=&quot;Relative Abundance (%)&quot;)+
+    theme_classic()
+p</code></pre>
+<pre><code>Warning: Removed 658 rows containing non-finite values (stat_ydensity).</code></pre>
+<pre><code>Warning: Removed 728 rows containing missing values (geom_point).</code></pre>
+<p><img src="figure/supplemental_figure2.Rmd/unnamed-chunk-7-2.png" width="225%" height="10" style="display: block; margin: auto;" /></p>
+<pre class="r"><code>ggsave(&quot;output/supplemental_figure2F_tcga_rna_combined.pdf&quot;, p, units = &quot;in&quot;, width = DIM[1], height = DIM[2])</code></pre>
+<pre><code>Warning: Removed 658 rows containing non-finite values (stat_ydensity).</code></pre>
+<pre><code>Warning: Removed 730 rows containing missing values (geom_point).</code></pre>
+<pre class="r"><code>ggsave(&quot;output/supplemental_figure2F_tcga_rna_combined.png&quot;, p, units = &quot;in&quot;, width = DIM[1], height = DIM[2])</code></pre>
+<pre><code>Warning: Removed 658 rows containing non-finite values (stat_ydensity).</code></pre>
+<pre><code>Warning: Removed 734 rows containing missing values (geom_point).</code></pre>
+<pre class="r"><code>p &lt;- analysis.dat %&gt;%
+  filter(source==&quot;wgs&quot;, !is.na(Tumor_Stage))%&gt;%
+  ggplot(aes(x=Tumor_Stage, y=Abund))+
+    geom_violin(scale=&quot;width&quot;, adjust=1)+
+    geom_jitter(alpha=0.5, width = 0.25)+
+    scale_y_continuous(
+      trans=scales::trans_new(&quot;root&quot;, root, invroot),
+      breaks=c(0, 0.001,0.01, 0.1, 1,10,50, 100),
+      labels = c(0, 0.001,0.01, 0.1, 1,10,50, 100),
+      limits = c(0, 110)
+    ) + 
+    labs(x=&quot;Tumor_Stage&quot;, y=&quot;Relative Abundance (%)&quot;)+
+    theme_classic()
+p</code></pre>
+<pre><code>Warning: Removed 98 rows containing non-finite values (stat_ydensity).</code></pre>
+<pre><code>Warning: Removed 276 rows containing missing values (geom_point).</code></pre>
+<p><img src="figure/supplemental_figure2.Rmd/unnamed-chunk-7-3.png" width="225%" height="10" style="display: block; margin: auto;" /></p>
+<pre class="r"><code>ggsave(&quot;output/supplemental_figure2F_tcga_wgs_combined.pdf&quot;, p, units = &quot;in&quot;, width = DIM[1], height = DIM[2])</code></pre>
+<pre><code>Warning: Removed 98 rows containing non-finite values (stat_ydensity).</code></pre>
+<pre><code>Warning: Removed 282 rows containing missing values (geom_point).</code></pre>
+<pre class="r"><code>ggsave(&quot;output/supplemental_figure2F_tcga_wgs_combined.png&quot;, p, units = &quot;in&quot;, width = DIM[1], height = DIM[2])</code></pre>
+<pre><code>Warning: Removed 98 rows containing non-finite values (stat_ydensity).</code></pre>
+<pre><code>Warning: Removed 295 rows containing missing values (geom_point).</code></pre>
+<div id="subset-by-bacterium-3" class="section level2">
+<h2>Subset by Bacterium</h2>
+<pre class="r"><code># merge datasets by subsetting to specific variables then merging
+analysis.dat &lt;- dat.16s.s %&gt;% 
+  dplyr::mutate(ID = as.factor(accession.number)) %&gt;%
+  dplyr::select(OTU, sample_type, tumor, Abundance, ID, source, tumor.stage)
+
+dat &lt;- dat.rna.s %&gt;% 
+  dplyr::mutate(Race = race) %&gt;%
+  dplyr::select(OTU, sample_type, tumor, Abundance, ID, source, tumor.stage)
+analysis.dat &lt;- full_join(analysis.dat, dat)</code></pre>
+<pre><code>Joining, by = c(&quot;OTU&quot;, &quot;sample_type&quot;, &quot;tumor&quot;, &quot;Abundance&quot;, &quot;ID&quot;, &quot;source&quot;,
+&quot;tumor.stage&quot;)</code></pre>
+<pre class="r"><code>dat &lt;- dat.wgs.s %&gt;% 
+  dplyr::mutate(Race = race) %&gt;%
+  dplyr::select(OTU, sample_type, tumor, Abundance, ID, source, tumor.stage)
+
+analysis.dat &lt;- full_join(analysis.dat, dat) %&gt;%
+  mutate(
+    pres = ifelse(Abundance &gt; 0, 1, 0),
+    Abund = Abundance*100,
+    Tumor = ifelse(tumor==1, &quot;Tumor&quot;, &quot;No Tumor&quot;),
+    Tumor_Stage = tumor.stage
+  )</code></pre>
+<pre><code>Joining, by = c(&quot;OTU&quot;, &quot;sample_type&quot;, &quot;tumor&quot;, &quot;Abundance&quot;, &quot;ID&quot;, &quot;source&quot;,
+&quot;tumor.stage&quot;)</code></pre>
+<pre class="r"><code>#analysis.dat$Tumor_Stage[analysis.dat$Tumor_Stage == &quot;0&quot;] &lt;- &quot;&quot;
+
+
+p &lt;- analysis.dat %&gt;%
+  filter(!is.na(Tumor_Stage), source==&quot;16s&quot;, OTU == &quot;Fusobacterium nucleatum&quot;)%&gt;%
+  ggplot(aes(x=Tumor_Stage, y=Abund))+
+    geom_violin(scale=&quot;width&quot;, adjust=1)+
+    geom_jitter(alpha=0.5, width = 0.25)+
+    scale_y_continuous(
+      trans=scales::trans_new(&quot;root&quot;, root, invroot),
+      breaks=c(0, 0.001,0.01, 0.1, 1,10,50, 100),
+      labels = c(0, 0.001,0.01, 0.1, 1,10,50, 100),
+      limits = c(0, 110)
+    ) + 
+    labs(x=&quot;Tumor_Stage&quot;, y=&quot;Relative Abundance (%)&quot;)+
+    theme_classic()
+p</code></pre>
+<pre><code>Warning: Groups with fewer than two data points have been dropped.</code></pre>
+<pre><code>Warning: Removed 46 rows containing missing values (geom_point).</code></pre>
+<p><img src="figure/supplemental_figure2.Rmd/unnamed-chunk-8-1.png" width="225%" height="10" style="display: block; margin: auto;" /></p>
+<pre class="r"><code>ggsave(&quot;output/supplemental_figure2F_NCI_fuso.pdf&quot;, p, units = &quot;in&quot;, width = DIM[1], height = DIM[2])</code></pre>
+<pre><code>Warning: Groups with fewer than two data points have been dropped.
+Removed 46 rows containing missing values (geom_point).</code></pre>
+<pre class="r"><code>ggsave(&quot;output/supplemental_figure2F_NCI_fuso.png&quot;, p, units = &quot;in&quot;, width = DIM[1], height = DIM[2])</code></pre>
+<pre><code>Warning: Groups with fewer than two data points have been dropped.</code></pre>
+<pre><code>Warning: Removed 40 rows containing missing values (geom_point).</code></pre>
+<pre class="r"><code>p &lt;- analysis.dat %&gt;%
+  filter(!is.na(Tumor_Stage), source==&quot;rna&quot;, OTU == &quot;Fusobacterium nucleatum&quot;)%&gt;%
+  ggplot(aes(x=Tumor_Stage, y=Abund))+
+    geom_violin(scale=&quot;width&quot;, adjust=1)+
+    geom_jitter(alpha=0.5, width = 0.25)+
+    scale_y_continuous(
+      trans=scales::trans_new(&quot;root&quot;, root, invroot),
+      breaks=c(0, 0.001,0.01, 0.1, 1,10,50, 100),
+      labels = c(0, 0.001,0.01, 0.1, 1,10,50, 100),
+      limits = c(0, 110)
+    ) + 
+    labs(x=&quot;Tumor_Stage&quot;, y=&quot;Relative Abundance (%)&quot;)+
+    theme_classic()
+p</code></pre>
+<pre><code>Warning: Removed 94 rows containing non-finite values (stat_ydensity).</code></pre>
+<pre><code>Warning: Removed 97 rows containing missing values (geom_point).</code></pre>
+<p><img src="figure/supplemental_figure2.Rmd/unnamed-chunk-8-2.png" width="225%" height="10" style="display: block; margin: auto;" /></p>
+<pre class="r"><code>ggsave(&quot;output/supplemental_figure2F_tcga_rna_fuso.pdf&quot;, p, units = &quot;in&quot;, width = DIM[1], height = DIM[2])</code></pre>
+<pre><code>Warning: Removed 94 rows containing non-finite values (stat_ydensity).
+Removed 97 rows containing missing values (geom_point).</code></pre>
+<pre class="r"><code>ggsave(&quot;output/supplemental_figure2F_tcga_rna_fuso.png&quot;, p, units = &quot;in&quot;, width = DIM[1], height = DIM[2])</code></pre>
+<pre><code>Warning: Removed 94 rows containing non-finite values (stat_ydensity).</code></pre>
+<pre><code>Warning: Removed 96 rows containing missing values (geom_point).</code></pre>
+<pre class="r"><code>p &lt;- analysis.dat %&gt;%
+  filter(!is.na(Tumor_Stage), source==&quot;wgs&quot;, OTU == &quot;Fusobacterium nucleatum&quot;)%&gt;%
+  ggplot(aes(x=Tumor_Stage, y=Abund))+
+    geom_violin(scale=&quot;width&quot;, adjust=1)+
+    geom_jitter(alpha=0.5, width = 0.25)+
+    scale_y_continuous(
+      trans=scales::trans_new(&quot;root&quot;, root, invroot),
+      breaks=c(0, 0.001,0.01, 0.1, 1,10,50, 100),
+      labels = c(0, 0.001,0.01, 0.1, 1,10,50, 100),
+      limits = c(0, 110)
+    ) + 
+    labs(x=&quot;Tumor_Stage&quot;, y=&quot;Relative Abundance (%)&quot;)+
+    theme_classic()
+p</code></pre>
+<pre><code>Warning: Removed 14 rows containing non-finite values (stat_ydensity).</code></pre>
+<pre><code>Warning: Removed 38 rows containing missing values (geom_point).</code></pre>
+<p><img src="figure/supplemental_figure2.Rmd/unnamed-chunk-8-3.png" width="225%" height="10" style="display: block; margin: auto;" /></p>
+<pre class="r"><code>ggsave(&quot;output/supplemental_figure2F_tcga_wgs_fuso.pdf&quot;, p, units = &quot;in&quot;, width = DIM[1], height = DIM[2])</code></pre>
+<pre><code>Warning: Removed 14 rows containing non-finite values (stat_ydensity).</code></pre>
+<pre><code>Warning: Removed 35 rows containing missing values (geom_point).</code></pre>
+<pre class="r"><code>ggsave(&quot;output/supplemental_figure2F_tcga_wgs_fuso.png&quot;, p, units = &quot;in&quot;, width = DIM[1], height = DIM[2])</code></pre>
+<pre><code>Warning: Removed 14 rows containing non-finite values (stat_ydensity).</code></pre>
+<pre><code>Warning: Removed 36 rows containing missing values (geom_point).</code></pre>
+<pre class="r"><code>p &lt;- analysis.dat %&gt;%
+  filter(!is.na(Tumor_Stage), source==&quot;16s&quot;, OTU == &quot;Prevotella melaninogenica&quot; | OTU ==&quot;Prevotella spp.&quot;)%&gt;%
+  ggplot(aes(x=Tumor_Stage, y=Abund))+
+    geom_violin(scale=&quot;width&quot;, adjust=1)+
+    geom_jitter(alpha=0.5, width = 0.25)+
+    scale_y_continuous(
+      trans=scales::trans_new(&quot;root&quot;, root, invroot),
+      breaks=c(0, 0.001,0.01, 0.1, 1,10,50, 100),
+      labels = c(0, 0.001,0.01, 0.1, 1,10,50, 100),
+      limits = c(0, 110)
+    ) + 
+    labs(x=&quot;Tumor_Stage&quot;, y=&quot;Relative Abundance (%)&quot;)+
+    theme_classic()
+p</code></pre>
+<pre><code>Warning: Groups with fewer than two data points have been dropped.</code></pre>
+<pre><code>Warning: Removed 20 rows containing missing values (geom_point).</code></pre>
+<p><img src="figure/supplemental_figure2.Rmd/unnamed-chunk-8-4.png" width="225%" height="10" style="display: block; margin: auto;" /></p>
+<pre class="r"><code>ggsave(&quot;output/supplemental_figure2F_NCI_prevo.pdf&quot;, p, units = &quot;in&quot;, width = DIM[1], height = DIM[2])</code></pre>
+<pre><code>Warning: Groups with fewer than two data points have been dropped.</code></pre>
+<pre><code>Warning: Removed 18 rows containing missing values (geom_point).</code></pre>
+<pre class="r"><code>ggsave(&quot;output/supplemental_figure2F_NCI_prevo.png&quot;, p, units = &quot;in&quot;, width = DIM[1], height = DIM[2])</code></pre>
+<pre><code>Warning: Groups with fewer than two data points have been dropped.</code></pre>
+<pre><code>Warning: Removed 14 rows containing missing values (geom_point).</code></pre>
+<pre class="r"><code>p &lt;- analysis.dat %&gt;%
+  filter(!is.na(Tumor_Stage), source==&quot;rna&quot;, OTU == &quot;Prevotella melaninogenica&quot;)%&gt;%
+  ggplot(aes(x=Tumor_Stage, y=Abund))+
+    geom_violin(scale=&quot;width&quot;, adjust=1)+
+    geom_jitter(alpha=0.5, width = 0.25)+
+    scale_y_continuous(
+      trans=scales::trans_new(&quot;root&quot;, root, invroot),
+      breaks=c(0, 0.001,0.01, 0.1, 1,10,50, 100),
+      labels = c(0, 0.001,0.01, 0.1, 1,10,50, 100),
+      limits = c(0, 110)
+    ) + 
+    labs(x=&quot;Tumor_Stage&quot;, y=&quot;Relative Abundance (%)&quot;)+
+    theme_classic()
+p</code></pre>
+<pre><code>Warning: Removed 94 rows containing non-finite values (stat_ydensity).</code></pre>
+<pre><code>Warning: Removed 97 rows containing missing values (geom_point).</code></pre>
+<p><img src="figure/supplemental_figure2.Rmd/unnamed-chunk-8-5.png" width="225%" height="10" style="display: block; margin: auto;" /></p>
+<pre class="r"><code>ggsave(&quot;output/supplemental_figure2F_tcga_rna_prevo.pdf&quot;, p, units = &quot;in&quot;, width = DIM[1], height = DIM[2])</code></pre>
+<pre><code>Warning: Removed 94 rows containing non-finite values (stat_ydensity).</code></pre>
+<pre><code>Warning: Removed 96 rows containing missing values (geom_point).</code></pre>
+<pre class="r"><code>ggsave(&quot;output/supplemental_figure2F_tcga_rna_prevo.png&quot;, p, units = &quot;in&quot;, width = DIM[1], height = DIM[2])</code></pre>
+<pre><code>Warning: Removed 94 rows containing non-finite values (stat_ydensity).</code></pre>
+<pre><code>Warning: Removed 97 rows containing missing values (geom_point).</code></pre>
+<pre class="r"><code>p &lt;- analysis.dat %&gt;%
+  filter(!is.na(Tumor_Stage), source==&quot;wgs&quot;, OTU == &quot;Prevotella melaninogenica&quot;)%&gt;%
+  ggplot(aes(x=Tumor_Stage, y=Abund))+
+    geom_violin(scale=&quot;width&quot;, adjust=1)+
+    geom_jitter(alpha=0.5, width = 0.25)+
+    scale_y_continuous(
+      trans=scales::trans_new(&quot;root&quot;, root, invroot),
+      breaks=c(0, 0.001,0.01, 0.1, 1,10,50, 100),
+      labels = c(0, 0.001,0.01, 0.1, 1,10,50, 100),
+      limits = c(0, 110)
+    ) + 
+    labs(x=&quot;Tumor_Stage&quot;, y=&quot;Relative Abundance (%)&quot;)+
+    theme_classic()
+p</code></pre>
+<pre><code>Warning: Removed 14 rows containing non-finite values (stat_ydensity).</code></pre>
+<pre><code>Warning: Removed 31 rows containing missing values (geom_point).</code></pre>
+<p><img src="figure/supplemental_figure2.Rmd/unnamed-chunk-8-6.png" width="225%" height="10" style="display: block; margin: auto;" /></p>
+<pre class="r"><code>ggsave(&quot;output/supplemental_figure2F_tcga_wgs_prevo.pdf&quot;, p, units = &quot;in&quot;, width = DIM[1], height = DIM[2])</code></pre>
+<pre><code>Warning: Removed 14 rows containing non-finite values (stat_ydensity).</code></pre>
+<pre><code>Warning: Removed 29 rows containing missing values (geom_point).</code></pre>
+<pre class="r"><code>ggsave(&quot;output/supplemental_figure2F_tcga_wgs_prevo.png&quot;, p, units = &quot;in&quot;, width = DIM[1], height = DIM[2])</code></pre>
+<pre><code>Warning: Removed 14 rows containing non-finite values (stat_ydensity).</code></pre>
+<pre><code>Warning: Removed 34 rows containing missing values (geom_point).</code></pre>
+<pre class="r"><code>p &lt;- analysis.dat %&gt;%
+  filter(!is.na(Tumor_Stage), source==&quot;16s&quot;, OTU == &quot;Campylobacter concisus&quot;)%&gt;%
+  ggplot(aes(x=Tumor_Stage, y=Abund))+
+    geom_violin(scale=&quot;width&quot;, adjust=1)+
+    geom_jitter(alpha=0.5, width = 0.25)+
+    scale_y_continuous(
+      trans=scales::trans_new(&quot;root&quot;, root, invroot),
+      breaks=c(0, 0.001,0.01, 0.1, 1,10,50, 100),
+      labels = c(0, 0.001,0.01, 0.1, 1,10,50, 100),
+      limits = c(0, 110)
+    ) + 
+    labs(x=&quot;Tumor_Stage&quot;, y=&quot;Relative Abundance (%)&quot;)+
+    theme_classic()
+p</code></pre>
+<pre><code>Warning: Groups with fewer than two data points have been dropped.</code></pre>
+<pre><code>Warning: Removed 66 rows containing missing values (geom_point).</code></pre>
+<p><img src="figure/supplemental_figure2.Rmd/unnamed-chunk-8-7.png" width="225%" height="10" style="display: block; margin: auto;" /></p>
+<pre class="r"><code>ggsave(&quot;output/supplemental_figure2F_NCI_campy.pdf&quot;, p, units = &quot;in&quot;, width = DIM[1], height = DIM[2])</code></pre>
+<pre><code>Warning: Groups with fewer than two data points have been dropped.</code></pre>
+<pre><code>Warning: Removed 57 rows containing missing values (geom_point).</code></pre>
+<pre class="r"><code>ggsave(&quot;output/supplemental_figure2F_NCI_campy.png&quot;, p, units = &quot;in&quot;, width = DIM[1], height = DIM[2])</code></pre>
+<pre><code>Warning: Groups with fewer than two data points have been dropped.</code></pre>
+<pre><code>Warning: Removed 66 rows containing missing values (geom_point).</code></pre>
+<pre class="r"><code>p &lt;- analysis.dat %&gt;%
+  filter(!is.na(Tumor_Stage), source==&quot;rna&quot;, OTU == &quot;Campylobacter concisus&quot;)%&gt;%
+  ggplot(aes(x=Tumor_Stage, y=Abund))+
+    geom_violin(scale=&quot;width&quot;, adjust=1)+
+    geom_jitter(alpha=0.5, width = 0.25)+
+    scale_y_continuous(
+      trans=scales::trans_new(&quot;root&quot;, root, invroot),
+      breaks=c(0, 0.001,0.01, 0.1, 1,10,50, 100),
+      labels = c(0, 0.001,0.01, 0.1, 1,10,50, 100),
+      limits = c(0, 110)
+    ) + 
+    labs(x=&quot;Tumor_Stage&quot;, y=&quot;Relative Abundance (%)&quot;)+
+    theme_classic()
+p</code></pre>
+<pre><code>Warning: Removed 94 rows containing non-finite values (stat_ydensity).</code></pre>
+<pre><code>Warning: Removed 112 rows containing missing values (geom_point).</code></pre>
+<p><img src="figure/supplemental_figure2.Rmd/unnamed-chunk-8-8.png" width="225%" height="10" style="display: block; margin: auto;" /></p>
+<pre class="r"><code>ggsave(&quot;output/supplemental_figure2F_tcga_rna_campy.pdf&quot;, p, units = &quot;in&quot;, width = DIM[1], height = DIM[2])</code></pre>
+<pre><code>Warning: Removed 94 rows containing non-finite values (stat_ydensity).</code></pre>
+<pre><code>Warning: Removed 118 rows containing missing values (geom_point).</code></pre>
+<pre class="r"><code>ggsave(&quot;output/supplemental_figure2F_tcga_rna_campy.png&quot;, p, units = &quot;in&quot;, width = DIM[1], height = DIM[2])</code></pre>
+<pre><code>Warning: Removed 94 rows containing non-finite values (stat_ydensity).</code></pre>
+<pre><code>Warning: Removed 103 rows containing missing values (geom_point).</code></pre>
+<pre class="r"><code>p &lt;- analysis.dat %&gt;%
+  filter(!is.na(Tumor_Stage), source==&quot;wgs&quot;, OTU == &quot;Campylobacter concisus&quot;)%&gt;%
+  ggplot(aes(x=Tumor_Stage, y=Abund))+
+    geom_violin(scale=&quot;width&quot;, adjust=1)+
+    geom_jitter(alpha=0.5, width = 0.25)+
+    scale_y_continuous(
+      trans=scales::trans_new(&quot;root&quot;, root, invroot),
+      breaks=c(0, 0.001,0.01, 0.1, 1,10,50, 100),
+      labels = c(0, 0.001,0.01, 0.1, 1,10,50, 100),
+      limits = c(0, 110)
+    ) + 
+    labs(x=&quot;Tumor_Stage&quot;, y=&quot;Relative Abundance (%)&quot;)+
+    theme_classic()
+p</code></pre>
+<pre><code>Warning: Removed 14 rows containing non-finite values (stat_ydensity).</code></pre>
+<pre><code>Warning: Removed 39 rows containing missing values (geom_point).</code></pre>
+<p><img src="figure/supplemental_figure2.Rmd/unnamed-chunk-8-9.png" width="225%" height="10" style="display: block; margin: auto;" /></p>
+<pre class="r"><code>ggsave(&quot;output/supplemental_figure2F_tcga_wgs_campy.pdf&quot;, p, units = &quot;in&quot;, width = DIM[1], height = DIM[2])</code></pre>
+<pre><code>Warning: Removed 14 rows containing non-finite values (stat_ydensity).</code></pre>
+<pre><code>Warning: Removed 41 rows containing missing values (geom_point).</code></pre>
+<pre class="r"><code>ggsave(&quot;output/supplemental_figure2F_tcga_wgs_campy.png&quot;, p, units = &quot;in&quot;, width = DIM[1], height = DIM[2])</code></pre>
+<pre><code>Warning: Removed 14 rows containing non-finite values (stat_ydensity).</code></pre>
+<pre><code>Warning: Removed 48 rows containing missing values (geom_point).</code></pre>
+<pre class="r"><code>p &lt;- analysis.dat %&gt;%
+  filter(!is.na(Tumor_Stage), source==&quot;16s&quot;, OTU == &quot;Streptococcus sanguinis&quot;)%&gt;%
+  ggplot(aes(x=Tumor_Stage, y=Abund))+
+    geom_violin(scale=&quot;width&quot;, adjust=1)+
+    geom_jitter(alpha=0.5, width = 0.25)+
+    scale_y_continuous(
+      trans=scales::trans_new(&quot;root&quot;, root, invroot),
+      breaks=c(0, 0.001,0.01, 0.1, 1,10,50, 100),
+      labels = c(0, 0.001,0.01, 0.1, 1,10,50, 100),
+      limits = c(0, 110)
+    ) + 
+    labs(x=&quot;Tumor_Stage&quot;, y=&quot;Relative Abundance (%)&quot;)+
+    theme_classic()
+p</code></pre>
+<pre><code>Warning: Groups with fewer than two data points have been dropped.</code></pre>
+<pre><code>Warning: Removed 6 rows containing missing values (geom_point).</code></pre>
+<p><img src="figure/supplemental_figure2.Rmd/unnamed-chunk-8-10.png" width="225%" height="10" style="display: block; margin: auto;" /></p>
+<pre class="r"><code>ggsave(&quot;output/supplemental_figure2F_NCI_strepto.pdf&quot;, p, units = &quot;in&quot;, width = DIM[1], height = DIM[2])</code></pre>
+<pre><code>Warning: Groups with fewer than two data points have been dropped.</code></pre>
+<pre><code>Warning: Removed 4 rows containing missing values (geom_point).</code></pre>
+<pre class="r"><code>ggsave(&quot;output/supplemental_figure2F_NCI_strepto.png&quot;, p, units = &quot;in&quot;, width = DIM[1], height = DIM[2])</code></pre>
+<pre><code>Warning: Groups with fewer than two data points have been dropped.
+Removed 4 rows containing missing values (geom_point).</code></pre>
+<pre class="r"><code>p &lt;- analysis.dat %&gt;%
+  filter(!is.na(Tumor_Stage), source==&quot;rna&quot;, OTU == &quot;Streptococcus sanguinis&quot;)%&gt;%
+  ggplot(aes(x=Tumor_Stage, y=Abund))+
+    geom_violin(scale=&quot;width&quot;, adjust=1)+
+    geom_jitter(alpha=0.5, width = 0.25)+
+    scale_y_continuous(
+      trans=scales::trans_new(&quot;root&quot;, root, invroot),
+      breaks=c(0, 0.001,0.01, 0.1, 1,10,50, 100),
+      labels = c(0, 0.001,0.01, 0.1, 1,10,50, 100),
+      limits = c(0, 110)
+    ) + 
+    labs(x=&quot;Tumor_Stage&quot;, y=&quot;Relative Abundance (%)&quot;)+
+    theme_classic()
+p</code></pre>
+<pre><code>Warning: Removed 94 rows containing non-finite values (stat_ydensity).</code></pre>
+<pre><code>Warning: Removed 97 rows containing missing values (geom_point).</code></pre>
+<p><img src="figure/supplemental_figure2.Rmd/unnamed-chunk-8-11.png" width="225%" height="10" style="display: block; margin: auto;" /></p>
+<pre class="r"><code>ggsave(&quot;output/supplemental_figure2F_tcga_rna_strepto.pdf&quot;, p, units = &quot;in&quot;, width = DIM[1], height = DIM[2])</code></pre>
+<pre><code>Warning: Removed 94 rows containing non-finite values (stat_ydensity).</code></pre>
+<pre><code>Warning: Removed 96 rows containing missing values (geom_point).</code></pre>
+<pre class="r"><code>ggsave(&quot;output/supplemental_figure2F_tcga_rna_strepto.png&quot;, p, units = &quot;in&quot;, width = DIM[1], height = DIM[2])</code></pre>
+<pre><code>Warning: Removed 94 rows containing non-finite values (stat_ydensity).
+Removed 96 rows containing missing values (geom_point).</code></pre>
+<pre class="r"><code>p &lt;- analysis.dat %&gt;%
+  filter(!is.na(Tumor_Stage), source==&quot;wgs&quot;, OTU == &quot;Streptococcus sanguinis&quot;)%&gt;%
+  ggplot(aes(x=Tumor_Stage, y=Abund))+
+    geom_violin(scale=&quot;width&quot;, adjust=1)+
+    geom_jitter(alpha=0.5, width = 0.25)+
+    scale_y_continuous(
+      trans=scales::trans_new(&quot;root&quot;, root, invroot),
+      breaks=c(0, 0.001,0.01, 0.1, 1,10,50, 100),
+      labels = c(0, 0.001,0.01, 0.1, 1,10,50, 100),
+      limits = c(0, 110)
+    ) + 
+    labs(x=&quot;Tumor_Stage&quot;, y=&quot;Relative Abundance (%)&quot;)+
+    theme_classic()
+p</code></pre>
+<pre><code>Warning: Removed 14 rows containing non-finite values (stat_ydensity).</code></pre>
+<pre><code>Warning: Removed 45 rows containing missing values (geom_point).</code></pre>
+<p><img src="figure/supplemental_figure2.Rmd/unnamed-chunk-8-12.png" width="225%" height="10" style="display: block; margin: auto;" /></p>
+<pre class="r"><code>ggsave(&quot;output/supplemental_figure2F_tcga_wgs_strepto.pdf&quot;, p, units = &quot;in&quot;, width = DIM[1], height = DIM[2])</code></pre>
+<pre><code>Warning: Removed 14 rows containing non-finite values (stat_ydensity).</code></pre>
+<pre><code>Warning: Removed 42 rows containing missing values (geom_point).</code></pre>
+<pre class="r"><code>ggsave(&quot;output/supplemental_figure2F_tcga_wgs_strepto.png&quot;, p, units = &quot;in&quot;, width = DIM[1], height = DIM[2])</code></pre>
+<pre><code>Warning: Removed 14 rows containing non-finite values (stat_ydensity).</code></pre>
+<pre><code>Warning: Removed 45 rows containing missing values (geom_point).</code></pre>
+<br>
+<p>
+<button type="button" class="btn btn-default btn-workflowr btn-workflowr-sessioninfo" data-toggle="collapse" data-target="#workflowr-sessioninfo" style="display: block;">
+<span class="glyphicon glyphicon-wrench" aria-hidden="true"></span>
+Session information
+</button>
+</p>
+<div id="workflowr-sessioninfo" class="collapse">
+<pre class="r"><code>sessionInfo()</code></pre>
+<pre><code>R version 4.2.0 (2022-04-22 ucrt)
+Platform: x86_64-w64-mingw32/x64 (64-bit)
+Running under: Windows 10 x64 (build 22000)
+
+Matrix products: default
+
+locale:
+[1] LC_COLLATE=English_United States.utf8 
+[2] LC_CTYPE=English_United States.utf8   
+[3] LC_MONETARY=English_United States.utf8
+[4] LC_NUMERIC=C                          
+[5] LC_TIME=English_United States.utf8    
+
+attached base packages:
+[1] stats     graphics  grDevices utils     datasets  methods   base     
+
+other attached packages:
+ [1] cowplot_1.1.1     dendextend_1.16.0 ggdendro_0.1.23   reshape2_1.4.4   
+ [5] car_3.1-0         carData_3.0-5     gvlma_1.0.0.3     patchwork_1.1.1  
+ [9] viridis_0.6.2     viridisLite_0.4.0 gridExtra_2.3     xtable_1.8-4     
+[13] kableExtra_1.3.4  MASS_7.3-56       data.table_1.14.2 readxl_1.4.0     
+[17] forcats_0.5.1     stringr_1.4.0     dplyr_1.0.9       purrr_0.3.4      
+[21] readr_2.1.2       tidyr_1.2.0       tibble_3.1.7      ggplot2_3.3.6    
+[25] tidyverse_1.3.2   lmerTest_3.1-3    lme4_1.1-30       Matrix_1.4-1     
+[29] vegan_2.6-2       lattice_0.20-45   permute_0.9-7     phyloseq_1.40.0  
+[33] workflowr_1.7.0  
+
+loaded via a namespace (and not attached):
+  [1] googledrive_2.0.0      minqa_1.2.4            colorspace_2.0-3      
+  [4] ellipsis_0.3.2         rprojroot_2.0.3        XVector_0.36.0        
+  [7] fs_1.5.2               rstudioapi_0.13        farver_2.1.1          
+ [10] fansi_1.0.3            lubridate_1.8.0        xml2_1.3.3            
+ [13] codetools_0.2-18       splines_4.2.0          cachem_1.0.6          
+ [16] knitr_1.39             ade4_1.7-19            jsonlite_1.8.0        
+ [19] nloptr_2.0.3           broom_1.0.0            cluster_2.1.3         
+ [22] dbplyr_2.2.1           BiocManager_1.30.18    compiler_4.2.0        
+ [25] httr_1.4.3             backports_1.4.1        assertthat_0.2.1      
+ [28] fastmap_1.1.0          gargle_1.2.0           cli_3.3.0             
+ [31] later_1.3.0            htmltools_0.5.2        tools_4.2.0           
+ [34] igraph_1.3.4           gtable_0.3.0           glue_1.6.2            
+ [37] GenomeInfoDbData_1.2.8 Rcpp_1.0.8.3           Biobase_2.56.0        
+ [40] cellranger_1.1.0       jquerylib_0.1.4        vctrs_0.4.1           
+ [43] Biostrings_2.64.0      rhdf5filters_1.8.0     multtest_2.52.0       
+ [46] svglite_2.1.0          ape_5.6-2              nlme_3.1-157          
+ [49] iterators_1.0.14       xfun_0.31              ps_1.7.0              
+ [52] rvest_1.0.2            lifecycle_1.0.1        googlesheets4_1.0.0   
+ [55] getPass_0.2-2          zlibbioc_1.42.0        scales_1.2.0          
+ [58] hms_1.1.1              promises_1.2.0.1       parallel_4.2.0        
+ [61] biomformat_1.24.0      rhdf5_2.40.0           yaml_2.3.5            
+ [64] sass_0.4.2             stringi_1.7.6          highr_0.9             
+ [67] S4Vectors_0.34.0       foreach_1.5.2          BiocGenerics_0.42.0   
+ [70] boot_1.3-28            GenomeInfoDb_1.32.2    systemfonts_1.0.4     
+ [73] rlang_1.0.2            pkgconfig_2.0.3        bitops_1.0-7          
+ [76] evaluate_0.15          Rhdf5lib_1.18.2        processx_3.7.0        
+ [79] tidyselect_1.1.2       plyr_1.8.7             magrittr_2.0.3        
+ [82] R6_2.5.1               IRanges_2.30.0         generics_0.1.3        
+ [85] DBI_1.1.3              withr_2.5.0            pillar_1.8.0          
+ [88] haven_2.5.0            whisker_0.4            mgcv_1.8-40           
+ [91] abind_1.4-5            survival_3.3-1         RCurl_1.98-1.8        
+ [94] modelr_0.1.8           crayon_1.5.1           utf8_1.2.2            
+ [97] tzdb_0.3.0             rmarkdown_2.14         grid_4.2.0            
+[100] callr_3.7.1            git2r_0.30.1           webshot_0.5.3         
+[103] reprex_2.0.1           digest_0.6.29          httpuv_1.6.5          
+[106] numDeriv_2016.8-1.1    stats4_4.2.0           munsell_0.5.0         
+[109] bslib_0.4.0           </code></pre>
+</div>
+</div>
+</div>
+
+
+<!-- Adjust MathJax settings so that all math formulae are shown using
+TeX fonts only; see
+https://docs.mathjax.org/en/latest/web/configuration.html. This will make
+the presentation more consistent at the cost of the webpage sometimes
+taking slightly longer to load. Note that this only works because the
+footer is added to webpages before the MathJax javascript. -->
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Config({
+    "HTML-CSS": { availableFonts: ["TeX"] }
+  });
+</script>
+
+
+
+
+</div>
+</div>
+
+</div>
+
+<script>
+
+// add bootstrap table styles to pandoc tables
+function bootstrapStylePandocTables() {
+  $('tr.odd').parent('tbody').parent('table').addClass('table table-condensed');
+}
+$(document).ready(function () {
+  bootstrapStylePandocTables();
+});
+
+
+</script>
+
+<!-- tabsets -->
+
+<script>
+$(document).ready(function () {
+  window.buildTabsets("TOC");
+});
+
+$(document).ready(function () {
+  $('.tabset-dropdown > .nav-tabs > li').click(function () {
+    $(this).parent().toggleClass('nav-tabs-open');
+  });
+});
+</script>
+
+<!-- code folding -->
+<script>
+$(document).ready(function () {
+  window.initializeCodeFolding("hide" === "show");
+});
+</script>
+
+<script>
+$(document).ready(function ()  {
+
+    // temporarily add toc-ignore selector to headers for the consistency with Pandoc
+    $('.unlisted.unnumbered').addClass('toc-ignore')
+
+    // move toc-ignore selectors from section div to header
+    $('div.section.toc-ignore')
+        .removeClass('toc-ignore')
+        .children('h1,h2,h3,h4,h5').addClass('toc-ignore');
+
+    // establish options
+    var options = {
+      selectors: "h1,h2,h3",
+      theme: "bootstrap3",
+      context: '.toc-content',
+      hashGenerator: function (text) {
+        return text.replace(/[.\\/?&!#<>]/g, '').replace(/\s/g, '_');
+      },
+      ignoreSelector: ".toc-ignore",
+      scrollTo: 0
+    };
+    options.showAndHide = true;
+    options.smoothScroll = true;
+
+    // tocify
+    var toc = $("#TOC").tocify(options).data("toc-tocify");
+});
+</script>
+
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    script.src  = "https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML";
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
+
+</body>
+</html>

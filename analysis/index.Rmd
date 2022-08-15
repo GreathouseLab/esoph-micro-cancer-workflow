@@ -11,6 +11,10 @@ editor_options:
 Welcome to our research website.
 
 
+## Supplemental Figure 2 Parts
+
+* [Supplemental Figure 2 Parts c-F](supplemental_figure2.html)
+
 ## Data Pre-Processing
 
 *[NCI-UMD Data Process](data_processing_nci_umd.html)
