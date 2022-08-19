@@ -250,7 +250,7 @@ plt_hmap1 <- ggplot(hmd,
                        height = height, width = width)) + 
   geom_tile() +
   #facet_wrap(.~sample_type)+
-  scale_fill_gradient2("Abundance",trans="sqrt", high = "darkred", low = "darkblue", breaks=c(0, 0.10, 0.30, 0.50, 0.80)) +
+  scale_fill_gradient2("Abundance",trans="sqrt", high="darkblue", low="white", breaks=c(0, 0.10, 0.30, 0.50, 0.80)) +
   scale_x_continuous(breaks = spd$x_center, 
                      labels = spd$ID, 
                      expand = c(0, 0)) + 
@@ -261,7 +261,7 @@ plt_hmap1 <- ggplot(hmd,
                      expand = c(0, 0)) + 
   labs(x = "BO", y = NULL) +
   theme_classic() +
-  theme(axis.text.x = element_text(size = rel(1), hjust = 0.5,vjust=0.5, angle = 90), 
+  theme(axis.text.x = element_blank(),#element_text(size = rel(1), hjust = 0.5,vjust=0.5, angle = 90), 
         # margin: top, right, bottom, and left
         #axis.ticks.y = element_blank(),
         plot.margin = unit(c(1, 0.01, 0.01, -0.7), "cm"), 
@@ -279,7 +279,7 @@ plt_hmap2 <- ggplot(hmd,
                         height = height, width = width)) + 
   geom_tile() +
   #facet_wrap(.~sample_type)+
-  scale_fill_gradient2("expr",trans="sqrt", high = "darkred", low = "darkblue", breaks=c(0, 0.1, 0.10, 0.30, 0.50, 0.80)) +
+  scale_fill_gradient2("expr",trans="sqrt", high="darkblue", low="white", breaks=c(0, 0.1, 0.10, 0.30, 0.50, 0.80)) +
   scale_x_continuous(breaks = spd$x_center, 
                      labels = spd$ID, 
                      expand = c(0, 0)) + 
@@ -290,7 +290,7 @@ plt_hmap2 <- ggplot(hmd,
                      expand = c(0, 0)) + 
   labs(x = "EAC-adj. w/ Barretts", y = NULL) +
   theme_classic() +
-  theme(axis.text.x = element_text(size = rel(1), hjust = 0.5,vjust=0.5, angle = 90), 
+  theme(axis.text.x = element_blank(),#element_text(size = rel(1), hjust = 0.5,vjust=0.5, angle = 90), 
         axis.ticks.y = element_blank(),
         # margin: top, right, bottom, and left
         plot.margin = unit(c(1, 0.01, 0.01, -0.7), "cm"), 
@@ -308,7 +308,7 @@ plt_hmap3 <- ggplot(hmd,
                         height = height, width = width)) + 
   geom_tile() +
   #facet_wrap(.~sample_type)+
-  scale_fill_gradient2("Abundance",trans="sqrt", high = "darkred", low = "darkblue", breaks=c(0, 0.10, 0.30, 0.50, 0.80)) +
+  scale_fill_gradient2("Abundance",trans="sqrt", high="darkblue", low="white", breaks=c(0, 0.10, 0.30, 0.50, 0.80)) +
   scale_x_continuous(breaks = spd$x_center, 
                      labels = spd$ID, 
                      expand = c(0, 0)) + 
@@ -319,7 +319,7 @@ plt_hmap3 <- ggplot(hmd,
                      expand = c(0, 0)) + 
   labs(x = "EAC w/ Barretts", y = NULL) +
   theme_classic() +
-  theme(axis.text.x = element_text(size = rel(1), hjust = 0.75, vjust=0.5, angle = 90), 
+  theme(axis.text.x = element_blank(),#element_text(size = rel(1), hjust = 0.75, vjust=0.5, angle = 90), 
         axis.ticks.y = element_blank(),
         # margin: top, right, bottom, and left
         plot.margin = unit(c(1, 0.01, 0.01, -0.7), "cm"), 
@@ -478,7 +478,7 @@ plt_hmap1 <- ggplot(hmd,
                        height = height, width = width)) + 
   geom_tile() +
   #facet_wrap(.~sample_type)+
-  scale_fill_gradient2("Abundance",trans="sqrt", high = "darkred", low = "darkblue", breaks=c(0, 0.10, 0.30, 0.50, 0.80)) +
+  scale_fill_gradient2("Abundance",trans="sqrt", high="darkblue", low="white", breaks=c(0, 0.10, 0.30, 0.50, 0.80)) +
   scale_x_continuous(breaks = spd$x_center, 
                      labels = spd$ID, 
                      expand = c(0, 0)) + 
@@ -489,7 +489,7 @@ plt_hmap1 <- ggplot(hmd,
                      expand = c(0, 0)) + 
   labs(x = "BO", y = NULL) +
   theme_classic() +
-  theme(axis.text.x = element_text(size = rel(1), hjust = 0.5,vjust=0.5, angle = 90), 
+  theme(axis.text.x = element_blank(),#element_text(size = rel(1), hjust = 0.5,vjust=0.5, angle = 90), 
         # margin: top, right, bottom, and left
         #axis.ticks.y = element_blank(),
         plot.margin = unit(c(1, 0.01, 0.01, -0.7), "cm"), 
@@ -507,7 +507,7 @@ plt_hmap2 <- ggplot(hmd,
                         height = height, width = width)) + 
   geom_tile() +
   #facet_wrap(.~sample_type)+
-  scale_fill_gradient2("expr",trans="sqrt", high = "darkred", low = "darkblue", breaks=c(0, 0.1, 0.10, 0.30, 0.50, 0.80)) +
+  scale_fill_gradient2("expr",trans="sqrt", high="darkblue", low="white", breaks=c(0, 0.1, 0.10, 0.30, 0.50, 0.80)) +
   scale_x_continuous(breaks = spd$x_center, 
                      labels = spd$ID, 
                      expand = c(0, 0)) + 
@@ -518,7 +518,7 @@ plt_hmap2 <- ggplot(hmd,
                      expand = c(0, 0)) + 
   labs(x = "EAC-adj. w/ Barretts", y = NULL) +
   theme_classic() +
-  theme(axis.text.x = element_text(size = rel(1), hjust = 0.5,vjust=0.5, angle = 90), 
+  theme(axis.text.x = element_blank(),#element_text(size = rel(1), hjust = 0.5,vjust=0.5, angle = 90), 
         axis.ticks.y = element_blank(),
         # margin: top, right, bottom, and left
         plot.margin = unit(c(1, 0.01, 0.01, -0.7), "cm"), 
@@ -536,7 +536,7 @@ plt_hmap3 <- ggplot(hmd,
                         height = height, width = width)) + 
   geom_tile() +
   #facet_wrap(.~sample_type)+
-  scale_fill_gradient2("Abundance",trans="sqrt", high = "darkred", low = "darkblue", breaks=c(0, 0.10, 0.30, 0.50, 0.80)) +
+  scale_fill_gradient2("Abundance",trans="sqrt", high="darkblue", low="white", breaks=c(0, 0.10, 0.30, 0.50, 0.80)) +
   scale_x_continuous(breaks = spd$x_center, 
                      labels = spd$ID, 
                      expand = c(0, 0)) + 
@@ -547,7 +547,7 @@ plt_hmap3 <- ggplot(hmd,
                      expand = c(0, 0)) + 
   labs(x = "EAC w/ Barretts", y = NULL) +
   theme_classic() +
-  theme(axis.text.x = element_text(size = rel(1), hjust = 0.75, vjust=0.5, angle = 90), 
+  theme(axis.text.x = element_blank(),#element_text(size = rel(1), hjust = 0.75, vjust=0.5, angle = 90), 
         axis.ticks.y = element_blank(),
         # margin: top, right, bottom, and left
         plot.margin = unit(c(1, 0.01, 0.01, -0.7), "cm"), 
@@ -704,7 +704,7 @@ plt_hmap1 <- ggplot(hmd,
                        height = height, width = width)) + 
   geom_tile() +
   #facet_wrap(.~sample_type)+
-  scale_fill_gradient2("Abundance",trans="sqrt", high = "darkred", low = "darkblue", breaks=c(0, 0.10, 0.30, 0.50, 0.80)) +
+  scale_fill_gradient2("Abundance",trans="sqrt", high="darkblue", low="white", breaks=c(0, 0.10, 0.30, 0.50, 0.80)) +
   scale_x_continuous(breaks = spd$x_center, 
                      labels = spd$ID, 
                      expand = c(0, 0)) + 
@@ -715,7 +715,7 @@ plt_hmap1 <- ggplot(hmd,
                      expand = c(0, 0)) + 
   labs(x = "BO", y = NULL) +
   theme_classic() +
-  theme(axis.text.x = element_text(size = rel(1), hjust = 0.5,vjust=0.5, angle = 90), 
+  theme(axis.text.x = element_blank(),#element_text(size = rel(1), hjust = 0.5,vjust=0.5, angle = 90), 
         # margin: top, right, bottom, and left
         #axis.ticks.y = element_blank(),
         plot.margin = unit(c(1, 0.01, 0.01, -0.7), "cm"), 
@@ -733,7 +733,7 @@ plt_hmap2 <- ggplot(hmd,
                         height = height, width = width)) + 
   geom_tile() +
   #facet_wrap(.~sample_type)+
-  scale_fill_gradient2("expr",trans="sqrt", high = "darkred", low = "darkblue", breaks=c(0, 0.1, 0.10, 0.30, 0.50, 0.80)) +
+  scale_fill_gradient2("expr",trans="sqrt", high="darkblue", low="white", breaks=c(0, 0.1, 0.10, 0.30, 0.50, 0.80)) +
   scale_x_continuous(breaks = spd$x_center, 
                      labels = spd$ID, 
                      expand = c(0, 0)) + 
@@ -744,7 +744,7 @@ plt_hmap2 <- ggplot(hmd,
                      expand = c(0, 0)) + 
   labs(x = "EAC-adj. w/ Barretts", y = NULL) +
   theme_classic() +
-  theme(axis.text.x = element_text(size = rel(1), hjust = 0.5,vjust=0.5, angle = 90), 
+  theme(axis.text.x = element_blank(),#element_text(size = rel(1), hjust = 0.5,vjust=0.5, angle = 90), 
         axis.ticks.y = element_blank(),
         # margin: top, right, bottom, and left
         plot.margin = unit(c(1, 0.01, 0.01, -0.7), "cm"), 
@@ -762,7 +762,7 @@ plt_hmap3 <- ggplot(hmd,
                         height = height, width = width)) + 
   geom_tile() +
   #facet_wrap(.~sample_type)+
-  scale_fill_gradient2("Abundance",trans="sqrt", high = "darkred", low = "darkblue", breaks=c(0, 0.10, 0.30, 0.50, 0.80)) +
+  scale_fill_gradient2("Abundance",trans="sqrt", high="darkblue", low="white", breaks=c(0, 0.10, 0.30, 0.50, 0.80)) +
   scale_x_continuous(breaks = spd$x_center, 
                      labels = spd$ID, 
                      expand = c(0, 0)) + 
@@ -773,7 +773,7 @@ plt_hmap3 <- ggplot(hmd,
                      expand = c(0, 0)) + 
   labs(x = "EAC w/ Barretts", y = NULL) +
   theme_classic() +
-  theme(axis.text.x = element_text(size = rel(1), hjust = 0.75, vjust=0.5, angle = 90), 
+  theme(axis.text.x = element_blank(),#element_text(size = rel(1), hjust = 0.75, vjust=0.5, angle = 90), 
         axis.ticks.y = element_blank(),
         # margin: top, right, bottom, and left
         plot.margin = unit(c(1, 0.01, 0.01, -0.7), "cm"), 
@@ -1046,7 +1046,7 @@ plt_hmap1 <- ggplot(hmd,
                        height = height, width = width)) + 
   geom_tile() +
   #facet_wrap(.~sample_type)+
-  scale_fill_gradient2("Abundance",trans="sqrt", high = "darkred", low = "darkblue", breaks=c(0, 0.10, 0.30, 0.50, 0.80)) +
+  scale_fill_gradient2("Abundance",trans="sqrt", high="darkblue", low="white", breaks=c(0, 0.10, 0.30, 0.50, 0.80)) +
   scale_x_continuous(breaks = spd$x_center, 
                      labels = spd$ID, 
                      expand = c(0, 0)) + 
@@ -1057,7 +1057,8 @@ plt_hmap1 <- ggplot(hmd,
                      expand = c(0, 0)) + 
   labs(x = "EAC w/ Barretts", y = NULL) +
   theme_classic() +
-  theme(axis.text.x = element_text(size = rel(1), hjust = 0.5,vjust=0.5, angle = 90), 
+  theme(axis.text.x = element_blank(),#element_text(size = rel(1), hjust = 0.5,vjust=0.5, angle = 90), 
+        axis.title.x = element_text(angle=90, hjust=0.75, vjust=0.5),
         # margin: top, right, bottom, and left
         #axis.ticks.y = element_blank(),
         plot.margin = unit(c(1, 0.01, 0.01, -0.7), "cm"), 
@@ -1075,7 +1076,7 @@ plt_hmap2 <- ggplot(hmd,
                         height = height, width = width)) + 
   geom_tile() +
   #facet_wrap(.~sample_type)+
-  scale_fill_gradient2("expr",trans="sqrt", high = "darkred", low = "darkblue", breaks=c(0, 0.1, 0.10, 0.30, 0.50, 0.80)) +
+  scale_fill_gradient2("expr",trans="sqrt", high="darkblue", low="white", breaks=c(0, 0.1, 0.10, 0.30, 0.50, 0.80)) +
   scale_x_continuous(breaks = spd$x_center, 
                      labels = spd$ID, 
                      expand = c(0, 0)) + 
@@ -1086,8 +1087,9 @@ plt_hmap2 <- ggplot(hmd,
                      expand = c(0, 0)) + 
   labs(x = "EAC-adj. w/ Barretts", y = NULL) +
   theme_classic() +
-  theme(axis.text.x = element_text(size = rel(1), hjust = 0.5,vjust=0.5, angle = 90), 
+  theme(axis.text.x = element_blank(),#element_text(size = rel(1), hjust = 0.5,vjust=0.5, angle = 90), 
         axis.ticks.y = element_blank(),
+        axis.title.x = element_text(angle=90, hjust=0.75, vjust=0.5),
         # margin: top, right, bottom, and left
         plot.margin = unit(c(1, 0.01, 0.01, -0.7), "cm"), 
         panel.grid.minor = element_blank(),
@@ -1104,7 +1106,7 @@ plt_hmap3 <- ggplot(hmd,
                         height = height, width = width)) + 
   geom_tile() +
   #facet_wrap(.~sample_type)+
-  scale_fill_gradient2("Abundance",trans="sqrt", high = "darkred", low = "darkblue", breaks=c(0, 0.10, 0.30, 0.50, 0.80)) +
+  scale_fill_gradient2("Abundance",trans="sqrt", high="darkblue", low="white", breaks=c(0, 0.10, 0.30, 0.50, 0.80)) +
   scale_x_continuous(breaks = spd$x_center, 
                      labels = spd$ID, 
                      expand = c(0, 0)) + 
@@ -1115,7 +1117,8 @@ plt_hmap3 <- ggplot(hmd,
                      expand = c(0, 0)) + 
   labs(x = "EAC w/o Barretts", y = NULL) +
   theme_classic() +
-  theme(axis.text.x = element_text(size = rel(1), hjust = 0.75, vjust=0.5, angle = 90), 
+  theme(axis.text.x = element_blank(),#element_text(size = rel(1), hjust = 0.75, vjust=0.5, angle = 90), 
+        axis.title.x = element_text(angle=90, hjust=0.75, vjust=0.5),
         axis.ticks.y = element_blank(),
         # margin: top, right, bottom, and left
         plot.margin = unit(c(1, 0.01, 0.01, -0.7), "cm"), 
@@ -1273,7 +1276,7 @@ plt_hmap1 <- ggplot(hmd,
                        height = height, width = width)) + 
   geom_tile() +
   #facet_wrap(.~sample_type)+
-  scale_fill_gradient2("Abundance",trans="sqrt", high = "darkred", low = "darkblue", breaks=c(0, 0.10, 0.30, 0.50, 0.80)) +
+  scale_fill_gradient2("Abundance",trans="sqrt", high="darkblue", low="white", breaks=c(0, 0.10, 0.30, 0.50, 0.80)) +
   scale_x_continuous(breaks = spd$x_center, 
                      labels = spd$ID, 
                      expand = c(0, 0)) + 
@@ -1284,9 +1287,10 @@ plt_hmap1 <- ggplot(hmd,
                      expand = c(0, 0)) + 
   labs(x = "EAC w/ Barretts", y = NULL) +
   theme_classic() +
-  theme(axis.text.x = element_text(size = rel(1), hjust = 0.5,vjust=0.5, angle = 90), 
+  theme(axis.text.x = element_blank(),#element_text(size = rel(1), hjust = 0.5,vjust=0.5, angle = 90), 
         # margin: top, right, bottom, and left
         #axis.ticks.y = element_blank(),
+        axis.title.x = element_text(angle=90, hjust=0.75, vjust=0.5),
         plot.margin = unit(c(1, 0.01, 0.01, -0.7), "cm"), 
         panel.grid = element_blank(),
         legend.position = "none")
@@ -1302,7 +1306,7 @@ plt_hmap2 <- ggplot(hmd,
                         height = height, width = width)) + 
   geom_tile() +
   #facet_wrap(.~sample_type)+
-  scale_fill_gradient2("expr",trans="sqrt", high = "darkred", low = "darkblue", breaks=c(0, 0.1, 0.10, 0.30, 0.50, 0.80)) +
+  scale_fill_gradient2("expr",trans="sqrt", high="darkblue", low="white", breaks=c(0, 0.1, 0.10, 0.30, 0.50, 0.80)) +
   scale_x_continuous(breaks = spd$x_center, 
                      labels = spd$ID, 
                      expand = c(0, 0)) + 
@@ -1313,8 +1317,9 @@ plt_hmap2 <- ggplot(hmd,
                      expand = c(0, 0)) + 
   labs(x = "EAC-adj. w/ Barretts", y = NULL) +
   theme_classic() +
-  theme(axis.text.x = element_text(size = rel(1), hjust = 0.5,vjust=0.5, angle = 90), 
+  theme(axis.text.x = element_blank(),#element_text(size = rel(1), hjust = 0.5,vjust=0.5, angle = 90), 
         axis.ticks.y = element_blank(),
+        axis.title.x = element_text(angle=90, hjust=0.75, vjust=0.5),
         # margin: top, right, bottom, and left
         plot.margin = unit(c(1, 0.01, 0.01, -0.7), "cm"), 
         panel.grid.minor = element_blank(),
@@ -1331,7 +1336,7 @@ plt_hmap3 <- ggplot(hmd,
                         height = height, width = width)) + 
   geom_tile() +
   #facet_wrap(.~sample_type)+
-  scale_fill_gradient2("Abundance",trans="sqrt", high = "darkred", low = "darkblue", breaks=c(0, 0.10, 0.30, 0.50, 0.80)) +
+  scale_fill_gradient2("Abundance",trans="sqrt", high="darkblue", low="white", breaks=c(0, 0.10, 0.30, 0.50, 0.80)) +
   scale_x_continuous(breaks = spd$x_center, 
                      labels = spd$ID, 
                      expand = c(0, 0)) + 
@@ -1342,8 +1347,9 @@ plt_hmap3 <- ggplot(hmd,
                      expand = c(0, 0)) + 
   labs(x = "EAC w/o Barretts", y = NULL) +
   theme_classic() +
-  theme(axis.text.x = element_text(size = rel(1), hjust = 0.75, vjust=0.5, angle = 90), 
+  theme(axis.text.x = element_blank(),#element_text(size = rel(1), hjust = 0.75, vjust=0.5, angle = 90), 
         axis.ticks.y = element_blank(),
+        axis.title.x = element_text(angle=90, hjust=0.75, vjust=0.5),
         # margin: top, right, bottom, and left
         plot.margin = unit(c(1, 0.01, 0.01, -0.7), "cm"), 
         panel.grid.minor = element_blank())
@@ -1500,7 +1506,7 @@ plt_hmap1 <- ggplot(hmd,
                        height = height, width = width)) + 
   geom_tile() +
   #facet_wrap(.~sample_type)+
-  scale_fill_gradient2("Abundance",trans="sqrt", high = "darkred", low = "darkblue", breaks=c(0, 0.10, 0.30, 0.50, 0.80)) +
+  scale_fill_gradient2("Abundance",trans="sqrt", high="darkblue", low="white", breaks=c(0, 0.10, 0.30, 0.50, 0.80)) +
   scale_x_continuous(breaks = spd$x_center, 
                      labels = spd$ID, 
                      expand = c(0, 0)) + 
@@ -1511,9 +1517,10 @@ plt_hmap1 <- ggplot(hmd,
                      expand = c(0, 0)) + 
   labs(x = "EAC w/ Barretts", y = NULL) +
   theme_classic() +
-  theme(axis.text.x = element_text(size = rel(1), hjust = 0.5,vjust=0.5, angle = 90), 
+  theme(axis.text.x = element_blank(),#element_text(size = rel(1), hjust = 0.5,vjust=0.5, angle = 90), 
         # margin: top, right, bottom, and left
         #axis.ticks.y = element_blank(),
+        axis.title.x = element_text(angle=90, hjust=0.75, vjust=0.5),
         plot.margin = unit(c(1, 0.01, 0.01, -0.7), "cm"), 
         panel.grid = element_blank(),
         legend.position = "none")
@@ -1529,7 +1536,7 @@ plt_hmap2 <- ggplot(hmd,
                         height = height, width = width)) + 
   geom_tile() +
   #facet_wrap(.~sample_type)+
-  scale_fill_gradient2("expr",trans="sqrt", high = "darkred", low = "darkblue", breaks=c(0, 0.1, 0.10, 0.30, 0.50, 0.80)) +
+  scale_fill_gradient2("expr",trans="sqrt", high = "darkblue", low = "white", breaks=c(0, 0.1, 0.10, 0.30, 0.50, 0.80)) +
   scale_x_continuous(breaks = spd$x_center, 
                      labels = spd$ID, 
                      expand = c(0, 0)) + 
@@ -1540,8 +1547,9 @@ plt_hmap2 <- ggplot(hmd,
                      expand = c(0, 0)) + 
   labs(x = "EAC-adj. w/ Barretts", y = NULL) +
   theme_classic() +
-  theme(axis.text.x = element_text(size = rel(1), hjust = 0.5,vjust=0.5, angle = 90), 
+  theme(axis.text.x = element_blank(),#element_text(size = rel(1), hjust = 0.5,vjust=0.5, angle = 90), 
         axis.ticks.y = element_blank(),
+        axis.title.x = element_text(angle=90, hjust=0.75, vjust=0.5),
         # margin: top, right, bottom, and left
         plot.margin = unit(c(1, 0.01, 0.01, -0.7), "cm"), 
         panel.grid.minor = element_blank(),
@@ -1558,7 +1566,7 @@ plt_hmap3 <- ggplot(hmd,
                         height = height, width = width)) + 
   geom_tile() +
   #facet_wrap(.~sample_type)+
-  scale_fill_gradient2("Abundance",trans="sqrt", high = "darkred", low = "darkblue", breaks=c(0, 0.10, 0.30, 0.50, 0.80)) +
+  scale_fill_gradient2("Abundance",trans="sqrt", high="darkblue", low="white", breaks=c(0, 0.10, 0.30, 0.50, 0.80)) +
   scale_x_continuous(breaks = spd$x_center, 
                      labels = spd$ID, 
                      expand = c(0, 0)) + 
@@ -1569,8 +1577,9 @@ plt_hmap3 <- ggplot(hmd,
                      expand = c(0, 0)) + 
   labs(x = "EAC w/o Barretts", y = NULL) +
   theme_classic() +
-  theme(axis.text.x = element_text(size = rel(1), hjust = 0.75, vjust=0.5, angle = 90), 
+  theme(axis.text.x = element_blank(), #element_text(size = rel(1), hjust = 0.75, vjust=0.5, angle = 90), 
         axis.ticks.y = element_blank(),
+        axis.title.x = element_text(angle=90, hjust=0.75, vjust=0.5),
         # margin: top, right, bottom, and left
         plot.margin = unit(c(1, 0.01, 0.01, -0.7), "cm"), 
         panel.grid.minor = element_blank())
@@ -1847,7 +1856,7 @@ plt_hmap1 <- ggplot(hmd,
                        height = height, width = width)) + 
   geom_tile() +
   #facet_wrap(.~sample_type)+
-  scale_fill_gradient2("Abundance",trans="sqrt", high = "darkred", low = "darkblue", breaks=c(0, 0.10, 0.30, 0.50, 0.80)) +
+  scale_fill_gradient2("Abundance",trans="sqrt", high="darkblue", low="white", breaks=c(0, 0.10, 0.30, 0.50, 0.80)) +
   scale_x_continuous(breaks = spd$x_center, 
                      labels = spd$ID, 
                      expand = c(0, 0)) + 
@@ -1858,9 +1867,10 @@ plt_hmap1 <- ggplot(hmd,
                      expand = c(0, 0)) + 
   labs(x = "EAC w/ Barretts", y = NULL) +
   theme_classic() +
-  theme(axis.text.x = element_text(size = rel(1), hjust = 0.5,vjust=0.5, angle = 90), 
+  theme(axis.text.x = element_blank(), #element_text(size = rel(1), hjust = 0.5,vjust=0.5, angle = 90), 
         # margin: top, right, bottom, and left
         #axis.ticks.y = element_blank(),
+        axis.title.x = element_text(angle=90, hjust=0.75, vjust=0.5),
         plot.margin = unit(c(1, 0.01, 0.01, -0.7), "cm"), 
         panel.grid = element_blank(),
         legend.position = "none")
@@ -1876,7 +1886,7 @@ plt_hmap2 <- ggplot(hmd,
                         height = height, width = width)) + 
   geom_tile() +
   #facet_wrap(.~sample_type)+
-  scale_fill_gradient2("expr",trans="sqrt", high = "darkred", low = "darkblue", breaks=c(0, 0.1, 0.10, 0.30, 0.50, 0.80)) +
+  scale_fill_gradient2("expr",trans="sqrt", high="darkblue", low="white", breaks=c(0, 0.1, 0.10, 0.30, 0.50, 0.80)) +
   scale_x_continuous(breaks = spd$x_center, 
                      labels = spd$ID, 
                      expand = c(0, 0)) + 
@@ -1887,8 +1897,9 @@ plt_hmap2 <- ggplot(hmd,
                      expand = c(0, 0)) + 
   labs(x = "EAC-adj. w/ Barretts", y = NULL) +
   theme_classic() +
-  theme(axis.text.x = element_text(size = rel(1), hjust = 0.5,vjust=0.5, angle = 90), 
+  theme(axis.text.x = element_blank(), #element_text(size = rel(1), hjust = 0.5,vjust=0.5, angle = 90), 
         axis.ticks.y = element_blank(),
+        axis.title.x = element_text(angle=90, hjust=0.75, vjust=0.5),
         # margin: top, right, bottom, and left
         plot.margin = unit(c(1, 0.01, 0.01, -0.7), "cm"), 
         panel.grid.minor = element_blank(),
@@ -1905,7 +1916,7 @@ plt_hmap3 <- ggplot(hmd,
                         height = height, width = width)) + 
   geom_tile() +
   #facet_wrap(.~sample_type)+
-  scale_fill_gradient2("Abundance",trans="sqrt", high = "darkred", low = "darkblue", breaks=c(0, 0.10, 0.30, 0.50, 0.80)) +
+  scale_fill_gradient2("Abundance",trans="sqrt", high="darkblue", low="white", breaks=c(0, 0.10, 0.30, 0.50, 0.80)) +
   scale_x_continuous(breaks = spd$x_center, 
                      labels = spd$ID, 
                      expand = c(0, 0)) + 
@@ -1916,8 +1927,9 @@ plt_hmap3 <- ggplot(hmd,
                      expand = c(0, 0)) + 
   labs(x = "EAC w/o Barretts", y = NULL) +
   theme_classic() +
-  theme(axis.text.x = element_text(size = rel(1), hjust = 0.75, vjust=0.5, angle = 90), 
+  theme(axis.text.x = element_blank(), #element_text(size = rel(1), hjust = 0.75, vjust=0.5, angle = 90), 
         axis.ticks.y = element_blank(),
+        axis.title.x = element_text(angle=90, hjust=0.75, vjust=0.5),
         # margin: top, right, bottom, and left
         plot.margin = unit(c(1, 0.01, 0.01, -0.7), "cm"), 
         panel.grid.minor = element_blank())
@@ -2074,7 +2086,7 @@ plt_hmap1 <- ggplot(hmd,
                        height = height, width = width)) + 
   geom_tile() +
   #facet_wrap(.~sample_type)+
-  scale_fill_gradient2("Abundance",trans="sqrt", high = "darkred", low = "darkblue", breaks=c(0, 0.10, 0.30, 0.50, 0.80)) +
+  scale_fill_gradient2("Abundance",trans="sqrt", high="darkblue", low="white", breaks=c(0, 0.10, 0.30, 0.50, 0.80)) +
   scale_x_continuous(breaks = spd$x_center, 
                      labels = spd$ID, 
                      expand = c(0, 0)) + 
@@ -2085,9 +2097,10 @@ plt_hmap1 <- ggplot(hmd,
                      expand = c(0, 0)) + 
   labs(x = "EAC w/ Barretts", y = NULL) +
   theme_classic() +
-  theme(axis.text.x = element_text(size = rel(1), hjust = 0.5,vjust=0.5, angle = 90), 
+  theme(axis.text.x = element_blank(), #element_text(size = rel(1), hjust = 0.5,vjust=0.5, angle = 90), 
         # margin: top, right, bottom, and left
         #axis.ticks.y = element_blank(),
+        axis.title.x = element_text(angle=90, hjust=0.75, vjust=0.5),
         plot.margin = unit(c(1, 0.01, 0.01, -0.7), "cm"), 
         panel.grid = element_blank(),
         legend.position = "none")
@@ -2103,7 +2116,7 @@ plt_hmap2 <- ggplot(hmd,
                         height = height, width = width)) + 
   geom_tile() +
   #facet_wrap(.~sample_type)+
-  scale_fill_gradient2("expr",trans="sqrt", high = "darkred", low = "darkblue", breaks=c(0, 0.1, 0.10, 0.30, 0.50, 0.80)) +
+  scale_fill_gradient2("expr",trans="sqrt", high="darkblue", low="white", breaks=c(0, 0.1, 0.10, 0.30, 0.50, 0.80)) +
   scale_x_continuous(breaks = spd$x_center, 
                      labels = spd$ID, 
                      expand = c(0, 0)) + 
@@ -2114,8 +2127,9 @@ plt_hmap2 <- ggplot(hmd,
                      expand = c(0, 0)) + 
   labs(x = "EAC-adj. w/ Barretts", y = NULL) +
   theme_classic() +
-  theme(axis.text.x = element_text(size = rel(1), hjust = 0.5,vjust=0.5, angle = 90), 
+  theme(axis.text.x = element_blank(), #element_text(size = rel(1), hjust = 0.5,vjust=0.5, angle = 90), 
         axis.ticks.y = element_blank(),
+        axis.title.x = element_text(angle=90, hjust=0.75, vjust=0.5),
         # margin: top, right, bottom, and left
         plot.margin = unit(c(1, 0.01, 0.01, -0.7), "cm"), 
         panel.grid.minor = element_blank(),
@@ -2132,7 +2146,7 @@ plt_hmap3 <- ggplot(hmd,
                         height = height, width = width)) + 
   geom_tile() +
   #facet_wrap(.~sample_type)+
-  scale_fill_gradient2("Abundance",trans="sqrt", high = "darkred", low = "darkblue", breaks=c(0, 0.10, 0.30, 0.50, 0.80)) +
+  scale_fill_gradient2("Abundance",trans="sqrt", high="darkblue", low="white", breaks=c(0, 0.10, 0.30, 0.50, 0.80)) +
   scale_x_continuous(breaks = spd$x_center, 
                      labels = spd$ID, 
                      expand = c(0, 0)) + 
@@ -2143,8 +2157,9 @@ plt_hmap3 <- ggplot(hmd,
                      expand = c(0, 0)) + 
   labs(x = "EAC w/o Barretts", y = NULL) +
   theme_classic() +
-  theme(axis.text.x = element_text(size = rel(1), hjust = 0.75, vjust=0.5, angle = 90), 
+  theme(axis.text.x = element_blank(), #element_text(size = rel(1), hjust = 0.75, vjust=0.5, angle = 90), 
         axis.ticks.y = element_blank(),
+        axis.title.x = element_text(angle=90, hjust=0.75, vjust=0.5),
         # margin: top, right, bottom, and left
         plot.margin = unit(c(1, 0.01, 0.01, -0.7), "cm"), 
         panel.grid.minor = element_blank())
@@ -2301,7 +2316,7 @@ plt_hmap1 <- ggplot(hmd,
                        height = height, width = width)) + 
   geom_tile() +
   #facet_wrap(.~sample_type)+
-  scale_fill_gradient2("Abundance",trans="sqrt", high = "darkred", low = "darkblue", breaks=c(0, 0.10, 0.30, 0.50, 0.80)) +
+  scale_fill_gradient2("Abundance",trans="sqrt", high="darkblue", low="white", breaks=c(0, 0.10, 0.30, 0.50, 0.80)) +
   scale_x_continuous(breaks = spd$x_center, 
                      labels = spd$ID, 
                      expand = c(0, 0)) + 
@@ -2312,9 +2327,10 @@ plt_hmap1 <- ggplot(hmd,
                      expand = c(0, 0)) + 
   labs(x = "EAC w/ Barretts", y = NULL) +
   theme_classic() +
-  theme(axis.text.x = element_text(size = rel(1), hjust = 0.5,vjust=0.5, angle = 90), 
+  theme(axis.text.x = element_blank(), #element_text(size = rel(1), hjust = 0.5,vjust=0.5, angle = 90), 
         # margin: top, right, bottom, and left
         #axis.ticks.y = element_blank(),
+        axis.title.x = element_text(angle=90, hjust=0.75, vjust=0.5),
         plot.margin = unit(c(1, 0.01, 0.01, -0.7), "cm"), 
         panel.grid = element_blank(),
         legend.position = "none")
@@ -2330,7 +2346,7 @@ plt_hmap2 <- ggplot(hmd,
                         height = height, width = width)) + 
   geom_tile() +
   #facet_wrap(.~sample_type)+
-  scale_fill_gradient2("expr",trans="sqrt", high = "darkred", low = "darkblue", breaks=c(0, 0.1, 0.10, 0.30, 0.50, 0.80)) +
+  scale_fill_gradient2("expr",trans="sqrt", high="darkblue", low="white", breaks=c(0, 0.1, 0.10, 0.30, 0.50, 0.80)) +
   scale_x_continuous(breaks = spd$x_center, 
                      labels = spd$ID, 
                      expand = c(0, 0)) + 
@@ -2341,8 +2357,9 @@ plt_hmap2 <- ggplot(hmd,
                      expand = c(0, 0)) + 
   labs(x = "EAC-adj. w/ Barretts", y = NULL) +
   theme_classic() +
-  theme(axis.text.x = element_text(size = rel(1), hjust = 0.5,vjust=0.5, angle = 90), 
+  theme(axis.text.x = element_blank(), #element_text(size = rel(1), hjust = 0.5,vjust=0.5, angle = 90), 
         axis.ticks.y = element_blank(),
+        axis.title.x = element_text(angle=90, hjust=0.75, vjust=0.5),
         # margin: top, right, bottom, and left
         plot.margin = unit(c(1, 0.01, 0.01, -0.7), "cm"), 
         panel.grid.minor = element_blank(),
@@ -2359,7 +2376,7 @@ plt_hmap3 <- ggplot(hmd,
                         height = height, width = width)) + 
   geom_tile() +
   #facet_wrap(.~sample_type)+
-  scale_fill_gradient2("Abundance",trans="sqrt", high = "darkred", low = "darkblue", breaks=c(0, 0.10, 0.30, 0.50, 0.80)) +
+  scale_fill_gradient2("Abundance",trans="sqrt", high="darkblue", low="white", breaks=c(0, 0.10, 0.30, 0.50, 0.80)) +
   scale_x_continuous(breaks = spd$x_center, 
                      labels = spd$ID, 
                      expand = c(0, 0)) + 
@@ -2370,8 +2387,9 @@ plt_hmap3 <- ggplot(hmd,
                      expand = c(0, 0)) + 
   labs(x = "EAC w/o Barretts", y = NULL) +
   theme_classic() +
-  theme(axis.text.x = element_text(size = rel(1), hjust = 0.75, vjust=0.5, angle = 90), 
+  theme(axis.text.x = element_blank(), #element_text(size = rel(1), hjust = 0.75, vjust=0.5, angle = 90), 
         axis.ticks.y = element_blank(),
+        axis.title.x = element_text(angle=90, hjust=0.75, vjust=0.5),
         # margin: top, right, bottom, and left
         plot.margin = unit(c(1, 0.01, 0.01, -0.7), "cm"), 
         panel.grid.minor = element_blank())
@@ -2612,7 +2630,7 @@ plt_hmap1 <- ggplot(hmd,
                        height = height, width = width)) + 
   geom_tile() +
   #facet_wrap(.~sample_type)+
-  scale_fill_gradient2("Abundance",trans="sqrt", high = "darkred", low = "darkblue", breaks=c(0, 0.10, 0.30, 0.50, 0.80)) +
+  scale_fill_gradient2("Abundance",trans="sqrt", high="darkblue", low="white", breaks=c(0, 0.10, 0.30, 0.50, 0.80)) +
   scale_x_continuous(breaks = spd$x_center, 
                      labels = spd$ID, 
                      expand = c(0, 0)) + 
@@ -2623,7 +2641,7 @@ plt_hmap1 <- ggplot(hmd,
                      expand = c(0, 0)) + 
   labs(x = "BO", y = NULL) +
   theme_classic() +
-  theme(axis.text.x = element_text(size = rel(1), hjust = 0.5,vjust=0.5, angle = 90), 
+  theme(axis.text.x = element_blank(), #element_text(size = rel(1), hjust = 0.5,vjust=0.5, angle = 90), 
         # margin: top, right, bottom, and left
         #axis.ticks.y = element_blank(),
         plot.margin = unit(c(1, 0.01, 0.01, -0.7), "cm"), 
@@ -2641,7 +2659,7 @@ plt_hmap2 <- ggplot(hmd,
                         height = height, width = width)) + 
   geom_tile() +
   #facet_wrap(.~sample_type)+
-  scale_fill_gradient2("expr",trans="sqrt", high = "darkred", low = "darkblue", breaks=c(0, 0.1, 0.10, 0.30, 0.50, 0.80)) +
+  scale_fill_gradient2("expr",trans="sqrt", high="darkblue", low="white", breaks=c(0, 0.1, 0.10, 0.30, 0.50, 0.80)) +
   scale_x_continuous(breaks = spd$x_center, 
                      labels = spd$ID, 
                      expand = c(0, 0)) + 
@@ -2652,7 +2670,7 @@ plt_hmap2 <- ggplot(hmd,
                      expand = c(0, 0)) + 
   labs(x = "EAC-adj. w/ Barretts", y = NULL) +
   theme_classic() +
-  theme(axis.text.x = element_text(size = rel(1), hjust = 0.5,vjust=0.5, angle = 90), 
+  theme(axis.text.x = element_blank(), #element_text(size = rel(1), hjust = 0.5,vjust=0.5, angle = 90), 
         axis.ticks.y = element_blank(),
         # margin: top, right, bottom, and left
         plot.margin = unit(c(1, 0.01, 0.01, -0.7), "cm"), 
@@ -2670,7 +2688,7 @@ plt_hmap3 <- ggplot(hmd,
                         height = height, width = width)) + 
   geom_tile() +
   #facet_wrap(.~sample_type)+
-  scale_fill_gradient2("Abundance",trans="sqrt", high = "darkred", low = "darkblue", breaks=c(0, 0.10, 0.30, 0.50, 0.80)) +
+  scale_fill_gradient2("Abundance",trans="sqrt", high="darkblue", low="white", breaks=c(0, 0.10, 0.30, 0.50, 0.80)) +
   scale_x_continuous(breaks = spd$x_center, 
                      labels = spd$ID, 
                      expand = c(0, 0)) + 
@@ -2681,7 +2699,7 @@ plt_hmap3 <- ggplot(hmd,
                      expand = c(0, 0)) + 
   labs(x = "EAC w/ Barretts", y = NULL) +
   theme_classic() +
-  theme(axis.text.x = element_text(size = rel(1), hjust = 0.75, vjust=0.5, angle = 90), 
+  theme(axis.text.x = element_blank(), #element_text(size = rel(1), hjust = 0.75, vjust=0.5, angle = 90), 
         axis.ticks.y = element_blank(),
         # margin: top, right, bottom, and left
         plot.margin = unit(c(1, 0.01, 0.01, -0.7), "cm"), 
@@ -2698,7 +2716,7 @@ plt_hmap4 <- ggplot(hmd,
                         height = height, width = width)) + 
   geom_tile() +
   #facet_wrap(.~sample_type)+
-  scale_fill_gradient2("Abundance",trans="sqrt", high = "darkred", low = "darkblue", breaks=c(0, 0.10, 0.30, 0.50, 0.80)) +
+  scale_fill_gradient2("Abundance",trans="sqrt", high="darkblue", low="white", breaks=c(0, 0.10, 0.30, 0.50, 0.80)) +
   scale_x_continuous(breaks = spd$x_center, 
                      labels = spd$ID, 
                      expand = c(0, 0)) + 
@@ -2709,7 +2727,7 @@ plt_hmap4 <- ggplot(hmd,
                      expand = c(0, 0)) + 
   labs(x = "EAC w/o Barretts", y = NULL) +
   theme_classic() +
-  theme(axis.text.x = element_text(size = rel(1), hjust = 0.75, vjust=0.5, angle = 90), 
+  theme(axis.text.x = element_blank(), #element_text(size = rel(1), hjust = 0.75, vjust=0.5, angle = 90), 
         axis.ticks.y = element_blank(),
         # margin: top, right, bottom, and left
         plot.margin = unit(c(1, 0.01, 0.01, -0.7), "cm"), 
@@ -2975,7 +2993,7 @@ plt_hmap1 <- ggplot(hmd,
                        height = height, width = width)) + 
   geom_tile() +
   #facet_wrap(.~sample_type)+
-  scale_fill_gradient2("Abundance",trans="sqrt", high = "darkred", low = "darkblue", breaks=c(0, 0.10, 0.30, 0.50, 0.80)) +
+  scale_fill_gradient2("Abundance",trans="sqrt", high="darkblue", low="white", breaks=c(0, 0.10, 0.30, 0.50, 0.80)) +
   scale_x_continuous(breaks = spd$x_center, 
                      labels = spd$ID, 
                      expand = c(0, 0)) + 
@@ -2986,9 +3004,10 @@ plt_hmap1 <- ggplot(hmd,
                      expand = c(0, 0)) + 
   labs(x = "EAC w/ Barretts", y = NULL) +
   theme_classic() +
-  theme(axis.text.x = element_text(size = rel(1), hjust = 0.5,vjust=0.5, angle = 90), 
+  theme(axis.text.x = element_blank(), #element_text(size = rel(1), hjust = 0.5,vjust=0.5, angle = 90), 
         # margin: top, right, bottom, and left
         #axis.ticks.y = element_blank(),
+        axis.title.x = element_text(angle=90, hjust=0.75, vjust=0.5),
         plot.margin = unit(c(1, 0.01, 0.01, -0.7), "cm"), 
         panel.grid = element_blank(),
         legend.position = "none")
@@ -3004,7 +3023,7 @@ plt_hmap2 <- ggplot(hmd,
                         height = height, width = width)) + 
   geom_tile() +
   #facet_wrap(.~sample_type)+
-  scale_fill_gradient2("expr",trans="sqrt", high = "darkred", low = "darkblue", breaks=c(0, 0.1, 0.10, 0.30, 0.50, 0.80)) +
+  scale_fill_gradient2("expr",trans="sqrt", high="darkblue", low="white", breaks=c(0, 0.1, 0.10, 0.30, 0.50, 0.80)) +
   scale_x_continuous(breaks = spd$x_center, 
                      labels = spd$ID, 
                      expand = c(0, 0)) + 
@@ -3015,8 +3034,9 @@ plt_hmap2 <- ggplot(hmd,
                      expand = c(0, 0)) + 
   labs(x = "EAC-adj. w/ Barretts", y = NULL) +
   theme_classic() +
-  theme(axis.text.x = element_text(size = rel(1), hjust = 0.5,vjust=0.5, angle = 90), 
+  theme(axis.text.x = element_blank(), #element_text(size = rel(1), hjust = 0.5,vjust=0.5, angle = 90), 
         axis.ticks.y = element_blank(),
+        axis.title.x = element_text(angle=90, hjust=0.75, vjust=0.5),
         # margin: top, right, bottom, and left
         plot.margin = unit(c(1, 0.01, 0.01, -0.7), "cm"), 
         panel.grid.minor = element_blank(),
@@ -3033,7 +3053,7 @@ plt_hmap3 <- ggplot(hmd,
                         height = height, width = width)) + 
   geom_tile() +
   #facet_wrap(.~sample_type)+
-  scale_fill_gradient2("Abundance",trans="sqrt", high = "darkred", low = "darkblue", breaks=c(0, 0.10, 0.30, 0.50, 0.80)) +
+  scale_fill_gradient2("Abundance",trans="sqrt", high="darkblue", low="white", breaks=c(0, 0.10, 0.30, 0.50, 0.80)) +
   scale_x_continuous(breaks = spd$x_center, 
                      labels = spd$ID, 
                      expand = c(0, 0)) + 
@@ -3044,8 +3064,9 @@ plt_hmap3 <- ggplot(hmd,
                      expand = c(0, 0)) + 
   labs(x = "EAC w/o Barretts", y = NULL) +
   theme_classic() +
-  theme(axis.text.x = element_text(size = rel(1), hjust = 0.75, vjust=0.5, angle = 90), 
+  theme(axis.text.x = element_blank(), #element_text(size = rel(1), hjust = 0.75, vjust=0.5, angle = 90), 
         axis.ticks.y = element_blank(),
+        axis.title.x = element_text(angle=90, hjust=0.75, vjust=0.5),
         # margin: top, right, bottom, and left
         plot.margin = unit(c(1, 0.01, 0.01, -0.7), "cm"), 
         panel.grid.minor = element_blank())
@@ -3314,7 +3335,7 @@ plt_hmap1 <- ggplot(hmd,
                        height = height, width = width)) + 
   geom_tile() +
   #facet_wrap(.~sample_type)+
-  scale_fill_gradient2("Abundance",trans="sqrt", high = "darkred", low = "darkblue", breaks=c(0, 0.10, 0.30, 0.50, 0.80)) +
+  scale_fill_gradient2("Abundance",trans="sqrt", high="darkblue", low="white", breaks=c(0, 0.10, 0.30, 0.50, 0.80)) +
   scale_x_continuous(breaks = spd$x_center, 
                      labels = spd$ID, 
                      expand = c(0, 0)) + 
@@ -3325,7 +3346,8 @@ plt_hmap1 <- ggplot(hmd,
                      expand = c(0, 0)) + 
   labs(x = "EAC w/ Barretts", y = NULL) +
   theme_classic() +
-  theme(axis.text.x = element_text(size = rel(1), hjust = 0.5,vjust=0.5, angle = 90), 
+  theme(axis.text.x = element_blank(), #element_text(size = rel(1), hjust = 0.5,vjust=0.5, angle = 90), 
+        axis.title.x = element_text(angle=90, hjust=0.75, vjust=0.5),
         # margin: top, right, bottom, and left
         #axis.ticks.y = element_blank(),
         plot.margin = unit(c(1, 0.01, 0.01, -0.7), "cm"), 
@@ -3343,7 +3365,7 @@ plt_hmap2 <- ggplot(hmd,
                         height = height, width = width)) + 
   geom_tile() +
   #facet_wrap(.~sample_type)+
-  scale_fill_gradient2("expr",trans="sqrt", high = "darkred", low = "darkblue", breaks=c(0, 0.1, 0.10, 0.30, 0.50, 0.80)) +
+  scale_fill_gradient2("expr",trans="sqrt", high="darkblue", low="white", breaks=c(0, 0.1, 0.10, 0.30, 0.50, 0.80)) +
   scale_x_continuous(breaks = spd$x_center, 
                      labels = spd$ID, 
                      expand = c(0, 0)) + 
@@ -3354,8 +3376,9 @@ plt_hmap2 <- ggplot(hmd,
                      expand = c(0, 0)) + 
   labs(x = "EAC-adj. w/ Barretts", y = NULL) +
   theme_classic() +
-  theme(axis.text.x = element_text(size = rel(1), hjust = 0.5,vjust=0.5, angle = 90), 
+  theme(axis.text.x = element_blank(), #element_text(size = rel(1), hjust = 0.5,vjust=0.5, angle = 90), 
         axis.ticks.y = element_blank(),
+        axis.title.x = element_text(angle=90, hjust=0.75, vjust=0.5),
         # margin: top, right, bottom, and left
         plot.margin = unit(c(1, 0.01, 0.01, -0.7), "cm"), 
         panel.grid.minor = element_blank(),
@@ -3372,7 +3395,7 @@ plt_hmap3 <- ggplot(hmd,
                         height = height, width = width)) + 
   geom_tile() +
   #facet_wrap(.~sample_type)+
-  scale_fill_gradient2("Abundance",trans="sqrt", high = "darkred", low = "darkblue", breaks=c(0, 0.10, 0.30, 0.50, 0.80)) +
+  scale_fill_gradient2("Abundance",trans="sqrt", high="darkblue", low="white", breaks=c(0, 0.10, 0.30, 0.50, 0.80)) +
   scale_x_continuous(breaks = spd$x_center, 
                      labels = spd$ID, 
                      expand = c(0, 0)) + 
@@ -3383,8 +3406,9 @@ plt_hmap3 <- ggplot(hmd,
                      expand = c(0, 0)) + 
   labs(x = "EAC w/o Barretts", y = NULL) +
   theme_classic() +
-  theme(axis.text.x = element_text(size = rel(1), hjust = 0.75, vjust=0.5, angle = 90), 
+  theme(axis.text.x = element_blank(), #element_text(size = rel(1), hjust = 0.75, vjust=0.5, angle = 90), 
         axis.ticks.y = element_blank(),
+        axis.title.x = element_text(angle=90, hjust=0.75, vjust=0.5),
         # margin: top, right, bottom, and left
         plot.margin = unit(c(1, 0.01, 0.01, -0.7), "cm"), 
         panel.grid.minor = element_blank())
