@@ -271,6 +271,23 @@ analysis.dat <- full_join(analysis.dat, dat) %>%
     Tumor = ifelse(tumor==1, "Tumor", "No Tumor"),
     Barretts = ifelse(Barretts == 1, "Yes", "No")
   )
+TITLE_P1 <- c("NCI 16s Data", "TCGA RNAseq Data", "TCGA WGS Data")
+TITLE_P2 <- c("Between Barretts Status", "Between Gender", "Across Races", "Across Stages")
+SUBTITLE <-c("Combined across bacteria", "Fusobacterium nucleatum", "Prevotella melaninogenica", "Campylobacter concisus", 'Streptococcus sanguinis')
+
+test_results <- expand.grid(TITLE_P1, SUBTITLE, TITLE_P2)
+colnames(test_results) <- c("Data", "Bacteria", "Outcome")
+test_results$est <- NA
+test_results$pvalue <- NA
+
+i <- 1
+d <- analysis.dat %>%
+  filter(!is.na(Barretts), source=="16s")
+m1<-wilcox.test(Abund ~ Barretts, data=d, na.rm=TRUE, paired=FALSE, exact=FALSE, conf.int=TRUE)
+m1
+test_results[i,4] <- m1$estimate
+test_results[i,5] <- m1$p.value
+
 
 p <- analysis.dat %>%
   filter(!is.na(Barretts), source=="16s")%>%
@@ -283,12 +300,26 @@ p <- analysis.dat %>%
       labels = c(0, 0.001,0.01, 0.1, 1,10,50, 100),
       limits = c(0, 110)
     ) + 
-    labs(x="Barretts", y="Relative Abundance (%)")+
+    labs(x="Barretts", y="Relative Abundance (%)",
+         title=paste0(TITLE_P1[1]," Bacteria Relative Abundance ",TITLE_P2[1]),
+         subtitle=SUBTITLE[1])+
+    annotate("text", x=1.5, y=90, label=paste0("p=",round(test_results$pvalue[i],4)))+
+    geom_segment(aes(x=1, xend=2,y=105,yend=105))+
+    geom_segment(aes(x=1, xend=1,y=109,yend=100))+
+    geom_segment(aes(x=2, xend=2,y=109,yend=100))+
     theme_classic()
 p
 ggsave("output/supplemental_figure2C_NCI_combined.pdf", p, units = "in", width = DIM[1], height = DIM[2])
 ggsave("output/supplemental_figure2C_NCI_combined.png", p, units = "in", width = DIM[1], height = DIM[2])
 
+
+i <- i+1
+d <- analysis.dat %>%
+  filter(!is.na(Barretts), source=="rna")
+m1<-wilcox.test(Abund ~ Barretts, data=d, na.rm=TRUE, paired=FALSE, exact=FALSE, conf.int=TRUE)
+m1
+test_results[i,4] <- m1$estimate
+test_results[i,5] <- m1$p.value
 p <- analysis.dat %>%
   filter(source=="rna", !is.na(Barretts))%>%
   ggplot(aes(x=Barretts, y=Abund))+
@@ -300,12 +331,25 @@ p <- analysis.dat %>%
       labels = c(0, 0.001,0.01, 0.1, 1,10,50, 100),
       limits = c(0, 110)
     ) + 
-    labs(x="Barretts", y="Relative Abundance (%)")+
+    labs(x="Barretts", y="Relative Abundance (%)",
+         title=paste0(TITLE_P1[2]," Bacteria Relative Abundance ",TITLE_P2[1]),
+         subtitle=SUBTITLE[1])+
+    annotate("text", x=1.5, y=90, label=paste0("p=",round(test_results$pvalue[i],4)))+
+    geom_segment(aes(x=1, xend=2,y=105,yend=105))+
+    geom_segment(aes(x=1, xend=1,y=109,yend=100))+
+    geom_segment(aes(x=2, xend=2,y=109,yend=100))+
     theme_classic()
 p
 ggsave("output/supplemental_figure2C_tcga_rna_combined.pdf", p, units = "in", width = DIM[1], height = DIM[2])
 ggsave("output/supplemental_figure2C_tcga_rna_combined.png", p, units = "in", width = DIM[1], height = DIM[2])
 
+i <- i+1
+d <- analysis.dat %>%
+  filter(!is.na(Barretts), source=="wgs")
+m1<-wilcox.test(Abund ~ Barretts, data=d, na.rm=TRUE, paired=FALSE, exact=FALSE, conf.int=TRUE)
+m1
+test_results[i,4] <- m1$estimate
+test_results[i,5] <- m1$p.value
 p <- analysis.dat %>%
   filter(source=="wgs", !is.na(Barretts))%>%
   ggplot(aes(x=Barretts, y=Abund))+
@@ -317,7 +361,13 @@ p <- analysis.dat %>%
       labels = c(0, 0.001,0.01, 0.1, 1,10,50, 100),
       limits = c(0, 110)
     ) + 
-    labs(x="Barretts", y="Relative Abundance (%)")+
+    labs(x="Barretts", y="Relative Abundance (%)",
+         title=paste0(TITLE_P1[3]," Bacteria Relative Abundance ",TITLE_P2[1]),
+         subtitle=SUBTITLE[1])+
+    annotate("text", x=1.5, y=90, label=paste0("p=",round(test_results$pvalue[i],4)))+
+    geom_segment(aes(x=1, xend=2,y=105,yend=105))+
+    geom_segment(aes(x=1, xend=1,y=109,yend=100))+
+    geom_segment(aes(x=2, xend=2,y=109,yend=100))+
     theme_classic()
 p
 ggsave("output/supplemental_figure2C_tcga_wgs_combined.pdf", p, units = "in", width = DIM[1], height = DIM[2])
@@ -353,6 +403,13 @@ analysis.dat <- full_join(analysis.dat, dat) %>%
     Barretts = ifelse(Barretts == 1, "Yes", "No")
   )
 
+i <- i+1
+d <- analysis.dat %>%
+  filter(!is.na(Barretts), source=="16s", OTU == "Fusobacterium nucleatum")
+m1<-wilcox.test(Abund ~ Barretts, data=d, na.rm=TRUE, paired=FALSE, exact=FALSE, conf.int=TRUE)
+m1
+test_results[i,4] <- m1$estimate
+test_results[i,5] <- m1$p.value
 
 p <- analysis.dat %>%
   filter(!is.na(Barretts), source=="16s", OTU == "Fusobacterium nucleatum")%>%
@@ -365,12 +422,25 @@ p <- analysis.dat %>%
       labels = c(0, 0.001,0.01, 0.1, 1,10,50, 100),
       limits = c(0, 110)
     ) + 
-    labs(x="Barretts", y="Relative Abundance (%)")+
+    labs(x="Barretts", y="Relative Abundance (%)",
+         title=paste0(TITLE_P1[1]," Bacteria Relative Abundance ",TITLE_P2[1]),
+         subtitle=SUBTITLE[2])+
+    annotate("text", x=1.5, y=90, label=paste0("p=",round(test_results$pvalue[i],4)))+
+    geom_segment(aes(x=1, xend=2,y=105,yend=105))+
+    geom_segment(aes(x=1, xend=1,y=109,yend=100))+
+    geom_segment(aes(x=2, xend=2,y=109,yend=100))+
     theme_classic()
 p
 ggsave("output/supplemental_figure2C_NCI_fuso.pdf", p, units = "in", width = DIM[1], height = DIM[2])
 ggsave("output/supplemental_figure2C_NCI_fuso.png", p, units = "in", width = DIM[1], height = DIM[2])
 
+i <- i+1
+d <- analysis.dat %>%
+  filter(!is.na(Barretts), source=="rna", OTU == "Fusobacterium nucleatum")
+m1<-wilcox.test(Abund ~ Barretts, data=d, na.rm=TRUE, paired=FALSE, exact=FALSE, conf.int=TRUE)
+m1
+test_results[i,4] <- m1$estimate
+test_results[i,5] <- m1$p.value
 
 p <- analysis.dat %>%
   filter(!is.na(Barretts), source=="rna", OTU == "Fusobacterium nucleatum")%>%
@@ -383,13 +453,25 @@ p <- analysis.dat %>%
       labels = c(0, 0.001,0.01, 0.1, 1,10,50, 100),
       limits = c(0, 110)
     ) + 
-    labs(x="Barretts", y="Relative Abundance (%)")+
+    labs(x="Barretts", y="Relative Abundance (%)",
+         title=paste0(TITLE_P1[2]," Bacteria Relative Abundance ",TITLE_P2[1]),
+         subtitle=SUBTITLE[2])+
+    annotate("text", x=1.5, y=90, label=paste0("p=",round(test_results$pvalue[i],4)))+
+    geom_segment(aes(x=1, xend=2,y=105,yend=105))+
+    geom_segment(aes(x=1, xend=1,y=109,yend=100))+
+    geom_segment(aes(x=2, xend=2,y=109,yend=100))+
     theme_classic()
 p
 ggsave("output/supplemental_figure2C_tcga_rna_fuso.pdf", p, units = "in", width = DIM[1], height = DIM[2])
 ggsave("output/supplemental_figure2C_tcga_rna_fuso.png", p, units = "in", width = DIM[1], height = DIM[2])
 
-
+i <- i+1
+d <- analysis.dat %>%
+  filter(!is.na(Barretts), source=="wgs", OTU == "Fusobacterium nucleatum")
+m1<-wilcox.test(Abund ~ Barretts, data=d, na.rm=TRUE, paired=FALSE, exact=FALSE, conf.int=TRUE)
+m1
+test_results[i,4] <- m1$estimate
+test_results[i,5] <- m1$p.value
 p <- analysis.dat %>%
   filter(!is.na(Barretts), source=="wgs", OTU == "Fusobacterium nucleatum")%>%
   ggplot(aes(x=Barretts, y=Abund))+
@@ -401,13 +483,25 @@ p <- analysis.dat %>%
       labels = c(0, 0.001,0.01, 0.1, 1,10,50, 100),
       limits = c(0, 110)
     ) + 
-    labs(x="Barretts", y="Relative Abundance (%)")+
+    labs(x="Barretts", y="Relative Abundance (%)",
+         title=paste0(TITLE_P1[3]," Bacteria Relative Abundance ",TITLE_P2[1]),
+         subtitle=SUBTITLE[2])+
+    annotate("text", x=1.5, y=90, label=paste0("p=",round(test_results$pvalue[i],4)))+
+    geom_segment(aes(x=1, xend=2,y=105,yend=105))+
+    geom_segment(aes(x=1, xend=1,y=109,yend=100))+
+    geom_segment(aes(x=2, xend=2,y=109,yend=100))+
     theme_classic()
 p
 ggsave("output/supplemental_figure2C_tcga_wgs_fuso.pdf", p, units = "in", width = DIM[1], height = DIM[2])
 ggsave("output/supplemental_figure2C_tcga_wgs_fuso.png", p, units = "in", width = DIM[1], height = DIM[2])
 
-
+i <- i+1
+d <- analysis.dat %>%
+  filter(!is.na(Barretts), source=="16s", OTU == "Prevotella melaninogenica" | OTU =="Prevotella spp.")
+m1<-wilcox.test(Abund ~ Barretts, data=d, na.rm=TRUE, paired=FALSE, exact=FALSE, conf.int=TRUE)
+m1
+test_results[i,4] <- m1$estimate
+test_results[i,5] <- m1$p.value
 p <- analysis.dat %>%
   filter(!is.na(Barretts), source=="16s", OTU == "Prevotella melaninogenica" | OTU =="Prevotella spp.")%>%
   ggplot(aes(x=Barretts, y=Abund))+
@@ -419,13 +513,25 @@ p <- analysis.dat %>%
       labels = c(0, 0.001,0.01, 0.1, 1,10,50, 100),
       limits = c(0, 110)
     ) + 
-    labs(x="Barretts", y="Relative Abundance (%)")+
+    labs(x="Barretts", y="Relative Abundance (%)",
+         title=paste0(TITLE_P1[1]," Bacteria Relative Abundance ",TITLE_P2[1]),
+         subtitle=SUBTITLE[3])+
+    annotate("text", x=1.5, y=90, label=paste0("p=",round(test_results$pvalue[i],4)))+
+    geom_segment(aes(x=1, xend=2,y=105,yend=105))+
+    geom_segment(aes(x=1, xend=1,y=109,yend=100))+
+    geom_segment(aes(x=2, xend=2,y=109,yend=100))+
     theme_classic()
 p
 ggsave("output/supplemental_figure2C_NCI_prevo.pdf", p, units = "in", width = DIM[1], height = DIM[2])
 ggsave("output/supplemental_figure2C_NCI_prevo.png", p, units = "in", width = DIM[1], height = DIM[2])
 
-
+i <- i+1
+d <- analysis.dat %>%
+  filter(!is.na(Barretts), source=="rna", OTU == "Prevotella melaninogenica")
+m1<-wilcox.test(Abund ~ Barretts, data=d, na.rm=TRUE, paired=FALSE, exact=FALSE, conf.int=TRUE)
+m1
+test_results[i,4] <- m1$estimate
+test_results[i,5] <- m1$p.value
 p <- analysis.dat %>%
   filter(!is.na(Barretts), source=="rna", OTU == "Prevotella melaninogenica")%>%
   ggplot(aes(x=Barretts, y=Abund))+
@@ -437,13 +543,25 @@ p <- analysis.dat %>%
       labels = c(0, 0.001,0.01, 0.1, 1,10,50, 100),
       limits = c(0, 110)
     ) + 
-    labs(x="Barretts", y="Relative Abundance (%)")+
+    labs(x="Barretts", y="Relative Abundance (%)",
+         title=paste0(TITLE_P1[2]," Bacteria Relative Abundance ",TITLE_P2[1]),
+         subtitle=SUBTITLE[3])+
+    annotate("text", x=1.5, y=90, label=paste0("p=",round(test_results$pvalue[i],4)))+
+    geom_segment(aes(x=1, xend=2,y=105,yend=105))+
+    geom_segment(aes(x=1, xend=1,y=109,yend=100))+
+    geom_segment(aes(x=2, xend=2,y=109,yend=100))+
     theme_classic()
 p
 ggsave("output/supplemental_figure2C_tcga_rna_prevo.pdf", p, units = "in", width = DIM[1], height = DIM[2])
 ggsave("output/supplemental_figure2C_tcga_rna_prevo.png", p, units = "in", width = DIM[1], height = DIM[2])
 
-
+i <- i+1
+d <- analysis.dat %>%
+  filter(!is.na(Barretts), source=="wgs", OTU == "Prevotella melaninogenica")
+m1<-wilcox.test(Abund ~ Barretts, data=d, na.rm=TRUE, paired=FALSE, exact=FALSE, conf.int=TRUE)
+m1
+test_results[i,4] <- m1$estimate
+test_results[i,5] <- m1$p.value
 p <- analysis.dat %>%
   filter(!is.na(Barretts), source=="wgs", OTU == "Prevotella melaninogenica")%>%
   ggplot(aes(x=Barretts, y=Abund))+
@@ -455,13 +573,25 @@ p <- analysis.dat %>%
       labels = c(0, 0.001,0.01, 0.1, 1,10,50, 100),
       limits = c(0, 110)
     ) + 
-    labs(x="Barretts", y="Relative Abundance (%)")+
+    labs(x="Barretts", y="Relative Abundance (%)",
+         title=paste0(TITLE_P1[3]," Bacteria Relative Abundance ",TITLE_P2[1]),
+         subtitle=SUBTITLE[3])+
+    annotate("text", x=1.5, y=90, label=paste0("p=",round(test_results$pvalue[i],4)))+
+    geom_segment(aes(x=1, xend=2,y=105,yend=105))+
+    geom_segment(aes(x=1, xend=1,y=109,yend=100))+
+    geom_segment(aes(x=2, xend=2,y=109,yend=100))+
     theme_classic()
 p
 ggsave("output/supplemental_figure2C_tcga_wgs_prevo.pdf", p, units = "in", width = DIM[1], height = DIM[2])
 ggsave("output/supplemental_figure2C_tcga_wgs_prevo.png", p, units = "in", width = DIM[1], height = DIM[2])
 
-
+i <- i+1
+d <- analysis.dat %>%
+  filter(!is.na(Barretts), source=="16s", OTU == "Campylobacter concisus")
+m1<-wilcox.test(Abund ~ Barretts, data=d, na.rm=TRUE, paired=FALSE, exact=FALSE, conf.int=TRUE)
+m1
+test_results[i,4] <- m1$estimate
+test_results[i,5] <- m1$p.value
 p <- analysis.dat %>%
   filter(!is.na(Barretts), source=="16s", OTU == "Campylobacter concisus")%>%
   ggplot(aes(x=Barretts, y=Abund))+
@@ -473,13 +603,25 @@ p <- analysis.dat %>%
       labels = c(0, 0.001,0.01, 0.1, 1,10,50, 100),
       limits = c(0, 110)
     ) + 
-    labs(x="Barretts", y="Relative Abundance (%)")+
+    labs(x="Barretts", y="Relative Abundance (%)",
+         title=paste0(TITLE_P1[1]," Bacteria Relative Abundance ",TITLE_P2[1]),
+         subtitle=SUBTITLE[4])+
+    annotate("text", x=1.5, y=90, label=paste0("p=",round(test_results$pvalue[i],4)))+
+    geom_segment(aes(x=1, xend=2,y=105,yend=105))+
+    geom_segment(aes(x=1, xend=1,y=109,yend=100))+
+    geom_segment(aes(x=2, xend=2,y=109,yend=100))+
     theme_classic()
 p
 ggsave("output/supplemental_figure2C_NCI_campy.pdf", p, units = "in", width = DIM[1], height = DIM[2])
 ggsave("output/supplemental_figure2C_NCI_campy.png", p, units = "in", width = DIM[1], height = DIM[2])
 
-
+i <- i+1
+d <- analysis.dat %>%
+  filter(!is.na(Barretts), source=="rna", OTU == "Campylobacter concisus")
+m1<-wilcox.test(Abund ~ Barretts, data=d, na.rm=TRUE, paired=FALSE, exact=FALSE, conf.int=TRUE)
+m1
+test_results[i,4] <- m1$estimate
+test_results[i,5] <- m1$p.value
 p <- analysis.dat %>%
   filter(!is.na(Barretts), source=="rna", OTU == "Campylobacter concisus")%>%
   ggplot(aes(x=Barretts, y=Abund))+
@@ -491,13 +633,25 @@ p <- analysis.dat %>%
       labels = c(0, 0.001,0.01, 0.1, 1,10,50, 100),
       limits = c(0, 110)
     ) + 
-    labs(x="Barretts", y="Relative Abundance (%)")+
+    labs(x="Barretts", y="Relative Abundance (%)",
+         title=paste0(TITLE_P1[2]," Bacteria Relative Abundance ",TITLE_P2[1]),
+         subtitle=SUBTITLE[4])+
+    annotate("text", x=1.5, y=90, label=paste0("p=",round(test_results$pvalue[i],4)))+
+    geom_segment(aes(x=1, xend=2,y=105,yend=105))+
+    geom_segment(aes(x=1, xend=1,y=109,yend=100))+
+    geom_segment(aes(x=2, xend=2,y=109,yend=100))+
     theme_classic()
 p
 ggsave("output/supplemental_figure2C_tcga_rna_campy.pdf", p, units = "in", width = DIM[1], height = DIM[2])
 ggsave("output/supplemental_figure2C_tcga_rna_campy.png", p, units = "in", width = DIM[1], height = DIM[2])
 
-
+i <- i+1
+d <- analysis.dat %>%
+  filter(!is.na(Barretts), source=="wgs", OTU == "Campylobacter concisus")
+m1<-wilcox.test(Abund ~ Barretts, data=d, na.rm=TRUE, paired=FALSE, exact=FALSE, conf.int=TRUE)
+m1
+test_results[i,4] <- m1$estimate
+test_results[i,5] <- m1$p.value
 p <- analysis.dat %>%
   filter(!is.na(Barretts), source=="wgs", OTU == "Campylobacter concisus")%>%
   ggplot(aes(x=Barretts, y=Abund))+
@@ -509,13 +663,25 @@ p <- analysis.dat %>%
       labels = c(0, 0.001,0.01, 0.1, 1,10,50, 100),
       limits = c(0, 110)
     ) + 
-    labs(x="Barretts", y="Relative Abundance (%)")+
+    labs(x="Barretts", y="Relative Abundance (%)",
+         title=paste0(TITLE_P1[3]," Bacteria Relative Abundance ",TITLE_P2[1]),
+         subtitle=SUBTITLE[4])+
+    annotate("text", x=1.5, y=90, label=paste0("p=",round(test_results$pvalue[i],4)))+
+    geom_segment(aes(x=1, xend=2,y=105,yend=105))+
+    geom_segment(aes(x=1, xend=1,y=109,yend=100))+
+    geom_segment(aes(x=2, xend=2,y=109,yend=100))+
     theme_classic()
 p
 ggsave("output/supplemental_figure2C_tcga_wgs_campy.pdf", p, units = "in", width = DIM[1], height = DIM[2])
 ggsave("output/supplemental_figure2C_tcga_wgs_campy.png", p, units = "in", width = DIM[1], height = DIM[2])
 
-
+i <- i+1
+d <- analysis.dat %>%
+  filter(!is.na(Barretts), source=="16s", OTU == "Streptococcus sanguinis")
+m1<-wilcox.test(Abund ~ Barretts, data=d, na.rm=TRUE, paired=FALSE, exact=FALSE, conf.int=TRUE)
+m1
+test_results[i,4] <- m1$estimate
+test_results[i,5] <- m1$p.value
 p <- analysis.dat %>%
   filter(!is.na(Barretts), source=="16s", OTU == "Streptococcus sanguinis")%>%
   ggplot(aes(x=Barretts, y=Abund))+
@@ -527,13 +693,25 @@ p <- analysis.dat %>%
       labels = c(0, 0.001,0.01, 0.1, 1,10,50, 100),
       limits = c(0, 110)
     ) + 
-    labs(x="Barretts", y="Relative Abundance (%)")+
+    labs(x="Barretts", y="Relative Abundance (%)",
+         title=paste0(TITLE_P1[1]," Bacteria Relative Abundance ",TITLE_P2[1]),
+         subtitle=SUBTITLE[5])+
+    annotate("text", x=1.5, y=90, label=paste0("p=",round(test_results$pvalue[i],4)))+
+    geom_segment(aes(x=1, xend=2,y=105,yend=105))+
+    geom_segment(aes(x=1, xend=1,y=109,yend=100))+
+    geom_segment(aes(x=2, xend=2,y=109,yend=100))+
     theme_classic()
 p
 ggsave("output/supplemental_figure2C_NCI_strepto.pdf", p, units = "in", width = DIM[1], height = DIM[2])
 ggsave("output/supplemental_figure2C_NCI_strepto.png", p, units = "in", width = DIM[1], height = DIM[2])
 
-
+i <- i+1
+d <- analysis.dat %>%
+  filter(!is.na(Barretts), source=="rna", OTU == "Streptococcus sanguinis")
+m1<-wilcox.test(Abund ~ Barretts, data=d, na.rm=TRUE, paired=FALSE, exact=FALSE, conf.int=TRUE)
+m1
+test_results[i,4] <- m1$estimate
+test_results[i,5] <- m1$p.value
 p <- analysis.dat %>%
   filter(!is.na(Barretts), source=="rna", OTU == "Streptococcus sanguinis")%>%
   ggplot(aes(x=Barretts, y=Abund))+
@@ -545,12 +723,25 @@ p <- analysis.dat %>%
       labels = c(0, 0.001,0.01, 0.1, 1,10,50, 100),
       limits = c(0, 110)
     ) + 
-    labs(x="Barretts", y="Relative Abundance (%)")+
+    labs(x="Barretts", y="Relative Abundance (%)",
+         title=paste0(TITLE_P1[2]," Bacteria Relative Abundance ",TITLE_P2[1]),
+         subtitle=SUBTITLE[5])+
+    annotate("text", x=1.5, y=90, label=paste0("p=",round(test_results$pvalue[i],4)))+
+    geom_segment(aes(x=1, xend=2,y=105,yend=105))+
+    geom_segment(aes(x=1, xend=1,y=109,yend=100))+
+    geom_segment(aes(x=2, xend=2,y=109,yend=100))+
     theme_classic()
 p
 ggsave("output/supplemental_figure2C_tcga_rna_strepto.pdf", p, units = "in", width = DIM[1], height = DIM[2])
 ggsave("output/supplemental_figure2C_tcga_rna_strepto.png", p, units = "in", width = DIM[1], height = DIM[2])
 
+i <- i+1
+d <- analysis.dat %>%
+  filter(!is.na(Barretts), source=="wgs", OTU == "Streptococcus sanguinis")
+m1<-wilcox.test(Abund ~ Barretts, data=d, na.rm=TRUE, paired=FALSE, exact=FALSE, conf.int=TRUE)
+m1
+test_results[i,4] <- m1$estimate
+test_results[i,5] <- m1$p.value
 
 p <- analysis.dat %>%
   filter(!is.na(Barretts), source=="wgs", OTU == "Streptococcus sanguinis")%>%
@@ -563,7 +754,13 @@ p <- analysis.dat %>%
       labels = c(0, 0.001,0.01, 0.1, 1,10,50, 100),
       limits = c(0, 110)
     ) + 
-    labs(x="Barretts", y="Relative Abundance (%)")+
+    labs(x="Barretts", y="Relative Abundance (%)",
+         title=paste0(TITLE_P1[3]," Bacteria Relative Abundance ",TITLE_P2[1]),
+         subtitle=SUBTITLE[5])+
+    annotate("text", x=1.5, y=90, label=paste0("p=",round(test_results$pvalue[i],4)))+
+    geom_segment(aes(x=1, xend=2,y=105,yend=105))+
+    geom_segment(aes(x=1, xend=1,y=109,yend=100))+
+    geom_segment(aes(x=2, xend=2,y=109,yend=100))+
     theme_classic()
 p
 ggsave("output/supplemental_figure2C_tcga_wgs_strepto.pdf", p, units = "in", width = DIM[1], height = DIM[2])
@@ -609,6 +806,14 @@ analysis.dat <- full_join(analysis.dat, dat) %>%
     Tumor = ifelse(tumor==1, "Tumor", "No Tumor")
   )
 
+i <- i+1
+d <- analysis.dat %>%
+  filter(!is.na(Gender), source=="16s")
+m1<-wilcox.test(Abund ~ Gender, data=d, na.rm=TRUE, paired=FALSE, exact=FALSE, conf.int=TRUE)
+m1
+test_results[i,4] <- m1$estimate
+test_results[i,5] <- m1$p.value
+
 p <- analysis.dat %>%
   filter(!is.na(Gender), source=="16s")%>%
   ggplot(aes(x=Gender, y=Abund))+
@@ -620,11 +825,25 @@ p <- analysis.dat %>%
       labels = c(0, 0.001,0.01, 0.1, 1,10,50, 100),
       limits = c(0, 110)
     ) + 
-    labs(x="Gender", y="Relative Abundance (%)")+
+    labs(x="Gender", y="Relative Abundance (%)",
+         title=paste0(TITLE_P1[1]," Bacteria Relative Abundance ",TITLE_P2[2]),
+         subtitle=SUBTITLE[1])+
+    annotate("text", x=1.5, y=90, label=paste0("p=",round(test_results$pvalue[i],4)))+
+    geom_segment(aes(x=1, xend=2,y=105,yend=105))+
+    geom_segment(aes(x=1, xend=1,y=109,yend=100))+
+    geom_segment(aes(x=2, xend=2,y=109,yend=100))+
     theme_classic()
 p
 ggsave("output/supplemental_figure2D_NCI_combined.pdf", p, units = "in", width = DIM[1], height = DIM[2])
 ggsave("output/supplemental_figure2D_NCI_combined.png", p, units = "in", width = DIM[1], height = DIM[2])
+
+i <- i+1
+d <- analysis.dat %>%
+  filter(!is.na(Gender), source=="rna")
+m1<-wilcox.test(Abund ~ Gender, data=d, na.rm=TRUE, paired=FALSE, exact=FALSE, conf.int=TRUE)
+m1
+test_results[i,4] <- m1$estimate
+test_results[i,5] <- m1$p.value
 
 p <- analysis.dat %>%
   filter(source=="rna", !is.na(Gender))%>%
@@ -637,12 +856,25 @@ p <- analysis.dat %>%
       labels = c(0, 0.001,0.01, 0.1, 1,10,50, 100),
       limits = c(0, 110)
     ) + 
-    labs(x="Gender", y="Relative Abundance (%)")+
+    labs(x="Gender", y="Relative Abundance (%)",
+         title=paste0(TITLE_P1[2]," Bacteria Relative Abundance ",TITLE_P2[2]),
+         subtitle=SUBTITLE[1])+
+    annotate("text", x=1.5, y=90, label=paste0("p=",round(test_results$pvalue[i],4)))+
+    geom_segment(aes(x=1, xend=2,y=105,yend=105))+
+    geom_segment(aes(x=1, xend=1,y=109,yend=100))+
+    geom_segment(aes(x=2, xend=2,y=109,yend=100))+
     theme_classic()
 p
 ggsave("output/supplemental_figure2D_tcga_rna_combined.pdf", p, units = "in", width = DIM[1], height = DIM[2])
 ggsave("output/supplemental_figure2D_tcga_rna_combined.png", p, units = "in", width = DIM[1], height = DIM[2])
 
+i <- i+1
+d <- analysis.dat %>%
+  filter(!is.na(Gender), source=="wgs")
+m1<-wilcox.test(Abund ~ Gender, data=d, na.rm=TRUE, paired=FALSE, exact=FALSE, conf.int=TRUE)
+m1
+test_results[i,4] <- m1$estimate
+test_results[i,5] <- m1$p.value
 p <- analysis.dat %>%
   filter(source=="wgs", !is.na(Gender))%>%
   ggplot(aes(x=Gender, y=Abund))+
@@ -654,7 +886,13 @@ p <- analysis.dat %>%
       labels = c(0, 0.001,0.01, 0.1, 1,10,50, 100),
       limits = c(0, 110)
     ) + 
-    labs(x="Gender", y="Relative Abundance (%)")+
+    labs(x="Gender", y="Relative Abundance (%)",
+         title=paste0(TITLE_P1[3]," Bacteria Relative Abundance ",TITLE_P2[2]),
+         subtitle=SUBTITLE[1])+
+    annotate("text", x=1.5, y=90, label=paste0("p=",round(test_results$pvalue[i],4)))+
+    geom_segment(aes(x=1, xend=2,y=105,yend=105))+
+    geom_segment(aes(x=1, xend=1,y=109,yend=100))+
+    geom_segment(aes(x=2, xend=2,y=109,yend=100))+
     theme_classic()
 p
 ggsave("output/supplemental_figure2D_tcga_wgs_combined.pdf", p, units = "in", width = DIM[1], height = DIM[2])
@@ -688,6 +926,13 @@ analysis.dat <- full_join(analysis.dat, dat) %>%
     Tumor = ifelse(tumor==1, "Tumor", "No Tumor")
   )
 
+i <- i+1
+d <- analysis.dat %>%
+  filter(!is.na(Gender), source=="16s", OTU == "Fusobacterium nucleatum")
+m1<-wilcox.test(Abund ~ Gender, data=d, na.rm=TRUE, paired=FALSE, exact=FALSE, conf.int=TRUE)
+m1
+test_results[i,4] <- m1$estimate
+test_results[i,5] <- m1$p.value
 p <- analysis.dat %>%
   filter(!is.na(Gender), source=="16s", OTU == "Fusobacterium nucleatum")%>%
   ggplot(aes(x=Gender, y=Abund))+
@@ -699,13 +944,25 @@ p <- analysis.dat %>%
       labels = c(0, 0.001,0.01, 0.1, 1,10,50, 100),
       limits = c(0, 110)
     ) + 
-    labs(x="Gender", y="Relative Abundance (%)")+
+    labs(x="Gender", y="Relative Abundance (%)",
+         title=paste0(TITLE_P1[1]," Bacteria Relative Abundance ",TITLE_P2[2]),
+         subtitle=SUBTITLE[2])+
+    annotate("text", x=1.5, y=90, label=paste0("p=",round(test_results$pvalue[i],4)))+
+    geom_segment(aes(x=1, xend=2,y=105,yend=105))+
+    geom_segment(aes(x=1, xend=1,y=109,yend=100))+
+    geom_segment(aes(x=2, xend=2,y=109,yend=100))+
     theme_classic()
 p
 ggsave("output/supplemental_figure2D_NCI_fuso.pdf", p, units = "in", width = DIM[1], height = DIM[2])
 ggsave("output/supplemental_figure2D_NCI_fuso.png", p, units = "in", width = DIM[1], height = DIM[2])
 
-
+i <- i+1
+d <- analysis.dat %>%
+  filter(!is.na(Gender), source=="rna", OTU == "Fusobacterium nucleatum")
+m1<-wilcox.test(Abund ~ Gender, data=d, na.rm=TRUE, paired=FALSE, exact=FALSE, conf.int=TRUE)
+m1
+test_results[i,4] <- m1$estimate
+test_results[i,5] <- m1$p.value
 p <- analysis.dat %>%
   filter(!is.na(Gender), source=="rna", OTU == "Fusobacterium nucleatum")%>%
   ggplot(aes(x=Gender, y=Abund))+
@@ -717,13 +974,25 @@ p <- analysis.dat %>%
       labels = c(0, 0.001,0.01, 0.1, 1,10,50, 100),
       limits = c(0, 110)
     ) + 
-    labs(x="Gender", y="Relative Abundance (%)")+
+    labs(x="Gender", y="Relative Abundance (%)",
+         title=paste0(TITLE_P1[2]," Bacteria Relative Abundance ",TITLE_P2[2]),
+         subtitle=SUBTITLE[2])+
+    annotate("text", x=1.5, y=90, label=paste0("p=",round(test_results$pvalue[i],4)))+
+    geom_segment(aes(x=1, xend=2,y=105,yend=105))+
+    geom_segment(aes(x=1, xend=1,y=109,yend=100))+
+    geom_segment(aes(x=2, xend=2,y=109,yend=100))+
     theme_classic()
 p
 ggsave("output/supplemental_figure2D_tcga_rna_fuso.pdf", p, units = "in", width = DIM[1], height = DIM[2])
 ggsave("output/supplemental_figure2D_tcga_rna_fuso.png", p, units = "in", width = DIM[1], height = DIM[2])
 
-
+i <- i+1
+d <- analysis.dat %>%
+  filter(!is.na(Gender), source=="wgs", OTU == "Fusobacterium nucleatum")
+m1<-wilcox.test(Abund ~ Gender, data=d, na.rm=TRUE, paired=FALSE, exact=FALSE, conf.int=TRUE)
+m1
+test_results[i,4] <- m1$estimate
+test_results[i,5] <- m1$p.value
 p <- analysis.dat %>%
   filter(!is.na(Gender), source=="wgs", OTU == "Fusobacterium nucleatum")%>%
   ggplot(aes(x=Gender, y=Abund))+
@@ -735,13 +1004,25 @@ p <- analysis.dat %>%
       labels = c(0, 0.001,0.01, 0.1, 1,10,50, 100),
       limits = c(0, 110)
     ) + 
-    labs(x="Gender", y="Relative Abundance (%)")+
+    labs(x="Gender", y="Relative Abundance (%)",
+         title=paste0(TITLE_P1[3]," Bacteria Relative Abundance ",TITLE_P2[2]),
+         subtitle=SUBTITLE[2])+
+    annotate("text", x=1.5, y=90, label=paste0("p=",round(test_results$pvalue[i],4)))+
+    geom_segment(aes(x=1, xend=2,y=105,yend=105))+
+    geom_segment(aes(x=1, xend=1,y=109,yend=100))+
+    geom_segment(aes(x=2, xend=2,y=109,yend=100))+
     theme_classic()
 p
 ggsave("output/supplemental_figure2D_tcga_wgs_fuso.pdf", p, units = "in", width = DIM[1], height = DIM[2])
 ggsave("output/supplemental_figure2D_tcga_wgs_fuso.png", p, units = "in", width = DIM[1], height = DIM[2])
 
-
+i <- i+1
+d <- analysis.dat %>%
+  filter(!is.na(Gender), source=="16s", OTU == "Prevotella melaninogenica" | OTU =="Prevotella spp.")
+m1<-wilcox.test(Abund ~ Gender, data=d, na.rm=TRUE, paired=FALSE, exact=FALSE, conf.int=TRUE)
+m1
+test_results[i,4] <- m1$estimate
+test_results[i,5] <- m1$p.value
 p <- analysis.dat %>%
   filter(!is.na(Gender), source=="16s", OTU == "Prevotella melaninogenica" | OTU =="Prevotella spp.")%>%
   ggplot(aes(x=Gender, y=Abund))+
@@ -753,13 +1034,25 @@ p <- analysis.dat %>%
       labels = c(0, 0.001,0.01, 0.1, 1,10,50, 100),
       limits = c(0, 110)
     ) + 
-    labs(x="Gender", y="Relative Abundance (%)")+
+    labs(x="Gender", y="Relative Abundance (%)",
+         title=paste0(TITLE_P1[1]," Bacteria Relative Abundance ",TITLE_P2[2]),
+         subtitle=SUBTITLE[3])+
+    annotate("text", x=1.5, y=90, label=paste0("p=",round(test_results$pvalue[i],4)))+
+    geom_segment(aes(x=1, xend=2,y=105,yend=105))+
+    geom_segment(aes(x=1, xend=1,y=109,yend=100))+
+    geom_segment(aes(x=2, xend=2,y=109,yend=100))+
     theme_classic()
 p
 ggsave("output/supplemental_figure2D_NCI_prevo.pdf", p, units = "in", width = DIM[1], height = DIM[2])
 ggsave("output/supplemental_figure2D_NCI_prevo.png", p, units = "in", width = DIM[1], height = DIM[2])
 
-
+i <- i+1
+d <- analysis.dat %>%
+  filter(!is.na(Gender), source=="rna", OTU == "Prevotella melaninogenica")
+m1<-wilcox.test(Abund ~ Gender, data=d, na.rm=TRUE, paired=FALSE, exact=FALSE, conf.int=TRUE)
+m1
+test_results[i,4] <- m1$estimate
+test_results[i,5] <- m1$p.value
 p <- analysis.dat %>%
   filter(!is.na(Gender), source=="rna", OTU == "Prevotella melaninogenica")%>%
   ggplot(aes(x=Gender, y=Abund))+
@@ -771,13 +1064,25 @@ p <- analysis.dat %>%
       labels = c(0, 0.001,0.01, 0.1, 1,10,50, 100),
       limits = c(0, 110)
     ) + 
-    labs(x="Gender", y="Relative Abundance (%)")+
+    labs(x="Gender", y="Relative Abundance (%)",
+         title=paste0(TITLE_P1[2]," Bacteria Relative Abundance ",TITLE_P2[2]),
+         subtitle=SUBTITLE[3])+
+    annotate("text", x=1.5, y=90, label=paste0("p=",round(test_results$pvalue[i],4)))+
+    geom_segment(aes(x=1, xend=2,y=105,yend=105))+
+    geom_segment(aes(x=1, xend=1,y=109,yend=100))+
+    geom_segment(aes(x=2, xend=2,y=109,yend=100))+
     theme_classic()
 p
 ggsave("output/supplemental_figure2D_tcga_rna_prevo.pdf", p, units = "in", width = DIM[1], height = DIM[2])
 ggsave("output/supplemental_figure2D_tcga_rna_prevo.png", p, units = "in", width = DIM[1], height = DIM[2])
 
-
+i <- i+1
+d <- analysis.dat %>%
+  filter(!is.na(Gender), source=="wgs", OTU == "Prevotella melaninogenica")
+m1<-wilcox.test(Abund ~ Gender, data=d, na.rm=TRUE, paired=FALSE, exact=FALSE, conf.int=TRUE)
+m1
+test_results[i,4] <- m1$estimate
+test_results[i,5] <- m1$p.value
 p <- analysis.dat %>%
   filter(!is.na(Gender), source=="wgs", OTU == "Prevotella melaninogenica")%>%
   ggplot(aes(x=Gender, y=Abund))+
@@ -789,13 +1094,25 @@ p <- analysis.dat %>%
       labels = c(0, 0.001,0.01, 0.1, 1,10,50, 100),
       limits = c(0, 110)
     ) + 
-    labs(x="Gender", y="Relative Abundance (%)")+
+    labs(x="Gender", y="Relative Abundance (%)",
+         title=paste0(TITLE_P1[3]," Bacteria Relative Abundance ",TITLE_P2[2]),
+         subtitle=SUBTITLE[3])+
+    annotate("text", x=1.5, y=90, label=paste0("p=",round(test_results$pvalue[i],4)))+
+    geom_segment(aes(x=1, xend=2,y=105,yend=105))+
+    geom_segment(aes(x=1, xend=1,y=109,yend=100))+
+    geom_segment(aes(x=2, xend=2,y=109,yend=100))+
     theme_classic()
 p
 ggsave("output/supplemental_figure2D_tcga_wgs_prevo.pdf", p, units = "in", width = DIM[1], height = DIM[2])
 ggsave("output/supplemental_figure2D_tcga_wgs_prevo.png", p, units = "in", width = DIM[1], height = DIM[2])
 
-
+i <- i+1
+d <- analysis.dat %>%
+  filter(!is.na(Gender), source=="16s", OTU == "Campylobacter concisus")
+m1<-wilcox.test(Abund ~ Gender, data=d, na.rm=TRUE, paired=FALSE, exact=FALSE, conf.int=TRUE)
+m1
+test_results[i,4] <- m1$estimate
+test_results[i,5] <- m1$p.value
 p <- analysis.dat %>%
   filter(!is.na(Gender), source=="16s", OTU == "Campylobacter concisus")%>%
   ggplot(aes(x=Gender, y=Abund))+
@@ -807,13 +1124,25 @@ p <- analysis.dat %>%
       labels = c(0, 0.001,0.01, 0.1, 1,10,50, 100),
       limits = c(0, 110)
     ) + 
-    labs(x="Gender", y="Relative Abundance (%)")+
+    labs(x="Gender", y="Relative Abundance (%)",
+         title=paste0(TITLE_P1[1]," Bacteria Relative Abundance ",TITLE_P2[2]),
+         subtitle=SUBTITLE[4])+
+    annotate("text", x=1.5, y=90, label=paste0("p=",round(test_results$pvalue[i],4)))+
+    geom_segment(aes(x=1, xend=2,y=105,yend=105))+
+    geom_segment(aes(x=1, xend=1,y=109,yend=100))+
+    geom_segment(aes(x=2, xend=2,y=109,yend=100))+
     theme_classic()
 p
 ggsave("output/supplemental_figure2D_NCI_campy.pdf", p, units = "in", width = DIM[1], height = DIM[2])
 ggsave("output/supplemental_figure2D_NCI_campy.png", p, units = "in", width = DIM[1], height = DIM[2])
 
-
+i <- i+1
+d <- analysis.dat %>%
+  filter(!is.na(Gender), source=="rna", OTU == "Campylobacter concisus")
+m1<-wilcox.test(Abund ~ Gender, data=d, na.rm=TRUE, paired=FALSE, exact=FALSE, conf.int=TRUE)
+m1
+test_results[i,4] <- m1$estimate
+test_results[i,5] <- m1$p.value
 p <- analysis.dat %>%
   filter(!is.na(Gender), source=="rna", OTU == "Campylobacter concisus")%>%
   ggplot(aes(x=Gender, y=Abund))+
@@ -825,13 +1154,25 @@ p <- analysis.dat %>%
       labels = c(0, 0.001,0.01, 0.1, 1,10,50, 100),
       limits = c(0, 110)
     ) + 
-    labs(x="Gender", y="Relative Abundance (%)")+
+    labs(x="Gender", y="Relative Abundance (%)",
+         title=paste0(TITLE_P1[2]," Bacteria Relative Abundance ",TITLE_P2[2]),
+         subtitle=SUBTITLE[4])+
+    annotate("text", x=1.5, y=90, label=paste0("p=",round(test_results$pvalue[i],4)))+
+    geom_segment(aes(x=1, xend=2,y=105,yend=105))+
+    geom_segment(aes(x=1, xend=1,y=109,yend=100))+
+    geom_segment(aes(x=2, xend=2,y=109,yend=100))+
     theme_classic()
 p
 ggsave("output/supplemental_figure2D_tcga_rna_campy.pdf", p, units = "in", width = DIM[1], height = DIM[2])
 ggsave("output/supplemental_figure2D_tcga_rna_campy.png", p, units = "in", width = DIM[1], height = DIM[2])
 
-
+i <- i+1
+d <- analysis.dat %>%
+  filter(!is.na(Gender), source=="wgs", OTU == "Campylobacter concisus")
+m1<-wilcox.test(Abund ~ Gender, data=d, na.rm=TRUE, paired=FALSE, exact=FALSE, conf.int=TRUE)
+m1
+test_results[i,4] <- m1$estimate
+test_results[i,5] <- m1$p.value
 p <- analysis.dat %>%
   filter(!is.na(Gender), source=="wgs", OTU == "Campylobacter concisus")%>%
   ggplot(aes(x=Gender, y=Abund))+
@@ -843,13 +1184,25 @@ p <- analysis.dat %>%
       labels = c(0, 0.001,0.01, 0.1, 1,10,50, 100),
       limits = c(0, 110)
     ) + 
-    labs(x="Gender", y="Relative Abundance (%)")+
+    labs(x="Gender", y="Relative Abundance (%)",
+         title=paste0(TITLE_P1[3]," Bacteria Relative Abundance ",TITLE_P2[2]),
+         subtitle=SUBTITLE[4])+
+    annotate("text", x=1.5, y=90, label=paste0("p=",round(test_results$pvalue[i],4)))+
+    geom_segment(aes(x=1, xend=2,y=105,yend=105))+
+    geom_segment(aes(x=1, xend=1,y=109,yend=100))+
+    geom_segment(aes(x=2, xend=2,y=109,yend=100))+
     theme_classic()
 p
 ggsave("output/supplemental_figure2D_tcga_wgs_campy.pdf", p, units = "in", width = DIM[1], height = DIM[2])
 ggsave("output/supplemental_figure2D_tcga_wgs_campy.png", p, units = "in", width = DIM[1], height = DIM[2])
 
-
+i <- i+1
+d <- analysis.dat %>%
+  filter(!is.na(Gender), source=="16s", OTU == "Streptococcus sanguinis")
+m1<-wilcox.test(Abund ~ Gender, data=d, na.rm=TRUE, paired=FALSE, exact=FALSE, conf.int=TRUE)
+m1
+test_results[i,4] <- m1$estimate
+test_results[i,5] <- m1$p.value
 p <- analysis.dat %>%
   filter(!is.na(Gender), source=="16s", OTU == "Streptococcus sanguinis")%>%
   ggplot(aes(x=Gender, y=Abund))+
@@ -861,13 +1214,25 @@ p <- analysis.dat %>%
       labels = c(0, 0.001,0.01, 0.1, 1,10,50, 100),
       limits = c(0, 110)
     ) + 
-    labs(x="Gender", y="Relative Abundance (%)")+
+    labs(x="Gender", y="Relative Abundance (%)",
+         title=paste0(TITLE_P1[1]," Bacteria Relative Abundance ",TITLE_P2[2]),
+         subtitle=SUBTITLE[5])+
+    annotate("text", x=1.5, y=90, label=paste0("p=",round(test_results$pvalue[i],4)))+
+    geom_segment(aes(x=1, xend=2,y=105,yend=105))+
+    geom_segment(aes(x=1, xend=1,y=109,yend=100))+
+    geom_segment(aes(x=2, xend=2,y=109,yend=100))+
     theme_classic()
 p
 ggsave("output/supplemental_figure2D_NCI_strepto.pdf", p, units = "in", width = DIM[1], height = DIM[2])
 ggsave("output/supplemental_figure2D_NCI_strepto.png", p, units = "in", width = DIM[1], height = DIM[2])
 
-
+i <- i+1
+d <- analysis.dat %>%
+  filter(!is.na(Gender), source=="rna", OTU == "Streptococcus sanguinis")
+m1<-wilcox.test(Abund ~ Gender, data=d, na.rm=TRUE, paired=FALSE, exact=FALSE, conf.int=TRUE)
+m1
+test_results[i,4] <- m1$estimate
+test_results[i,5] <- m1$p.value
 p <- analysis.dat %>%
   filter(!is.na(Gender), source=="rna", OTU == "Streptococcus sanguinis")%>%
   ggplot(aes(x=Gender, y=Abund))+
@@ -879,13 +1244,25 @@ p <- analysis.dat %>%
       labels = c(0, 0.001,0.01, 0.1, 1,10,50, 100),
       limits = c(0, 110)
     ) + 
-    labs(x="Gender", y="Relative Abundance (%)")+
+    labs(x="Gender", y="Relative Abundance (%)",
+         title=paste0(TITLE_P1[2]," Bacteria Relative Abundance ",TITLE_P2[2]),
+         subtitle=SUBTITLE[5])+
+    annotate("text", x=1.5, y=90, label=paste0("p=",round(test_results$pvalue[i],4)))+
+    geom_segment(aes(x=1, xend=2,y=105,yend=105))+
+    geom_segment(aes(x=1, xend=1,y=109,yend=100))+
+    geom_segment(aes(x=2, xend=2,y=109,yend=100))+
     theme_classic()
 p
 ggsave("output/supplemental_figure2D_tcga_rna_strepto.pdf", p, units = "in", width = DIM[1], height = DIM[2])
 ggsave("output/supplemental_figure2D_tcga_rna_strepto.png", p, units = "in", width = DIM[1], height = DIM[2])
 
-
+i <- i+1
+d <- analysis.dat %>%
+  filter(!is.na(Gender), source=="wgs", OTU == "Streptococcus sanguinis")
+m1<-wilcox.test(Abund ~ Gender, data=d, na.rm=TRUE, paired=FALSE, exact=FALSE, conf.int=TRUE)
+m1
+test_results[i,4] <- m1$estimate
+test_results[i,5] <- m1$p.value
 p <- analysis.dat %>%
   filter(!is.na(Gender), source=="wgs", OTU == "Streptococcus sanguinis")%>%
   ggplot(aes(x=Gender, y=Abund))+
@@ -897,7 +1274,13 @@ p <- analysis.dat %>%
       labels = c(0, 0.001,0.01, 0.1, 1,10,50, 100),
       limits = c(0, 110)
     ) + 
-    labs(x="Gender", y="Relative Abundance (%)")+
+    labs(x="Gender", y="Relative Abundance (%)",
+         title=paste0(TITLE_P1[3]," Bacteria Relative Abundance ",TITLE_P2[2]),
+         subtitle=SUBTITLE[5])+
+    annotate("text", x=1.5, y=90, label=paste0("p=",round(test_results$pvalue[i],4)))+
+    geom_segment(aes(x=1, xend=2,y=105,yend=105))+
+    geom_segment(aes(x=1, xend=1,y=109,yend=100))+
+    geom_segment(aes(x=2, xend=2,y=109,yend=100))+
     theme_classic()
 p
 ggsave("output/supplemental_figure2D_tcga_wgs_strepto.pdf", p, units = "in", width = DIM[1], height = DIM[2])
@@ -941,14 +1324,21 @@ analysis.dat <- full_join(analysis.dat, dat) %>%
     Tumor = ifelse(tumor==1, "Tumor", "No Tumor")
   )
 
-analysis.dat$Race[analysis.dat$Race == "asian"] <- "Asian"
-analysis.dat$Race[analysis.dat$Race == "B"] <- "Black"
-analysis.dat$Race[analysis.dat$Race == "black or african american"] <- "Black"
-analysis.dat$Race[analysis.dat$Race == "H"] <- "Hispanic"
-analysis.dat$Race[analysis.dat$Race == "O"] <- "Other"
-analysis.dat$Race[analysis.dat$Race == "W"] <- "White"
-analysis.dat$Race[analysis.dat$Race == "white"] <- "White"
+analysis.dat$Race[analysis.dat$Race == "asian"] <- NA
+analysis.dat$Race[analysis.dat$Race == "B"] <- "AA"
+analysis.dat$Race[analysis.dat$Race == "black or african american"] <- "AA"
+analysis.dat$Race[analysis.dat$Race == "H"] <- NA
+analysis.dat$Race[analysis.dat$Race == "O"] <- NA
+analysis.dat$Race[analysis.dat$Race == "W"] <- "EA"
+analysis.dat$Race[analysis.dat$Race == "white"] <- "EA"
 
+i <- i+1
+d <- analysis.dat %>%
+  filter(!is.na(Race), source=="16s")
+m1<-wilcox.test(Abund ~ Race, data=d, na.rm=TRUE, paired=FALSE, exact=FALSE, conf.int=TRUE)
+m1
+test_results[i,4] <- m1$estimate
+test_results[i,5] <- m1$p.value
 p <- analysis.dat %>%
   filter(!is.na(Race), source=="16s")%>%
   ggplot(aes(x=Race, y=Abund))+
@@ -960,11 +1350,25 @@ p <- analysis.dat %>%
       labels = c(0, 0.001,0.01, 0.1, 1,10,50, 100),
       limits = c(0, 110)
     ) + 
-    labs(x="Race", y="Relative Abundance (%)")+
+    labs(x="Race", y="Relative Abundance (%)",
+         title=paste0(TITLE_P1[1]," Bacteria Relative Abundance ",TITLE_P2[3]),
+         subtitle=SUBTITLE[1])+
+    annotate("text", x=1.5, y=90, label=paste0("p=",round(test_results$pvalue[i],4)))+
+    geom_segment(aes(x=1, xend=2,y=105,yend=105))+
+    geom_segment(aes(x=1, xend=1,y=109,yend=100))+
+    geom_segment(aes(x=2, xend=2,y=109,yend=100))+
     theme_classic()
 p
 ggsave("output/supplemental_figure2E_NCI_combined.pdf", p, units = "in", width = DIM[1], height = DIM[2])
 ggsave("output/supplemental_figure2E_NCI_combined.png", p, units = "in", width = DIM[1], height = DIM[2])
+
+i <- i+1
+d <- analysis.dat %>%
+  filter(!is.na(Race), source=="rna")
+m1<-wilcox.test(Abund ~ Race, data=d, na.rm=TRUE, paired=FALSE, exact=FALSE, conf.int=TRUE)
+m1
+test_results[i,4] <- m1$estimate
+test_results[i,5] <- m1$p.value
 
 p <- analysis.dat %>%
   filter(source=="rna", !is.na(Race))%>%
@@ -977,11 +1381,25 @@ p <- analysis.dat %>%
       labels = c(0, 0.001,0.01, 0.1, 1,10,50, 100),
       limits = c(0, 110)
     ) + 
-    labs(x="Race", y="Relative Abundance (%)")+
+    labs(x="Race", y="Relative Abundance (%)",
+         title=paste0(TITLE_P1[2]," Bacteria Relative Abundance ",TITLE_P2[3]),
+         subtitle=SUBTITLE[1])+
+    annotate("text", x=1.5, y=90, label=paste0("p=",round(test_results$pvalue[i],4)))+
+    geom_segment(aes(x=1, xend=2,y=105,yend=105))+
+    geom_segment(aes(x=1, xend=1,y=109,yend=100))+
+    geom_segment(aes(x=2, xend=2,y=109,yend=100))+
     theme_classic()
 p
 ggsave("output/supplemental_figure2E_tcga_rna_combined.pdf", p, units = "in", width = DIM[1], height = DIM[2])
 ggsave("output/supplemental_figure2E_tcga_rna_combined.png", p, units = "in", width = DIM[1], height = DIM[2])
+
+i <- i+1
+d <- analysis.dat %>%
+  filter(!is.na(Race), source=="wgs")
+m1<-wilcox.test(Abund ~ Race, data=d, na.rm=TRUE, paired=FALSE, exact=FALSE, conf.int=TRUE)
+m1
+test_results[i,4] <- m1$estimate
+test_results[i,5] <- m1$p.value
 
 p <- analysis.dat %>%
   filter(source=="wgs", !is.na(Race))%>%
@@ -994,7 +1412,13 @@ p <- analysis.dat %>%
       labels = c(0, 0.001,0.01, 0.1, 1,10,50, 100),
       limits = c(0, 110)
     ) + 
-    labs(x="Race", y="Relative Abundance (%)")+
+    labs(x="Race", y="Relative Abundance (%)",
+         title=paste0(TITLE_P1[3]," Bacteria Relative Abundance ",TITLE_P2[3]),
+         subtitle=SUBTITLE[1])+
+    annotate("text", x=1.5, y=90, label=paste0("p=",round(test_results$pvalue[i],4)))+
+    geom_segment(aes(x=1, xend=2,y=105,yend=105))+
+    geom_segment(aes(x=1, xend=1,y=109,yend=100))+
+    geom_segment(aes(x=2, xend=2,y=109,yend=100))+
     theme_classic()
 p
 ggsave("output/supplemental_figure2E_tcga_wgs_combined.pdf", p, units = "in", width = DIM[1], height = DIM[2])
@@ -1027,13 +1451,22 @@ analysis.dat <- full_join(analysis.dat, dat) %>%
     Tumor = ifelse(tumor==1, "Tumor", "No Tumor")
   )
 
-analysis.dat$Race[analysis.dat$Race == "asian"] <- "Asian"
-analysis.dat$Race[analysis.dat$Race == "B"] <- "Black"
-analysis.dat$Race[analysis.dat$Race == "black or african american"] <- "Black"
-analysis.dat$Race[analysis.dat$Race == "H"] <- "Hispanic"
-analysis.dat$Race[analysis.dat$Race == "O"] <- "Other"
-analysis.dat$Race[analysis.dat$Race == "W"] <- "White"
-analysis.dat$Race[analysis.dat$Race == "white"] <- "White"
+analysis.dat$Race[analysis.dat$Race == "asian"] <- NA
+analysis.dat$Race[analysis.dat$Race == "B"] <- "AA"
+analysis.dat$Race[analysis.dat$Race == "black or african american"] <- "AA"
+analysis.dat$Race[analysis.dat$Race == "H"] <- NA
+analysis.dat$Race[analysis.dat$Race == "O"] <- NA
+analysis.dat$Race[analysis.dat$Race == "W"] <- "EA"
+analysis.dat$Race[analysis.dat$Race == "white"] <- "EA"
+
+
+i <- i+1
+d <- analysis.dat %>%
+  filter(!is.na(Race), source=="16s", OTU == "Fusobacterium nucleatum")
+m1<-wilcox.test(Abund ~ Race, data=d, na.rm=TRUE, paired=FALSE, exact=FALSE, conf.int=TRUE)
+m1
+test_results[i,4] <- m1$estimate
+test_results[i,5] <- m1$p.value
 
 p <- analysis.dat %>%
   filter(!is.na(Race), source=="16s", OTU == "Fusobacterium nucleatum")%>%
@@ -1046,12 +1479,25 @@ p <- analysis.dat %>%
       labels = c(0, 0.001,0.01, 0.1, 1,10,50, 100),
       limits = c(0, 110)
     ) + 
-    labs(x="Race", y="Relative Abundance (%)")+
+    labs(x="Race", y="Relative Abundance (%)",
+         title=paste0(TITLE_P1[1]," Bacteria Relative Abundance ",TITLE_P2[3]),
+         subtitle=SUBTITLE[2])+
+    annotate("text", x=1.5, y=90, label=paste0("p=",round(test_results$pvalue[i],4)))+
+    geom_segment(aes(x=1, xend=2,y=105,yend=105))+
+    geom_segment(aes(x=1, xend=1,y=109,yend=100))+
+    geom_segment(aes(x=2, xend=2,y=109,yend=100))+
     theme_classic()
 p
 ggsave("output/supplemental_figure2E_NCI_fuso.pdf", p, units = "in", width = DIM[1], height = DIM[2])
 ggsave("output/supplemental_figure2E_NCI_fuso.png", p, units = "in", width = DIM[1], height = DIM[2])
 
+i <- i+1
+d <- analysis.dat %>%
+  filter(!is.na(Race), source=="rna", OTU == "Fusobacterium nucleatum")
+m1<-wilcox.test(Abund ~ Race, data=d, na.rm=TRUE, paired=FALSE, exact=FALSE, conf.int=TRUE)
+m1
+test_results[i,4] <- m1$estimate
+test_results[i,5] <- m1$p.value
 
 p <- analysis.dat %>%
   filter(!is.na(Race), source=="rna", OTU == "Fusobacterium nucleatum")%>%
@@ -1064,12 +1510,25 @@ p <- analysis.dat %>%
       labels = c(0, 0.001,0.01, 0.1, 1,10,50, 100),
       limits = c(0, 110)
     ) + 
-    labs(x="Race", y="Relative Abundance (%)")+
+    labs(x="Race", y="Relative Abundance (%)",
+         title=paste0(TITLE_P1[2]," Bacteria Relative Abundance ",TITLE_P2[3]),
+         subtitle=SUBTITLE[2])+
+    annotate("text", x=1.5, y=90, label=paste0("p=",round(test_results$pvalue[i],4)))+
+    geom_segment(aes(x=1, xend=2,y=105,yend=105))+
+    geom_segment(aes(x=1, xend=1,y=109,yend=100))+
+    geom_segment(aes(x=2, xend=2,y=109,yend=100))+
     theme_classic()
 p
 ggsave("output/supplemental_figure2E_tcga_rna_fuso.pdf", p, units = "in", width = DIM[1], height = DIM[2])
 ggsave("output/supplemental_figure2E_tcga_rna_fuso.png", p, units = "in", width = DIM[1], height = DIM[2])
 
+i <- i+1
+d <- analysis.dat %>%
+  filter(!is.na(Race), source=="wgs", OTU == "Fusobacterium nucleatum")
+m1<-wilcox.test(Abund ~ Race, data=d, na.rm=TRUE, paired=FALSE, exact=FALSE, conf.int=TRUE)
+m1
+test_results[i,4] <- m1$estimate
+test_results[i,5] <- m1$p.value
 
 p <- analysis.dat %>%
   filter(!is.na(Race), source=="wgs", OTU == "Fusobacterium nucleatum")%>%
@@ -1082,12 +1541,25 @@ p <- analysis.dat %>%
       labels = c(0, 0.001,0.01, 0.1, 1,10,50, 100),
       limits = c(0, 110)
     ) + 
-    labs(x="Race", y="Relative Abundance (%)")+
+    labs(x="Race", y="Relative Abundance (%)",
+         title=paste0(TITLE_P1[3]," Bacteria Relative Abundance ",TITLE_P2[3]),
+         subtitle=SUBTITLE[2])+
+    annotate("text", x=1.5, y=90, label=paste0("p=",round(test_results$pvalue[i],4)))+
+    geom_segment(aes(x=1, xend=2,y=105,yend=105))+
+    geom_segment(aes(x=1, xend=1,y=109,yend=100))+
+    geom_segment(aes(x=2, xend=2,y=109,yend=100))+
     theme_classic()
 p
 ggsave("output/supplemental_figure2E_tcga_wgs_fuso.pdf", p, units = "in", width = DIM[1], height = DIM[2])
 ggsave("output/supplemental_figure2E_tcga_wgs_fuso.png", p, units = "in", width = DIM[1], height = DIM[2])
 
+i <- i+1
+d <- analysis.dat %>%
+  filter(!is.na(Race), source=="16s", OTU == "Prevotella melaninogenica" | OTU =="Prevotella spp.")
+m1<-wilcox.test(Abund ~ Race, data=d, na.rm=TRUE, paired=FALSE, exact=FALSE, conf.int=TRUE)
+m1
+test_results[i,4] <- m1$estimate
+test_results[i,5] <- m1$p.value
 
 p <- analysis.dat %>%
   filter(!is.na(Race), source=="16s", OTU == "Prevotella melaninogenica" | OTU =="Prevotella spp.")%>%
@@ -1100,12 +1572,25 @@ p <- analysis.dat %>%
       labels = c(0, 0.001,0.01, 0.1, 1,10,50, 100),
       limits = c(0, 110)
     ) + 
-    labs(x="Race", y="Relative Abundance (%)")+
+    labs(x="Race", y="Relative Abundance (%)",
+         title=paste0(TITLE_P1[1]," Bacteria Relative Abundance ",TITLE_P2[3]),
+         subtitle=SUBTITLE[3])+
+    annotate("text", x=1.5, y=90, label=paste0("p=",round(test_results$pvalue[i],4)))+
+    geom_segment(aes(x=1, xend=2,y=105,yend=105))+
+    geom_segment(aes(x=1, xend=1,y=109,yend=100))+
+    geom_segment(aes(x=2, xend=2,y=109,yend=100))+
     theme_classic()
 p
 ggsave("output/supplemental_figure2E_NCI_prevo.pdf", p, units = "in", width = DIM[1], height = DIM[2])
 ggsave("output/supplemental_figure2E_NCI_prevo.png", p, units = "in", width = DIM[1], height = DIM[2])
 
+i <- i+1
+d <- analysis.dat %>%
+  filter(!is.na(Race), source=="rna", , OTU == "Prevotella melaninogenica")
+m1<-wilcox.test(Abund ~ Race, data=d, na.rm=TRUE, paired=FALSE, exact=FALSE, conf.int=TRUE)
+m1
+test_results[i,4] <- m1$estimate
+test_results[i,5] <- m1$p.value
 
 p <- analysis.dat %>%
   filter(!is.na(Race), source=="rna", OTU == "Prevotella melaninogenica")%>%
@@ -1118,12 +1603,25 @@ p <- analysis.dat %>%
       labels = c(0, 0.001,0.01, 0.1, 1,10,50, 100),
       limits = c(0, 110)
     ) + 
-    labs(x="Race", y="Relative Abundance (%)")+
+    labs(x="Race", y="Relative Abundance (%)",
+         title=paste0(TITLE_P1[2]," Bacteria Relative Abundance ",TITLE_P2[3]),
+         subtitle=SUBTITLE[3])+
+    annotate("text", x=1.5, y=90, label=paste0("p=",round(test_results$pvalue[i],4)))+
+    geom_segment(aes(x=1, xend=2,y=105,yend=105))+
+    geom_segment(aes(x=1, xend=1,y=109,yend=100))+
+    geom_segment(aes(x=2, xend=2,y=109,yend=100))+
     theme_classic()
 p
 ggsave("output/supplemental_figure2E_tcga_rna_prevo.pdf", p, units = "in", width = DIM[1], height = DIM[2])
 ggsave("output/supplemental_figure2E_tcga_rna_prevo.png", p, units = "in", width = DIM[1], height = DIM[2])
 
+i <- i+1
+d <- analysis.dat %>%
+  filter(!is.na(Race), source=="wgs", OTU == "Prevotella melaninogenica")
+m1<-wilcox.test(Abund ~ Race, data=d, na.rm=TRUE, paired=FALSE, exact=FALSE, conf.int=TRUE)
+m1
+test_results[i,4] <- m1$estimate
+test_results[i,5] <- m1$p.value
 
 p <- analysis.dat %>%
   filter(!is.na(Race), source=="wgs", OTU == "Prevotella melaninogenica")%>%
@@ -1136,12 +1634,25 @@ p <- analysis.dat %>%
       labels = c(0, 0.001,0.01, 0.1, 1,10,50, 100),
       limits = c(0, 110)
     ) + 
-    labs(x="Race", y="Relative Abundance (%)")+
+    labs(x="Race", y="Relative Abundance (%)",
+         title=paste0(TITLE_P1[3]," Bacteria Relative Abundance ",TITLE_P2[3]),
+         subtitle=SUBTITLE[3])+
+    annotate("text", x=1.5, y=90, label=paste0("p=",round(test_results$pvalue[i],4)))+
+    geom_segment(aes(x=1, xend=2,y=105,yend=105))+
+    geom_segment(aes(x=1, xend=1,y=109,yend=100))+
+    geom_segment(aes(x=2, xend=2,y=109,yend=100))+
     theme_classic()
 p
 ggsave("output/supplemental_figure2E_tcga_wgs_prevo.pdf", p, units = "in", width = DIM[1], height = DIM[2])
 ggsave("output/supplemental_figure2E_tcga_wgs_prevo.png", p, units = "in", width = DIM[1], height = DIM[2])
 
+i <- i+1
+d <- analysis.dat %>%
+  filter(!is.na(Race), source=="16s", OTU == "Campylobacter concisus")
+m1<-wilcox.test(Abund ~ Race, data=d, na.rm=TRUE, paired=FALSE, exact=FALSE, conf.int=TRUE)
+m1
+test_results[i,4] <- m1$estimate
+test_results[i,5] <- m1$p.value
 
 p <- analysis.dat %>%
   filter(!is.na(Race), source=="16s", OTU == "Campylobacter concisus")%>%
@@ -1154,12 +1665,25 @@ p <- analysis.dat %>%
       labels = c(0, 0.001,0.01, 0.1, 1,10,50, 100),
       limits = c(0, 110)
     ) + 
-    labs(x="Race", y="Relative Abundance (%)")+
+    labs(x="Race", y="Relative Abundance (%)",
+         title=paste0(TITLE_P1[1]," Bacteria Relative Abundance ",TITLE_P2[3]),
+         subtitle=SUBTITLE[4])+
+    annotate("text", x=1.5, y=90, label=paste0("p=",round(test_results$pvalue[i],4)))+
+    geom_segment(aes(x=1, xend=2,y=105,yend=105))+
+    geom_segment(aes(x=1, xend=1,y=109,yend=100))+
+    geom_segment(aes(x=2, xend=2,y=109,yend=100))+
     theme_classic()
 p
 ggsave("output/supplemental_figure2E_NCI_campy.pdf", p, units = "in", width = DIM[1], height = DIM[2])
 ggsave("output/supplemental_figure2E_NCI_campy.png", p, units = "in", width = DIM[1], height = DIM[2])
 
+i <- i+1
+d <- analysis.dat %>%
+  filter(!is.na(Race), source=="rna", OTU == "Campylobacter concisus")
+m1<-wilcox.test(Abund ~ Race, data=d, na.rm=TRUE, paired=FALSE, exact=FALSE, conf.int=TRUE)
+m1
+test_results[i,4] <- m1$estimate
+test_results[i,5] <- m1$p.value
 
 p <- analysis.dat %>%
   filter(!is.na(Race), source=="rna", OTU == "Campylobacter concisus")%>%
@@ -1172,12 +1696,25 @@ p <- analysis.dat %>%
       labels = c(0, 0.001,0.01, 0.1, 1,10,50, 100),
       limits = c(0, 110)
     ) + 
-    labs(x="Race", y="Relative Abundance (%)")+
+    labs(x="Race", y="Relative Abundance (%)",
+         title=paste0(TITLE_P1[2]," Bacteria Relative Abundance ",TITLE_P2[3]),
+         subtitle=SUBTITLE[4])+
+    annotate("text", x=1.5, y=90, label=paste0("p=",round(test_results$pvalue[i],4)))+
+    geom_segment(aes(x=1, xend=2,y=105,yend=105))+
+    geom_segment(aes(x=1, xend=1,y=109,yend=100))+
+    geom_segment(aes(x=2, xend=2,y=109,yend=100))+
     theme_classic()
 p
 ggsave("output/supplemental_figure2E_tcga_rna_campy.pdf", p, units = "in", width = DIM[1], height = DIM[2])
 ggsave("output/supplemental_figure2E_tcga_rna_campy.png", p, units = "in", width = DIM[1], height = DIM[2])
 
+i <- i+1
+d <- analysis.dat %>%
+  filter(!is.na(Race), source=="wgs", OTU == "Campylobacter concisus")
+m1<-wilcox.test(Abund ~ Race, data=d, na.rm=TRUE, paired=FALSE, exact=FALSE, conf.int=TRUE)
+m1
+test_results[i,4] <- m1$estimate
+test_results[i,5] <- m1$p.value
 
 p <- analysis.dat %>%
   filter(!is.na(Race), source=="wgs", OTU == "Campylobacter concisus")%>%
@@ -1190,12 +1727,25 @@ p <- analysis.dat %>%
       labels = c(0, 0.001,0.01, 0.1, 1,10,50, 100),
       limits = c(0, 110)
     ) + 
-    labs(x="Race", y="Relative Abundance (%)")+
+    labs(x="Race", y="Relative Abundance (%)",
+         title=paste0(TITLE_P1[3]," Bacteria Relative Abundance ",TITLE_P2[3]),
+         subtitle=SUBTITLE[4])+
+    annotate("text", x=1.5, y=90, label=paste0("p=",round(test_results$pvalue[i],4)))+
+    geom_segment(aes(x=1, xend=2,y=105,yend=105))+
+    geom_segment(aes(x=1, xend=1,y=109,yend=100))+
+    geom_segment(aes(x=2, xend=2,y=109,yend=100))+
     theme_classic()
 p
 ggsave("output/supplemental_figure2E_tcga_wgs_campy.pdf", p, units = "in", width = DIM[1], height = DIM[2])
 ggsave("output/supplemental_figure2E_tcga_wgs_campy.png", p, units = "in", width = DIM[1], height = DIM[2])
 
+i <- i+1
+d <- analysis.dat %>%
+  filter(!is.na(Race), source=="16s", OTU == "Streptococcus sanguinis")
+m1<-wilcox.test(Abund ~ Race, data=d, na.rm=TRUE, paired=FALSE, exact=FALSE, conf.int=TRUE)
+m1
+test_results[i,4] <- m1$estimate
+test_results[i,5] <- m1$p.value
 
 p <- analysis.dat %>%
   filter(!is.na(Race), source=="16s", OTU == "Streptococcus sanguinis")%>%
@@ -1208,12 +1758,25 @@ p <- analysis.dat %>%
       labels = c(0, 0.001,0.01, 0.1, 1,10,50, 100),
       limits = c(0, 110)
     ) + 
-    labs(x="Race", y="Relative Abundance (%)")+
+    labs(x="Race", y="Relative Abundance (%)",
+         title=paste0(TITLE_P1[1]," Bacteria Relative Abundance ",TITLE_P2[3]),
+         subtitle=SUBTITLE[5])+
+    annotate("text", x=1.5, y=90, label=paste0("p=",round(test_results$pvalue[i],4)))+
+    geom_segment(aes(x=1, xend=2,y=105,yend=105))+
+    geom_segment(aes(x=1, xend=1,y=109,yend=100))+
+    geom_segment(aes(x=2, xend=2,y=109,yend=100))+
     theme_classic()
 p
 ggsave("output/supplemental_figure2E_NCI_strepto.pdf", p, units = "in", width = DIM[1], height = DIM[2])
 ggsave("output/supplemental_figure2E_NCI_strepto.png", p, units = "in", width = DIM[1], height = DIM[2])
 
+i <- i+1
+d <- analysis.dat %>%
+  filter(!is.na(Race), source=="rna", OTU == "Streptococcus sanguinis")
+m1<-wilcox.test(Abund ~ Race, data=d, na.rm=TRUE, paired=FALSE, exact=FALSE, conf.int=TRUE)
+m1
+test_results[i,4] <- m1$estimate
+test_results[i,5] <- m1$p.value
 
 p <- analysis.dat %>%
   filter(!is.na(Race), source=="rna", OTU == "Streptococcus sanguinis")%>%
@@ -1226,12 +1789,25 @@ p <- analysis.dat %>%
       labels = c(0, 0.001,0.01, 0.1, 1,10,50, 100),
       limits = c(0, 110)
     ) + 
-    labs(x="Race", y="Relative Abundance (%)")+
+    labs(x="Race", y="Relative Abundance (%)",
+         title=paste0(TITLE_P1[2]," Bacteria Relative Abundance ",TITLE_P2[3]),
+         subtitle=SUBTITLE[5])+
+    annotate("text", x=1.5, y=90, label=paste0("p=",round(test_results$pvalue[i],4)))+
+    geom_segment(aes(x=1, xend=2,y=105,yend=105))+
+    geom_segment(aes(x=1, xend=1,y=109,yend=100))+
+    geom_segment(aes(x=2, xend=2,y=109,yend=100))+
     theme_classic()
 p
 ggsave("output/supplemental_figure2E_tcga_rna_strepto.pdf", p, units = "in", width = DIM[1], height = DIM[2])
 ggsave("output/supplemental_figure2E_tcga_rna_strepto.png", p, units = "in", width = DIM[1], height = DIM[2])
 
+i <- i+1
+d <- analysis.dat %>%
+  filter(!is.na(Race), source=="wgs", OTU == "Streptococcus sanguinis")
+m1<-wilcox.test(Abund ~ Race, data=d, na.rm=TRUE, paired=FALSE, exact=FALSE, conf.int=TRUE)
+m1
+test_results[i,4] <- m1$estimate
+test_results[i,5] <- m1$p.value
 
 p <- analysis.dat %>%
   filter(!is.na(Race), source=="wgs", OTU == "Streptococcus sanguinis")%>%
@@ -1244,7 +1820,13 @@ p <- analysis.dat %>%
       labels = c(0, 0.001,0.01, 0.1, 1,10,50, 100),
       limits = c(0, 110)
     ) + 
-    labs(x="Race", y="Relative Abundance (%)")+
+    labs(x="Race", y="Relative Abundance (%)",
+         title=paste0(TITLE_P1[3]," Bacteria Relative Abundance ",TITLE_P2[3]),
+         subtitle=SUBTITLE[5])+
+    annotate("text", x=1.5, y=90, label=paste0("p=",round(test_results$pvalue[i],4)))+
+    geom_segment(aes(x=1, xend=2,y=105,yend=105))+
+    geom_segment(aes(x=1, xend=1,y=109,yend=100))+
+    geom_segment(aes(x=2, xend=2,y=109,yend=100))+
     theme_classic()
 p
 ggsave("output/supplemental_figure2E_tcga_wgs_strepto.pdf", p, units = "in", width = DIM[1], height = DIM[2])
@@ -1272,12 +1854,10 @@ analysis.dat <- dat.16s.s %>%
   dplyr::select(OTU, sample_type, tumor, Abundance, ID, source, tumor.stage)
 
 dat <- dat.rna.s %>% 
-  dplyr::mutate(Race = race) %>%
   dplyr::select(OTU, sample_type, tumor, Abundance, ID, source, tumor.stage)
 analysis.dat <- full_join(analysis.dat, dat)
 
 dat <- dat.wgs.s %>% 
-  dplyr::mutate(Race = race) %>%
   dplyr::select(OTU, sample_type, tumor, Abundance, ID, source, tumor.stage)
 
 analysis.dat <- full_join(analysis.dat, dat) %>%
@@ -1288,7 +1868,15 @@ analysis.dat <- full_join(analysis.dat, dat) %>%
     Tumor_Stage = tumor.stage
   )
 
-#analysis.dat$Tumor_Stage[analysis.dat$Tumor_Stage == "0"] <- ""
+analysis.dat$Tumor_Stage[analysis.dat$Tumor_Stage == "1"] <- "I"
+
+i <- i+1
+d <- analysis.dat %>%
+  filter(!is.na(Tumor_Stage), source=="16s")
+m1<-kruskal.test(Abund ~ Tumor_Stage, data=d)
+m1
+test_results[i,4] <- m1$statistic
+test_results[i,5] <- m1$p.value
 
 p <- analysis.dat %>%
   filter(!is.na(Tumor_Stage), source=="16s")%>%
@@ -1301,12 +1889,26 @@ p <- analysis.dat %>%
       labels = c(0, 0.001,0.01, 0.1, 1,10,50, 100),
       limits = c(0, 110)
     ) + 
-    labs(x="Tumor_Stage", y="Relative Abundance (%)")+
+    labs(x="Tumor_Stage", y="Relative Abundance (%)",
+         title=paste0(TITLE_P1[1]," Bacteria Relative Abundance ",TITLE_P2[4]),
+         subtitle=SUBTITLE[1])+
+    annotate("text", x=2.5, y=90, label=paste0("p=",round(test_results$pvalue[i],4)))+
+    geom_segment(aes(x=1, xend=5,y=105,yend=105))+
+    geom_segment(aes(x=1, xend=1,y=109,yend=100))+
+    geom_segment(aes(x=5, xend=5,y=109,yend=100))+
     theme_classic()
 p
 ggsave("output/supplemental_figure2F_NCI_combined.pdf", p, units = "in", width = DIM[1], height = DIM[2])
 ggsave("output/supplemental_figure2F_NCI_combined.png", p, units = "in", width = DIM[1], height = DIM[2])
 
+
+i <- i+1
+d <- analysis.dat %>%
+  filter(!is.na(Tumor_Stage), source=="rna")
+m1<-kruskal.test(Abund ~ Tumor_Stage, data=d)
+m1
+test_results[i,4] <- m1$statistic
+test_results[i,5] <- m1$p.value
 p <- analysis.dat %>%
   filter(source=="rna", !is.na(Tumor_Stage))%>%
   ggplot(aes(x=Tumor_Stage, y=Abund))+
@@ -1318,12 +1920,26 @@ p <- analysis.dat %>%
       labels = c(0, 0.001,0.01, 0.1, 1,10,50, 100),
       limits = c(0, 110)
     ) + 
-    labs(x="Tumor_Stage", y="Relative Abundance (%)")+
+    labs(x="Tumor_Stage", y="Relative Abundance (%)",
+         title=paste0(TITLE_P1[2]," Bacteria Relative Abundance ",TITLE_P2[4]),
+         subtitle=SUBTITLE[1])+
+    annotate("text", x=2.5, y=90, label=paste0("p=",round(test_results$pvalue[i],4)))+
+    geom_segment(aes(x=1, xend=4,y=105,yend=105))+
+    geom_segment(aes(x=1, xend=1,y=109,yend=100))+
+    geom_segment(aes(x=4, xend=4,y=109,yend=100))+
     theme_classic()
 p
 ggsave("output/supplemental_figure2F_tcga_rna_combined.pdf", p, units = "in", width = DIM[1], height = DIM[2])
 ggsave("output/supplemental_figure2F_tcga_rna_combined.png", p, units = "in", width = DIM[1], height = DIM[2])
 
+
+i <- i+1
+d <- analysis.dat %>%
+  filter(!is.na(Tumor_Stage), source=="wgs")
+m1<-kruskal.test(Abund ~ Tumor_Stage, data=d)
+m1
+test_results[i,4] <- m1$statistic
+test_results[i,5] <- m1$p.value
 p <- analysis.dat %>%
   filter(source=="wgs", !is.na(Tumor_Stage))%>%
   ggplot(aes(x=Tumor_Stage, y=Abund))+
@@ -1335,7 +1951,13 @@ p <- analysis.dat %>%
       labels = c(0, 0.001,0.01, 0.1, 1,10,50, 100),
       limits = c(0, 110)
     ) + 
-    labs(x="Tumor_Stage", y="Relative Abundance (%)")+
+    labs(x="Tumor_Stage", y="Relative Abundance (%)",
+         title=paste0(TITLE_P1[3]," Bacteria Relative Abundance ",TITLE_P2[4]),
+         subtitle=SUBTITLE[1])+
+    annotate("text", x=2.5, y=90, label=paste0("p=",round(test_results$pvalue[i],4)))+
+    geom_segment(aes(x=1, xend=4,y=105,yend=105))+
+    geom_segment(aes(x=1, xend=1,y=109,yend=100))+
+    geom_segment(aes(x=4, xend=4,y=109,yend=100))+
     theme_classic()
 p
 ggsave("output/supplemental_figure2F_tcga_wgs_combined.pdf", p, units = "in", width = DIM[1], height = DIM[2])
@@ -1369,9 +1991,15 @@ analysis.dat <- full_join(analysis.dat, dat) %>%
     Tumor_Stage = tumor.stage
   )
 
-#analysis.dat$Tumor_Stage[analysis.dat$Tumor_Stage == "0"] <- ""
+analysis.dat$Tumor_Stage[analysis.dat$Tumor_Stage == "1"] <- "I"
 
-
+i <- i+1
+d <- analysis.dat %>%
+  filter(!is.na(Tumor_Stage), source=="16s", OTU == "Fusobacterium nucleatum")
+m1<-kruskal.test(Abund ~ Tumor_Stage, data=d)
+m1
+test_results[i,4] <- m1$statistic
+test_results[i,5] <- m1$p.value
 p <- analysis.dat %>%
   filter(!is.na(Tumor_Stage), source=="16s", OTU == "Fusobacterium nucleatum")%>%
   ggplot(aes(x=Tumor_Stage, y=Abund))+
@@ -1383,13 +2011,25 @@ p <- analysis.dat %>%
       labels = c(0, 0.001,0.01, 0.1, 1,10,50, 100),
       limits = c(0, 110)
     ) + 
-    labs(x="Tumor_Stage", y="Relative Abundance (%)")+
+    labs(x="Tumor_Stage", y="Relative Abundance (%)",
+         title=paste0(TITLE_P1[1]," Bacteria Relative Abundance ",TITLE_P2[4]),
+         subtitle=SUBTITLE[2])+
+    annotate("text", x=2.5, y=90, label=paste0("p=",round(test_results$pvalue[i],4)))+
+    geom_segment(aes(x=1, xend=5,y=105,yend=105))+
+    geom_segment(aes(x=1, xend=1,y=109,yend=100))+
+    geom_segment(aes(x=5, xend=5,y=109,yend=100))+
     theme_classic()
 p
 ggsave("output/supplemental_figure2F_NCI_fuso.pdf", p, units = "in", width = DIM[1], height = DIM[2])
 ggsave("output/supplemental_figure2F_NCI_fuso.png", p, units = "in", width = DIM[1], height = DIM[2])
 
-
+i <- i+1
+d <- analysis.dat %>%
+  filter(!is.na(Tumor_Stage), source=="rna", OTU == "Fusobacterium nucleatum")
+m1<-kruskal.test(Abund ~ Tumor_Stage, data=d)
+m1
+test_results[i,4] <- m1$statistic
+test_results[i,5] <- m1$p.value
 p <- analysis.dat %>%
   filter(!is.na(Tumor_Stage), source=="rna", OTU == "Fusobacterium nucleatum")%>%
   ggplot(aes(x=Tumor_Stage, y=Abund))+
@@ -1401,13 +2041,25 @@ p <- analysis.dat %>%
       labels = c(0, 0.001,0.01, 0.1, 1,10,50, 100),
       limits = c(0, 110)
     ) + 
-    labs(x="Tumor_Stage", y="Relative Abundance (%)")+
+    labs(x="Tumor_Stage", y="Relative Abundance (%)",
+         title=paste0(TITLE_P1[2]," Bacteria Relative Abundance ",TITLE_P2[4]),
+         subtitle=SUBTITLE[2])+
+    annotate("text", x=2.5, y=90, label=paste0("p=",round(test_results$pvalue[i],4)))+
+    geom_segment(aes(x=1, xend=4,y=105,yend=105))+
+    geom_segment(aes(x=1, xend=1,y=109,yend=100))+
+    geom_segment(aes(x=4, xend=4,y=109,yend=100))+
     theme_classic()
 p
 ggsave("output/supplemental_figure2F_tcga_rna_fuso.pdf", p, units = "in", width = DIM[1], height = DIM[2])
 ggsave("output/supplemental_figure2F_tcga_rna_fuso.png", p, units = "in", width = DIM[1], height = DIM[2])
 
-
+i <- i+1
+d <- analysis.dat %>%
+  filter(!is.na(Tumor_Stage), source=="wgs", OTU == "Fusobacterium nucleatum")
+m1<-kruskal.test(Abund ~ Tumor_Stage, data=d)
+m1
+test_results[i,4] <- m1$statistic
+test_results[i,5] <- m1$p.value
 p <- analysis.dat %>%
   filter(!is.na(Tumor_Stage), source=="wgs", OTU == "Fusobacterium nucleatum")%>%
   ggplot(aes(x=Tumor_Stage, y=Abund))+
@@ -1419,13 +2071,25 @@ p <- analysis.dat %>%
       labels = c(0, 0.001,0.01, 0.1, 1,10,50, 100),
       limits = c(0, 110)
     ) + 
-    labs(x="Tumor_Stage", y="Relative Abundance (%)")+
+    labs(x="Tumor_Stage", y="Relative Abundance (%)",
+         title=paste0(TITLE_P1[3]," Bacteria Relative Abundance ",TITLE_P2[4]),
+         subtitle=SUBTITLE[2])+
+    annotate("text", x=2.5, y=90, label=paste0("p=",round(test_results$pvalue[i],4)))+
+    geom_segment(aes(x=1, xend=4,y=105,yend=105))+
+    geom_segment(aes(x=1, xend=1,y=109,yend=100))+
+    geom_segment(aes(x=4, xend=4,y=109,yend=100))+
     theme_classic()
 p
 ggsave("output/supplemental_figure2F_tcga_wgs_fuso.pdf", p, units = "in", width = DIM[1], height = DIM[2])
 ggsave("output/supplemental_figure2F_tcga_wgs_fuso.png", p, units = "in", width = DIM[1], height = DIM[2])
 
-
+i <- i+1
+d <- analysis.dat %>%
+  filter(!is.na(Tumor_Stage), source=="16s", OTU == "Prevotella melaninogenica" | OTU =="Prevotella spp.")
+m1<-kruskal.test(Abund ~ Tumor_Stage, data=d)
+m1
+test_results[i,4] <- m1$statistic
+test_results[i,5] <- m1$p.value
 p <- analysis.dat %>%
   filter(!is.na(Tumor_Stage), source=="16s", OTU == "Prevotella melaninogenica" | OTU =="Prevotella spp.")%>%
   ggplot(aes(x=Tumor_Stage, y=Abund))+
@@ -1437,13 +2101,25 @@ p <- analysis.dat %>%
       labels = c(0, 0.001,0.01, 0.1, 1,10,50, 100),
       limits = c(0, 110)
     ) + 
-    labs(x="Tumor_Stage", y="Relative Abundance (%)")+
+    labs(x="Tumor_Stage", y="Relative Abundance (%)",
+         title=paste0(TITLE_P1[1]," Bacteria Relative Abundance ",TITLE_P2[4]),
+         subtitle=SUBTITLE[3])+
+    annotate("text", x=2.5, y=90, label=paste0("p=",round(test_results$pvalue[i],4)))+
+    geom_segment(aes(x=1, xend=5,y=105,yend=105))+
+    geom_segment(aes(x=1, xend=1,y=109,yend=100))+
+    geom_segment(aes(x=5, xend=5,y=109,yend=100))+
     theme_classic()
 p
 ggsave("output/supplemental_figure2F_NCI_prevo.pdf", p, units = "in", width = DIM[1], height = DIM[2])
 ggsave("output/supplemental_figure2F_NCI_prevo.png", p, units = "in", width = DIM[1], height = DIM[2])
 
-
+i <- i+1
+d <- analysis.dat %>%
+  filter(!is.na(Tumor_Stage), source=="rna", OTU == "Prevotella melaninogenica")
+m1<-kruskal.test(Abund ~ Tumor_Stage, data=d)
+m1
+test_results[i,4] <- m1$statistic
+test_results[i,5] <- m1$p.value
 p <- analysis.dat %>%
   filter(!is.na(Tumor_Stage), source=="rna", OTU == "Prevotella melaninogenica")%>%
   ggplot(aes(x=Tumor_Stage, y=Abund))+
@@ -1455,13 +2131,25 @@ p <- analysis.dat %>%
       labels = c(0, 0.001,0.01, 0.1, 1,10,50, 100),
       limits = c(0, 110)
     ) + 
-    labs(x="Tumor_Stage", y="Relative Abundance (%)")+
+    labs(x="Tumor_Stage", y="Relative Abundance (%)",
+         title=paste0(TITLE_P1[2]," Bacteria Relative Abundance ",TITLE_P2[4]),
+         subtitle=SUBTITLE[3])+
+    annotate("text", x=2.5, y=90, label=paste0("p=",round(test_results$pvalue[i],4)))+
+    geom_segment(aes(x=1, xend=4,y=105,yend=105))+
+    geom_segment(aes(x=1, xend=1,y=109,yend=100))+
+    geom_segment(aes(x=4, xend=4,y=109,yend=100))+
     theme_classic()
 p
 ggsave("output/supplemental_figure2F_tcga_rna_prevo.pdf", p, units = "in", width = DIM[1], height = DIM[2])
 ggsave("output/supplemental_figure2F_tcga_rna_prevo.png", p, units = "in", width = DIM[1], height = DIM[2])
 
-
+i <- i+1
+d <- analysis.dat %>%
+  filter(!is.na(Tumor_Stage), source=="wgs", OTU == "Prevotella melaninogenica")
+m1<-kruskal.test(Abund ~ Tumor_Stage, data=d)
+m1
+test_results[i,4] <- m1$statistic
+test_results[i,5] <- m1$p.value
 p <- analysis.dat %>%
   filter(!is.na(Tumor_Stage), source=="wgs", OTU == "Prevotella melaninogenica")%>%
   ggplot(aes(x=Tumor_Stage, y=Abund))+
@@ -1473,13 +2161,25 @@ p <- analysis.dat %>%
       labels = c(0, 0.001,0.01, 0.1, 1,10,50, 100),
       limits = c(0, 110)
     ) + 
-    labs(x="Tumor_Stage", y="Relative Abundance (%)")+
+    labs(x="Tumor_Stage", y="Relative Abundance (%)",
+         title=paste0(TITLE_P1[3]," Bacteria Relative Abundance ",TITLE_P2[4]),
+         subtitle=SUBTITLE[3])+
+    annotate("text", x=2.5, y=90, label=paste0("p=",round(test_results$pvalue[i],4)))+
+    geom_segment(aes(x=1, xend=4,y=105,yend=105))+
+    geom_segment(aes(x=1, xend=1,y=109,yend=100))+
+    geom_segment(aes(x=4, xend=4,y=109,yend=100))+
     theme_classic()
 p
 ggsave("output/supplemental_figure2F_tcga_wgs_prevo.pdf", p, units = "in", width = DIM[1], height = DIM[2])
 ggsave("output/supplemental_figure2F_tcga_wgs_prevo.png", p, units = "in", width = DIM[1], height = DIM[2])
 
-
+i <- i+1
+d <- analysis.dat %>%
+  filter(!is.na(Tumor_Stage), source=="16s", OTU == "Campylobacter concisus")
+m1<-kruskal.test(Abund ~ Tumor_Stage, data=d)
+m1
+test_results[i,4] <- m1$statistic
+test_results[i,5] <- m1$p.value
 p <- analysis.dat %>%
   filter(!is.na(Tumor_Stage), source=="16s", OTU == "Campylobacter concisus")%>%
   ggplot(aes(x=Tumor_Stage, y=Abund))+
@@ -1491,13 +2191,25 @@ p <- analysis.dat %>%
       labels = c(0, 0.001,0.01, 0.1, 1,10,50, 100),
       limits = c(0, 110)
     ) + 
-    labs(x="Tumor_Stage", y="Relative Abundance (%)")+
+    labs(x="Tumor_Stage", y="Relative Abundance (%)",
+         title=paste0(TITLE_P1[1]," Bacteria Relative Abundance ",TITLE_P2[4]),
+         subtitle=SUBTITLE[4])+
+    annotate("text", x=2.5, y=90, label=paste0("p=",round(test_results$pvalue[i],4)))+
+    geom_segment(aes(x=1, xend=5,y=105,yend=105))+
+    geom_segment(aes(x=1, xend=1,y=109,yend=100))+
+    geom_segment(aes(x=5, xend=5,y=109,yend=100))+
     theme_classic()
 p
 ggsave("output/supplemental_figure2F_NCI_campy.pdf", p, units = "in", width = DIM[1], height = DIM[2])
 ggsave("output/supplemental_figure2F_NCI_campy.png", p, units = "in", width = DIM[1], height = DIM[2])
 
-
+i <- i+1
+d <- analysis.dat %>%
+  filter(!is.na(Tumor_Stage), source=="rna", OTU == "Campylobacter concisus")
+m1<-kruskal.test(Abund ~ Tumor_Stage, data=d)
+m1
+test_results[i,4] <- m1$statistic
+test_results[i,5] <- m1$p.value
 p <- analysis.dat %>%
   filter(!is.na(Tumor_Stage), source=="rna", OTU == "Campylobacter concisus")%>%
   ggplot(aes(x=Tumor_Stage, y=Abund))+
@@ -1509,13 +2221,25 @@ p <- analysis.dat %>%
       labels = c(0, 0.001,0.01, 0.1, 1,10,50, 100),
       limits = c(0, 110)
     ) + 
-    labs(x="Tumor_Stage", y="Relative Abundance (%)")+
+    labs(x="Tumor_Stage", y="Relative Abundance (%)",
+         title=paste0(TITLE_P1[2]," Bacteria Relative Abundance ",TITLE_P2[4]),
+         subtitle=SUBTITLE[4])+
+    annotate("text", x=2.5, y=90, label=paste0("p=",round(test_results$pvalue[i],4)))+
+    geom_segment(aes(x=1, xend=4,y=105,yend=105))+
+    geom_segment(aes(x=1, xend=1,y=109,yend=100))+
+    geom_segment(aes(x=4, xend=4,y=109,yend=100))+
     theme_classic()
 p
 ggsave("output/supplemental_figure2F_tcga_rna_campy.pdf", p, units = "in", width = DIM[1], height = DIM[2])
 ggsave("output/supplemental_figure2F_tcga_rna_campy.png", p, units = "in", width = DIM[1], height = DIM[2])
 
-
+i <- i+1
+d <- analysis.dat %>%
+  filter(!is.na(Tumor_Stage), source=="wgs", OTU == "Campylobacter concisus")
+m1<-kruskal.test(Abund ~ Tumor_Stage, data=d)
+m1
+test_results[i,4] <- m1$statistic
+test_results[i,5] <- m1$p.value
 p <- analysis.dat %>%
   filter(!is.na(Tumor_Stage), source=="wgs", OTU == "Campylobacter concisus")%>%
   ggplot(aes(x=Tumor_Stage, y=Abund))+
@@ -1527,13 +2251,25 @@ p <- analysis.dat %>%
       labels = c(0, 0.001,0.01, 0.1, 1,10,50, 100),
       limits = c(0, 110)
     ) + 
-    labs(x="Tumor_Stage", y="Relative Abundance (%)")+
+    labs(x="Tumor_Stage", y="Relative Abundance (%)",
+         title=paste0(TITLE_P1[3]," Bacteria Relative Abundance ",TITLE_P2[4]),
+         subtitle=SUBTITLE[4])+
+    annotate("text", x=2.5, y=90, label=paste0("p=",round(test_results$pvalue[i],4)))+
+    geom_segment(aes(x=1, xend=4,y=105,yend=105))+
+    geom_segment(aes(x=1, xend=1,y=109,yend=100))+
+    geom_segment(aes(x=4, xend=4,y=109,yend=100))+
     theme_classic()
 p
 ggsave("output/supplemental_figure2F_tcga_wgs_campy.pdf", p, units = "in", width = DIM[1], height = DIM[2])
 ggsave("output/supplemental_figure2F_tcga_wgs_campy.png", p, units = "in", width = DIM[1], height = DIM[2])
 
-
+i <- i+1
+d <- analysis.dat %>%
+  filter(!is.na(Tumor_Stage), source=="16s", OTU == "Streptococcus sanguinis")
+m1<-kruskal.test(Abund ~ Tumor_Stage, data=d)
+m1
+test_results[i,4] <- m1$statistic
+test_results[i,5] <- m1$p.value
 p <- analysis.dat %>%
   filter(!is.na(Tumor_Stage), source=="16s", OTU == "Streptococcus sanguinis")%>%
   ggplot(aes(x=Tumor_Stage, y=Abund))+
@@ -1545,13 +2281,25 @@ p <- analysis.dat %>%
       labels = c(0, 0.001,0.01, 0.1, 1,10,50, 100),
       limits = c(0, 110)
     ) + 
-    labs(x="Tumor_Stage", y="Relative Abundance (%)")+
+    labs(x="Tumor_Stage", y="Relative Abundance (%)",
+         title=paste0(TITLE_P1[1]," Bacteria Relative Abundance ",TITLE_P2[4]),
+         subtitle=SUBTITLE[5])+
+    annotate("text", x=2.5, y=90, label=paste0("p=",round(test_results$pvalue[i],4)))+
+    geom_segment(aes(x=1, xend=5,y=105,yend=105))+
+    geom_segment(aes(x=1, xend=1,y=109,yend=100))+
+    geom_segment(aes(x=5, xend=5,y=109,yend=100))+
     theme_classic()
 p
 ggsave("output/supplemental_figure2F_NCI_strepto.pdf", p, units = "in", width = DIM[1], height = DIM[2])
 ggsave("output/supplemental_figure2F_NCI_strepto.png", p, units = "in", width = DIM[1], height = DIM[2])
 
-
+i <- i+1
+d <- analysis.dat %>%
+  filter(!is.na(Tumor_Stage), source=="rna", OTU == "Streptococcus sanguinis")
+m1<-kruskal.test(Abund ~ Tumor_Stage, data=d)
+m1
+test_results[i,4] <- m1$statistic
+test_results[i,5] <- m1$p.value
 p <- analysis.dat %>%
   filter(!is.na(Tumor_Stage), source=="rna", OTU == "Streptococcus sanguinis")%>%
   ggplot(aes(x=Tumor_Stage, y=Abund))+
@@ -1563,13 +2311,25 @@ p <- analysis.dat %>%
       labels = c(0, 0.001,0.01, 0.1, 1,10,50, 100),
       limits = c(0, 110)
     ) + 
-    labs(x="Tumor_Stage", y="Relative Abundance (%)")+
+    labs(x="Tumor_Stage", y="Relative Abundance (%)",
+         title=paste0(TITLE_P1[2]," Bacteria Relative Abundance ",TITLE_P2[4]),
+         subtitle=SUBTITLE[5])+
+    annotate("text", x=2.5, y=90, label=paste0("p=",round(test_results$pvalue[i],4)))+
+    geom_segment(aes(x=1, xend=4,y=105,yend=105))+
+    geom_segment(aes(x=1, xend=1,y=109,yend=100))+
+    geom_segment(aes(x=4, xend=4,y=109,yend=100))+
     theme_classic()
 p
 ggsave("output/supplemental_figure2F_tcga_rna_strepto.pdf", p, units = "in", width = DIM[1], height = DIM[2])
 ggsave("output/supplemental_figure2F_tcga_rna_strepto.png", p, units = "in", width = DIM[1], height = DIM[2])
 
-
+i <- i+1
+d <- analysis.dat %>%
+  filter(!is.na(Tumor_Stage), source=="wgs", OTU == "Streptococcus sanguinis")
+m1<-kruskal.test(Abund ~ Tumor_Stage, data=d)
+m1
+test_results[i,4] <- m1$statistic
+test_results[i,5] <- m1$p.value
 p <- analysis.dat %>%
   filter(!is.na(Tumor_Stage), source=="wgs", OTU == "Streptococcus sanguinis")%>%
   ggplot(aes(x=Tumor_Stage, y=Abund))+
@@ -1581,10 +2341,32 @@ p <- analysis.dat %>%
       labels = c(0, 0.001,0.01, 0.1, 1,10,50, 100),
       limits = c(0, 110)
     ) + 
-    labs(x="Tumor_Stage", y="Relative Abundance (%)")+
+    labs(x="Tumor_Stage", y="Relative Abundance (%)",
+         title=paste0(TITLE_P1[3]," Bacteria Relative Abundance ",TITLE_P2[4]),
+         subtitle=SUBTITLE[5])+
+    annotate("text", x=2.5, y=90, label=paste0("p=",round(test_results$pvalue[i],4)))+
+    geom_segment(aes(x=1, xend=4,y=105,yend=105))+
+    geom_segment(aes(x=1, xend=1,y=109,yend=100))+
+    geom_segment(aes(x=4, xend=4,y=109,yend=100))+
     theme_classic()
 p
 ggsave("output/supplemental_figure2F_tcga_wgs_strepto.pdf", p, units = "in", width = DIM[1], height = DIM[2])
 ggsave("output/supplemental_figure2F_tcga_wgs_strepto.png", p, units = "in", width = DIM[1], height = DIM[2])
+
+```
+
+
+# Statistical Significance
+
+```{r}
+
+test_results$sig <- ""
+for(i in 1:nrow(test_results)){
+  test_results[i,6] <- ifelse(test_results[i,5] < .05, "*", "")
+}
+
+kable(test_results, digits=4, format="html")%>%
+  kable_styling(full_width = T) %>%
+  scroll_box(width="100%", height="600px")
 
 ```
