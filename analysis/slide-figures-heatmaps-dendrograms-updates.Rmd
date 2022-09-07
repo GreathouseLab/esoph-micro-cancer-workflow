@@ -65,6 +65,9 @@ dat.16s$sample_type <- 0
 dat.16s$sample_type[dat.16s$tissue=="T" &
                       dat.16s$Histology=="ADC" &
                       dat.16s$Barretts. == "Y"] <- "EAC tissues w/ Barretts History"
+dat.16s$sample_type[dat.16s$tissue=="T" &
+                      dat.16s$Histology=="ADC" &
+                      dat.16s$Barretts. == "N"] <- "EAC tissues w/o Barretts History"
 dat.16s$sample_type[dat.16s$tissue=="N" &
                       dat.16s$Histology=="ADC" &
                       dat.16s$Barretts. == "Y"] <- "EAC-adjacent tissue w/ Barretts History"
@@ -361,8 +364,8 @@ p <- plt_dendr+plt_hmap1+plt_hmap2+plt_hmap3+
 p
 
 if(save.plots == T){
-  ggsave(paste0("output/slide-5-heatmap-05-",save.Date,".pdf"), plot=p, units="in", width=25, height=5)
-  ggsave(paste0("output/slide-5-heatmap-05-",save.Date,".png"), plot=p, units="in", width=25, height=5)
+  ggsave(paste0("output/slide-5-heatmap-05-",save.Date,".pdf"), plot=p, units="in", width=11, height=5)
+  ggsave(paste0("output/slide-5-heatmap-05-",save.Date,".png"), plot=p, units="in", width=11, height=5)
 }
 ```
 
@@ -551,9 +554,36 @@ plt_hmap3 <- ggplot(hmd,
         axis.ticks.y = element_blank(),
         # margin: top, right, bottom, and left
         plot.margin = unit(c(1, 0.01, 0.01, -0.7), "cm"), 
+        panel.grid.minor = element_blank(),
+        legend.position = "none")
+
+# Part 4: "EAC tissues w/o Barretts History"
+hmd <- filter(heatmap_data, sample_type == "EAC tissues w/o Barretts History")
+hmd$x_center <- as.numeric(as.factor(hmd$x_center))
+spd <- filter(sample_pos_table, sample_type == "EAC tissues w/o Barretts History")
+spd$x_center <- as.numeric(as.factor(spd$x_center))
+
+plt_hmap4 <- ggplot(hmd, 
+                    aes(x = x_center, y = y_center, fill = expr, 
+                        height = height, width = width)) + 
+  geom_tile() +
+  #facet_wrap(.~sample_type)+
+  scale_fill_gradient2("Abundance",trans="sqrt", high="darkblue", low="white", breaks=c(0, 0.10, 0.30, 0.50, 0.80)) +
+  scale_x_continuous(breaks = spd$x_center, 
+                     labels = spd$ID, 
+                     expand = c(0, 0)) + 
+  # For the y axis, alternatively set the labels as: gene_position_table$gene
+  scale_y_continuous(breaks = gene_pos_table[, "y_center"], 
+                     labels = rep("", nrow(gene_pos_table)),
+                     limits = gene_axis_limits, 
+                     expand = c(0, 0)) + 
+  labs(x = "EAC w/o Barretts", y = NULL) +
+  theme_classic() +
+  theme(axis.text.x = element_blank(),#element_text(size = rel(1), hjust = 0.75, vjust=0.5, angle = 90), 
+        axis.ticks.y = element_blank(),
+        # margin: top, right, bottom, and left
+        plot.margin = unit(c(1, 0.01, 0.01, -0.7), "cm"), 
         panel.grid.minor = element_blank())
-
-
 
 # Dendrogram plot
 plt_dendr <- ggplot(segment_data) + 
@@ -577,9 +607,9 @@ prntRelAbund <- avgRelAbundCutoff*100
 
 ```{r ht-slide5-01-plot-make, warning=F, error=F, message=F, out.width="150%", out.height="500px"}
 
-p <- plt_dendr+plt_hmap1+plt_hmap2+plt_hmap3+ 
+p <- plt_dendr+plt_hmap1+plt_hmap2+plt_hmap3+plt_hmap4+ 
   plot_layout(
-    nrow=1, widths = c(0.5, 0.2, 1, 1),
+    nrow=1, widths = c(0.5, 0.2, 1, 1, 1),
     guides="collect"
   ) +
   plot_annotation(
@@ -588,8 +618,8 @@ p <- plt_dendr+plt_hmap1+plt_hmap2+plt_hmap3+
   )
 p
 if(save.plots == T){
-  ggsave(paste0("output/slide-5-heatmap-01-",save.Date,".pdf"), plot=p, units="in", width=25, height=7)
-  ggsave(paste0("output/slide-5-heatmap-01-",save.Date,".png"), plot=p, units="in", width=25, height=7)
+  ggsave(paste0("output/slide-5-heatmap-01-",save.Date,".pdf"), plot=p, units="in", width=11, height=7)
+  ggsave(paste0("output/slide-5-heatmap-01-",save.Date,".png"), plot=p, units="in", width=11, height=7)
 }
 ```
 
@@ -813,8 +843,8 @@ p <- plt_dendr+plt_hmap1+plt_hmap2+plt_hmap3+
   )
 p
 if(save.plots == T){
-  ggsave(paste0("output/slide-5-heatmap-001-",save.Date,".pdf"), plot=p, units="in", width=25, height=10)
-  ggsave(paste0("output/slide-5-heatmap-001-",save.Date,".png"), plot=p, units="in", width=25, height=10)
+  ggsave(paste0("output/slide-5-heatmap-001-",save.Date,".pdf"), plot=p, units="in", width=11, height=10)
+  ggsave(paste0("output/slide-5-heatmap-001-",save.Date,".png"), plot=p, units="in", width=11, height=10)
 }
 ```
 
@@ -1160,8 +1190,8 @@ p <- plt_dendr+plt_hmap1+plt_hmap2+plt_hmap3+
 p
 
 if(save.plots == T){
-  ggsave(paste0("output/slide-6-heatmap-05-",save.Date,".pdf"), plot=p, units="in", width=25, height=5)
-  ggsave(paste0("output/slide-6-heatmap-05-",save.Date,".png"), plot=p, units="in", width=25, height=5)
+  ggsave(paste0("output/slide-6-heatmap-05-",save.Date,".pdf"), plot=p, units="in", width=11, height=5)
+  ggsave(paste0("output/slide-6-heatmap-05-",save.Date,".png"), plot=p, units="in", width=11, height=5)
 }
 ```
 
@@ -1390,8 +1420,8 @@ p <- plt_dendr+plt_hmap1+plt_hmap2+plt_hmap3+
 p
 
 if(save.plots == T){
-  ggsave(paste0("output/slide-6-heatmap-01-",save.Date,".pdf"), plot=p, units="in", width=25, height=5)
-  ggsave(paste0("output/slide-6-heatmap-01-",save.Date,".png"), plot=p, units="in", width=25, height=5)
+  ggsave(paste0("output/slide-6-heatmap-01-",save.Date,".pdf"), plot=p, units="in", width=11, height=5)
+  ggsave(paste0("output/slide-6-heatmap-01-",save.Date,".png"), plot=p, units="in", width=11, height=5)
 }
 ```
 
@@ -1620,8 +1650,8 @@ p <- plt_dendr+plt_hmap1+plt_hmap2+plt_hmap3+
 p
 
 if(save.plots == T){
-  ggsave(paste0("output/slide-6-heatmap-001-",save.Date,".pdf"), plot=p, units="in", width=25, height=5)
-  ggsave(paste0("output/slide-6-heatmap-001.-",save.Date,".png"), plot=p, units="in", width=25, height=5)
+  ggsave(paste0("output/slide-6-heatmap-001-",save.Date,".pdf"), plot=p, units="in", width=11, height=5)
+  ggsave(paste0("output/slide-6-heatmap-001.-",save.Date,".png"), plot=p, units="in", width=11, height=5)
 }
 ```
 
@@ -1970,8 +2000,8 @@ p <- plt_dendr+plt_hmap1+plt_hmap2+plt_hmap3+
 p
 
 if(save.plots == T){
-  ggsave(paste0("output/slide-7-heatmap-05-",save.Date,".pdf"), plot=p, units="in", width=25, height=5)
-  ggsave(paste0("output/slide-7-heatmap-05-",save.Date,".png"), plot=p, units="in", width=25, height=5)
+  ggsave(paste0("output/slide-7-heatmap-05-",save.Date,".pdf"), plot=p, units="in", width=11, height=5)
+  ggsave(paste0("output/slide-7-heatmap-05-",save.Date,".png"), plot=p, units="in", width=11, height=5)
 }
 ```
 
@@ -2200,8 +2230,8 @@ p <- plt_dendr+plt_hmap1+plt_hmap2+plt_hmap3+
 p
 
 if(save.plots == T){
-  ggsave(paste0("output/slide-7-heatmap-01-",save.Date,".pdf"), plot=p, units="in", width=25, height=5)
-  ggsave(paste0("output/slide-7-heatmap-01-",save.Date,".png"), plot=p, units="in", width=25, height=5)
+  ggsave(paste0("output/slide-7-heatmap-01-",save.Date,".pdf"), plot=p, units="in", width=11, height=5)
+  ggsave(paste0("output/slide-7-heatmap-01-",save.Date,".png"), plot=p, units="in", width=11, height=5)
 }
 ```
 
@@ -2430,8 +2460,8 @@ p <- plt_dendr+plt_hmap1+plt_hmap2+plt_hmap3+
 p
 
 if(save.plots == T){
-  ggsave(paste0("output/slide-7-heatmap-001-",save.Date,".pdf"), plot=p, units="in", width=25, height=5)
-  ggsave(paste0("output/slide-7-heatmap-001-",save.Date,".png"), plot=p, units="in", width=25, height=5)
+  ggsave(paste0("output/slide-7-heatmap-001-",save.Date,".pdf"), plot=p, units="in", width=11, height=5)
+  ggsave(paste0("output/slide-7-heatmap-001-",save.Date,".png"), plot=p, units="in", width=11, height=5)
 }
 ```
 
@@ -2524,14 +2554,13 @@ dat.16s.s$OTU <- factor(
 )
 
 
-analysis.dat <- dat.16s # insert dataset to be used in analysis
+analysis.dat <- dat.16s.s # insert dataset to be used in analysis
 avgRelAbundCutoff <- 0.05 # minimum average relative abundance for OTUs
 
 
 otu.dat <- analysis.dat %>% filter(sample_type != "0") %>%
   dplyr::group_by(OTU) %>%
   dplyr::summarise(AverageRelativeAbundance=mean(Abundance))%>%
-  dplyr::filter(AverageRelativeAbundance>=avgRelAbundCutoff) %>%
   dplyr::arrange(desc(AverageRelativeAbundance))
 
 kable(otu.dat[,c(2,1)], format="html", digits=3) %>%
@@ -2542,7 +2571,6 @@ plot.dat <- analysis.dat %>% filter(sample_type != "0") %>%
   dplyr::group_by(OTU) %>%
   dplyr::mutate(aveAbund=mean(Abundance)) %>%
   dplyr::ungroup() %>%
-  dplyr::filter(aveAbund>=avgRelAbundCutoff) %>%
   dplyr::mutate(ID = as.factor(accession.number),
                 Genus = substr(Genus, 4, 1000),
                 Phylum = substr(Phylum, 4, 1000)) %>%
@@ -2703,7 +2731,8 @@ plt_hmap3 <- ggplot(hmd,
         axis.ticks.y = element_blank(),
         # margin: top, right, bottom, and left
         plot.margin = unit(c(1, 0.01, 0.01, -0.7), "cm"), 
-        panel.grid.minor = element_blank())
+        panel.grid.minor = element_blank(),
+        legend.position = "none")
 
 # Part 4: "EAC tissues w/o Barretts History"
 hmd <- filter(heatmap_data, sample_type == "EAC tissues w/o Barretts History")
@@ -2768,8 +2797,8 @@ p <- plt_dendr+plt_hmap1+plt_hmap2+plt_hmap3+ plt_hmap4+
 p
 
 if(save.plots == T){
-  ggsave(paste0("output/slide-8-heatmap-",save.Date,".pdf"), plot=p, units="in", width=25, height=5)
-  ggsave(paste0("output/slide-8-heatmap-",save.Date,".png"), plot=p, units="in", width=25, height=5)
+  ggsave(paste0("output/slide-8-heatmap-",save.Date,".pdf"), plot=p, units="in", width=11, height=5)
+  ggsave(paste0("output/slide-8-heatmap-",save.Date,".png"), plot=p, units="in", width=11, height=5)
 }
 ```
 
@@ -3023,7 +3052,7 @@ plt_hmap2 <- ggplot(hmd,
                         height = height, width = width)) + 
   geom_tile() +
   #facet_wrap(.~sample_type)+
-  scale_fill_gradient2("expr",trans="sqrt", high="darkblue", low="white", breaks=c(0, 0.1, 0.10, 0.30, 0.50, 0.80)) +
+  scale_fill_gradient2("expr",trans="sqrt", high="darkblue", low="white", breaks=c(0, 0.10, 0.30, 0.50, 0.80)) +
   scale_x_continuous(breaks = spd$x_center, 
                      labels = spd$ID, 
                      expand = c(0, 0)) + 
@@ -3106,8 +3135,8 @@ p <- plt_dendr+plt_hmap1+plt_hmap2+plt_hmap3+
 p
 
 if(save.plots == T){
-  ggsave(paste0("output/slide-9-heatmap-",save.Date,".pdf"), plot=p, units="in", width=25, height=5)
-  ggsave(paste0("output/slide-9-heatmap-",save.Date,".png"), plot=p, units="in", width=25, height=5)
+  ggsave(paste0("output/slide-9-heatmap-",save.Date,".pdf"), plot=p, units="in", width=11, height=5)
+  ggsave(paste0("output/slide-9-heatmap-",save.Date,".png"), plot=p, units="in", width=11, height=5)
 }
 ```
 
@@ -3448,8 +3477,8 @@ p <- plt_dendr+plt_hmap1+plt_hmap2+plt_hmap3+
 p
 
 if(save.plots == T){
-  ggsave(paste0("output/slide-10-heatmap-",save.Date,".pdf"), plot=p, units="in", width=25, height=5)
-  ggsave(paste0("output/slide-10-heatmap-",save.Date,".png"), plot=p, units="in", width=25, height=5)
+  ggsave(paste0("output/slide-10-heatmap-",save.Date,".pdf"), plot=p, units="in", width=11, height=5)
+  ggsave(paste0("output/slide-10-heatmap-",save.Date,".png"), plot=p, units="in", width=11, height=5)
 }
 ```
 

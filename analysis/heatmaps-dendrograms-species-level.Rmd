@@ -65,6 +65,9 @@ dat.16s$sample_type <- 0
 dat.16s$sample_type[dat.16s$tissue=="T" &
                       dat.16s$Histology=="ADC" &
                       dat.16s$Barretts. == "Y"] <- "EAC tissues w/ Barretts History"
+dat.16s$sample_type[dat.16s$tissue=="T" &
+                      dat.16s$Histology=="ADC" &
+                      dat.16s$Barretts. == "N"] <- "EAC tissues w/o Barretts History"
 dat.16s$sample_type[dat.16s$tissue=="N" &
                       dat.16s$Histology=="ADC" &
                       dat.16s$Barretts. == "Y"] <- "EAC-adjacent tissue w/ Barretts History"
@@ -588,8 +591,8 @@ p <- plt_dendr+plt_hmap1+plt_hmap2+plt_hmap3+
   )
 p
 if(save.plots == T){
-  ggsave(paste0("output/nci-species-lvl-heatmap-01-",save.Date,".pdf"), plot=p, units="in", width=25, height=7)
-  ggsave(paste0("output/nci-species-lvl-heatmap-01-",save.Date,".png"), plot=p, units="in", width=25, height=7)
+  ggsave(paste0("output/nci-species-lvl-heatmap-01-",save.Date,".pdf"), plot=p, units="in", width=11, height=7)
+  ggsave(paste0("output/nci-species-lvl-heatmap-01-",save.Date,".png"), plot=p, units="in", width=11, height=7)
 }
 ```
 
@@ -855,7 +858,8 @@ plt_hmap3 <- ggplot(hmd,
         axis.ticks.y = element_blank(),
         # margin: top, right, bottom, and left
         plot.margin = unit(c(1, 0.01, 0.01, -0.7), "cm"), 
-        panel.grid.minor = element_blank())
+        panel.grid.minor = element_blank(),
+        legend.position = "none")
 
 # Part 4: "EAC tissues w/o Barretts History"
 hmd <- filter(heatmap_data, sample_type == "EAC tissues w/o Barretts History")
@@ -920,8 +924,8 @@ p <- plt_dendr+plt_hmap1+plt_hmap2+plt_hmap3+ plt_hmap4+
 p
 
 if(save.plots == T){
-  ggsave(paste0("output/nci-specific-otus-heatmap-",save.Date,".pdf"), plot=p, units="in", width=25, height=5)
-  ggsave(paste0("output/nci-specific-otus-heatmap-",save.Date,".png"), plot=p, units="in", width=25, height=5)
+  ggsave(paste0("output/nci-specific-otus-heatmap-",save.Date,".pdf"), plot=p, units="in", width=11, height=5)
+  ggsave(paste0("output/nci-specific-otus-heatmap-",save.Date,".png"), plot=p, units="in", width=11, height=5)
 }
 ```
 
@@ -1266,8 +1270,8 @@ p <- plt_dendr+plt_hmap1+plt_hmap2+plt_hmap3+
 p
 
 if(save.plots == T){
-  ggsave(paste0("output/tcga-rna-species-lvl-heatmap-05-",save.Date,".pdf"), plot=p, units="in", width=25, height=5)
-  ggsave(paste0("output/tcga-rna-species-lvl-heatmap-05-",save.Date,".png"), plot=p, units="in", width=25, height=5)
+  ggsave(paste0("output/tcga-rna-species-lvl-heatmap-05-",save.Date,".pdf"), plot=p, units="in", width=11, height=5)
+  ggsave(paste0("output/tcga-rna-species-lvl-heatmap-05-",save.Date,".png"), plot=p, units="in", width=11, height=5)
 }
 ```
 
@@ -1494,8 +1498,8 @@ p <- plt_dendr+plt_hmap1+plt_hmap2+plt_hmap3+
 p
 
 if(save.plots == T){
-  ggsave(paste0("output/tcga-rna-species-lvl-heatmap-01-",save.Date,".pdf"), plot=p, units="in", width=25, height=5)
-  ggsave(paste0("output/tcga-rna-species-lvl-heatmap-01-",save.Date,".png"), plot=p, units="in", width=25, height=5)
+  ggsave(paste0("output/tcga-rna-species-lvl-heatmap-01-",save.Date,".pdf"), plot=p, units="in", width=11, height=5)
+  ggsave(paste0("output/tcga-rna-species-lvl-heatmap-01-",save.Date,".png"), plot=p, units="in", width=11, height=5)
 }
 ```
 
@@ -1722,8 +1726,8 @@ p <- plt_dendr+plt_hmap1+plt_hmap2+plt_hmap3+
 p
 
 if(save.plots == T){
-  ggsave(paste0("output/tcga-rna-species-lvl-heatmap-001-",save.Date,".pdf"), plot=p, units="in", width=25, height=5)
-  ggsave(paste0("output/tcga-rna-species-lvl-heatmap-001-",save.Date,".png"), plot=p, units="in", width=25, height=5)
+  ggsave(paste0("output/tcga-rna-species-lvl-heatmap-001-",save.Date,".pdf"), plot=p, units="in", width=11, height=5)
+  ggsave(paste0("output/tcga-rna-species-lvl-heatmap-001-",save.Date,".png"), plot=p, units="in", width=11, height=5)
 }
 ```
 
@@ -2056,8 +2060,8 @@ p <- plt_dendr+plt_hmap1+plt_hmap2+plt_hmap3+
 p
 
 if(save.plots == T){
-  ggsave(paste0("output/tcga-rna-specific-otus-heatmap-",save.Date,".pdf"), plot=p, units="in", width=25, height=5)
-  ggsave(paste0("output/tcga-rna-specific-otus-heatmap-",save.Date,".png"), plot=p, units="in", width=25, height=5)
+  ggsave(paste0("output/tcga-rna-specific-otus-heatmap-",save.Date,".pdf"), plot=p, units="in", width=11, height=5)
+  ggsave(paste0("output/tcga-rna-specific-otus-heatmap-",save.Date,".png"), plot=p, units="in", width=11, height=5)
 }
 ```
 
@@ -3196,8 +3200,8 @@ p <- plt_dendr+plt_hmap1+plt_hmap2+plt_hmap3+
 p
 
 if(save.plots == T){
-  ggsave(paste0("output/tcga-wgs-specific-otus-heatmap-",save.Date,".pdf"), plot=p, units="in", width=25, height=5)
-  ggsave(paste0("output/tcga-wgs-specific-otus-heatmap-",save.Date,".png"), plot=p, units="in", width=25, height=5)
+  ggsave(paste0("output/tcga-wgs-specific-otus-heatmap-",save.Date,".pdf"), plot=p, units="in", width=11, height=5)
+  ggsave(paste0("output/tcga-wgs-specific-otus-heatmap-",save.Date,".png"), plot=p, units="in", width=11, height=5)
 }
 ```
 
