@@ -22,6 +22,8 @@ This mistake is corrected in this document.
 # load packages
 source("code/load_packages.R")
 
+myColor <- colorRampPalette(c("#416DD4", "#565E6A", "#FFBC33"))(100)
+
 # get data
 source("code/get_cleaned_data.R")
 
@@ -141,6 +143,26 @@ dat.16s.s$OTU <- factor(
 
 ```
 
+get counts
+
+Barretts, blood normal, non-tumor, tumor, tumor w/ barretts
+
+```{r}
+
+nci_sample_data <- dat.16s.s %>%
+  filter(OTU == "Fusobacterium nucleatum")
+  
+table(nci_sample_data$tumor)
+
+table(nci_sample_data$tissue)
+
+table(nci_sample_data$Barretts.)
+
+table(nci_sample_data$tumor, nci_sample_data$Barretts.)
+
+nrow(nci_sample_data)
+```
+
 
 ### Relative Abudance Cutoff: 0.05
 
@@ -253,7 +275,7 @@ plt_hmap1 <- ggplot(hmd,
                        height = height, width = width)) + 
   geom_tile() +
   #facet_wrap(.~sample_type)+
-  scale_fill_gradient2("Abundance",trans="sqrt", high="darkblue", low="white", breaks=c(0, 0.10, 0.30, 0.50, 0.80)) +
+  scale_fill_gradient2("Abundance",trans="sqrt", high=myColor[1], low=myColor[2], breaks=c(0, 0.10, 0.30, 0.50, 0.80)) +
   scale_x_continuous(breaks = spd$x_center, 
                      labels = spd$ID, 
                      expand = c(0, 0)) + 
@@ -282,7 +304,7 @@ plt_hmap2 <- ggplot(hmd,
                         height = height, width = width)) + 
   geom_tile() +
   #facet_wrap(.~sample_type)+
-  scale_fill_gradient2("expr",trans="sqrt", high="darkblue", low="white", breaks=c(0, 0.1, 0.10, 0.30, 0.50, 0.80)) +
+  scale_fill_gradient2("expr",trans="sqrt", high=myColor[1], low=myColor[2], breaks=c(0, 0.1, 0.10, 0.30, 0.50, 0.80)) +
   scale_x_continuous(breaks = spd$x_center, 
                      labels = spd$ID, 
                      expand = c(0, 0)) + 
@@ -311,7 +333,7 @@ plt_hmap3 <- ggplot(hmd,
                         height = height, width = width)) + 
   geom_tile() +
   #facet_wrap(.~sample_type)+
-  scale_fill_gradient2("Abundance",trans="sqrt", high="darkblue", low="white", breaks=c(0, 0.10, 0.30, 0.50, 0.80)) +
+  scale_fill_gradient2("Abundance",trans="sqrt", high=myColor[1], low=myColor[2], breaks=c(0, 0.10, 0.30, 0.50, 0.80)) +
   scale_x_continuous(breaks = spd$x_center, 
                      labels = spd$ID, 
                      expand = c(0, 0)) + 
@@ -481,7 +503,7 @@ plt_hmap1 <- ggplot(hmd,
                        height = height, width = width)) + 
   geom_tile() +
   #facet_wrap(.~sample_type)+
-  scale_fill_gradient2("Abundance",trans="sqrt", high="darkblue", low="white", breaks=c(0, 0.10, 0.30, 0.50, 0.80)) +
+  scale_fill_gradient2("Abundance",trans="sqrt", high=myColor[1], low=myColor[2], breaks=c(0, 0.10, 0.30, 0.50, 0.80)) +
   scale_x_continuous(breaks = spd$x_center, 
                      labels = spd$ID, 
                      expand = c(0, 0)) + 
@@ -510,7 +532,7 @@ plt_hmap2 <- ggplot(hmd,
                         height = height, width = width)) + 
   geom_tile() +
   #facet_wrap(.~sample_type)+
-  scale_fill_gradient2("expr",trans="sqrt", high="darkblue", low="white", breaks=c(0, 0.1, 0.10, 0.30, 0.50, 0.80)) +
+  scale_fill_gradient2("expr",trans="sqrt", high=myColor[1], low=myColor[2], breaks=c(0, 0.1, 0.10, 0.30, 0.50, 0.80)) +
   scale_x_continuous(breaks = spd$x_center, 
                      labels = spd$ID, 
                      expand = c(0, 0)) + 
@@ -539,7 +561,7 @@ plt_hmap3 <- ggplot(hmd,
                         height = height, width = width)) + 
   geom_tile() +
   #facet_wrap(.~sample_type)+
-  scale_fill_gradient2("Abundance",trans="sqrt", high="darkblue", low="white", breaks=c(0, 0.10, 0.30, 0.50, 0.80)) +
+  scale_fill_gradient2("Abundance",trans="sqrt", high=myColor[1], low=myColor[2], breaks=c(0, 0.10, 0.30, 0.50, 0.80)) +
   scale_x_continuous(breaks = spd$x_center, 
                      labels = spd$ID, 
                      expand = c(0, 0)) + 
@@ -568,7 +590,7 @@ plt_hmap4 <- ggplot(hmd,
                         height = height, width = width)) + 
   geom_tile() +
   #facet_wrap(.~sample_type)+
-  scale_fill_gradient2("Abundance",trans="sqrt", high="darkblue", low="white", breaks=c(0, 0.10, 0.30, 0.50, 0.80)) +
+  scale_fill_gradient2("Abundance",trans="sqrt", high=myColor[1], low=myColor[2], breaks=c(0, 0.10, 0.30, 0.50, 0.80)) +
   scale_x_continuous(breaks = spd$x_center, 
                      labels = spd$ID, 
                      expand = c(0, 0)) + 
@@ -734,7 +756,7 @@ plt_hmap1 <- ggplot(hmd,
                        height = height, width = width)) + 
   geom_tile() +
   #facet_wrap(.~sample_type)+
-  scale_fill_gradient2("Abundance",trans="sqrt", high="darkblue", low="white", breaks=c(0, 0.10, 0.30, 0.50, 0.80)) +
+  scale_fill_gradient2("Abundance",trans="sqrt", high=myColor[1], low=myColor[2], breaks=c(0, 0.10, 0.30, 0.50, 0.80)) +
   scale_x_continuous(breaks = spd$x_center, 
                      labels = spd$ID, 
                      expand = c(0, 0)) + 
@@ -763,7 +785,7 @@ plt_hmap2 <- ggplot(hmd,
                         height = height, width = width)) + 
   geom_tile() +
   #facet_wrap(.~sample_type)+
-  scale_fill_gradient2("expr",trans="sqrt", high="darkblue", low="white", breaks=c(0, 0.1, 0.10, 0.30, 0.50, 0.80)) +
+  scale_fill_gradient2("expr",trans="sqrt", high=myColor[1], low=myColor[2], breaks=c(0, 0.1, 0.10, 0.30, 0.50, 0.80)) +
   scale_x_continuous(breaks = spd$x_center, 
                      labels = spd$ID, 
                      expand = c(0, 0)) + 
@@ -792,7 +814,7 @@ plt_hmap3 <- ggplot(hmd,
                         height = height, width = width)) + 
   geom_tile() +
   #facet_wrap(.~sample_type)+
-  scale_fill_gradient2("Abundance",trans="sqrt", high="darkblue", low="white", breaks=c(0, 0.10, 0.30, 0.50, 0.80)) +
+  scale_fill_gradient2("Abundance",trans="sqrt", high=myColor[1], low=myColor[2], breaks=c(0, 0.10, 0.30, 0.50, 0.80)) +
   scale_x_continuous(breaks = spd$x_center, 
                      labels = spd$ID, 
                      expand = c(0, 0)) + 
@@ -965,6 +987,29 @@ dat.rna.s$OTU <- factor(
 ```
 
 
+get counts
+
+Barretts, blood normal, non-tumor, tumor, tumor w/ barretts
+
+```{r}
+
+tcga_rna_sample_data <- dat.rna.s %>%
+  filter(OTU == "Fusobacterium nucleatum")
+  
+table(tcga_rna_sample_data$tumor)
+
+table(tcga_rna_sample_data$tissue)
+
+table(tcga_rna_sample_data$RNAseq_Solid_Tissue_Normal)
+
+table(tcga_rna_sample_data$Barrett.s.Esophagus.Reported)
+
+table(tcga_rna_sample_data$tumor, tcga_rna_sample_data$Barrett.s.Esophagus.Reported)
+
+nrow(tcga_rna_sample_data)
+
+```
+
 ### Relative Abudance Cutoff: 0.05
 
 
@@ -1076,7 +1121,7 @@ plt_hmap1 <- ggplot(hmd,
                        height = height, width = width)) + 
   geom_tile() +
   #facet_wrap(.~sample_type)+
-  scale_fill_gradient2("Abundance",trans="sqrt", high="darkblue", low="white", breaks=c(0, 0.10, 0.30, 0.50, 0.80)) +
+  scale_fill_gradient2("Abundance",trans="sqrt", high=myColor[1], low=myColor[2], breaks=c(0, 0.10, 0.30, 0.50, 0.80)) +
   scale_x_continuous(breaks = spd$x_center, 
                      labels = spd$ID, 
                      expand = c(0, 0)) + 
@@ -1106,7 +1151,7 @@ plt_hmap2 <- ggplot(hmd,
                         height = height, width = width)) + 
   geom_tile() +
   #facet_wrap(.~sample_type)+
-  scale_fill_gradient2("expr",trans="sqrt", high="darkblue", low="white", breaks=c(0, 0.1, 0.10, 0.30, 0.50, 0.80)) +
+  scale_fill_gradient2("expr",trans="sqrt", high=myColor[1], low=myColor[2], breaks=c(0, 0.1, 0.10, 0.30, 0.50, 0.80)) +
   scale_x_continuous(breaks = spd$x_center, 
                      labels = spd$ID, 
                      expand = c(0, 0)) + 
@@ -1136,7 +1181,7 @@ plt_hmap3 <- ggplot(hmd,
                         height = height, width = width)) + 
   geom_tile() +
   #facet_wrap(.~sample_type)+
-  scale_fill_gradient2("Abundance",trans="sqrt", high="darkblue", low="white", breaks=c(0, 0.10, 0.30, 0.50, 0.80)) +
+  scale_fill_gradient2("Abundance",trans="sqrt", high=myColor[1], low=myColor[2], breaks=c(0, 0.10, 0.30, 0.50, 0.80)) +
   scale_x_continuous(breaks = spd$x_center, 
                      labels = spd$ID, 
                      expand = c(0, 0)) + 
@@ -1306,7 +1351,7 @@ plt_hmap1 <- ggplot(hmd,
                        height = height, width = width)) + 
   geom_tile() +
   #facet_wrap(.~sample_type)+
-  scale_fill_gradient2("Abundance",trans="sqrt", high="darkblue", low="white", breaks=c(0, 0.10, 0.30, 0.50, 0.80)) +
+  scale_fill_gradient2("Abundance",trans="sqrt", high=myColor[1], low=myColor[2], breaks=c(0, 0.10, 0.30, 0.50, 0.80)) +
   scale_x_continuous(breaks = spd$x_center, 
                      labels = spd$ID, 
                      expand = c(0, 0)) + 
@@ -1336,7 +1381,7 @@ plt_hmap2 <- ggplot(hmd,
                         height = height, width = width)) + 
   geom_tile() +
   #facet_wrap(.~sample_type)+
-  scale_fill_gradient2("expr",trans="sqrt", high="darkblue", low="white", breaks=c(0, 0.1, 0.10, 0.30, 0.50, 0.80)) +
+  scale_fill_gradient2("expr",trans="sqrt", high=myColor[1], low=myColor[2], breaks=c(0, 0.1, 0.10, 0.30, 0.50, 0.80)) +
   scale_x_continuous(breaks = spd$x_center, 
                      labels = spd$ID, 
                      expand = c(0, 0)) + 
@@ -1366,7 +1411,7 @@ plt_hmap3 <- ggplot(hmd,
                         height = height, width = width)) + 
   geom_tile() +
   #facet_wrap(.~sample_type)+
-  scale_fill_gradient2("Abundance",trans="sqrt", high="darkblue", low="white", breaks=c(0, 0.10, 0.30, 0.50, 0.80)) +
+  scale_fill_gradient2("Abundance",trans="sqrt", high=myColor[1], low=myColor[2], breaks=c(0, 0.10, 0.30, 0.50, 0.80)) +
   scale_x_continuous(breaks = spd$x_center, 
                      labels = spd$ID, 
                      expand = c(0, 0)) + 
@@ -1536,7 +1581,7 @@ plt_hmap1 <- ggplot(hmd,
                        height = height, width = width)) + 
   geom_tile() +
   #facet_wrap(.~sample_type)+
-  scale_fill_gradient2("Abundance",trans="sqrt", high="darkblue", low="white", breaks=c(0, 0.10, 0.30, 0.50, 0.80)) +
+  scale_fill_gradient2("Abundance",trans="sqrt", high=myColor[1], low=myColor[2], breaks=c(0, 0.10, 0.30, 0.50, 0.80)) +
   scale_x_continuous(breaks = spd$x_center, 
                      labels = spd$ID, 
                      expand = c(0, 0)) + 
@@ -1596,7 +1641,7 @@ plt_hmap3 <- ggplot(hmd,
                         height = height, width = width)) + 
   geom_tile() +
   #facet_wrap(.~sample_type)+
-  scale_fill_gradient2("Abundance",trans="sqrt", high="darkblue", low="white", breaks=c(0, 0.10, 0.30, 0.50, 0.80)) +
+  scale_fill_gradient2("Abundance",trans="sqrt", high=myColor[1], low=myColor[2], breaks=c(0, 0.10, 0.30, 0.50, 0.80)) +
   scale_x_continuous(breaks = spd$x_center, 
                      labels = spd$ID, 
                      expand = c(0, 0)) + 
@@ -1774,6 +1819,27 @@ dat.wgs.s$OTU <- factor(
 
 ```
 
+get counts
+
+Barretts, blood normal, non-tumor, tumor, tumor w/ barretts
+
+```{r}
+
+tcga_wgs_sample_data <- dat.wgs.s %>%
+  filter(OTU == "Fusobacterium nucleatum")
+  
+table(tcga_wgs_sample_data$tumor)
+
+table(tcga_wgs_sample_data$tissue)
+table(tcga_wgs_sample_data$WGS_Blood_Normal)
+table(tcga_wgs_sample_data$WGS_Solid_Tissue_Normal)
+
+table(tcga_wgs_sample_data$Barrett.s.Esophagus.Reported)
+
+table(tcga_wgs_sample_data$tumor, tcga_wgs_sample_data$Barrett.s.Esophagus.Reported)
+
+nrow(tcga_wgs_sample_data)
+```
 
 ### Relative Abudance Cutoff: 0.05
 
@@ -1886,7 +1952,7 @@ plt_hmap1 <- ggplot(hmd,
                        height = height, width = width)) + 
   geom_tile() +
   #facet_wrap(.~sample_type)+
-  scale_fill_gradient2("Abundance",trans="sqrt", high="darkblue", low="white", breaks=c(0, 0.10, 0.30, 0.50, 0.80)) +
+  scale_fill_gradient2("Abundance",trans="sqrt", high=myColor[1], low=myColor[2], breaks=c(0, 0.10, 0.30, 0.50, 0.80)) +
   scale_x_continuous(breaks = spd$x_center, 
                      labels = spd$ID, 
                      expand = c(0, 0)) + 
@@ -1916,7 +1982,7 @@ plt_hmap2 <- ggplot(hmd,
                         height = height, width = width)) + 
   geom_tile() +
   #facet_wrap(.~sample_type)+
-  scale_fill_gradient2("expr",trans="sqrt", high="darkblue", low="white", breaks=c(0, 0.1, 0.10, 0.30, 0.50, 0.80)) +
+  scale_fill_gradient2("expr",trans="sqrt", high=myColor[1], low=myColor[2], breaks=c(0, 0.1, 0.10, 0.30, 0.50, 0.80)) +
   scale_x_continuous(breaks = spd$x_center, 
                      labels = spd$ID, 
                      expand = c(0, 0)) + 
@@ -1946,7 +2012,7 @@ plt_hmap3 <- ggplot(hmd,
                         height = height, width = width)) + 
   geom_tile() +
   #facet_wrap(.~sample_type)+
-  scale_fill_gradient2("Abundance",trans="sqrt", high="darkblue", low="white", breaks=c(0, 0.10, 0.30, 0.50, 0.80)) +
+  scale_fill_gradient2("Abundance",trans="sqrt", high=myColor[1], low=myColor[2], breaks=c(0, 0.10, 0.30, 0.50, 0.80)) +
   scale_x_continuous(breaks = spd$x_center, 
                      labels = spd$ID, 
                      expand = c(0, 0)) + 
@@ -2116,7 +2182,7 @@ plt_hmap1 <- ggplot(hmd,
                        height = height, width = width)) + 
   geom_tile() +
   #facet_wrap(.~sample_type)+
-  scale_fill_gradient2("Abundance",trans="sqrt", high="darkblue", low="white", breaks=c(0, 0.10, 0.30, 0.50, 0.80)) +
+  scale_fill_gradient2("Abundance",trans="sqrt", high=myColor[1], low=myColor[2], breaks=c(0, 0.10, 0.30, 0.50, 0.80)) +
   scale_x_continuous(breaks = spd$x_center, 
                      labels = spd$ID, 
                      expand = c(0, 0)) + 
@@ -2146,7 +2212,7 @@ plt_hmap2 <- ggplot(hmd,
                         height = height, width = width)) + 
   geom_tile() +
   #facet_wrap(.~sample_type)+
-  scale_fill_gradient2("expr",trans="sqrt", high="darkblue", low="white", breaks=c(0, 0.1, 0.10, 0.30, 0.50, 0.80)) +
+  scale_fill_gradient2("expr",trans="sqrt", high=myColor[1], low=myColor[2], breaks=c(0, 0.1, 0.10, 0.30, 0.50, 0.80)) +
   scale_x_continuous(breaks = spd$x_center, 
                      labels = spd$ID, 
                      expand = c(0, 0)) + 
@@ -2176,7 +2242,7 @@ plt_hmap3 <- ggplot(hmd,
                         height = height, width = width)) + 
   geom_tile() +
   #facet_wrap(.~sample_type)+
-  scale_fill_gradient2("Abundance",trans="sqrt", high="darkblue", low="white", breaks=c(0, 0.10, 0.30, 0.50, 0.80)) +
+  scale_fill_gradient2("Abundance",trans="sqrt", high=myColor[1], low=myColor[2], breaks=c(0, 0.10, 0.30, 0.50, 0.80)) +
   scale_x_continuous(breaks = spd$x_center, 
                      labels = spd$ID, 
                      expand = c(0, 0)) + 
@@ -2346,7 +2412,7 @@ plt_hmap1 <- ggplot(hmd,
                        height = height, width = width)) + 
   geom_tile() +
   #facet_wrap(.~sample_type)+
-  scale_fill_gradient2("Abundance",trans="sqrt", high="darkblue", low="white", breaks=c(0, 0.10, 0.30, 0.50, 0.80)) +
+  scale_fill_gradient2("Abundance",trans="sqrt", high=myColor[1], low=myColor[2], breaks=c(0, 0.10, 0.30, 0.50, 0.80)) +
   scale_x_continuous(breaks = spd$x_center, 
                      labels = spd$ID, 
                      expand = c(0, 0)) + 
@@ -2376,7 +2442,7 @@ plt_hmap2 <- ggplot(hmd,
                         height = height, width = width)) + 
   geom_tile() +
   #facet_wrap(.~sample_type)+
-  scale_fill_gradient2("expr",trans="sqrt", high="darkblue", low="white", breaks=c(0, 0.1, 0.10, 0.30, 0.50, 0.80)) +
+  scale_fill_gradient2("expr",trans="sqrt", high=myColor[1], low=myColor[2], breaks=c(0, 0.1, 0.10, 0.30, 0.50, 0.80)) +
   scale_x_continuous(breaks = spd$x_center, 
                      labels = spd$ID, 
                      expand = c(0, 0)) + 
@@ -2406,7 +2472,7 @@ plt_hmap3 <- ggplot(hmd,
                         height = height, width = width)) + 
   geom_tile() +
   #facet_wrap(.~sample_type)+
-  scale_fill_gradient2("Abundance",trans="sqrt", high="darkblue", low="white", breaks=c(0, 0.10, 0.30, 0.50, 0.80)) +
+  scale_fill_gradient2("Abundance",trans="sqrt", high=myColor[1], low=myColor[2], breaks=c(0, 0.10, 0.30, 0.50, 0.80)) +
   scale_x_continuous(breaks = spd$x_center, 
                      labels = spd$ID, 
                      expand = c(0, 0)) + 
@@ -2658,7 +2724,7 @@ plt_hmap1 <- ggplot(hmd,
                        height = height, width = width)) + 
   geom_tile() +
   #facet_wrap(.~sample_type)+
-  scale_fill_gradient2("Abundance",trans="sqrt", high="darkblue", low="white", breaks=c(0, 0.10, 0.30, 0.50, 0.80)) +
+  scale_fill_gradient2("Abundance",trans="sqrt", high=myColor[1], low=myColor[2], breaks=c(0, 0.10, 0.30, 0.50, 0.80)) +
   scale_x_continuous(breaks = spd$x_center, 
                      labels = spd$ID, 
                      expand = c(0, 0)) + 
@@ -2687,7 +2753,7 @@ plt_hmap2 <- ggplot(hmd,
                         height = height, width = width)) + 
   geom_tile() +
   #facet_wrap(.~sample_type)+
-  scale_fill_gradient2("expr",trans="sqrt", high="darkblue", low="white", breaks=c(0, 0.1, 0.10, 0.30, 0.50, 0.80)) +
+  scale_fill_gradient2("expr",trans="sqrt", high=myColor[1], low=myColor[2], breaks=c(0, 0.1, 0.10, 0.30, 0.50, 0.80)) +
   scale_x_continuous(breaks = spd$x_center, 
                      labels = spd$ID, 
                      expand = c(0, 0)) + 
@@ -2716,7 +2782,7 @@ plt_hmap3 <- ggplot(hmd,
                         height = height, width = width)) + 
   geom_tile() +
   #facet_wrap(.~sample_type)+
-  scale_fill_gradient2("Abundance",trans="sqrt", high="darkblue", low="white", breaks=c(0, 0.10, 0.30, 0.50, 0.80)) +
+  scale_fill_gradient2("Abundance",trans="sqrt", high=myColor[1], low=myColor[2], breaks=c(0, 0.10, 0.30, 0.50, 0.80)) +
   scale_x_continuous(breaks = spd$x_center, 
                      labels = spd$ID, 
                      expand = c(0, 0)) + 
@@ -2745,7 +2811,7 @@ plt_hmap4 <- ggplot(hmd,
                         height = height, width = width)) + 
   geom_tile() +
   #facet_wrap(.~sample_type)+
-  scale_fill_gradient2("Abundance",trans="sqrt", high="darkblue", low="white", breaks=c(0, 0.10, 0.30, 0.50, 0.80)) +
+  scale_fill_gradient2("Abundance",trans="sqrt", high=myColor[1], low=myColor[2], breaks=c(0, 0.10, 0.30, 0.50, 0.80)) +
   scale_x_continuous(breaks = spd$x_center, 
                      labels = spd$ID, 
                      expand = c(0, 0)) + 
@@ -3022,7 +3088,7 @@ plt_hmap1 <- ggplot(hmd,
                        height = height, width = width)) + 
   geom_tile() +
   #facet_wrap(.~sample_type)+
-  scale_fill_gradient2("Abundance",trans="sqrt", high="darkblue", low="white", breaks=c(0, 0.10, 0.30, 0.50, 0.80)) +
+  scale_fill_gradient2("Abundance",trans="sqrt", high=myColor[1], low=myColor[2], breaks=c(0, 0.10, 0.30, 0.50, 0.80)) +
   scale_x_continuous(breaks = spd$x_center, 
                      labels = spd$ID, 
                      expand = c(0, 0)) + 
@@ -3052,7 +3118,7 @@ plt_hmap2 <- ggplot(hmd,
                         height = height, width = width)) + 
   geom_tile() +
   #facet_wrap(.~sample_type)+
-  scale_fill_gradient2("expr",trans="sqrt", high="darkblue", low="white", breaks=c(0, 0.10, 0.30, 0.50, 0.80)) +
+  scale_fill_gradient2("expr",trans="sqrt", high=myColor[1], low=myColor[2], breaks=c(0, 0.10, 0.30, 0.50, 0.80)) +
   scale_x_continuous(breaks = spd$x_center, 
                      labels = spd$ID, 
                      expand = c(0, 0)) + 
@@ -3082,7 +3148,7 @@ plt_hmap3 <- ggplot(hmd,
                         height = height, width = width)) + 
   geom_tile() +
   #facet_wrap(.~sample_type)+
-  scale_fill_gradient2("Abundance",trans="sqrt", high="darkblue", low="white", breaks=c(0, 0.10, 0.30, 0.50, 0.80)) +
+  scale_fill_gradient2("Abundance",trans="sqrt", high=myColor[1], low=myColor[2], breaks=c(0, 0.10, 0.30, 0.50, 0.80)) +
   scale_x_continuous(breaks = spd$x_center, 
                      labels = spd$ID, 
                      expand = c(0, 0)) + 
@@ -3364,7 +3430,7 @@ plt_hmap1 <- ggplot(hmd,
                        height = height, width = width)) + 
   geom_tile() +
   #facet_wrap(.~sample_type)+
-  scale_fill_gradient2("Abundance",trans="sqrt", high="darkblue", low="white", breaks=c(0, 0.10, 0.30, 0.50, 0.80)) +
+  scale_fill_gradient2("Abundance",trans="sqrt", high=myColor[1], low=myColor[2], breaks=c(0, 0.10, 0.30, 0.50, 0.80)) +
   scale_x_continuous(breaks = spd$x_center, 
                      labels = spd$ID, 
                      expand = c(0, 0)) + 
@@ -3394,7 +3460,7 @@ plt_hmap2 <- ggplot(hmd,
                         height = height, width = width)) + 
   geom_tile() +
   #facet_wrap(.~sample_type)+
-  scale_fill_gradient2("expr",trans="sqrt", high="darkblue", low="white", breaks=c(0, 0.1, 0.10, 0.30, 0.50, 0.80)) +
+  scale_fill_gradient2("expr",trans="sqrt", high=myColor[1], low=myColor[2], breaks=c(0, 0.1, 0.10, 0.30, 0.50, 0.80)) +
   scale_x_continuous(breaks = spd$x_center, 
                      labels = spd$ID, 
                      expand = c(0, 0)) + 
@@ -3424,7 +3490,7 @@ plt_hmap3 <- ggplot(hmd,
                         height = height, width = width)) + 
   geom_tile() +
   #facet_wrap(.~sample_type)+
-  scale_fill_gradient2("Abundance",trans="sqrt", high="darkblue", low="white", breaks=c(0, 0.10, 0.30, 0.50, 0.80)) +
+  scale_fill_gradient2("Abundance",trans="sqrt", high=myColor[1], low=myColor[2], breaks=c(0, 0.10, 0.30, 0.50, 0.80)) +
   scale_x_continuous(breaks = spd$x_center, 
                      labels = spd$ID, 
                      expand = c(0, 0)) + 
