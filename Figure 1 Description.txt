@@ -1,0 +1,15 @@
+Figure 1.
+
+Creation of heatmaps.
+
+* Cases were subset to only those without BO/BE with ADC.
+* The average relative abundance of each OTU was calculated
+* OTUs below a minimum threshold of average relative abundance were removed (e.g., and average of 1% relative abundance).
+* The resulting OTU data after the subsetting above is available in Online Supplement Table X for NCI, Table X for TCGA WGS, and Table X for TCGA RNAseq.
+* The heatmaps plot the individual cases along the X-axis, the Y-axis is for each Genus's of OTU meeting the minimum threshold for relative abundance, and the cells are shaded based on the individual case relative abundances.
+* The scale of shading was adjusted for each data source due to difference in average relative abundance. 
+* Hierarchical clustering was used to sort the Genera. hclust(.) was used in R to generate the clusters.
+* Code to replicate the heatmaps is available in our code repository under the file "figure1_heatmaps.R"
+
+
+
